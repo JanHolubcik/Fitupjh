@@ -1,3 +1,4 @@
+"use client";
 import {
   Navbar,
   NavbarBrand,
@@ -13,8 +14,30 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/react";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+
+const navigationPropeties = [
+  {
+    id: 1,
+    href: "/food",
+    description: "Food",
+  },
+  {
+    id: 2,
+    href: "/yourintake",
+    description: "Your intake",
+  },
+  {
+    id: 3,
+    href: "/calendar",
+    description: "Calendar",
+  },
+];
 
 const NavbarComponent = () => {
+  const pathname = usePathname();
+  const [activePage, setActivePage] = useState<Number>(1);
   return (
     <>
       <Navbar>
@@ -23,21 +46,23 @@ const NavbarComponent = () => {
         </NavbarBrand>
 
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
-          <NavbarItem>
-            <Link color="foreground" href="#">
-              Features
-            </Link>
-          </NavbarItem>
-          <NavbarItem isActive>
-            <Link href="#" aria-current="page" color="secondary">
-              Customers
-            </Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Link color="foreground" href="#">
-              Integrations
-            </Link>
-          </NavbarItem>
+          {navigationPropeties.map((navigationProperty) => (
+            <NavbarItem key={navigationProperty.id}
+              isActive={pathname === navigationProperty.href ? true : false}
+            >
+              <Link
+                color={
+                  pathname === navigationProperty.href
+                    ? "primary"
+                    : "foreground"
+                }
+                aria-current="page"
+                href={navigationProperty.href}
+              >
+                {navigationProperty.description}
+              </Link>
+            </NavbarItem>
+          ))}
         </NavbarContent>
 
         <NavbarContent as="div" justify="end">

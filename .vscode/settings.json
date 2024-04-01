@@ -1,5 +1,6 @@
 {
     "conventionalCommits.scopes": [
-        "Navigation"
+        "Navigation",
+        "Food"
     ]
 }
