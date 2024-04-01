@@ -1,6 +1,8 @@
+"use client";
 import FoodInfo from "@/components/FoodInfo";
 import { Button, Input } from "@nextui-org/react";
 import Image from "next/image";
+import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 
 const foods = [
@@ -19,10 +21,33 @@ const foods = [
     description:
       "Food / Beverages > Bakery / Deli > Prepared & Preserved Foods > Pizza (Perishable)",
   },
-
+  {
+    name: "Potato",
+    description:
+      "Food / Beverages > Bakery / Deli > Prepared & Preserved Foods > Pizza (Perishable)",
+  },
+  {
+    name: "Tomato",
+    description:
+      "Food / Beverages > Bakery / Deli > Prepared & Preserved Foods > Pizza (Perishable)",
+  },
 ];
 
+type foodType = typeof foods;
+
+const findInFood = (props: foodType, searchValue: string) => {
+  return props.filter((food) => {
+    if (food.name.toLowerCase().includes(searchValue.toLowerCase())) {
+      console.log(food);
+      return food;
+    }
+  });
+};
+
 export default function Food() {
+  console.log("XDxd");
+  //until i have data from database we will use state with food array
+  const [food, setfood] = useState<foodType>(foods);
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-12">
       <div>
@@ -35,14 +60,22 @@ export default function Food() {
               "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
           }}
           placeholder="Type to search..."
+          onChange={(event) => {
+            console.log(event.target.value);
+            setfood(findInFood(foods, event.target.value));
+          }}
+          onClear={() => setfood(foods)}
           size="sm"
           startContent={<FaSearch size={18} />}
           type="search"
         />
-        {foods.map((key)=>(
-          <FoodInfo name={key.name} description={key.description}/>
+        {food.map((key) => (
+          <FoodInfo
+            key={key.name}
+            name={key.name}
+            description={key.description}
+          />
         ))}
-        
       </div>
     </main>
   );
