@@ -51,12 +51,7 @@ const NavbarComponent = (props: Food) => {
         </div>
       </div>
       <CardFooter className="flex-col items-end">
-        {isExpanded ? (
-          <MdExpandLess size={35} />
-        ) : (
-          <MdExpandMore size={35} />
-        )}
-
+        {isExpanded ? <MdExpandLess size={35} /> : <MdExpandMore size={35} />}
       </CardFooter>
     </Card>
   );

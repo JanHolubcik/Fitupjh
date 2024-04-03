@@ -37,7 +37,7 @@ const navigationPropeties = [
 
 const NavbarComponent = () => {
   const pathname = usePathname();
-  const [activePage, setActivePage] = useState<Number>(1);
+
   return (
     <>
       <Navbar>
@@ -47,7 +47,8 @@ const NavbarComponent = () => {
 
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
           {navigationPropeties.map((navigationProperty) => (
-            <NavbarItem key={navigationProperty.id}
+            <NavbarItem
+              key={navigationProperty.id}
               isActive={pathname === navigationProperty.href ? true : false}
             >
               <Link
