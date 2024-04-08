@@ -56,7 +56,9 @@ const foods = [
       "Food / Beverages > Bakery / Deli > Prepared & Preserved Foods > Pizza (Perishable)",
   },
 ];
+
 type foodType = typeof foods;
+
 const findInFood = (props: foodType, searchValue: string) => {
   return props.filter((food) => {
     if (food.name.toLowerCase().includes(searchValue.toLowerCase())) {
@@ -66,16 +68,25 @@ const findInFood = (props: foodType, searchValue: string) => {
   });
 };
 
+const addFood = (props: foodType) => {};
+
 const NavbarComponent = (props: Food) => {
-  const [savedFood, setSavedFood] = useState();
+  const [savedFood, setSavedFood] = useState<foodType>([]);
   const [food, setfood] = useState<foodType>(foods);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  console.log("saved food: " + savedFood);
   return (
     <Card className="max-w-[500px] min-w-[400px] p-2 mt-5">
       <CardHeader>
         <h1>{props.timeOfDay}</h1>
       </CardHeader>
       <CardBody className="flex-col items-end">
+        {savedFood &&
+          savedFood.map((key) => (
+            <div key={key.name}>
+              <p>{key.name}</p>
+            </div>
+          ))}
         <Button onPress={onOpen} isIconOnly>
           <FaPlusCircle />
         </Button>
@@ -110,7 +121,14 @@ const NavbarComponent = (props: Food) => {
                         <p>{key.name}</p>
                       </div>
                       <div className="flex-1 text-end">
-                        <Button isIconOnly>
+                        <Button
+                          onPress={() =>
+                            setSavedFood((prevState) => {
+                              return [...prevState, key];
+                            })
+                          }
+                          isIconOnly
+                        >
                           <FaPlusCircle />
                         </Button>
                       </div>

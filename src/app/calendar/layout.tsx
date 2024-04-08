@@ -1,4 +1,4 @@
-export default function YourIntake({
+export default function calendar({
   children,
 }: Readonly<{
   children: React.ReactNode;
