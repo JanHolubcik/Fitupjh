@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 
+
 const foods = [
   {
     name: "Chicken",
@@ -44,9 +45,11 @@ const findInFood = (props: foodType, searchValue: string) => {
   });
 };
 
-export default function Food() {
+export default async function Food() {
   //until i have data from database we will use state with food array
   const [food, setfood] = useState<foodType>(foods);
+
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-12">
       <div>

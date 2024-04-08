@@ -74,7 +74,7 @@ const NavbarComponent = (props: Food) => {
   const [savedFood, setSavedFood] = useState<foodType>([]);
   const [food, setfood] = useState<foodType>(foods);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  console.log("saved food: " + savedFood);
+
   return (
     <Card className="max-w-[500px] min-w-[400px] p-2 mt-5">
       <CardHeader>
