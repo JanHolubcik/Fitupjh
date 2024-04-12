@@ -20,20 +20,17 @@ export async function getFoods() {
   }
 }
 
-export async function getFood(id: string) {
+export async function getFood(substring: string) {
   try {
     await connectDB();
 
-    const parsedId = stringToObjectId(id);
 
-    if (!parsedId) {
-      return { error: "Food not found" };
-    }
 
-    const food = await Food.findById(parsedId).lean().exec();
+    const food = await Food.find({name: { $regex: '.*' + substring + '.*',$options: 'i' }}).lean().exec();
+    
     if (food) {
       return {
-        food,
+        food: food,
       };
     } else {
       return { error: "Food not found" };

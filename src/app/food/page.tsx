@@ -45,11 +45,11 @@ const findInFood = (props: foodType, searchValue: string) => {
   });
 };
 
-export default async function Food() {
+export default async function Food(props: any) {
   //until i have data from database we will use state with food array
   const [food, setfood] = useState<foodType>(foods);
-
-
+console.log("food: " + props.foodArray);
+  props.foodArray
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-12">
       <div>
@@ -63,6 +63,7 @@ export default async function Food() {
           }}
           placeholder="Type to search..."
           onChange={(event) => {
+      
             console.log(event.target.value);
             setfood(findInFood(foods, event.target.value));
           }}

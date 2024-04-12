@@ -24,9 +24,24 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import FoodInfo from "./FoodInfo";
+import { getFood, getFoods } from "@/lib/food-db";
+import { FlattenMaps, ObjectId, Types } from "mongoose";
+import { FoodClass } from "@/models/Food";
 type Food = {
   timeOfDay: string;
-  image?: File;
+  findInDatabase: (searchValue: string) => Promise<
+    | {
+        food: (FlattenMaps<FoodClass> &
+          Required<{
+            _id: string | Types.ObjectId;
+          }>)[];
+        error?: undefined;
+      }
+    | {
+        error: unknown;
+        food?: undefined;
+      }
+  >;
 };
 
 const foods = [
@@ -59,20 +74,19 @@ const foods = [
 
 type foodType = typeof foods;
 
-const findInFood = (props: foodType, searchValue: string) => {
-  return props.filter((food) => {
-    if (food.name.toLowerCase().includes(searchValue.toLowerCase())) {
-      console.log(food);
-      return food;
-    }
-  });
-};
+
+type xd =
+  | (FlattenMaps<FoodClass> &
+      Required<{
+        _id: string | Types.ObjectId;
+      }>)[]
+  | undefined;
 
 const addFood = (props: foodType) => {};
 
-const NavbarComponent = (props: Food) => {
+const TimeFrame = (props: Food) => {
   const [savedFood, setSavedFood] = useState<foodType>([]);
-  const [food, setfood] = useState<foodType>(foods);
+  const [food, setfood] = useState<xd>();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
@@ -82,8 +96,8 @@ const NavbarComponent = (props: Food) => {
       </CardHeader>
       <CardBody className="flex-col items-end">
         {savedFood &&
-          savedFood.map((key) => (
-            <div key={key.name}>
+          savedFood.map((key,id) => (
+            <div key={id}>
               <p>{key.name}</p>
             </div>
           ))}
@@ -105,18 +119,25 @@ const NavbarComponent = (props: Food) => {
                     }}
                     placeholder="Type to search..."
                     onChange={(event) => {
-                      console.log(event.target.value);
-                      setfood(findInFood(foods, event.target.value));
+                      if(event.target.value.length === 0){
+                        setfood([])
+                      } else {
+                      props
+                        .findInDatabase(event.target.value)
+                        .then((foundFood) => {
+                          setfood(foundFood.food);
+                        });
+                      }
                     }}
-                    onClear={() => setfood(foods)}
+                    onClear={() => setfood([])}
                     size="sm"
                     startContent={<FaSearch size={18} />}
                     type="search"
                   />
                 </ModalHeader>
                 <ModalBody>
-                  {food.map((key) => (
-                    <div className=" flex flex-row " key={key.name}>
+                  {food?.map((key,id) => (
+                    <div className=" flex flex-row " key={id}>
                       <div className="flex-1 self-center">
                         <p>{key.name}</p>
                       </div>
@@ -124,7 +145,13 @@ const NavbarComponent = (props: Food) => {
                         <Button
                           onPress={() =>
                             setSavedFood((prevState) => {
-                              return [...prevState, key];
+                              return [
+                                ...prevState,
+                                {
+                                  name: key.name,
+                                  description: key.calories_per_100g.toString(),
+                                },
+                              ];
                             })
                           }
                           isIconOnly
@@ -152,4 +179,4 @@ const NavbarComponent = (props: Food) => {
   );
 };
 
-export default NavbarComponent;
+export default TimeFrame;

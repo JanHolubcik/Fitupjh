@@ -2,6 +2,7 @@
     "conventionalCommits.scopes": [
         "Navigation",
         "Food",
-        "Yourintake"
+        "Yourintake",
+        "Database"
     ]
 }

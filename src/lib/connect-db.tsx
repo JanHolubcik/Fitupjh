@@ -10,7 +10,7 @@ declare global {
 const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI || MONGODB_URI.length === 0) {
-  throw new Error("Please add your MongoDB URI to .env.local");
+  throw new Error(MONGODB_URI+ " Please add your MongoDB URI to .env.local");
 }
 
 /**
