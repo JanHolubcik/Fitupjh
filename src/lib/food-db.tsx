@@ -1,4 +1,4 @@
-import { Todo } from "@/models/Todo";
+
 import connectDB from "./connect-db";
 import { stringToObjectId } from "./utils";
 import { Food } from "@/models/Food";
