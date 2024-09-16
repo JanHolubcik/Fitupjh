@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 
-
 const foods = [
   {
     name: "Chicken",
@@ -39,7 +38,6 @@ type foodType = typeof foods;
 const findInFood = (props: foodType, searchValue: string) => {
   return props.filter((food) => {
     if (food.name.toLowerCase().includes(searchValue.toLowerCase())) {
-      console.log(food);
       return food;
     }
   });
@@ -62,8 +60,6 @@ export default function Food(props: any) {
           }}
           placeholder="Type to search..."
           onChange={(event) => {
-      
-            console.log(event.target.value);
             setfood(findInFood(foods, event.target.value));
           }}
           onClear={() => setfood(foods)}

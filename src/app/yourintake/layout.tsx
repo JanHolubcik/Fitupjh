@@ -1,7 +1,10 @@
+"use client";
+import YourIntakeProvider from "@/hooks/YourIntakeProvider";
+
 export default function YourIntake({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return children;
+  return <YourIntakeProvider>{children}</YourIntakeProvider>;
 }

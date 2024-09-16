@@ -1,4 +1,4 @@
-import TimeFrame from "@/components/TimeFrame";
+import TimeFrame from "@/components/TimeFrame/TimeFrame";
 import { Button } from "@nextui-org/react";
 import Image from "next/image";
 import Calendar from "react-calendar";
