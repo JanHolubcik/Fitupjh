@@ -27,11 +27,9 @@ import mongoose from "mongoose";
   schemaOptions: {
     timestamps: true,
     collection: "food",
-    
   },
   options: {
     allowMixed: Severity.ALLOW,
-
   },
 })
 @index({ title: 1 })
@@ -41,7 +39,6 @@ class FoodClass {
   calories_per_100g: number;
   @prop({ default: false })
   _id: mongoose.Types.ObjectId | string;
-
   id: string;
 }
 

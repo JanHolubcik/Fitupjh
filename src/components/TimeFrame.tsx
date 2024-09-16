@@ -1,20 +1,8 @@
 "use client";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Divider,
-  Link,
-  Image,
-  Button,
-  Input,
-} from "@nextui-org/react";
+import { Card, CardHeader, CardBody, Button, Input } from "@nextui-org/react";
 import { useState } from "react";
 import { FaPlusCircle, FaSearch } from "react-icons/fa";
-import { MdExpandLess, MdExpandMore } from "react-icons/md";
-import { PiArrowSquareDownRightLight } from "react-icons/pi";
-import { TbLayoutBottombarExpand, TbLayoutNavbarExpand } from "react-icons/tb";
+
 import {
   Modal,
   ModalContent,
@@ -23,10 +11,17 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@nextui-org/react";
-import FoodInfo from "./FoodInfo";
-import { getFood, getFoods } from "@/lib/food-db";
+
 import { FlattenMaps, ObjectId, Types } from "mongoose";
 import { FoodClass } from "@/models/Food";
+
+type xd =
+  | (FlattenMaps<FoodClass> &
+      Required<{
+        _id: string | Types.ObjectId;
+      }>)[]
+  | undefined;
+
 type Food = {
   timeOfDay: string;
   findInDatabase: (searchValue: string) => Promise<
@@ -74,20 +69,17 @@ const foods = [
 
 type foodType = typeof foods;
 
-
-type xd =
-  | (FlattenMaps<FoodClass> &
-      Required<{
-        _id: string | Types.ObjectId;
-      }>)[]
-  | undefined;
-
 const addFood = (props: foodType) => {};
 
 const TimeFrame = (props: Food) => {
+  //when this state changes, we sent data to server
   const [savedFood, setSavedFood] = useState<foodType>([]);
-  const [food, setfood] = useState<xd>();
+  const [food, setFood] = useState<xd>([]);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [calculatedCalories, setCalculatedCalories] = useState<number[]>([]);
+  const [xd, setXD] = useState(0);
+  //const xd = createRef();
+  console.log(calculatedCalories);
 
   return (
     <Card className="max-w-[500px] min-w-[400px] p-2 mt-5">
@@ -96,7 +88,7 @@ const TimeFrame = (props: Food) => {
       </CardHeader>
       <CardBody className="flex-col items-end">
         {savedFood &&
-          savedFood.map((key,id) => (
+          savedFood.map((key, id) => (
             <div key={id}>
               <p>{key.name}</p>
             </div>
@@ -104,44 +96,106 @@ const TimeFrame = (props: Food) => {
         <Button onPress={onOpen} isIconOnly>
           <FaPlusCircle />
         </Button>
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <Modal
+          hideCloseButton
+          size="lg"
+          scrollBehavior="inside"
+          isOpen={isOpen}
+          onOpenChange={() => {
+            setFood([]);
+            onOpenChange();
+          }}
+        >
           <ModalContent>
-            {(onClose) => (
-              <>
-                <ModalHeader className="flex flex-col gap-1">
-                  <Input
-                    classNames={{
-                      base: "max-w-full sm:max-w-[50rem] h-10",
-                      mainWrapper: "h-full",
-                      input: "text-small",
-                      inputWrapper:
-                        "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
-                    }}
-                    placeholder="Type to search..."
-                    onChange={(event) => {
-                      if(event.target.value.length === 0){
-                        setfood([])
-                      } else {
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                <Input
+                  classNames={{
+                    base: "max-w-full sm:max-w-[50rem] h-10",
+                    mainWrapper: "h-full",
+                    input: "text-small",
+                    inputWrapper:
+                      "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
+                  }}
+                  placeholder="Type to search..."
+                  onChange={(event) => {
+                    if (event.target.value.length === 0) {
+                      setFood([]);
+                    } else {
                       props
                         .findInDatabase(event.target.value)
                         .then((foundFood) => {
-                          setfood(foundFood.food);
+                          setFood(foundFood.food);
+                          if (foundFood.food)
+                            setCalculatedCalories(
+                              foundFood.food.map((key) => {
+                                return key.calories_per_100g;
+                              })
+                            );
                         });
-                      }
-                    }}
-                    onClear={() => setfood([])}
-                    size="sm"
-                    startContent={<FaSearch size={18} />}
-                    type="search"
-                  />
-                </ModalHeader>
-                <ModalBody>
-                  {food?.map((key,id) => (
+                    }
+                  }}
+                  onClear={() => setFood([])}
+                  size="sm"
+                  startContent={<FaSearch size={18} />}
+                  type="search"
+                />
+              </ModalHeader>
+              <ModalBody className="max-h-52">
+                <div className="max-h-52 overflow-visible">
+                  {food?.length !== 0 && (
+                    <div className=" flex flex-row ">
+                      <div className="flex-1 self-center">
+                        <p>Name</p>
+                      </div>
+                      <div className="flex-1 self-center max-w-11">
+                        <p>grams</p>
+                      </div>
+                      <div className="flex-1 ml-10  self-center text-center max-w-11">
+                        <p>cal</p>
+                      </div>
+                      <div className="max-w-11 ml-10   flex-1 text-end">
+                        <div></div>
+                      </div>
+                    </div>
+                  )}
+                  {food?.map((key, id) => (
                     <div className=" flex flex-row " key={id}>
                       <div className="flex-1 self-center">
                         <p>{key.name}</p>
                       </div>
-                      <div className="flex-1 text-end">
+                      <div className="flex-1 self-center max-w-11">
+                        <Input
+                          key={id + "inputGrams"}
+                          min={0}
+                          defaultValue="100"
+                          size="sm"
+                          type="number"
+                          onChange={(event) => {
+                            console.log("xe:" + event.target.value);
+                            setCalculatedCalories((prevState) => {
+                              const newState = [...prevState];
+                              if (event.target.value !== null)
+                                newState[id] =
+                                  (Number(event.target.value) / 100) *
+                                  key.calories_per_100g;
+                              return newState;
+                            });
+                          }}
+                        />
+                      </div>
+                      <div className="flex-1 ml-10  self-center text-end max-w-11">
+                        <Input
+                          disabled
+                          id={id + "readOnlyInput"}
+                          min={0}
+                          value={calculatedCalories[id].toString()}
+                          size="sm"
+                          type="number"
+                        />
+                      </div>
+
+                      <div className="max-w-11 ml-10   flex-1 text-end">
                         <Button
                           onPress={() =>
                             setSavedFood((prevState) => {
@@ -149,7 +203,8 @@ const TimeFrame = (props: Food) => {
                                 ...prevState,
                                 {
                                   name: key.name,
-                                  description: key.calories_per_100g.toString(),
+                                  description:
+                                    calculatedCalories[id].toString(),
                                 },
                               ];
                             })
@@ -161,17 +216,9 @@ const TimeFrame = (props: Food) => {
                       </div>
                     </div>
                   ))}
-                </ModalBody>
-                <ModalFooter>
-                  <Button color="danger" variant="light" onPress={onClose}>
-                    Close
-                  </Button>
-                  <Button color="primary" onPress={onClose}>
-                    Action
-                  </Button>
-                </ModalFooter>
-              </>
-            )}
+                </div>
+              </ModalBody>
+            </>
           </ModalContent>
         </Modal>
       </CardBody>

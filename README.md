@@ -25,6 +25,7 @@ pnpm dev
 # or
 bun dev
 ```
+Project uses mongodb on localhost. Test database will be updated when the project will look half decent.
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
