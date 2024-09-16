@@ -1,6 +1,4 @@
-import TodoFormServerComponent from "@/components/todo-form-server";
-import TodoItemServerComponent from "@/components/todo-item-server";
-import { getTodos } from "@/lib/todo-db";
+
 import {
   Navbar,
   NavbarBrand,
