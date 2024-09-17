@@ -7,11 +7,12 @@ import { findInDatabase } from "@/lib/YourIntake/search-db";
 const timeFrames = ["Breakfast", "Lunch", "Dinner", "Supper"];
 
 export default function Food() {
-  const { food } = useYourIntakeContext();
+  
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div>
-        {food ? <p>Calories total today:</p> : <p>D</p>}
+        <p>Calories total today:</p>
         {timeFrames.map((key) => (
           <TimeFrame
             key={key}

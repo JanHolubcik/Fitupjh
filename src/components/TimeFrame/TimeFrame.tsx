@@ -22,6 +22,7 @@ import {
 import { FlattenMaps, ObjectId, Types } from "mongoose";
 import { FoodClass } from "@/models/Food";
 import { ModalTimeFrame } from "./components/ModalTimeFrame";
+import { useYourIntakeContext } from "@/hooks/YourIntakeContext";
 
 type ReturnTypeFood =
   | (FlattenMaps<FoodClass> &
@@ -44,17 +45,12 @@ type Food = {
   >;
 };
 
-type foodType = {
-  id: number;
-  name: string;
-  calories: number;
-  amount: string;
-}[];
+
 
 const TimeFrame = (props: Food) => {
   //when this state changes, we sent data to server
-  const [savedFood, setSavedFood] = useState<foodType>([]);
 
+  const { savedFood,setSavedFood } = useYourIntakeContext();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const removeFromSavedFood = (id: number) => {
