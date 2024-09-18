@@ -2,20 +2,12 @@
 import { Card, CardHeader, CardBody, Button, Input } from "@nextui-org/react";
 import { SetStateAction, useState } from "react";
 import {
-  FaCross,
-  FaMinus,
-  FaMinusCircle,
   FaPlusCircle,
-  FaSearch,
   FaTimes,
 } from "react-icons/fa";
 
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
+
   useDisclosure,
 } from "@nextui-org/react";
 
@@ -32,7 +24,7 @@ type ReturnTypeFood =
   | undefined;
 
 type Food = {
-  timeOfDay: string;
+  timeOfDay: 'breakfast'| 'lunch'| 'dinner';
   findInDatabase: (searchValue: string) => Promise<
     | {
         food: ReturnTypeFood;
@@ -45,35 +37,38 @@ type Food = {
   >;
 };
 
-
-
 const TimeFrame = (props: Food) => {
   //when this state changes, we sent data to server
-
   const { savedFood,setSavedFood } = useYourIntakeContext();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
+  const x = props.timeOfDay;
+
   const removeFromSavedFood = (id: number) => {
     setSavedFood((prevState) => {
-      const newState = prevState.filter((food) => {
-        return food.id !== id;
-      });
-
-      return newState;
+      // Clone the current meal array (breakfast/lunch/dinner)
+      const updatedMeal = prevState[props.timeOfDay].filter((foodItem) => foodItem.id !== id);
+  
+      // Return the new state with the updated meal
+      return {
+        ...prevState,
+        [props.timeOfDay]: updatedMeal
+      };
     });
   };
 
-  const sumCalories = savedFood.reduce(
+  const sumCalories = savedFood[props.timeOfDay].reduce(
     (accumulator, { calories }) => accumulator + calories,
     0
   );
+
   return (
     <Card className="max-w-[500px] min-w-[400px] p-2 mt-5">
       <CardHeader className="flex flex-row items-center bg-zinc-900">
         <div className="flex-1 mr-2">
           <h1>{props.timeOfDay}</h1>
         </div>
-        {savedFood.length !== 0 && (
+        {savedFood[props.timeOfDay].length !== 0 && (
           <p className="mr-1">{sumCalories + " Kcal"} </p>
         )}
 
@@ -82,9 +77,9 @@ const TimeFrame = (props: Food) => {
         </Button>
       </CardHeader>
       <CardBody className="flex-col">
-        {savedFood.length !== 0 && (
+        {savedFood[props.timeOfDay].length !== 0 && (
           <div>
-            {savedFood.map((key) => (
+            {savedFood[props.timeOfDay].map((key) => (
               <div
                 className="flex flex-row items-center text-end min-h-[50px]"
                 key={key.id}
@@ -115,8 +110,9 @@ const TimeFrame = (props: Food) => {
           findInDatabase={props.findInDatabase}
           setSavedFood={setSavedFood}
           isOpen={isOpen}
-          onOpenChange={onOpenChange}
-        ></ModalTimeFrame>
+          onOpenChange={onOpenChange} 
+          timeOfDay={props.timeOfDay}>
+          </ModalTimeFrame>
       </CardBody>
     </Card>
   );

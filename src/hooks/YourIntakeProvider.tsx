@@ -1,4 +1,4 @@
-import { createContext, Dispatch, FC, MutableRefObject, SetStateAction, useRef, useState } from "react";
+import { createContext, Dispatch, SetStateAction, useState } from "react";
 
 export const YourIntakeContext = createContext<YourIntakeType | null>(null);
 
@@ -8,6 +8,12 @@ type YourIntakeType = {
 };
 
 type foodType = {
+  breakfast: food;
+  lunch:food;
+  dinner:food;
+}
+
+type food = {
   id: number;
   name: string;
   calories: number;
@@ -17,8 +23,13 @@ type foodType = {
 const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const food = useRef(false);
-  const [savedFood, setSavedFood] = useState<foodType>([]);
+
+  const [savedFood, setSavedFood] = useState<foodType>({
+    breakfast: [],
+    lunch: [],
+    dinner: []
+});
+
   return (
     <YourIntakeContext.Provider
       value={{

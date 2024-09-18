@@ -4,8 +4,9 @@ import { useYourIntakeContext } from "@/hooks/YourIntakeContext";
 import { getFood } from "@/lib/food-db";
 import { findInDatabase } from "@/lib/YourIntake/search-db";
 
-const timeFrames = ["Breakfast", "Lunch", "Dinner", "Supper"];
+const timeFrames = ["breakfast", "lunch", "dinner"];
 
+type timeOfDay = 'breakfast' | 'lunch' | 'dinner';
 export default function Food() {
   
 
@@ -16,7 +17,7 @@ export default function Food() {
         {timeFrames.map((key) => (
           <TimeFrame
             key={key}
-            timeOfDay={key}
+            timeOfDay={key as timeOfDay}
             findInDatabase={findInDatabase}
           />
         ))}
