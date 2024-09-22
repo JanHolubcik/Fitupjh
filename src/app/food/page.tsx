@@ -2,7 +2,7 @@
 import { format } from "date-fns";
 
 import FoodInfo from "@/components/FoodInfo";
-import { getSavedFoodInDay } from "@/lib/food-db";
+
 import { saveFoodToDatabase } from "@/lib/YourIntake/saveFoodToDatabase-db";
 import { Button, Input } from "@nextui-org/react";
 import Image from "next/image";

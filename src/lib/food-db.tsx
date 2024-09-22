@@ -1,6 +1,8 @@
+import { foodType } from "@/types/foodTypes";
 import connectDB from "./connect-db";
 import { stringToObjectId } from "./utils";
 import { Food } from "@/models/Food";
+import { SavedFood } from "@/models/savedFood";
 
 export async function getFoods() {
   try {
@@ -37,6 +39,20 @@ export async function getFood(substring: string) {
       return { error: "Food not found" };
     }
   } catch (error) {
+    return { error };
+  }
+}
+
+export async function saveFoodInDay(date: Date, food: foodType) {
+  try {
+    await connectDB();
+
+    await SavedFood.insertMany({
+      savedFood: food,
+      day: date,
+    });
+  } catch (error) {
+    console.log(error);
     return { error };
   }
 }
