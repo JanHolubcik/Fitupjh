@@ -39,7 +39,7 @@ type props = {
 
 export const ModalTimeFrame = (props: props) => {
   //finding food in database
-  const { IDIncrement } = useYourIntakeContext();
+  const { IDIncrement, setSavedFood, addToFood } = useYourIntakeContext();
   const [food, setFood] = useState<ReturnTypeFood>([]);
   const [calculatedCalories, setCalculatedCalories] = useState<number[]>([]);
 
@@ -153,7 +153,13 @@ export const ModalTimeFrame = (props: props) => {
                               `${id}inputGrams`
                             ) as HTMLInputElement
                           ).value;
-                          props.setSavedFood((prevState) => {
+                          addToFood(
+                            calculatedCalories[id],
+                            key.name,
+                            props.timeOfDay,
+                            valueGrams
+                          );
+                          setSavedFood((prevState) => {
                             const newState = prevState;
                             newState[props.timeOfDay] = [
                               ...prevState[props.timeOfDay],

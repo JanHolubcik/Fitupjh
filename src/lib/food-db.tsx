@@ -47,10 +47,35 @@ export async function saveFoodInDay(date: Date, food: foodType) {
   try {
     await connectDB();
 
-    await SavedFood.insertMany({
-      savedFood: food,
+    const existingRecord = await SavedFood.findOne({
       day: date,
     });
+    if (!existingRecord) {
+      console.log("Creating new food record...");
+      await SavedFood.insertMany({
+        savedFood: food,
+        day: date,
+      });
+    } else {
+      existingRecord.savedFood = food;
+      console.log("Updating food record...");
+      await existingRecord.save();
+    }
+  } catch (error) {
+    console.log(error);
+    return { error };
+  }
+}
+
+export async function checkForSavedFood(date: Date) {
+  try {
+    await connectDB();
+
+    const existingRecord = await SavedFood.findOne({
+      day: date,
+    });
+
+    return existingRecord ? { savedFood: existingRecord.savedFood } : {};
   } catch (error) {
     console.log(error);
     return { error };

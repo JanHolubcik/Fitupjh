@@ -3,7 +3,7 @@ import { format } from "date-fns";
 
 import FoodInfo from "@/components/FoodInfo";
 
-import { saveFoodToDatabase } from "@/lib/YourIntake/saveFoodToDatabase-db";
+import { saveFood } from "@/lib/YourIntake/saveFoodToDatabase-db";
 import { Button, Input } from "@nextui-org/react";
 import Image from "next/image";
 import { useState } from "react";
@@ -41,7 +41,10 @@ const foods = [
 type foodType = typeof foods;
 
 const xdd = {
-  breakfast: [{ id: 0, name: "Chicken", calories: 150, amount: "20" }],
+  breakfast: [
+    { id: 0, name: "Chicken", calories: 150, amount: "20" },
+    { id: 1, name: "Watermelon", calories: 150, amount: "20" },
+  ],
   lunch: [],
   dinner: [],
 };
@@ -64,7 +67,7 @@ export default function Food(props: any) {
         <Button
           size="lg"
           onPress={() => {
-            saveFoodToDatabase(new Date(2024, 11, 12), xdd);
+            saveFood(new Date(2024, 11, 12), xdd);
           }}
           isIconOnly
         >
