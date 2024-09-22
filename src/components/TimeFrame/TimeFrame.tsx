@@ -1,15 +1,9 @@
 "use client";
 import { Card, CardHeader, CardBody, Button, Input } from "@nextui-org/react";
 import { SetStateAction, useState } from "react";
-import {
-  FaPlusCircle,
-  FaTimes,
-} from "react-icons/fa";
+import { FaPlusCircle, FaTimes } from "react-icons/fa";
 
-import {
-
-  useDisclosure,
-} from "@nextui-org/react";
+import { useDisclosure } from "@nextui-org/react";
 
 import { FlattenMaps, ObjectId, Types } from "mongoose";
 import { FoodClass } from "@/models/Food";
@@ -24,7 +18,7 @@ type ReturnTypeFood =
   | undefined;
 
 type Food = {
-  timeOfDay: 'breakfast'| 'lunch'| 'dinner';
+  timeOfDay: "breakfast" | "lunch" | "dinner";
   findInDatabase: (searchValue: string) => Promise<
     | {
         food: ReturnTypeFood;
@@ -39,20 +33,20 @@ type Food = {
 
 const TimeFrame = (props: Food) => {
   //when this state changes, we sent data to server
-  const { savedFood,setSavedFood } = useYourIntakeContext();
+  const { savedFood, setSavedFood } = useYourIntakeContext();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
-  const x = props.timeOfDay;
 
   const removeFromSavedFood = (id: number) => {
     setSavedFood((prevState) => {
       // Clone the current meal array (breakfast/lunch/dinner)
-      const updatedMeal = prevState[props.timeOfDay].filter((foodItem) => foodItem.id !== id);
-  
+      const updatedMeal = prevState[props.timeOfDay].filter(
+        (foodItem) => foodItem.id !== id
+      );
+
       // Return the new state with the updated meal
       return {
         ...prevState,
-        [props.timeOfDay]: updatedMeal
+        [props.timeOfDay]: updatedMeal,
       };
     });
   };
@@ -105,14 +99,13 @@ const TimeFrame = (props: Food) => {
             ))}
           </div>
         )}
-
         <ModalTimeFrame
           findInDatabase={props.findInDatabase}
           setSavedFood={setSavedFood}
           isOpen={isOpen}
-          onOpenChange={onOpenChange} 
-          timeOfDay={props.timeOfDay}>
-          </ModalTimeFrame>
+          onOpenChange={onOpenChange}
+          timeOfDay={props.timeOfDay}
+        ></ModalTimeFrame>
       </CardBody>
     </Card>
   );
