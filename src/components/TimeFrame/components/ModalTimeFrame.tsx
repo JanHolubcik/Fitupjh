@@ -11,6 +11,19 @@ import { FlattenMaps, Types } from "mongoose";
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { FaPlusCircle, FaSearch } from "react-icons/fa";
 
+type foodType = {
+  breakfast: food;
+  lunch:food;
+  dinner:food;
+}
+
+type food = {
+  id: number;
+  name: string;
+  calories: number;
+  amount: string;
+}[];
+
 type ReturnTypeFood =
   | (FlattenMaps<FoodClass> &
       Required<{
@@ -19,14 +32,10 @@ type ReturnTypeFood =
   | undefined;
 
 type props = {
+  timeOfDay: 'breakfast' | 'dinner' | 'lunch',
   setSavedFood: Dispatch<
     SetStateAction<
-      {
-        id: number;
-        name: string;
-        calories: number;
-        amount: string;
-      }[]
+    foodType
     >
   >;
   onOpenChange: () => void;
@@ -158,8 +167,9 @@ export const ModalTimeFrame = (props: props) => {
                             ) as HTMLInputElement
                           ).value;
 
-                          return [
-                            ...prevState,
+                          const newState = prevState;
+                          newState[props.timeOfDay] = [
+                            ...prevState[props.timeOfDay] ,
                             {
                               id: idIncrement.current,
                               name: key.name,
@@ -167,6 +177,8 @@ export const ModalTimeFrame = (props: props) => {
                               amount: valueGrams,
                             },
                           ];
+
+                          return newState;
                         });
                         ++idIncrement.current;
                       }}
