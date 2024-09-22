@@ -11,6 +11,7 @@
   "dependencies": {
     "@nextui-org/react": "^2.2.10",
     "@typegoose/typegoose": "^12.3.0",
+    "date-fns": "^4.1.0",
     "framer-motion": "^11.0.18",
     "mongodb": "^6.5.0",
     "mongoose": "^8.3.0",
