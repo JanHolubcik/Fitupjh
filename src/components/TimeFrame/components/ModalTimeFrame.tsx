@@ -22,7 +22,6 @@ type ReturnTypeFood =
 
 type props = {
   timeOfDay: "breakfast" | "dinner" | "lunch";
-  setSavedFood: Dispatch<SetStateAction<foodType>>;
   onOpenChange: () => void;
   isOpen: boolean | undefined;
   findInDatabase: (searchValue: string) => Promise<
@@ -39,7 +38,7 @@ type props = {
 
 export const ModalTimeFrame = (props: props) => {
   //finding food in database
-  const { IDIncrement, setSavedFood, addToFood } = useYourIntakeContext();
+  const { addToFood } = useYourIntakeContext();
   const [food, setFood] = useState<ReturnTypeFood>([]);
   const [calculatedCalories, setCalculatedCalories] = useState<number[]>([]);
 

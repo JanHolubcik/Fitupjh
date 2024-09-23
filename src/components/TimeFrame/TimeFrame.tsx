@@ -33,23 +33,11 @@ type Food = {
 
 const TimeFrame = (props: Food) => {
   //when this state changes, we sent data to server
-  const { savedFood, setSavedFood } = useYourIntakeContext();
+  const { savedFood, removeFromSavedFood } = useYourIntakeContext();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const removeFromSavedFood = (id: number) => {
-    setSavedFood((prevState) => {
-      // Clone the current meal array (breakfast/lunch/dinner)
-      const updatedMeal = prevState[props.timeOfDay].filter(
-        (foodItem) => foodItem.id !== id
-      );
+ 
 
-      // Return the new state with the updated meal
-      return {
-        ...prevState,
-        [props.timeOfDay]: updatedMeal,
-      };
-    });
-  };
 
   const sumCalories = savedFood[props.timeOfDay].reduce(
     (accumulator, { calories }) => accumulator + calories,
@@ -88,7 +76,7 @@ const TimeFrame = (props: Food) => {
                   <Button
                     size="sm"
                     onPress={() => {
-                      removeFromSavedFood(key.id);
+                      removeFromSavedFood(key.id,props.timeOfDay);
                     }}
                     isIconOnly
                   >
@@ -101,7 +89,6 @@ const TimeFrame = (props: Food) => {
         )}
         <ModalTimeFrame
           findInDatabase={props.findInDatabase}
-          setSavedFood={setSavedFood}
           isOpen={isOpen}
           onOpenChange={onOpenChange}
           timeOfDay={props.timeOfDay}

@@ -67,7 +67,7 @@ export async function saveFoodInDay(date: Date, food: foodType) {
   }
 }
 
-export async function checkForSavedFood(date: Date) {
+export async function checkForSavedFood(date: string) {
   try {
     await connectDB();
 

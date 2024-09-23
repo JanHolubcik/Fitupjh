@@ -10,7 +10,7 @@ export const findInDatabase = async (searchValue: string) => {
   return food;
 };
 
-export const getSavedFood = async (date: Date) => {
+export const getSavedFood = async (date: string) => {
   const food = await checkForSavedFood(date).then((response) => {
     return response;
   });

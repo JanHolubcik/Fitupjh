@@ -13,11 +13,12 @@ import {
 } from "react";
 
 export const YourIntakeContext = createContext<YourIntakeType | null>(null);
+type timeOfDay= "breakfast" | "lunch" | "dinner";
 
 type YourIntakeType = {
-  IDIncrement: MutableRefObject<number>;
+  currentDate: MutableRefObject<string>;
   savedFood: foodType;
-  setSavedFood: Dispatch<SetStateAction<foodType>>;
+  removeFromSavedFood: (id:number,timeOfDay:timeOfDay) => void,
   addToFood: (
     calculatedCalories: number,
     name: string,
@@ -26,9 +27,12 @@ type YourIntakeType = {
   ) => void;
 };
 
+
+
 const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const currentDate = useRef(new Date().toJSON().slice(0, 10));
   const IDIncrement = useRef(0);
   const [savedFood, setSavedFood] = useState<foodType>({
     breakfast: [],
@@ -37,13 +41,13 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
   });
 
   useEffect(() => {
-    const currentDate = new Date(2024, 11, 12);
-    getSavedFood(currentDate).then((res) => {
+    
+    getSavedFood(currentDate.current.toString()).then((res) => {
       if (res.savedFood) {
         setSavedFood(res.savedFood);
       }
     });
-  }, []);
+  }, [currentDate.current]);
 
   useEffect(() => {
     if (
@@ -63,6 +67,21 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
       sendDataToDB();
     }
   }, [savedFood, savedFood.breakfast, savedFood.dinner, savedFood.lunch]);
+
+  const removeFromSavedFood = (id: number,timeOfDay: timeOfDay) => {
+    setSavedFood((prevState) => {
+      // Clone the current meal array (breakfast/lunch/dinner)
+      const updatedMeal = prevState[timeOfDay].filter(
+        (foodItem) => foodItem.id !== id
+      );
+
+      // Return the new state with the updated meal
+      return {
+        ...prevState,
+        [timeOfDay]: updatedMeal,
+      };
+    });
+  };
 
   const addToFood = (
     calculatedCalories: number,
@@ -92,9 +111,10 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
   return (
     <YourIntakeContext.Provider
       value={{
-        IDIncrement,
+        currentDate,
+        
         savedFood,
-        setSavedFood,
+        removeFromSavedFood,
         addToFood,
       }}
     >
