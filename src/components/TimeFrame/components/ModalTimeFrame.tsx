@@ -159,21 +159,6 @@ export const ModalTimeFrame = (props: props) => {
                             props.timeOfDay,
                             valueGrams
                           );
-                          setSavedFood((prevState) => {
-                            const newState = prevState;
-                            newState[props.timeOfDay] = [
-                              ...prevState[props.timeOfDay],
-                              {
-                                id: IDIncrement.current,
-                                name: key.name,
-                                calories: calculatedCalories[id],
-                                amount: valueGrams,
-                              },
-                            ];
-
-                            return newState;
-                          });
-                          ++IDIncrement.current;
                           onClose();
                         }}
                         isIconOnly

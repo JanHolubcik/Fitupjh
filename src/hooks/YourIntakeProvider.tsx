@@ -71,16 +71,8 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
     valueGrams: string
   ) => {
     setSavedFood((prevState) => {
-      debugger;
-      const valueGrams = (
-        document.getElementById(
-          `${IDIncrement.current}inputGrams`
-        ) as HTMLInputElement
-      ).value;
-
-      const newState = prevState;
-      newState[timeOfDay] = [
-        ...prevState[timeOfDay],
+      const newTimeOfTheDay = [
+       ...prevState[timeOfDay],
         {
           id: IDIncrement.current,
           name: name,
@@ -89,7 +81,10 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
         },
       ];
 
-      return newState;
+      return {
+        ...prevState,
+        [timeOfDay]: newTimeOfTheDay,
+      };
     });
     ++IDIncrement.current;
   };
