@@ -10,35 +10,44 @@ const timeFrames = ["breakfast", "lunch", "dinner"];
 
 type timeOfDay = "breakfast" | "lunch" | "dinner";
 export default function Food() {
-  const { currentDate } = useYourIntakeContext();
+  const { currentDate, setNewDateAndGetFood } = useYourIntakeContext();
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div>
-        <div>
-          <Button
-            className="self-end"
-            onPress={() => {
-              currentDate.current = ((d) =>
-                new Date(d.setDate(d.getDate() - 1)))(new Date())
-                .toJSON()
-                .slice(0, 10);
-            }}
-            isIconOnly
-          >
-            <FaArrowLeft />
-          </Button>
-          <p>Previous day</p>
-          <Button className="self-end"     onPress={() => {
-              currentDate.current = ((d) =>
-                new Date(d.setDate(d.getDate() + 1)))(new Date())
-                .toJSON()
-                .slice(0, 10);
-            }} isIconOnly>
-            <FaArrowRight />
-          </Button>
-          <p>Next day</p>
+        <div className="flex flex-row">
+          <div className="flex flex-row">
+            <Button
+              className="self-end"
+              onPress={() => {
+                const date = new Date(
+                  new Date().setDate(currentDate.current.getDate() - 1)
+                );
+
+                setNewDateAndGetFood(date);
+              }}
+              isIconOnly
+            >
+              <FaArrowLeft />
+            </Button>
+            <p>Previous day</p>
+          </div>
+          <div className="flex flex-row text-center">
+            <p>Next day</p>
+            <Button
+              className="self-end"
+              onPress={() => {
+                const date = new Date(
+                  new Date().setDate(currentDate.current.getDate() + 1)
+                );
+                setNewDateAndGetFood(date);
+              }}
+              isIconOnly
+            >
+              <FaArrowRight />
+            </Button>
+          </div>
         </div>
-        <p>{currentDate.current}</p>
+        <p>{currentDate.current.toJSON().slice(0, 10)}</p>
         <p>Calories total today:</p>
         {timeFrames.map((key) => (
           <TimeFrame

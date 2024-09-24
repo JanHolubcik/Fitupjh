@@ -43,7 +43,7 @@ export async function getFood(substring: string) {
   }
 }
 
-export async function saveFoodInDay(date: Date, food: foodType) {
+export async function saveFoodInDay(date: string, food: foodType) {
   try {
     await connectDB();
 

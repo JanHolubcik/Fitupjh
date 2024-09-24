@@ -16,8 +16,9 @@ export const YourIntakeContext = createContext<YourIntakeType | null>(null);
 type timeOfDay= "breakfast" | "lunch" | "dinner";
 
 type YourIntakeType = {
-  currentDate: MutableRefObject<string>;
+  currentDate: MutableRefObject<Date>;
   savedFood: foodType;
+  setNewDateAndGetFood: (date: Date) => void;
   removeFromSavedFood: (id:number,timeOfDay:timeOfDay) => void,
   addToFood: (
     calculatedCalories: number,
@@ -32,7 +33,7 @@ type YourIntakeType = {
 const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const currentDate = useRef(new Date().toJSON().slice(0, 10));
+  const currentDate = useRef(new Date());
   const IDIncrement = useRef(0);
   const [savedFood, setSavedFood] = useState<foodType>({
     breakfast: [],
@@ -47,7 +48,7 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
         setSavedFood(res.savedFood);
       }
     });
-  }, [currentDate.current]);
+  }, []);
 
   useEffect(() => {
     if (
@@ -58,31 +59,41 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
       // Send data to the database only if the foods array is not empty
       const sendDataToDB = async () => {
         try {
-          saveFood(new Date(2024, 11, 12), savedFood);
+          saveFood(currentDate.current.toJSON().slice(0, 10), savedFood);
         } catch (error) {
           console.error("Error sending data to the database:", error);
         }
       };
-
       sendDataToDB();
     }
   }, [savedFood, savedFood.breakfast, savedFood.dinner, savedFood.lunch]);
 
   const removeFromSavedFood = (id: number,timeOfDay: timeOfDay) => {
+    
     setSavedFood((prevState) => {
-      // Clone the current meal array (breakfast/lunch/dinner)
       const updatedMeal = prevState[timeOfDay].filter(
         (foodItem) => foodItem.id !== id
       );
-
-      // Return the new state with the updated meal
       return {
         ...prevState,
         [timeOfDay]: updatedMeal,
       };
     });
   };
-
+  const setNewDateAndGetFood = (date: Date) =>{
+    currentDate.current = date;
+    getSavedFood(date.toJSON().slice(0, 10)).then((res) => {
+      if (res.savedFood) {
+        setSavedFood(res.savedFood);
+      }else {
+        setSavedFood({
+          breakfast: [],
+          lunch: [],
+          dinner: [],
+        })
+      }
+    });
+  }
   const addToFood = (
     calculatedCalories: number,
     name: string,
@@ -112,8 +123,8 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
     <YourIntakeContext.Provider
       value={{
         currentDate,
-        
         savedFood,
+        setNewDateAndGetFood,
         removeFromSavedFood,
         addToFood,
       }}
