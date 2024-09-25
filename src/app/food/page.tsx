@@ -1,5 +1,4 @@
 "use client";
-import { format } from "date-fns";
 
 import FoodInfo from "@/components/FoodInfo";
 
@@ -7,9 +6,8 @@ import { saveFood } from "@/lib/YourIntake/saveFoodToDatabase-db";
 import { Button, Input } from "@nextui-org/react";
 import Image from "next/image";
 import { useState } from "react";
-import { FaSearch, FaTimes } from "react-icons/fa";
-import { Fa42Group, FaApple } from "react-icons/fa6";
-import { foodType as XD } from "@/types/foodTypes";
+import { FaSearch } from "react-icons/fa";
+
 const foods = [
   {
     name: "Chicken",
@@ -40,15 +38,6 @@ const foods = [
 
 type foodType = typeof foods;
 
-const xdd = {
-  breakfast: [
-    { id: 0, name: "Chicken", calories: 150, amount: "20" },
-    { id: 1, name: "Watermelon", calories: 150, amount: "20" },
-  ],
-  lunch: [],
-  dinner: [],
-};
-
 const findInFood = (props: foodType, searchValue: string) => {
   return props.filter((food) => {
     if (food.name.toLowerCase().includes(searchValue.toLowerCase())) {
@@ -64,15 +53,7 @@ export default function Food(props: any) {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-12">
       <div>
-        <Button
-          size="lg"
-          onPress={() => {
-            saveFood(new Date(2024, 11, 12), xdd);
-          }}
-          isIconOnly
-        >
-          <FaApple />
-        </Button>
+ 
         <Input
           classNames={{
             base: "max-w-full sm:max-w-[60rem] h-10",

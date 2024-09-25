@@ -1,10 +1,12 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+After the app is ready, I will post link with livehosting.
+
 ## Getting Started
 
-Finished aplication should resemble [https://kaloricketabulky.sk/]. This is my own personal project for learning Next.js.
+Finished application should resemble [https://kaloricketabulky.sk/]. This is my own personal project for learning Next.js.
 
-If you want to run the aplication, first u need to:
+If you want to run the application, first u need to:
 
 1. Download the repo.
 
@@ -25,7 +27,7 @@ pnpm dev
 # or
 bun dev
 ```
-Project uses mongodb on localhost. Test database will be updated when the project will look half decent.
+Project uses mongodb on localhost. 
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
