@@ -1,13 +1,11 @@
-import type { GetStaticProps, Metadata } from "next";
+import type {  Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { NextUIProvider } from "@nextui-org/react";
+
 import { Providers } from "./providers";
-import NavigationComponent from "@/components/NavbarComponent";
+
 import NavbarComponent from "@/components/NavbarComponent";
-import { getFood, getFoods } from "@/lib/food-db";
-import { FlattenMaps, Types } from "mongoose";
-import { FoodClass } from "@/models/Food";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

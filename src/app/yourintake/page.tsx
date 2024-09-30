@@ -4,7 +4,7 @@ import { useYourIntakeContext } from "@/hooks/YourIntakeContext";
 import { findInDatabase } from "@/lib/YourIntake/search-db";
 import { Button } from "@nextui-org/react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-
+import { add,format } from "date-fns";
 const timeFrames = ["breakfast", "lunch", "dinner"];
 
 type timeOfDay = "breakfast" | "lunch" | "dinner";
@@ -13,7 +13,7 @@ export default function Food() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-11">
       <div className="flex flex-col">
-      <p className="self-center mb-5">{currentDate.current.toJSON().slice(0, 10)}</p>
+      <p className="self-center mb-5">{format(currentDate.current, "dd.MMM.yyyy, eeee")}</p>
         <div className="flex flex-row justify-evenly">
         
           <div className="flex flex-row">
@@ -24,7 +24,9 @@ export default function Food() {
                 const date = new Date(
                   new Date().setDate(currentDate.current.getDate() - 1)
                 );
-                setNewDateAndGetFood(date);
+                setNewDateAndGetFood(add(currentDate.current,{
+                  days: -1,
+                }));
               }}
               isIconOnly
             >
@@ -39,10 +41,9 @@ export default function Food() {
             
               className="self-end"
               onPress={() => {
-                const date = new Date(
-                  new Date().setDate(currentDate.current.getDate() + 1)
-                );
-                setNewDateAndGetFood(date);
+                setNewDateAndGetFood(add(currentDate.current,{
+                  days: +1,
+                }));
               }}
               isIconOnly
             >
