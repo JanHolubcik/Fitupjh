@@ -1,10 +1,31 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-After the app is ready, I will post link with livehosting.
+Currently working on dates, and users.
+
+After the app is ready, I will post link with live hosting.
+
+Finished application should resemble [https://kaloricketabulky.sk/]. This is my own personal project for learning Next.js.
+
+Project uses mongodb on localhost. 
+
+## Set up your env file!!!
+
+Once live hosting will be online there will be no need for local hosting.
+
+I recommend using Mongodb Compass.
+
+1. Create env file (.env.local) and inside  file add following line:
+
+```bash
+MONGODB_URI=mongodb://(yourmongodblocalhost)/fitup
+```
+
+Database should create automatically after running npm run dev, if not create new database with name "fitup".
+
+2. Create collection with name "food". And insert json file content in public folder.
 
 ## Getting Started
 
-Finished application should resemble [https://kaloricketabulky.sk/]. This is my own personal project for learning Next.js.
 
 If you want to run the application, first u need to:
 
@@ -27,7 +48,6 @@ pnpm dev
 # or
 bun dev
 ```
-Project uses mongodb on localhost. 
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 

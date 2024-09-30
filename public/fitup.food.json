@@ -1,0 +1,56 @@
+[{
+  "_id": {
+    "$oid": "66d96a84ea0a6cbe8621a4f7"
+  },
+  "name": "Rice",
+  "calories_per_100g": 130
+},
+{
+  "_id": {
+    "$oid": "66d96a84ea0a6cbe8621a4f8"
+  },
+  "name": "Chicken",
+  "calories_per_100g": 165
+},
+{
+  "_id": {
+    "$oid": "66d96a84ea0a6cbe8621a4f9"
+  },
+  "name": "Cottage Cheese",
+  "calories_per_100g": 98
+},
+{
+  "_id": {
+    "$oid": "66d96a84ea0a6cbe8621a4fa"
+  },
+  "name": "Eggs",
+  "calories_per_100g": 155
+},
+{
+  "_id": {
+    "$oid": "66d96a84ea0a6cbe8621a4fb"
+  },
+  "name": "Bread",
+  "calories_per_100g": 265
+},
+{
+  "_id": {
+    "$oid": "66d96a84ea0a6cbe8621a4fc"
+  },
+  "name": "Spaghetti",
+  "calories_per_100g": 158
+},
+{
+  "_id": {
+    "$oid": "66d96a84ea0a6cbe8621a4fd"
+  },
+  "name": "Pork",
+  "calories_per_100g": 242
+},
+{
+  "_id": {
+    "$oid": "66d96a84ea0a6cbe8621a4fe"
+  },
+  "name": "Beef",
+  "calories_per_100g": 250
+}]
