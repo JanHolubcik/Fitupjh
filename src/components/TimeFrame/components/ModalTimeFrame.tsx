@@ -10,6 +10,7 @@ import {
   ModalHeader,
 } from "@nextui-org/react";
 import { FlattenMaps, Types } from "mongoose";
+import React, { useContext } from "react";
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { FaPlusCircle, FaSearch } from "react-icons/fa";
 
@@ -153,7 +154,9 @@ export const ModalTimeFrame = (props: props) => {
                             ) as HTMLInputElement
                           ).value;
                           addToFood(
+                            id,
                             calculatedCalories[id],
+                            
                             key.name,
                             props.timeOfDay,
                             valueGrams
