@@ -1,8 +1,11 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+![Untitled](https://github.com/user-attachments/assets/28d33b34-1a89-4671-b815-60c7482baab8)
+
 Currently working on dates, and users.
 
-After the app is ready, I will post link with live hosting.
+After the app is ready, I will p
+ost link with live hosting.
 
 Finished application should resemble [https://kaloricketabulky.sk/]. This is my own personal project for learning Next.js.
 
