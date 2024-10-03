@@ -15,7 +15,7 @@ import Image from "next/image";
 import { getFood, getFoods } from "@/lib/food-db";
 
 export default async function Home() {
-  //const { todos, results } = await getTodos();
+
 
   return (
     <main className="dark  flex min-h-screen flex-col items-center justify-between p-24">

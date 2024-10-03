@@ -30,7 +30,7 @@ class SavedFoodClass {
   @prop({ required: true })
   savedFood: foodTypes.foodType;
   @prop({ required: false }) //false for now, when i figure out how to make users
-  user: string;
+  userID: number;
 }
 
 const SavedFood = getModelForClass(SavedFoodClass);

@@ -5,11 +5,8 @@ import {format} from "date-fns";
 
 import {
   createContext,
-  Dispatch,
   MutableRefObject,
-  SetStateAction,
   useEffect,
-  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -45,19 +42,14 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
   });
 
   useEffect(() => {
-  
     getSavedFood(format(currentDate.current, "dd.MMM.yyyy")).then((res) => {
       if (res.savedFood) {
         setSavedFood(res.savedFood);
-        
       }
     });
   }, []);
 
-
-  
   useEffect(() => {
-
     if (
       savedFood.breakfast.length > 0 ||
       savedFood.dinner.length > 0 ||
