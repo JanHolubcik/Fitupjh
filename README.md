@@ -2,7 +2,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 Currently working users.
 
-After the app is ready, I will post link with live hosting.
+After the app is ready, I will p
+ost link with live hosting.
 
 Finished application should resemble [https://kaloricketabulky.sk/]. This is my own personal project for learning Next.js.
 
