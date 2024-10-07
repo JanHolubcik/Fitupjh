@@ -2,9 +2,8 @@
 
 import FoodInfo from "@/components/FoodInfo";
 
-import { saveFood } from "@/lib/YourIntake/saveFoodToDatabase-db";
-import { Button, Input } from "@nextui-org/react";
-import Image from "next/image";
+
+import { Input } from "@nextui-org/react";
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 

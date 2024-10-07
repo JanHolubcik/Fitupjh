@@ -10,6 +10,7 @@ export async function POST(request:any) {
     if (!username || !userEmail || !password) {
         return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
+    debugger;
 
     try {
         await connectDB();
@@ -21,17 +22,17 @@ export async function POST(request:any) {
         // Insert user into the collection
         console.log("Creating new food record...");
         const result = await users.insertMany({
-            userName:request.userName,
-            userEmail:request.userEmail,
-            password: hashedPassword,
+            userName: username,
+            userPassword: hashedPassword,
+            userEmail: userEmail,
         });
-
-
+        
         return NextResponse.json(
             { message: 'User created successfully',  result },
             { status: 201 }
         );
     } catch (error) {
+        console.log(error);
         return NextResponse.json({ error: 'Error creating user' }, { status: 500 });
     }
 }

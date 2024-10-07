@@ -1,11 +1,11 @@
 import { getModelForClass, index, ModelOptions, prop, Severity } from "@typegoose/typegoose";
-import bc from "bcrypt";
 
+import mongoose from "mongoose";
 @index({ title: 1 })
 @ModelOptions({
   schemaOptions: {
     timestamps: true,
-    collection: "savedFood",
+    collection: "users",
   },
   options: {
     allowMixed: Severity.ALLOW,
@@ -16,10 +16,10 @@ class UsersClass {
   userName: string;
   @prop({ required: true })
   userPassword: string;
-  @prop({ required: true })
+  @prop({ required: true, unique: true  })
   userEmail: string;
-  @prop({ required: true }) 
-  id: number;
+  @prop({ default: false }) 
+  _id: mongoose.Types.ObjectId | string;
 }
 
 const users = getModelForClass(UsersClass);

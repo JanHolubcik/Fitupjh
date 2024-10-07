@@ -3,6 +3,7 @@
         "Navigation",
         "Food",
         "Yourintake",
-        "Database"
+        "Database",
+        "users"
     ]
 }

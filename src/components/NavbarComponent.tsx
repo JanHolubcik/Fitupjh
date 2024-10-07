@@ -15,6 +15,7 @@ import {
   DropdownItem,
 } from "@nextui-org/react";
 import { usePathname } from "next/navigation";
+import React from "react";
 import { useState } from "react";
 
 const navigationPropeties = [
@@ -67,6 +68,7 @@ const NavbarComponent = () => {
         </NavbarContent>
 
         <NavbarContent as="div" justify="end">
+          <Link href="/signup">
           <Avatar
             isBordered
             as="button"
@@ -76,6 +78,7 @@ const NavbarComponent = () => {
             size="sm"
             src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
           />
+          </Link>
         </NavbarContent>
       </Navbar>
     </>
