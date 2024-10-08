@@ -6,13 +6,26 @@ import { Card, CardHeader, CardBody, Button } from '@nextui-org/react';
 
 export default function Login() {
     const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const router = useRouter(); // after succesfull login we will route to yourintake
     const handleSubmit = async (e:any) => {
         e.preventDefault();
-            // logic for login
-    };
+
+        const res = await fetch(`/api/login?userName=${username}&password=${password}`, {
+          method: "Get",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+    
+        const data = await res.json();
+    
+        if (res.ok) {
+          alert(data.message);
+          router.push("/yourintake"); // Redirect to login page after successful signup
+        } else {
+          alert(`Error: ${data.error}`);
+        }    };
 
     return (
         <main className=" self-center flex min-h-screen flex-col items-center justify-between p-11 ">

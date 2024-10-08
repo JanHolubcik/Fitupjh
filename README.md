@@ -1,6 +1,6 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-Currently working users.
+Currently working user authorization.
 
 After the app is ready, I will p
 ost link with live hosting.

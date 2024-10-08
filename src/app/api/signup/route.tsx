@@ -4,13 +4,12 @@ import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 import { users } from '@/models/users';
 
-export async function POST(request:any) {
+export async function POST(request: Request) {
     const { username, userEmail, password } = await request.json();
 
     if (!username || !userEmail || !password) {
         return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
-    debugger;
 
     try {
         await connectDB();
