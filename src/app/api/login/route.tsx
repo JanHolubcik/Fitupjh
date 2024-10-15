@@ -3,6 +3,7 @@ import connectDB from "@/lib/connect-db";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { users } from "@/models/users";
+import { signIn } from "next-auth/react";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -29,7 +30,8 @@ export async function GET(request: Request) {
     if (existingRecord?.userPassword) {
       return await bcrypt
         .compare(password, existingRecord.userPassword)
-        .then((find: boolean) => {
+        .then(async (find: boolean) => {
+          find && await signIn('credentials', { username, password });
           return find
             ? NextResponse.json(
                 { message: "Correct credentials!", existingRecord },
@@ -44,6 +46,7 @@ export async function GET(request: Request) {
           console.log("Password checked!");
         });
     }
+  
     return NextResponse.json(
       { message: "Correct credentials", existingRecord },
       { status: 201 }
