@@ -1,12 +1,12 @@
-import { connectDB } from "@/lib/mongodb";
 
-import type { NextAuthOptions } from "next-auth";
+
+
 import credentials from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
-import { SavedFood } from "@/models/savedFood";
 import { users } from "@/models/users";
+import connectDB from "@/lib/connect-db";
 
-export const authOptions: NextAuthOptions = {
+export const authOptions = {
   providers: [
     credentials({
       name: "Credentials",
@@ -22,7 +22,7 @@ export const authOptions: NextAuthOptions = {
         }).select("+password");
         if (!user) throw new Error("Wrong Email");
         const passwordMatch = await bcrypt.compare(
-          credentials!.password,
+          credentials!.password as string | Buffer, // type asserting
           user.userPassword
         );
         if (!passwordMatch) throw new Error("Wrong Password");
