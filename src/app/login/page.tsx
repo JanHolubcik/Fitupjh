@@ -1,69 +1,69 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Card, CardHeader, CardBody, Button } from '@nextui-org/react';
+import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Card, CardHeader, CardBody, Button, Link } from "@nextui-org/react";
+import { signIn } from "next-auth/react";
 
 export default function Login() {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const router = useRouter(); // after succesfull login we will route to yourintake
-    const handleSubmit = async (e:any) => {
-        e.preventDefault();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter(); // after succesfull login we will route to yourintake
 
-        const res = await fetch(`/api/login?userName=${username}&password=${password}`, {
-          method: "Get",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-    
-        const data = await res.json();
-    
-        if (res.ok) {
-          alert(data.message);
-          router.push("/yourintake"); // Redirect to login page after successful signup
-        } else {
-          alert(`Error: ${data.error}`);
-        }    };
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    debugger;
+    const formData = new FormData(event.currentTarget);
+    const res = await signIn("credentials", {
+      email: formData.get("email"),
+      password: formData.get("password"),
+      redirect: false,
+    });
+    if (res?.error) {
+      setError(res.error as string);
+    }
+    debugger;
+    if (res?.ok) {
+      return router.push("/");
+    }
+  };
 
-    return (
-        <main className=" self-center flex min-h-screen flex-col items-center justify-between p-11 ">
-        <Card  className="max-w-[500px] min-w-[400px] p-2 mt-5">
-          <CardHeader className="flex flex-col items-center bg-zinc-900">
-            <h1 className="self-center mb-5">Log in!</h1>
-            <p className="max-w-72 text-center">
-              Login to start tracking your calories.
-            </p>
-          </CardHeader>
-          <CardBody className="bg-zinc-900 flex flex-col">
-            <form className="flex flex-col" onSubmit={handleSubmit}>
-              <p className="m-1 mt-4">User name </p>
-              <input
-                className="mr-1 ml-1"
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-              />
-
-              <p className="m-1 mt-4">User password </p>
-              <input
-                className="mr-1 ml-1"
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-             
-              <Button className="self-center w-32 mt-5" type="submit" isIconOnly>
-                <p>Login up!</p>
-              </Button>
-            </form>
-          </CardBody>
-        </Card>
-      </main>
-    );
+  return (
+    <section className="w-full h-screen flex items-center justify-center">
+      <form
+        className="p-6 w-full max-w-[400px] flex flex-col justify-between items-center gap-2 
+        border border-solid border-white rounded"
+        onSubmit={handleSubmit}
+      >
+        {error && <div className="text-black">{error}</div>}
+        <h1 className="mb-5 w-full text-2xl font-bold">Sign In</h1>
+        <label className="w-full text-sm">Email</label>
+        <input
+          type="email"
+          placeholder="Email"
+          className="w-full h-8 border border-solid border-white rounded p-2"
+          name="email"
+        />
+        <label className="w-full text-sm">Password</label>
+        <div className="flex w-full">
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full h-8 border border-solid border-white rounded p-2"
+            name="password"
+          />
+        </div>
+        <button className="w-full border border-solid border-white rounded">
+          Sign In
+        </button>
+        <Link
+          href="/register"
+          className="text-sm text-[#888] transition duration-150 ease hover:text-black"
+        >
+          Do not have an account?
+        </Link>
+      </form>
+    </section>
+  );
 }
