@@ -2,12 +2,11 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Card, CardHeader, CardBody, Button, Link } from "@nextui-org/react";
+import {Card, CardHeader, CardBody, Button, Link } from "@nextui-org/react";
 import { signIn } from "next-auth/react";
 
 export default function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+
   const [error, setError] = useState("");
   const router = useRouter(); // after succesfull login we will route to yourintake
 
@@ -15,11 +14,14 @@ export default function Login() {
     event.preventDefault();
     debugger;
     const formData = new FormData(event.currentTarget);
+    const email = formData.get("email");
+    const password = formData.get("password");
     const res = await signIn("credentials", {
       email: formData.get("email"),
       password: formData.get("password"),
       redirect: false,
     });
+    console.log('Response from signIn:', res);
     if (res?.error) {
       setError(res.error as string);
     }
