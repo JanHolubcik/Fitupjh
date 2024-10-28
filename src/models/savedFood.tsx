@@ -7,7 +7,7 @@ import {
   post,
   prop,
 } from "@typegoose/typegoose";
-import { Model } from "mongoose";
+import mongoose, { Model } from "mongoose";
 
 @post<SavedFoodClass>("find", function (food) {
   if (food) {
@@ -29,8 +29,8 @@ class SavedFoodClass {
   day: Date;
   @prop({ required: true })
   savedFood: foodTypes.foodType;
-  @prop({ required: false }) //false for now, when i figure out how to make users
-  userID: number;
+  @prop({ required: true }) //false for now, when i figure out how to make users
+  user_id: mongoose.Types.ObjectId | string;
 }
 
 const SavedFood = getModelForClass(SavedFoodClass);

@@ -1,6 +1,7 @@
 import { useYourIntakeContext } from "@/hooks/YourIntakeContext";
 import { FoodClass } from "@/models/Food";
 import { foodType } from "@/types/foodTypes";
+import { findInDatabase } from "@/lib/YourIntake/search-db";
 import {
   Button,
   Input,
@@ -13,28 +14,19 @@ import { FlattenMaps, Types } from "mongoose";
 import React, { useContext } from "react";
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { FaPlusCircle, FaSearch } from "react-icons/fa";
+import { useSession } from "next-auth/react";
 
 type ReturnTypeFood =
-  | (FlattenMaps<FoodClass> &
-      Required<{
-        _id: string | Types.ObjectId;
-      }>)[]
+  | {
+      name: string;
+      calories_per_100g: number;
+    }[]
   | undefined;
 
 type props = {
   timeOfDay: "breakfast" | "dinner" | "lunch";
   onOpenChange: () => void;
   isOpen: boolean | undefined;
-  findInDatabase: (searchValue: string) => Promise<
-    | {
-        food: ReturnTypeFood;
-        error?: undefined;
-      }
-    | {
-        error: unknown;
-        food?: undefined;
-      }
-  >;
 };
 
 export const ModalTimeFrame = (props: props) => {
@@ -42,7 +34,7 @@ export const ModalTimeFrame = (props: props) => {
   const { addToFood } = useYourIntakeContext();
   const [food, setFood] = useState<ReturnTypeFood>([]);
   const [calculatedCalories, setCalculatedCalories] = useState<number[]>([]);
-
+  const { data } = useSession();
   return (
     <Modal
       placement="top"
@@ -72,17 +64,18 @@ export const ModalTimeFrame = (props: props) => {
                   if (event.target.value.length === 0) {
                     setFood([]);
                   } else {
-                    props
-                      .findInDatabase(event.target.value)
-                      .then((foundFood) => {
-                        setFood(foundFood.food);
-                        if (foundFood.food)
-                          setCalculatedCalories(
-                            foundFood.food.map((key) => {
-                              return key.calories_per_100g;
-                            })
-                          );
-                      });
+                    data?.user?.id &&
+                      findInDatabase(event.target.value, data?.user?.id).then(
+                        (foundFood) => {
+                          setFood(foundFood.food);
+                          if (foundFood.food)
+                            setCalculatedCalories(
+                              foundFood.food.map((key) => {
+                                return key.calories_per_100g;
+                              })
+                            );
+                        }
+                      );
                   }
                 }}
                 onClear={() => setFood([])}
@@ -156,7 +149,7 @@ export const ModalTimeFrame = (props: props) => {
                           addToFood(
                             id,
                             calculatedCalories[id],
-                            
+
                             key.name,
                             props.timeOfDay,
                             valueGrams

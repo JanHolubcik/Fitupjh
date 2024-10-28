@@ -10,34 +10,14 @@ import { FoodClass } from "@/models/Food";
 import { ModalTimeFrame } from "./components/ModalTimeFrame";
 import { useYourIntakeContext } from "@/hooks/YourIntakeContext";
 
-type ReturnTypeFood =
-  | (FlattenMaps<FoodClass> &
-      Required<{
-        _id: string | Types.ObjectId;
-      }>)[]
-  | undefined;
-
 type Food = {
   timeOfDay: "breakfast" | "lunch" | "dinner";
-  findInDatabase: (searchValue: string) => Promise<
-    | {
-        food: ReturnTypeFood;
-        error?: undefined;
-      }
-    | {
-        error: unknown;
-        food?: undefined;
-      }
-  >;
 };
 
 const TimeFrame = (props: Food) => {
   //when this state changes, we sent data to server
   const { savedFood, removeFromSavedFood } = useYourIntakeContext();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
- 
-
 
   const sumCalories = savedFood[props.timeOfDay].reduce(
     (accumulator, { calories }) => accumulator + calories,
@@ -76,7 +56,7 @@ const TimeFrame = (props: Food) => {
                   <Button
                     size="sm"
                     onPress={() => {
-                      removeFromSavedFood(key.id,props.timeOfDay);
+                      removeFromSavedFood(key.id, props.timeOfDay);
                     }}
                     isIconOnly
                   >
@@ -88,7 +68,6 @@ const TimeFrame = (props: Food) => {
           </div>
         )}
         <ModalTimeFrame
-          findInDatabase={props.findInDatabase}
           isOpen={isOpen}
           onOpenChange={onOpenChange}
           timeOfDay={props.timeOfDay}

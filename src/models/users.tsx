@@ -1,4 +1,10 @@
-import { getModelForClass, index, ModelOptions, prop, Severity } from "@typegoose/typegoose";
+import {
+  getModelForClass,
+  index,
+  ModelOptions,
+  prop,
+  Severity,
+} from "@typegoose/typegoose";
 
 import mongoose from "mongoose";
 @index({ title: 1 })
@@ -12,17 +18,20 @@ import mongoose from "mongoose";
   },
 })
 class UsersClass {
-  @prop({ required: [true,"Name is required"], unique: true })
+  _id: mongoose.Types.ObjectId;
+  @prop({ required: [true, "Name is required"], unique: true })
   userName: string;
-  @prop({ required: true})
+  @prop({ required: true })
   userPassword: string;
-  @prop({ required: [true,"Password is required"], unique: true, match: [
-    /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-    "Email is invalid",
-  ],  })
+  @prop({
+    required: [true, "Password is required"],
+    unique: true,
+    match: [
+      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+      "Email is invalid",
+    ],
+  })
   userEmail: string;
-  @prop({ default: false }) 
-  _id: mongoose.Types.ObjectId | string;
 }
 
 const users = getModelForClass(UsersClass);

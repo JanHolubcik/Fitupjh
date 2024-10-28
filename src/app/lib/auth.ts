@@ -33,13 +33,22 @@ export const authOptions:NextAuthConfig = {
           user.userPassword
         );
         if (!passwordMatch) throw new Error("Wrong Password");
-        return {name: user.userName,email: user.userEmail};
+        return {_id: user._id,name: user.userName,email: user.userEmail,image: null,id:user._id.toString()};
       },
     }),
   ],
   session: {
     strategy: "jwt",
     
+  },
+callbacks: {
+    session: ({ session, token }) => ({
+      ...session,
+      user: {
+        ...session.user,
+        id: token.sub,
+      },
+    }),
   },
 };
  

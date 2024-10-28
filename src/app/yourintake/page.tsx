@@ -1,7 +1,7 @@
 "use client";
 import TimeFrame from "@/components/TimeFrame/TimeFrame";
 import { useYourIntakeContext } from "@/hooks/YourIntakeContext";
-import { findInDatabase } from "@/lib/YourIntake/search-db";
+
 import { Button } from "@nextui-org/react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { add, format, isSameDay } from "date-fns";
@@ -57,11 +57,7 @@ export default function Food() {
         </div>
 
         {timeFrames.map((key) => (
-          <TimeFrame
-            key={key}
-            timeOfDay={key as timeOfDay}
-            findInDatabase={findInDatabase}
-          />
+          <TimeFrame key={key} timeOfDay={key as timeOfDay} />
         ))}
       </div>
     </main>

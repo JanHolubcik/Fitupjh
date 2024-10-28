@@ -1,18 +1,6 @@
 "use client";
-import {
-  Navbar,
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-  NavbarMenuToggle,
-  NavbarMenu,
-  NavbarMenuItem,
-  Link,
-  Button,
-} from "@nextui-org/react";
+import { Link } from "@nextui-org/react";
 
-import Image from "next/image";
-import { getFood, getFoods } from "@/lib/food-db";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -21,6 +9,7 @@ export default function Home() {
   const router = useRouter();
   const showSession = () => {
     console.log(data?.user);
+    console.log(data?.user?.id);
     if (status === "authenticated") {
       return (
         <button

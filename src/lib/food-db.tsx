@@ -3,6 +3,7 @@ import connectDB from "./connect-db";
 import { stringToObjectId } from "./utils";
 import { Food } from "@/models/Food";
 import { SavedFood } from "@/models/savedFood";
+import mongoose from "mongoose";
 
 export async function getFoods() {
   try {
@@ -33,7 +34,12 @@ export async function getFood(substring: string) {
 
     if (food) {
       return {
-        food: food,
+        food: food.map((value) => {
+          return {
+            name: value.name,
+            calories_per_100g: value.calories_per_100g,
+          };
+        }),
       };
     } else {
       return { error: "Food not found" };
@@ -43,7 +49,11 @@ export async function getFood(substring: string) {
   }
 }
 
-export async function saveFoodInDay(date: string, food: foodType) {
+export async function saveFoodInDay(
+  date: string,
+  food: foodType,
+  _id: mongoose.Types.ObjectId | string
+) {
   try {
     await connectDB();
 
@@ -55,6 +65,7 @@ export async function saveFoodInDay(date: string, food: foodType) {
       await SavedFood.insertMany({
         savedFood: food,
         day: date,
+        user_id: _id,
       });
     } else {
       existingRecord.savedFood = food;
@@ -67,12 +78,13 @@ export async function saveFoodInDay(date: string, food: foodType) {
   }
 }
 
-export async function checkForSavedFood(date: string) {
+export async function checkForSavedFood(date: string, user_id: string) {
   try {
     await connectDB();
 
     const existingRecord = await SavedFood.findOne({
       day: date,
+      user_id: user_id,
     });
 
     return existingRecord ? { savedFood: existingRecord.savedFood } : {};
