@@ -6,6 +6,7 @@ After the app is ready, I will p
 ost link with live hosting.
 
 Finished application should resemble [https://kaloricketabulky.sk/]. This is my own personal project for learning Next.js.
+![image](https://github.com/user-attachments/assets/3a3fd3f0-3be7-4c9e-9a72-4c0aa4ca9c8c)
 
 Project uses mongodb on localhost.
 
