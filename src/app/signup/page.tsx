@@ -69,7 +69,7 @@ export default function Signup() {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-           
+
             <Button className="self-center w-32 mt-5" type="submit" isIconOnly>
               <p>Sign up!</p>
             </Button>

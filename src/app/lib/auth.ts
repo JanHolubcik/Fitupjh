@@ -33,7 +33,7 @@ export const authOptions:NextAuthConfig = {
           user.userPassword
         );
         if (!passwordMatch) throw new Error("Wrong Password");
-        return {_id: user._id,name: user.userName,email: user.userEmail,image: null,id:user._id.toString()};
+        return {_id: user._id,name: user.userName,email: user.userEmail,image: user.image ? user.image : "pfps/1.png",id:user._id.toString()};
       },
     }),
   ],

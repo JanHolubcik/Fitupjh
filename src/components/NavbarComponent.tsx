@@ -13,8 +13,10 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
+  Button,
 } from "@nextui-org/react";
-import { usePathname } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { useState } from "react";
 
@@ -29,16 +31,49 @@ const navigationPropeties = [
     href: "/yourintake",
     description: "Your intake",
   },
-  {
-    id: 3,
-    href: "/calendar",
-    description: "Calendar",
-  },
 ];
 
 const NavbarComponent = () => {
   const pathname = usePathname();
-
+  const { status, data } = useSession();
+  const router = useRouter();
+  const showSession = () => {
+    console.log(data?.user);
+    console.log(data?.user?.id);
+    if (status === "authenticated") {
+      return (
+        <>
+          {" "}
+          <p>
+            {data?.user?.name ? (
+              data?.user?.name
+            ) : (
+              <Link href="/login">Log in</Link>
+            )}
+          </p>
+          <button
+            className="border border-solid border-black rounded"
+            onClick={() => {
+              signOut({ redirect: false }).then(() => {
+                router.push("/");
+              });
+            }}
+          ></button>
+        </>
+      );
+    } else if (status === "loading") {
+      return <span className="text-[#888] text-sm mt-7">Loading...</span>;
+    } else {
+      return (
+        <Link
+          href="/login"
+          className="border border-solid border-black rounded"
+        >
+          Sign In
+        </Link>
+      );
+    }
+  };
   return (
     <>
       <Navbar>
@@ -68,16 +103,36 @@ const NavbarComponent = () => {
         </NavbarContent>
 
         <NavbarContent as="div" justify="end">
+          <Dropdown>
+            <DropdownTrigger>
+              <Button variant="light"> {showSession()}</Button>
+            </DropdownTrigger>
+            <DropdownMenu variant="faded" aria-label="Static Actions">
+              <DropdownItem href="/profile" key="new">
+                Profile
+              </DropdownItem>
+              <DropdownItem
+                onPress={() =>
+                  signOut({ redirect: false }).then(() => {
+                    router.push("/");
+                  })
+                }
+                key="copy"
+                className="text-danger"
+              >
+                Logout
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+
           <Link href="/signup">
-          <Avatar
-            isBordered
-            as="button"
-            className="transition-transform"
-            color="secondary"
-            name="Jason Hughes"
-            size="sm"
-            src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-          />
+            <Avatar
+              isBordered
+              className="transition-transform"
+              color="secondary"
+              size="sm"
+              src="pfps/3.png"
+            />
           </Link>
         </NavbarContent>
       </Navbar>

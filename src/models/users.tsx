@@ -23,6 +23,7 @@ class UsersClass {
   userName: string;
   @prop({ required: true })
   userPassword: string;
+  userEmail: string;
   @prop({
     required: [true, "Password is required"],
     unique: true,
@@ -31,7 +32,8 @@ class UsersClass {
       "Email is invalid",
     ],
   })
-  userEmail: string;
+  @prop({ required: false })
+  image: string;
 }
 
 const users = getModelForClass(UsersClass);

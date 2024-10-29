@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 import { users } from "@/models/users";
 
 export async function POST(request: Request) {
-  const { username, userEmail, password } = await request.json();
+  const { username, userEmail, password, image } = await request.json();
 
   if (!username || !userEmail || !password) {
     return NextResponse.json(
@@ -26,6 +26,7 @@ export async function POST(request: Request) {
       userName: username,
       userPassword: hashedPassword,
       userEmail: userEmail,
+      image: "pfps/1.png",
     });
 
     return NextResponse.json(

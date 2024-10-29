@@ -34,6 +34,7 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const { status, data } = useSession();
   const currentDate = useRef(new Date());
+  const wasFoodFetched = useRef(false);
   const isLast = useRef(false);
   const [savedFood, setSavedFood] = useState<foodType>({
     breakfast: [],
@@ -62,16 +63,20 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
     ) {
       // Send data to the database only if the foods array is not empty
       const sendDataToDB = async () => {
-        try {
-          if (status !== "unauthenticated" && data?.user?.id) {
-            saveFood(
-              format(currentDate.current, "dd.MMM.yyyy"),
-              savedFood,
-              data?.user?.id
-            );
+        if (!wasFoodFetched.current) {
+          try {
+            if (status !== "unauthenticated" && data?.user?.id) {
+              saveFood(
+                format(currentDate.current, "dd.MMM.yyyy"),
+                savedFood,
+                data?.user?.id
+              );
+            }
+          } catch (error) {
+            console.error("Error sending data to the database:", error);
           }
-        } catch (error) {
-          console.error("Error sending data to the database:", error);
+        } else {
+          wasFoodFetched.current = false;
         }
       };
       sendDataToDB();
@@ -102,6 +107,7 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const setNewDateAndGetFood = (date: Date) => {
+    wasFoodFetched.current = true;
     currentDate.current = date;
     data?.user?.id &&
       getSavedFood(
