@@ -4,7 +4,6 @@ import {
   CardHeader,
   CardBody,
   Button,
-  Input,
   Tooltip,
   Image,
 } from "@nextui-org/react";

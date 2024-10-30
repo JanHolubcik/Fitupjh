@@ -34,6 +34,12 @@ class UsersClass {
   })
   @prop({ required: false })
   image: string;
+  @prop({ required: false })
+  goal: "lose weight" | "gain weight" | "remain same";
+  @prop({ required: false })
+  weight: number; //kilos
+  @prop({ required: false })
+  height: number; //in cm
 }
 
 const users = getModelForClass(UsersClass);
