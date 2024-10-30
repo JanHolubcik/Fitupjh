@@ -27,9 +27,20 @@ import mongoose from "mongoose";
 class FoodClass {
   @prop({ required: true, unique: true })
   name: string;
+  @prop({ required: true })
   calories_per_100g: number;
-  @prop({ default: false })
-  _id: string | mongoose.Types.ObjectId;
+  @prop({ required: true })
+  fat: number;
+  @prop({ required: true })
+  protein: number;
+  @prop({ required: true })
+  sugar: number;
+  @prop({ required: true })
+  carbohydrates: number;
+  @prop({ required: true })
+  fiber: number;
+  @prop({ required: true })
+  salt: number;
 }
 
 const Food = getModelForClass(FoodClass);

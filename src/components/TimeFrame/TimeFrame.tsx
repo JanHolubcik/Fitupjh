@@ -1,5 +1,13 @@
 "use client";
-import { Card, CardHeader, CardBody, Button, Input } from "@nextui-org/react";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  Button,
+  Input,
+  Tooltip,
+  Image,
+} from "@nextui-org/react";
 import { SetStateAction, useState } from "react";
 import { FaPlusCircle, FaTimes } from "react-icons/fa";
 
@@ -46,8 +54,24 @@ const TimeFrame = (props: Food) => {
                 className="flex flex-row items-center text-end min-h-[50px]"
                 key={key.id}
               >
-                <p>{key.name}</p>
-
+                {" "}
+                <Tooltip
+                  content={
+                    <Image
+                      alt="nextui logo"
+                      height={100}
+                      radius="sm"
+                      src={
+                        "https://www.themealdb.com/images/ingredients/" +
+                        key.name +
+                        ".png"
+                      }
+                      width={100}
+                    />
+                  }
+                >
+                  <p>{key.name}</p>
+                </Tooltip>
                 <div className="flex-1 mr-3">
                   <p className="text-base">{key.calories} Kcal</p>
                   <p className="text-sm">({key.amount} grams)</p>

@@ -38,8 +38,6 @@ const NavbarComponent = () => {
   const { status, data } = useSession();
   const router = useRouter();
   const showSession = () => {
-    console.log(data?.user);
-    console.log(data?.user?.id);
     if (status === "authenticated") {
       return (
         <>

@@ -34,7 +34,7 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const { status, data } = useSession();
   const currentDate = useRef(new Date());
-  const wasFoodFetched = useRef(false);
+
   const isLast = useRef(false);
   const [savedFood, setSavedFood] = useState<foodType>({
     breakfast: [],
@@ -63,20 +63,16 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
     ) {
       // Send data to the database only if the foods array is not empty
       const sendDataToDB = async () => {
-        if (!wasFoodFetched.current) {
-          try {
-            if (status !== "unauthenticated" && data?.user?.id) {
-              saveFood(
-                format(currentDate.current, "dd.MMM.yyyy"),
-                savedFood,
-                data?.user?.id
-              );
-            }
-          } catch (error) {
-            console.error("Error sending data to the database:", error);
+        try {
+          if (status !== "unauthenticated" && data?.user?.id) {
+            saveFood(
+              format(currentDate.current, "dd.MMM.yyyy"),
+              savedFood,
+              data?.user?.id
+            );
           }
-        } else {
-          wasFoodFetched.current = false;
+        } catch (error) {
+          console.error("Error sending data to the database:", error);
         }
       };
       sendDataToDB();
@@ -92,10 +88,12 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
   ]);
 
   const removeFromSavedFood = (id: number, timeOfDay: timeOfDay) => {
+    console.log(savedFood);
     setSavedFood((prevState) => {
       const updatedMeal = prevState[timeOfDay].filter(
         (foodItem) => foodItem.id !== id
       );
+
       if (updatedMeal.length === 0) {
         isLast.current = true;
       }
@@ -107,7 +105,6 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const setNewDateAndGetFood = (date: Date) => {
-    wasFoodFetched.current = true;
     currentDate.current = date;
     data?.user?.id &&
       getSavedFood(
@@ -137,7 +134,7 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
       const newTimeOfTheDay = [
         ...prevState[timeOfDay],
         {
-          id: id,
+          id: prevState[timeOfDay].length,
           name: name,
           calories: calculatedCalories,
           amount: valueGrams,

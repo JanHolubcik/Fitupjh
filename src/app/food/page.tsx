@@ -2,7 +2,6 @@
 
 import FoodInfo from "@/components/FoodInfo";
 
-
 import { Input } from "@nextui-org/react";
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
@@ -52,7 +51,6 @@ export default function Food(props: any) {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-12">
       <div>
- 
         <Input
           classNames={{
             base: "max-w-full sm:max-w-[60rem] h-10",

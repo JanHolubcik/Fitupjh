@@ -9,6 +9,8 @@ import {
   ModalBody,
   ModalContent,
   ModalHeader,
+  Tooltip,
+  Image,
 } from "@nextui-org/react";
 import { FlattenMaps, Types } from "mongoose";
 import React, { useContext } from "react";
@@ -105,7 +107,23 @@ export const ModalTimeFrame = (props: props) => {
                 {food?.map((key, id) => (
                   <div className=" flex flex-row " key={id}>
                     <div className="flex-1 self-center">
-                      <p>{key.name}</p>
+                      <Tooltip
+                        content={
+                          <Image
+                            alt="nextui logo"
+                            height={100}
+                            radius="sm"
+                            src={
+                              "https://www.themealdb.com/images/ingredients/" +
+                              key.name +
+                              ".png"
+                            }
+                            width={100}
+                          />
+                        }
+                      >
+                        <p>{key.name}</p>
+                      </Tooltip>
                     </div>
                     <div className="flex-1 self-center max-w-11">
                       <Input
