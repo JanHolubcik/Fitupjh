@@ -21,11 +21,16 @@ type YourIntakeType = {
   setNewDateAndGetFood: (date: Date) => void;
   removeFromSavedFood: (id: number, timeOfDay: timeOfDay) => void;
   addToFood: (
-    id: number,
     calculatedCalories: number,
     name: string,
     timeOfDay: "breakfast" | "lunch" | "dinner",
-    valueGrams: string
+    valueGrams: string,
+    fat: number,
+    protein: number,
+    sugar: number,
+    carbohydrates: number,
+    fiber: number,
+    salt: number
   ) => void;
 };
 
@@ -124,11 +129,16 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const addToFood = (
-    id: number,
     calculatedCalories: number,
     name: string,
     timeOfDay: "breakfast" | "lunch" | "dinner",
-    valueGrams: string
+    valueGrams: string,
+    fat: number,
+    protein: number,
+    sugar: number,
+    carbohydrates: number,
+    fiber: number,
+    salt: number
   ) => {
     setSavedFood((prevState) => {
       const newTimeOfTheDay = [
@@ -138,6 +148,12 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
           name: name,
           calories: calculatedCalories,
           amount: valueGrams,
+          fat: fat,
+          protein: protein,
+          sugar: sugar,
+          carbohydrates: carbohydrates,
+          fiber: fiber,
+          salt: salt,
         },
       ];
 

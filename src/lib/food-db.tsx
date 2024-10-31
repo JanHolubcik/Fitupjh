@@ -38,6 +38,12 @@ export async function getFood(substring: string) {
           return {
             name: value.name,
             calories_per_100g: value.calories_per_100g,
+            fat: value.fat,
+            protein: value.protein,
+            sugar: value.sugar,
+            carbohydrates: value.carbohydrates,
+            fiber: value.fiber,
+            salt: value.salt,
           };
         }),
       };

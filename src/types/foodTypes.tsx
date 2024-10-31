@@ -9,4 +9,10 @@ export type food = {
   name: string;
   calories: number;
   amount: string;
+  fat: number;
+  protein: number;
+  sugar: number;
+  carbohydrates: number;
+  fiber: number;
+  salt: number;
 }[];

@@ -22,6 +22,12 @@ type ReturnTypeFood =
   | {
       name: string;
       calories_per_100g: number;
+      fat: number;
+      protein: number;
+      sugar: number;
+      carbohydrates: number;
+      fiber: number;
+      salt: number;
     }[]
   | undefined;
 
@@ -165,12 +171,16 @@ export const ModalTimeFrame = (props: props) => {
                             ) as HTMLInputElement
                           ).value;
                           addToFood(
-                            id,
                             calculatedCalories[id],
-
                             key.name,
                             props.timeOfDay,
-                            valueGrams
+                            valueGrams,
+                            key.fat,
+                            key.protein,
+                            key.sugar,
+                            key.carbohydrates,
+                            key.fiber,
+                            key.salt
                           );
                           onClose();
                         }}

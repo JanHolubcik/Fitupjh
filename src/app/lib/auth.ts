@@ -16,10 +16,9 @@ declare module "next-auth" {
    */
   interface Session extends DefaultSession {
     user?: {
-      id: string;
-      goal?: string | unknown;
-      height?: string | unknown;
-      weight?: string | unknown;
+      goal?: string;
+      height?: number;
+      weight?: number;
     } & User;
   }
 }
@@ -50,18 +49,19 @@ export const authOptions: NextAuthConfig = {
           user.userPassword
         );
         if (!passwordMatch) throw new Error("Wrong Password");
+
         return {
-          goal: "Lose weight",
-          height: user.weight,
-          weight: user.weight,
           _id: user._id,
           name: user.userName,
-          email: credentials!.email as string,
+          email: user.userEmail,
           // user.userEmail is empty even tho i have it in database, no idea how
           //im not getting this value, but since if the email would not be found in database
           //the login attempt would throw error so we can for sure know the user have this email.
           image: user.image ? user.image : "pfps/1.png",
           id: user._id.toString(),
+          goal: user.goal,
+          height: user.height,
+          weight: user.weight,
         };
       },
     }),
@@ -71,7 +71,12 @@ export const authOptions: NextAuthConfig = {
   },
 
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
+      if (trigger === "update" && session?.user.weight) {
+        // Note, that `session` can be any arbitrary object, remember to validate it!
+
+        token.user = session.user;
+      }
       if (user) {
         token.user = user;
       }
@@ -79,6 +84,7 @@ export const authOptions: NextAuthConfig = {
     },
     async session({ session, token }) {
       session.user = token.user as AdapterUser;
+
       return session;
     },
   },

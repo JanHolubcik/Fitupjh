@@ -27,6 +27,9 @@ export async function POST(request: Request) {
       userPassword: hashedPassword,
       userEmail: userEmail,
       image: "pfps/1.png",
+      weight: 70,
+      height: 170,
+      goal: "lose weight",
     });
 
     return NextResponse.json(
