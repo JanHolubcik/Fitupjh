@@ -37,6 +37,7 @@ const NavbarComponent = () => {
   const pathname = usePathname();
   const { status, data } = useSession();
   const router = useRouter();
+
   const showSession = () => {
     if (status === "authenticated") {
       return (

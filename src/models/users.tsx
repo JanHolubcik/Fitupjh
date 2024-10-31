@@ -23,15 +23,16 @@ class UsersClass {
   userName: string;
   @prop({ required: true })
   userPassword: string;
-  userEmail: string;
+
   @prop({
-    required: [true, "Password is required"],
+    required: [true, "Email is required"],
     unique: true,
     match: [
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
       "Email is invalid",
     ],
   })
+  userEmail: string;
   @prop({ required: false })
   image: string;
   @prop({ required: false })

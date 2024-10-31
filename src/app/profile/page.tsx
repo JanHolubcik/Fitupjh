@@ -25,6 +25,11 @@ export default function Profile() {
   const [value, onChange] = useState<Value>(new Date());
   const { data } = useSession();
 
+  const handleSubmit = async () => {
+    console.log("sadas" + JSON.stringify(data?.user));
+    console.log("email" + data?.user?.email);
+  };
+
   return (
     <main className="flex min-h-screen flex-col items-center p-24">
       <div className="flex  flex-col pb-10">
@@ -55,7 +60,11 @@ export default function Profile() {
             <SelectItem key={goal}>{goal}</SelectItem>
           ))}
         </Select>
-        <Button size="sm" className="max-w-12 rounded-large self-center ">
+        <Button
+          onPress={() => handleSubmit()}
+          size="sm"
+          className="max-w-12 rounded-large self-center "
+        >
           <FaCheck color="#08ca1f" size={15} />
         </Button>
       </div>
