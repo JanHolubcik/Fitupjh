@@ -1,6 +1,6 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-Currently working on adding user, food, pictures and finishing up the project.
+TODO: Mandatory login, styling, add gender and age to user, live hosting.
 
 After the app is ready, I will p
 ost link with live hosting.

@@ -24,11 +24,9 @@ const ProfileInfo = () => {
 
   const handleSubmit = async () => {
     if (weight && height && goal) {
-      const user = await getUpdateUser(
-        Number(height),
-        Number(weight),
-        goal
-      ).catch((err) => console.log(err));
+      await getUpdateUser(Number(height), Number(weight), goal).catch((err) =>
+        console.log(err)
+      );
       await update({
         user: { ...data?.user, weight: weight, height: height, goal: goal },
       });

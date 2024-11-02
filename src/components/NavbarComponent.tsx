@@ -50,14 +50,6 @@ const NavbarComponent = () => {
               <Link href="/login">Log in</Link>
             )}
           </p>
-          <button
-            className="border border-solid border-black rounded"
-            onClick={() => {
-              signOut({ redirect: false }).then(() => {
-                router.push("/");
-              });
-            }}
-          ></button>
         </>
       );
     } else if (status === "loading") {
