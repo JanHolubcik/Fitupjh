@@ -29,6 +29,7 @@ export async function getFood(substring: string) {
     const food = await Food.find({
       name: { $regex: ".*" + substring + ".*", $options: "i" },
     })
+      .limit(5)
       .lean()
       .exec();
 

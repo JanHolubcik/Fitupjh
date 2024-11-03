@@ -8,6 +8,7 @@ import {
   createContext,
   MutableRefObject,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -47,8 +48,29 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
     dinner: [],
   });
 
-  useEffect(() => {
-    data?.user?.id &&
+  useLayoutEffect(() => {
+    if (data?.user?.id) {
+      const formattedDate = format(currentDate.current, "dd.MMM.yyyy");
+      const fetchFood = async () => {
+        const dataD: foodType = await fetch(
+          `/api/saveFood?date=${formattedDate}&user_id=${data?.user?.id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        ).then(async (res) => {
+          if (res.ok) {
+            return await res.json();
+            console.log(data);
+          }
+        });
+        setSavedFood(dataD);
+      };
+      fetchFood();
+    }
+    /*
       getSavedFood(
         format(currentDate.current, "dd.MMM.yyyy"),
         data?.user?.id
@@ -56,7 +78,7 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
         if (res.savedFood) {
           setSavedFood(res.savedFood);
         }
-      });
+      });*/
   }, [data?.user?.id]);
 
   useEffect(() => {
@@ -111,21 +133,26 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const setNewDateAndGetFood = (date: Date) => {
     currentDate.current = date;
-    data?.user?.id &&
-      getSavedFood(
-        format(currentDate.current, "dd.MMM.yyyy"),
-        data?.user?.id
-      ).then((res) => {
-        if (res.savedFood) {
-          setSavedFood(res.savedFood);
-        } else {
-          setSavedFood({
-            breakfast: [],
-            lunch: [],
-            dinner: [],
-          });
-        }
-      });
+    const formattedDate = format(currentDate.current, "dd.MMM.yyyy");
+    if (data?.user?.id) {
+      const fetchFood = async () => {
+        const dataD: foodType = await fetch(
+          `/api/saveFood?date=${formattedDate}&user_id=${data?.user?.id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        ).then(async (res) => {
+          if (res.ok) {
+            return await res.json();
+          }
+        });
+        setSavedFood(dataD);
+      };
+      fetchFood();
+    }
   };
 
   const addToFood = (

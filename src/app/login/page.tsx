@@ -11,9 +11,9 @@ export default function Login() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    debugger;
-    const formData = new FormData(event.currentTarget);
 
+    const formData = new FormData(event.currentTarget);
+    //next auth logging to session
     const res = await signIn("credentials", {
       email: formData.get("email"),
       password: formData.get("password"),
@@ -23,7 +23,7 @@ export default function Login() {
     if (res?.error) {
       setError(res.error as string);
     }
-    debugger;
+
     if (res?.ok) {
       return router.push("/");
     }

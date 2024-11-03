@@ -30,7 +30,7 @@ const TimeFrame = (props: Food) => {
     (accumulator, { calories }) => accumulator + calories,
     0
   );
-
+  console.log(savedFood[props.timeOfDay]);
   return (
     <Card className="max-w-[500px] min-w-[400px] p-2 mt-5">
       <CardHeader className="flex flex-row items-center bg-zinc-900">
