@@ -79,7 +79,7 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
           setSavedFood(res.savedFood);
         }
       });*/
-  }, [data?.user?.id]);
+  }, [data]);
 
   useEffect(() => {
     if (
