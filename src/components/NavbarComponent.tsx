@@ -17,6 +17,8 @@ import {
 } from "@nextui-org/react";
 import { signOut, useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
+import {Spinner} from "@nextui-org/spinner";
+
 import React from "react";
 import { useState } from "react";
 
@@ -53,7 +55,7 @@ const NavbarComponent = () => {
         </>
       );
     } else if (status === "loading") {
-      return <span className="text-[#888] text-sm mt-7">Loading...</span>;
+      return <Spinner />;
     } else {
       return (
         <Link
@@ -116,15 +118,15 @@ const NavbarComponent = () => {
             </DropdownMenu>
           </Dropdown>
 
-          <Link href="/signup">
-            <Avatar
+         {status === "authenticated" ?   <Avatar
               isBordered
               className="transition-transform"
               color="secondary"
               size="sm"
               src="pfps/3.png"
-            />
-          </Link>
+            /> :<Link href="/signup">
+            <p>Sign up</p>
+          </Link>}  
         </NavbarContent>
       </Navbar>
     </>
