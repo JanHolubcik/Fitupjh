@@ -2,15 +2,14 @@
 
 import { SessionProvider, useSession } from "next-auth/react";
 import { NextUIProvider } from "@nextui-org/react";
-import { Session } from "next-auth";
 
+import { SpeedInsights } from '@vercel/speed-insights/next';
 export function Providers(
-  { children }: { children: React.ReactNode },
-  session: Session | null | undefined
+  { children }: { children: React.ReactNode }
 ) {
   return (
     <NextUIProvider>
-      <SessionProvider session={session}>{children}</SessionProvider>
+      <SessionProvider ><SpeedInsights/>{children}</SessionProvider>
     </NextUIProvider>
   );
 }
