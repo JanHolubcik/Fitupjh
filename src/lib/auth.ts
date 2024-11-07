@@ -4,7 +4,7 @@ import { users } from "@/models/users";
 import { connect } from "mongoose";
 
 const { MONGODB_URI } = process.env;
-import { NextAuthConfig, User } from "next-auth";
+import { User,NextAuthOptions } from "next-auth";
 import connectDB from "@/lib/connect-db";
 
 import { type DefaultSession } from "next-auth";
@@ -23,7 +23,7 @@ declare module "next-auth" {
   }
 }
 
-export const authOptions: NextAuthConfig = {
+export const authOptions: NextAuthOptions = {
   secret: process.env.SECRET,
 
   providers: [

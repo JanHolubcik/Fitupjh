@@ -8,7 +8,7 @@ import {
   Select,
   SelectItem,
 } from "@nextui-org/react";
-import { useSession, UpdateSession } from "next-auth/react";
+import { useSession} from "next-auth/react";
 import { useState } from "react";
 import { FaCheck, FaPen } from "react-icons/fa";
 
