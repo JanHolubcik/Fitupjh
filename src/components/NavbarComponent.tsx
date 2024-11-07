@@ -46,7 +46,7 @@ const NavbarComponent = () => {
         <>
      <Dropdown>
             <DropdownTrigger>
-              <Button variant="light"> </Button>
+              <Button variant="light"> {data.user?.name}</Button>
             </DropdownTrigger>
             <DropdownMenu variant="faded" aria-label="Static Actions">
               <DropdownItem href="/profile" key="new">
