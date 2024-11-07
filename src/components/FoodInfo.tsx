@@ -2,16 +2,12 @@
 import {
   Card,
   CardHeader,
-  CardBody,
   CardFooter,
-  Divider,
-  Link,
   Image,
 } from "@nextui-org/react";
 import { useState } from "react";
 import { MdExpandLess, MdExpandMore } from "react-icons/md";
-import { PiArrowSquareDownRightLight } from "react-icons/pi";
-import { TbLayoutBottombarExpand, TbLayoutNavbarExpand } from "react-icons/tb";
+
 
 type Food = {
   name: string;

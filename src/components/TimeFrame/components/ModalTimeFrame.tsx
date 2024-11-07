@@ -11,6 +11,7 @@ import {
   ModalHeader,
   Tooltip,
   Image,
+  Spinner,
 } from "@nextui-org/react";
 import { FlattenMaps, Types } from "mongoose";
 import React, { useContext } from "react";
@@ -43,6 +44,7 @@ export const ModalTimeFrame = (props: props) => {
   const [food, setFood] = useState<ReturnTypeFood>([]);
   const [calculatedCalories, setCalculatedCalories] = useState<number[]>([]);
   const { data } = useSession();
+  const [loading, setLoading] = useState<boolean>();
   return (
     <Modal
       placement="top"
@@ -75,6 +77,7 @@ export const ModalTimeFrame = (props: props) => {
                     data?.user?.id &&
                       findInDatabase(event.target.value, data?.user?.id).then(
                         (foundFood) => {
+                          setLoading(true);
                           setFood(foundFood.food);
                           if (foundFood.food)
                             setCalculatedCalories(
@@ -83,7 +86,9 @@ export const ModalTimeFrame = (props: props) => {
                               })
                             );
                         }
-                      );
+                      ).finally(() => {
+                        setLoading(false);
+                      });
                   }
                 }}
                 onClear={() => setFood([])}
@@ -94,7 +99,7 @@ export const ModalTimeFrame = (props: props) => {
             </ModalHeader>
             <ModalBody className="max-h-52">
               <div className="max-h-52 overflow-visible">
-                {food?.length !== 0 && (
+                {!loading && food?.length !== 0 && (
                   <div className=" flex flex-row ">
                     <div className="flex-1 self-center">
                       <p>Name</p>
@@ -110,6 +115,7 @@ export const ModalTimeFrame = (props: props) => {
                     </div>
                   </div>
                 )}
+                {loading && <Spinner></Spinner>}
                 {food?.map((key, id) => (
                   <div className=" flex flex-row " key={id}>
                     <div className="flex-1 self-center">

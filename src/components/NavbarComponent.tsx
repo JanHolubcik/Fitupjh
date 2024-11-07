@@ -44,14 +44,27 @@ const NavbarComponent = () => {
     if (status === "authenticated") {
       return (
         <>
-          {" "}
-          <p>
-            {data?.user?.name ? (
-              data?.user?.name
-            ) : (
-              <Link href="/login">Log in</Link>
-            )}
-          </p>
+     <Dropdown>
+            <DropdownTrigger>
+              <Button variant="light"> </Button>
+            </DropdownTrigger>
+            <DropdownMenu variant="faded" aria-label="Static Actions">
+              <DropdownItem href="/profile" key="new">
+                Profile
+              </DropdownItem>
+              <DropdownItem
+                onPress={() =>
+                  signOut({ redirect: false }).then(() => {
+                    router.push("/");
+                  })
+                }
+                key="copy"
+                className="text-danger"
+              >
+                Logout
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
         </>
       );
     } else if (status === "loading") {
@@ -96,27 +109,8 @@ const NavbarComponent = () => {
         </NavbarContent>
 
         <NavbarContent as="div" justify="end">
-          <Dropdown>
-            <DropdownTrigger>
-              <Button variant="light"> {showSession()}</Button>
-            </DropdownTrigger>
-            <DropdownMenu variant="faded" aria-label="Static Actions">
-              <DropdownItem href="/profile" key="new">
-                Profile
-              </DropdownItem>
-              <DropdownItem
-                onPress={() =>
-                  signOut({ redirect: false }).then(() => {
-                    router.push("/");
-                  })
-                }
-                key="copy"
-                className="text-danger"
-              >
-                Logout
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
+        <Button variant="light"> {showSession()}</Button>
+        
 
          {status === "authenticated" ?   <Avatar
               isBordered
