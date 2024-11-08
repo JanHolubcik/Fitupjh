@@ -42,8 +42,9 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: Request) {
-  const { date, food, _id } = await req.json();
-  const res = await saveFoodInDay(date, food, _id).catch(
+  
+  const { date, savedFood,  userID } = await req.json();
+  const res = await saveFoodInDay(date, savedFood,  userID).catch(
     () =>
       new NextResponse("There was an error while sending data to db", {
         status: 500,
