@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { getSavedFood } from "@/lib/YourIntake/search-db";
 import { NextRequest, NextResponse } from "next/server";
 import { saveFood } from "@/lib/YourIntake/saveFoodToDatabase-db";
+import { saveFoodInDay } from "@/lib/food-db";
 
 interface GetSavedFood {
   date: string;
@@ -42,7 +43,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: Request) {
   const { date, food, _id } = await req.json();
-  await saveFood(date, food, _id).catch(
+  await saveFoodInDay(date, food, _id).catch(
     () =>
       new NextResponse("There was an error while sending data to db", {
         status: 500,
