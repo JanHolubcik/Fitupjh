@@ -92,12 +92,25 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
       const sendDataToDB = async () => {
         try {
           if (status !== "unauthenticated" && data?.user?.id) {
-            console.log(JSON.stringify(savedFood));
+            const userID =  data?.user?.id;
+            const date =  format(currentDate.current, "dd.MMM.yyyy");
+            const res = await fetch("/api/saveFood", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ date, savedFood,  userID}),
+            });
+        
+           //const response = await res.json();
+        
+          
             saveFood(
               format(currentDate.current, "dd.MMM.yyyy"),
               savedFood,
               data?.user?.id
             );
+            
           }
         } catch (error) {
           console.error("Error sending data to the database:", error);

@@ -176,7 +176,7 @@ export const ModalTimeFrame = (props: props) => {
                               `${id}inputGrams`
                             ) as HTMLInputElement
                           ).value;
-                          console.log(JSON.stringify(key));
+                         
                           addToFood(
                             calculatedCalories[id],
                             key.name,
