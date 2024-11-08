@@ -1,8 +1,9 @@
 "use client";
 
 import FoodInfo from "@/components/FoodInfo";
+import { saveFood } from "@/lib/YourIntake/saveFoodToDatabase-db";
 
-import { Input } from "@nextui-org/react";
+import { Button, Input } from "@nextui-org/react";
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 
@@ -68,6 +69,30 @@ export default function Food(props: any) {
           startContent={<FaSearch size={18} />}
           type="search"
         />
+        <Button onPress={() => { saveFood(
+              "08.11.2024",
+              {
+                breakfast: [
+                  {
+                    "id": 0,
+                    "name": "Banana",
+                    "calories": 89,
+                    "amount": "100",
+                    "fat": 0.3,
+                    "protein": 1.1,
+                    "sugar": 12.2,
+                    "carbohydrates": 22.8,
+                    "fiber": 2.6,
+                    "salt": 0
+                  }
+                ],
+                lunch: [],
+                dinner: []
+              },
+              "672baa7b6b22d548e47b9fbf"
+            );}}>
+
+        </Button>
         {food.map((key) => (
           <FoodInfo
             key={key.name}
