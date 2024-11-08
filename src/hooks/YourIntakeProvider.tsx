@@ -92,6 +92,7 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
       const sendDataToDB = async () => {
         try {
           if (status !== "unauthenticated" && data?.user?.id) {
+            console.log(JSON.stringify(savedFood));
             saveFood(
               format(currentDate.current, "dd.MMM.yyyy"),
               savedFood,
