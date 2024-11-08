@@ -43,13 +43,12 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: Request) {
   const { date, food, _id } = await req.json();
-  await saveFoodInDay(date, food, _id).catch(
+  const res = await saveFoodInDay(date, food, _id).catch(
     () =>
       new NextResponse("There was an error while sending data to db", {
         status: 500,
       })
   );
-  return new NextResponse("Successfully sent food to db", {
-    status: 200,
-  });
+  return Response.json({ res })
+
 }
