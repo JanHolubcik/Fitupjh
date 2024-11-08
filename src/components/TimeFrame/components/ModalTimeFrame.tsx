@@ -71,13 +71,14 @@ export const ModalTimeFrame = (props: props) => {
                 }}
                 placeholder="Type to search..."
                 onChange={(event) => {
+                  setLoading(true);
                   if (event.target.value.length === 0) {
                     setFood([]);
                   } else {
                     data?.user?.id &&
                       findInDatabase(event.target.value, data?.user?.id).then(
                         (foundFood) => {
-                          setLoading(true);
+                     
                           setFood(foundFood.food);
                           if (foundFood.food)
                             setCalculatedCalories(
@@ -86,10 +87,9 @@ export const ModalTimeFrame = (props: props) => {
                               })
                             );
                         }
-                      ).finally(() => {
-                        setLoading(false);
-                      });
+                      );
                   }
+                  setLoading(false);
                 }}
                 onClear={() => setFood([])}
                 size="sm"
