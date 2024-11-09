@@ -25,8 +25,8 @@ import { useState } from "react";
 const navigationPropeties = [
   {
     id: 1,
-    href: "/food",
-    description: "Food",
+    href: "/",
+    description: "Home",
   },
   {
     id: 2,
@@ -109,7 +109,7 @@ const NavbarComponent = () => {
         </NavbarContent>
 
         <NavbarContent as="div" justify="end">
-        <Button variant="light"> {showSession()}</Button>
+        {showSession()}
         
 
          {status === "authenticated" ?   <Avatar

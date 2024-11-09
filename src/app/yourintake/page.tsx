@@ -6,6 +6,7 @@ import { Button } from "@nextui-org/react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { add, format, isSameDay } from "date-fns";
 import React from "react";
+import ProgressBars from "@/components/ProgressBars/ProgressBars";
 const timeFrames = ["breakfast", "lunch", "dinner"];
 
 type timeOfDay = "breakfast" | "lunch" | "dinner";
@@ -17,6 +18,7 @@ export default function Food() {
         <p className="self-center mb-5">
           {format(currentDate.current, "dd.MMM.yyyy, eeee")}
         </p>
+        <ProgressBars date={currentDate.current} />
         <div className="flex flex-row justify-evenly">
           <div className="flex flex-row">
             <Button

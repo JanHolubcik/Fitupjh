@@ -164,7 +164,7 @@ const ProgressBars = (props: Value) => {
 
   return (
     <div className="flex flex-col min-w-96">
-      <h1 className="self-center text-lg m-3 ">Today intake</h1>
+      <h1 className="self-center text-lg m-3 ">Date intake</h1>
 
       <div className="flex flex-row  min-w-96">
         <Progress
