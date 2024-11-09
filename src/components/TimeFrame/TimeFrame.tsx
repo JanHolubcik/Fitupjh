@@ -26,10 +26,7 @@ const TimeFrame = (props: Food) => {
   const { savedFood, removeFromSavedFood } = useYourIntakeContext();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const sumCalories = savedFood[props.timeOfDay].reduce(
-    (accumulator, { calories }) => accumulator + calories,
-    0
-  );
+
 
   return (
     <Card className="max-w-[500px] min-w-[400px] p-2 mt-5">
@@ -37,9 +34,7 @@ const TimeFrame = (props: Food) => {
         <div className="flex-1 mr-2">
           <h1>{props.timeOfDay}</h1>
         </div>
-        {savedFood[props.timeOfDay].length !== 0 && (
-          <p className="mr-1">{sumCalories + " Kcal"} </p>
-        )}
+
 
         <Button className="self-end" onPress={onOpen} isIconOnly>
           <FaPlusCircle />
