@@ -83,7 +83,7 @@ export async function saveFoodInDay(
       newSavedFood
         .save()
         .then(() => console.log("Created new food record successfully"))
-        .catch((err) => console.log(JSON.stringify(food) + err));
+        .catch((err) => console.log(JSON.stringify(food.breakfast) + err));
     } else {
       existingRecord.savedFood = food;
       console.log("Updating food record...");
