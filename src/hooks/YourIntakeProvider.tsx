@@ -64,7 +64,7 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
         ).then(async (res) => {
           if (res.ok) {
             return await res.json();
-            console.log(data);
+
           }
         });
         setSavedFood(dataD);
@@ -130,7 +130,7 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
   ]);
 
   const removeFromSavedFood = (id: number, timeOfDay: timeOfDay) => {
-    console.log(savedFood);
+
     setSavedFood((prevState) => {
       const updatedMeal = prevState[timeOfDay].filter(
         (foodItem) => foodItem.id !== id

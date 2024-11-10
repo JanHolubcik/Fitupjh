@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
   if (date && user_id) {
     const food = await getSavedFood(date, user_id)
       .then((res) => {
-        console.log(res.savedFood);
+       
         if (!res.savedFood) {
           return {
             breakfast: [],
