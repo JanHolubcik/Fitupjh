@@ -6,7 +6,6 @@ import { Button, CircularProgress, Input, useDisclosure } from "@nextui-org/reac
 import {
   FaArrowLeft,
   FaArrowRight,
-  FaCalendar,
   FaCalendarAlt,
   FaSearch,
 } from "react-icons/fa";
@@ -116,7 +115,8 @@ export default function Food() {
 
       <Input
       id="search"
-        onValueChange={onOpen}
+
+        onClick={onOpen}
         isClearable
         radius="lg"
         classNames={{
@@ -141,7 +141,7 @@ export default function Food() {
             "!cursor-text",
           ],
         }}
-        placeholder="Type to find food..."
+        placeholder="Click to find food..."
         startContent={
           <FaSearch className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
         }
@@ -155,7 +155,7 @@ export default function Food() {
       </div>
       <ModalFindFood
         isOpen={isOpen}
-        onOpenChange={onOpenChange} value={""}        ></ModalFindFood>
+        onOpenChange={onOpenChange}         ></ModalFindFood>
     </main>
   );
 }

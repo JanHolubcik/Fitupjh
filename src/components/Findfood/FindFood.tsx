@@ -31,7 +31,7 @@ const TimeFrame = () => {
         </Button>
         <ModalFindFood
         isOpen={isOpen}
-        onOpenChange={onOpenChange} value={""}        ></ModalFindFood>
+        onOpenChange={onOpenChange}        ></ModalFindFood>
 </>
   );
 };

@@ -35,7 +35,7 @@ type ReturnTypeFood =
 type props = {
   onOpenChange: () => void;
   isOpen: boolean | undefined;
-  value: string;
+
 };
 
 type timeOfDay = "breakfast" | "lunch" | "dinner";
@@ -87,7 +87,8 @@ export const ModalFindFood = (props: props) => {
           <>
             <ModalHeader className="flex flex-col gap-1">
               <Input
-              value={props.value}
+              autoFocus
+              
                 classNames={{
                   base: "max-w-full sm:max-w-[50rem] h-10",
                   mainWrapper: "h-full",

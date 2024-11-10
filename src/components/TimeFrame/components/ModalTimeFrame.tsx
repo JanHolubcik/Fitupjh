@@ -62,6 +62,7 @@ export const ModalTimeFrame = (props: props) => {
           <>
             <ModalHeader className="flex flex-col gap-1">
               <Input
+                 autoFocus
                 classNames={{
                   base: "max-w-full sm:max-w-[50rem] h-10",
                   mainWrapper: "h-full",
