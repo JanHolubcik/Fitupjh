@@ -2,30 +2,35 @@
 import TimeFrame from "@/components/TimeFrame/TimeFrame";
 import { useYourIntakeContext } from "@/hooks/YourIntakeContext";
 
-import { Button, CircularProgress } from "@nextui-org/react";
+import { Button, CircularProgress, Input, useDisclosure } from "@nextui-org/react";
 import {
   FaArrowLeft,
   FaArrowRight,
   FaCalendar,
   FaCalendarAlt,
+  FaSearch,
 } from "react-icons/fa";
 import { add, format, isSameDay } from "date-fns";
 import React, { useEffect, useRef } from "react";
 import ProgressBars from "@/components/ProgressBars/ProgressBars";
 import { useSession } from "next-auth/react";
+import { label } from "framer-motion/client";
+import { ModalFindFood } from "@/components/Findfood/components/ModalFindFood";
 const timeFrames = ["breakfast", "lunch", "dinner"];
 
 type timeOfDay = "breakfast" | "lunch" | "dinner";
 const timeOfDay = ["breakfast", "lunch", "dinner"];
 export default function Food() {
+
   const { currentDate, setNewDateAndGetFood, savedFood } =
     useYourIntakeContext();
+
   const { data } = useSession();
-  const sumCalories = savedFood.breakfast.reduce(
-    (accumulator, { calories }) => accumulator + calories,
-    0
-  );
   const recommendedCalories = useRef<number>(0);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+
+
   const caloriesSum = () => {
     let calorieSUm = 0;
     timeOfDay.forEach((value) => {
@@ -43,19 +48,15 @@ export default function Food() {
         recommendedCalories.current =
           (10 * data?.user?.weight + 6.25 * data?.user?.height - 5 * 25 + 5) *
           1.2;
+      } else {
+        recommendedCalories.current = 0;
       }
 
-      recomendedCalories();
+     
     };
+    recomendedCalories();
   });
-  const recomendedCalories = () => {
-    if (data?.user?.weight && data?.user?.height) {
-      return (
-        (10 * data?.user?.weight + 6.25 * data?.user?.height - 5 * 25 + 5) * 1.2
-      );
-    }
-    return 0;
-  };
+
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-11">
@@ -76,11 +77,18 @@ export default function Food() {
               <FaArrowLeft />
             </Button>
             <CircularProgress
-              className="mr-4 ml-4"
+              classNames={{
+                svg: "w-24 h-24 drop-shadow-md mr-4 ml-4",
+                indicator: "stroke-white",
+                track: "stroke-white/10",
+                value: "text-md font-semibold text-white",
+                label: "text-xs"
+              }}
               size="lg"
-              value={recommendedCalories.current / sumCalories}
+              value={recommendedCalories.current ?caloriesSum() / recommendedCalories.current:0}
               color="warning"
-              label="kcal"
+              label={caloriesSum()+"/" + recommendedCalories.current +" Kcal"}
+              
               showValueLabel={true}
             />
 
@@ -105,12 +113,49 @@ export default function Food() {
             {format(currentDate.current, "dd.MMM, eeee")}
           </p>
         </div>
+
+      <Input
+      id="search"
+        onValueChange={onOpen}
+        isClearable
+        radius="lg"
+        classNames={{
+          label: "text-black/50 dark:text-white/90",
+          input: [
+            "bg-transparent",
+            "text-black/90 dark:text-white/90",
+            "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+          ],
+          innerWrapper: "bg-transparent",
+          mainWrapper:"m-4",
+          inputWrapper: [
+            "shadow-xl",
+            "bg-default-200/50",
+            "dark:bg-default/60",
+            "backdrop-blur-xl",
+            "backdrop-saturate-200",
+            "hover:bg-default-200/70",
+            "dark:hover:bg-default/70",
+            "group-data-[focus=true]:bg-default-200/50",
+            "dark:group-data-[focus=true]:bg-default/60",
+            "!cursor-text",
+          ],
+        }}
+        placeholder="Type to find food..."
+        startContent={
+          <FaSearch className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
+        }
+      />
+  
         <ProgressBars date={currentDate.current} />
 
         {timeFrames.map((key) => (
           <TimeFrame key={key} timeOfDay={key as timeOfDay} />
         ))}
       </div>
+      <ModalFindFood
+        isOpen={isOpen}
+        onOpenChange={onOpenChange} value={""}        ></ModalFindFood>
     </main>
   );
 }

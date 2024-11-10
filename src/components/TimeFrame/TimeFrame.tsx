@@ -21,12 +21,10 @@ type Food = {
   timeOfDay: "breakfast" | "lunch" | "dinner";
 };
 
-const TimeFrame = (props: Food) => {
+const FindFood = (props: Food) => {
   //when this state changes, we sent data to server
   const { savedFood, removeFromSavedFood } = useYourIntakeContext();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
-
 
   return (
     <Card className="max-w-[500px] min-w-[400px] p-2 mt-5">
@@ -34,7 +32,6 @@ const TimeFrame = (props: Food) => {
         <div className="flex-1 mr-2">
           <h1>{props.timeOfDay}</h1>
         </div>
-
 
         <Button className="self-end" onPress={onOpen} isIconOnly>
           <FaPlusCircle />
@@ -95,4 +92,4 @@ const TimeFrame = (props: Food) => {
   );
 };
 
-export default TimeFrame;
+export default FindFood;

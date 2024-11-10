@@ -1,4 +1,6 @@
 "use client";
+import { useYourIntakeContext } from "@/hooks/YourIntakeContext";
+import YourIntakeProvider from "@/hooks/YourIntakeProvider";
 import { saveFood } from "@/lib/YourIntake/saveFoodToDatabase-db";
 import { getSavedFood } from "@/lib/YourIntake/search-db";
 import { SavedFood } from "@/models/savedFood";
@@ -32,6 +34,8 @@ type timeOfDay = "breakfast" | "lunch" | "dinner";
 const timeOfDay = ["breakfast", "lunch", "dinner"];
 
 const ProgressBars = (props: Value) => {
+  const {savedFood} =     useYourIntakeContext();
+
   const [calculatedMacros, setCalculatedMacros] = useState<macros>({
     calories: 0,
     fat: 0,
@@ -160,7 +164,7 @@ const ProgressBars = (props: Value) => {
         });
       fetchFood();
     }
-  }, [data, props.date]);
+  }, [data, props.date,savedFood]);
 
   return (
     <div className="flex flex-col min-w-96">

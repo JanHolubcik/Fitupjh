@@ -1,6 +1,7 @@
 import { saveFood } from "@/lib/YourIntake/saveFoodToDatabase-db";
 import { getSavedFood } from "@/lib/YourIntake/search-db";
 import { foodType } from "@/types/foodTypes";
+import { useDisclosure } from "@nextui-org/react";
 import { format } from "date-fns";
 import { useSession } from "next-auth/react";
 
@@ -47,7 +48,7 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
     lunch: [],
     dinner: [],
   });
-
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   useLayoutEffect(() => {
     if (data?.user?.id) {
       const formattedDate = format(currentDate.current, "dd.MMM.yyyy");
