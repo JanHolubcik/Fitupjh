@@ -27,7 +27,7 @@ import mongoose, { Model } from "mongoose";
 class SavedFoodClass {
   @prop({ required: true, unique: true })
   day: Date;
-  @prop({ required: true })
+  @prop({ required: false })// can be empty or not defined
   savedFood: foodType;
   @prop({ required: true }) //false for now, when i figure out how to make users
   user_id: mongoose.Types.ObjectId | string;
