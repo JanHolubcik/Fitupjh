@@ -79,7 +79,7 @@ export async function saveFoodInDay(
         day: date,
         user_id: _id,
       });
-      newSavedFood.savedFood.breakfast =food.breakfast;
+    
       newSavedFood
         .save()
         .then(() => console.log("Created new food record successfully"))
