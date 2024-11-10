@@ -69,31 +69,22 @@ export async function saveFoodInDay(
     });
     if (!existingRecord) {
       console.log("Creating new food record...");
-
-      const newSavedFood = new SavedFood({
-        savedFood: {
-          breakfast: food.breakfast,
-          lunch: food.lunch,
-          dinner: food.dinner,
-        },
+      await SavedFood.insertMany({
+        savedFood: food,
         day: date,
         user_id: _id,
       });
-    
-      newSavedFood
-        .save()
-        .then(() => console.log("Created new food record successfully"))
-        .catch((err) => console.log(JSON.stringify(food.breakfast) + err));
     } else {
       existingRecord.savedFood = food;
       console.log("Updating food record...");
       await existingRecord.save();
     }
   } catch (error) {
-    console.log(JSON.stringify(food) + error);
+    console.log(error);
     return { error };
   }
 }
+
 
 export async function checkForSavedFood(date: string, user_id: string) {
   try {
