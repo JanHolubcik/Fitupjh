@@ -4,6 +4,7 @@ import "./calendar.css"; // styling only for calendar
 
 import { useState } from "react";
 import Calendar from "react-calendar";import ProfileInfo from "@/components/ProfileInfo/ProfileInfo";
+import ProgressBarsProfile from "@/components/ProgressBarsProfile/ProgressBarsProfile";
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -16,7 +17,7 @@ export default function Profile() {
   return (
     <main className="flex min-h-screen flex-col items-center p-24">
       <ProfileInfo />
-      <ProgressBars date={value} />
+      <ProgressBarsProfile date={value} />
       <Calendar locale="en" onChange={onChange} value={value} />
     </main>
   );
