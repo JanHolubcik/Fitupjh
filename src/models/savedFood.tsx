@@ -25,7 +25,7 @@ import mongoose, { Model } from "mongoose";
   },
 })
 class SavedFoodClass {
-  @prop({ required: true, unique: true })
+  @prop({ required: true })
   day: Date;
   @prop({ required: false })// can be empty or not defined
   savedFood: foodType;
