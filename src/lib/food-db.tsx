@@ -72,9 +72,9 @@ export async function saveFoodInDay(
 
       const newSavedFood = new SavedFood({
         savedFood: {
-          breakfast: [],
-          lunch: [],
-          dinner: [],
+          breakfast: food.breakfast,
+          lunch: food.lunch,
+          dinner: food.dinner,
         },
         day: date,
         user_id: _id,
