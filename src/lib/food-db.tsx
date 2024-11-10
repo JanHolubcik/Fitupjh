@@ -69,7 +69,7 @@ export async function saveFoodInDay(
     });
     if (!existingRecord) {
       console.log("Creating new food record...");
-      food.breakfast
+  
       await SavedFood.insertMany({
         savedFood: {
           breakfast: food.breakfast,
@@ -85,7 +85,7 @@ export async function saveFoodInDay(
       await existingRecord.save();
     }
   } catch (error) {
-    console.log(error);
+    console.log( JSON.stringify(food) + error);
     return { error };
   }
 }
