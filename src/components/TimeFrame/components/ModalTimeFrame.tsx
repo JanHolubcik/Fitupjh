@@ -143,6 +143,7 @@ export const ModalTimeFrame = (props: props) => {
                         key={id + "inputGrams"}
                         id={id + "inputGrams"}
                         min={0}
+                        max={999}
                         defaultValue="100"
                         size="sm"
                         type="number"
