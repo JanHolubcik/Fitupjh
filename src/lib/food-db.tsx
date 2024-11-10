@@ -69,8 +69,7 @@ export async function saveFoodInDay(
     });
     if (!existingRecord) {
       console.log("Creating new food record...");
-  
-      await SavedFood.insertMany({
+      const newSavedFood = new SavedFood({
         savedFood: {
           breakfast: food.breakfast,
           lunch: food.lunch,
@@ -79,13 +78,17 @@ export async function saveFoodInDay(
         day: date,
         user_id: _id,
       });
+      newSavedFood
+        .save()
+        .then(() => console.log("Created new food record successfully"))
+        .catch((err) => console.log(err));
     } else {
       existingRecord.savedFood = food;
       console.log("Updating food record...");
       await existingRecord.save();
     }
   } catch (error) {
-    console.log( JSON.stringify(food) + error);
+    console.log(JSON.stringify(food) + error);
     return { error };
   }
 }
