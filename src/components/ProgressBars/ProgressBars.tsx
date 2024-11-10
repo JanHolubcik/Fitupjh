@@ -57,16 +57,9 @@ const ProgressBars = (props: Value) => {
 
   const { data } = useSession();
   useEffect(() => {
-    if (props.date && data?.user?.id) {
-      const formattedDate = format(props.date as Date, "dd.MMM.yyyy");
-      const fetchFood = async () =>
-        fetch(`/api/saveFood?date=${formattedDate}&user_id=${data?.user?.id}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }).then(async (res) => {
-          const fetchedData: foodType = await res.json();
+    if (data?.user?.id) {
+  
+ 
           if (data) {
             const weight = data.user?.weight;
             const height = data.user?.height;
@@ -90,9 +83,9 @@ const ProgressBars = (props: Value) => {
                 fat: Number(Math.round(macros.fat / 9).toFixed(2)),
                 sugar: Number(((calories * 0.1) / 4).toFixed(2)),
               });
-              if (data && fetchedData) {
+              if (data && savedFood) {
                 setCalculatedMacros(() => {
-                  if (fetchedData) {
+                  if (savedFood) {
                     const savedMacros = {
                       calories: 0,
                       carbohydrates: 0,
@@ -103,7 +96,7 @@ const ProgressBars = (props: Value) => {
                       sugar: 0,
                     };
                     timeOfDay.forEach((value) => {
-                      const timeInDaySavedMacro = fetchedData[
+                      const timeInDaySavedMacro = savedFood[
                         value as timeOfDay
                       ].reduce(
                         (acc, item) => {
@@ -161,10 +154,10 @@ const ProgressBars = (props: Value) => {
                 });
             }
           }
-        });
-      fetchFood();
+        
+
     }
-  }, [data, props.date, savedFood.breakfast, savedFood.dinner, savedFood.lunch]);
+  }, [data, savedFood]);
 
   return (
     <div className="flex flex-col min-w-96">
