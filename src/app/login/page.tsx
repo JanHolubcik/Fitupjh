@@ -58,7 +58,7 @@ export default function Login() {
           Sign In
         </button>
         <Link
-          href="/register"
+          href="/signup"
           className="text-sm text-[#888] transition duration-150 ease hover:text-black"
         >
           Do not have an account?
