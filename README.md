@@ -11,6 +11,9 @@ Finished application should resemble [https://kaloricketabulky.sk/]. This is my 
 
 Project uses mongodb on localhost.
 
+## LIVEHOSTING YOU CAN CHECK APP HERE!
+[https://fitupjh.vercel.app/]
+
 ## Set up your env file!!!
 
 Once live hosting will be online there will be no need for local hosting.
