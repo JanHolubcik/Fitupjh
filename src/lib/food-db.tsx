@@ -69,19 +69,21 @@ export async function saveFoodInDay(
     });
     if (!existingRecord) {
       console.log("Creating new food record...");
+
       const newSavedFood = new SavedFood({
         savedFood: {
-          breakfast: food.breakfast,
-          lunch: food.lunch,
-          dinner: food.dinner,
+          breakfast: [],
+          lunch: [],
+          dinner: [],
         },
         day: date,
         user_id: _id,
       });
+      newSavedFood.savedFood.breakfast =food.breakfast;
       newSavedFood
         .save()
         .then(() => console.log("Created new food record successfully"))
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(JSON.stringify(food) + err));
     } else {
       existingRecord.savedFood = food;
       console.log("Updating food record...");
