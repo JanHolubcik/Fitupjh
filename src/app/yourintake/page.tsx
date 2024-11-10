@@ -85,10 +85,10 @@ export default function Food() {
                 label: "text-xs"
               }}
               size="lg"
-              value={recommendedCalories.current ?caloriesSum() / recommendedCalories.current:0}
-              color="warning"
+              value={caloriesSum()}
+              color={caloriesSum()> recommendedCalories.current ? "warning": "danger"}
               label={caloriesSum()+"/" + recommendedCalories.current +" Kcal"}
-              
+              maxValue={recommendedCalories.current}
               showValueLabel={true}
             />
 

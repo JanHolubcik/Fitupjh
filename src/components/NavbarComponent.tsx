@@ -84,7 +84,7 @@ const NavbarComponent = () => {
     <>
       <Navbar>
         <NavbarBrand>
-          <p className="font-bold text-inherit">ACME</p>
+          <p className="font-bold text-inherit">FitUp</p>
         </NavbarBrand>
 
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
