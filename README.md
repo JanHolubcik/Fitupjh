@@ -8,10 +8,10 @@ ost link with live hosting.
 Finished application should resemble [https://kaloricketabulky.sk/]. This is my own personal project for learning Next.js.
 ![image](https://github.com/user-attachments/assets/27e8125a-ee63-4702-af93-5e6259fbf29b)
 
-
 Project uses mongodb on localhost.
 
 ## LIVEHOSTING YOU CAN CHECK APP HERE!
+
 [https://fitupjh.vercel.app/]
 
 ## Set up your env file!!!

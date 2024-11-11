@@ -58,92 +58,33 @@ const ProgressBars = (props: Value) => {
   const { data } = useSession();
   useEffect(() => {
     if (data?.user?.id) {
-  
- 
-          if (data) {
-            const weight = data.user?.weight;
-            const height = data.user?.height;
-            if (weight && height) {
-              const calories = (10 * weight + 6.25 * height - 5 * 25 + 5) * 1.2;
-              const macros = {
-                calories: Math.round(calories), //for now age is fixed to 25 and calories are calculated for men and sedentary lifestyle
-                fat: calories * 0.2,
-                protein: Number(Math.round(1.2 * weight).toFixed(2)),
-                fiber: 38,
-                salt: 2.3,
-              } as macros;
-              //set remaining macros to g
-              setRecommendedDailyMacros({
-                ...macros,
-                carbohydrates: Number(
-                  Math.round(
-                    (calories - macros.protein + macros.fat) / 4
-                  ).toFixed(2)
-                ),
-                fat: Number(Math.round(macros.fat / 9).toFixed(2)),
-                sugar: Number(((calories * 0.1) / 4).toFixed(2)),
-              });
-              if (data && savedFood) {
-                setCalculatedMacros(() => {
-                  if (savedFood) {
-                    const savedMacros = {
-                      calories: 0,
-                      carbohydrates: 0,
-                      fat: 0,
-                      fiber: 0,
-                      protein: 0,
-                      salt: 0,
-                      sugar: 0,
-                    };
-                    timeOfDay.forEach((value) => {
-                      const timeInDaySavedMacro = savedFood[
-                        value as timeOfDay
-                      ].reduce(
-                        (acc, item) => {
-                          acc.calories += item.calories;
-                          acc.carbohydrates += item.carbohydrates;
-                          acc.fat += item.fat;
-                          acc.fiber += item.fiber;
-                          acc.protein += item.protein;
-                          acc.salt += item.salt;
-                          acc.sugar += item.sugar;
-                          return acc;
-                        },
-                        {
-                          calories: 0,
-                          carbohydrates: 0,
-                          fat: 0,
-                          fiber: 0,
-                          protein: 0,
-                          salt: 0,
-                          sugar: 0,
-                        }
-                      );
-
-                      Object.keys(savedMacros).forEach((key) => {
-                        const keyT = key as keyof typeof macros;
-                        savedMacros[keyT] += timeInDaySavedMacro[keyT];
-                      });
-                    });
-                    //savedMacros.calories = Math.round;
-                    Object.keys(savedMacros).forEach((key) => {
-                      const keyT = key as keyof typeof macros;
-                      savedMacros[keyT] = Number(savedMacros[keyT].toFixed(2));
-                    });
-                    return savedMacros;
-                  }
-                  return {
-                    calories: 0,
-                    carbohydrates: 0,
-                    fat: 0,
-                    fiber: 0,
-                    protein: 0,
-                    salt: 0,
-                    sugar: 0,
-                  };
-                });
-              } else
-                setCalculatedMacros({
+      if (data) {
+        const weight = data.user?.weight;
+        const height = data.user?.height;
+        if (weight && height) {
+          const calories = (10 * weight + 6.25 * height - 5 * 25 + 5) * 1.2;
+          const macros = {
+            calories: Math.round(calories), //for now age is fixed to 25 and calories are calculated for men and sedentary lifestyle
+            fat: calories * 0.2,
+            protein: Number(Math.round(1.2 * weight).toFixed(2)),
+            fiber: 38,
+            salt: 2.3,
+          } as macros;
+          //set remaining macros to g
+          setRecommendedDailyMacros({
+            ...macros,
+            carbohydrates: Number(
+              Math.round((calories - macros.protein + macros.fat) / 4).toFixed(
+                2
+              )
+            ),
+            fat: Number(Math.round(macros.fat / 9).toFixed(2)),
+            sugar: Number(((calories * 0.1) / 4).toFixed(2)),
+          });
+          if (data && savedFood) {
+            setCalculatedMacros(() => {
+              if (savedFood) {
+                const savedMacros = {
                   calories: 0,
                   carbohydrates: 0,
                   fat: 0,
@@ -151,11 +92,66 @@ const ProgressBars = (props: Value) => {
                   protein: 0,
                   salt: 0,
                   sugar: 0,
-                });
-            }
-          }
-        
+                };
+                timeOfDay.forEach((value) => {
+                  const timeInDaySavedMacro = savedFood[
+                    value as timeOfDay
+                  ].reduce(
+                    (acc, item) => {
+                      acc.calories += item.calories;
+                      acc.carbohydrates += item.carbohydrates;
+                      acc.fat += item.fat;
+                      acc.fiber += item.fiber;
+                      acc.protein += item.protein;
+                      acc.salt += item.salt;
+                      acc.sugar += item.sugar;
+                      return acc;
+                    },
+                    {
+                      calories: 0,
+                      carbohydrates: 0,
+                      fat: 0,
+                      fiber: 0,
+                      protein: 0,
+                      salt: 0,
+                      sugar: 0,
+                    }
+                  );
 
+                  Object.keys(savedMacros).forEach((key) => {
+                    const keyT = key as keyof typeof macros;
+                    savedMacros[keyT] += timeInDaySavedMacro[keyT];
+                  });
+                });
+                //savedMacros.calories = Math.round;
+                Object.keys(savedMacros).forEach((key) => {
+                  const keyT = key as keyof typeof macros;
+                  savedMacros[keyT] = Number(savedMacros[keyT].toFixed(2));
+                });
+                return savedMacros;
+              }
+              return {
+                calories: 0,
+                carbohydrates: 0,
+                fat: 0,
+                fiber: 0,
+                protein: 0,
+                salt: 0,
+                sugar: 0,
+              };
+            });
+          } else
+            setCalculatedMacros({
+              calories: 0,
+              carbohydrates: 0,
+              fat: 0,
+              fiber: 0,
+              protein: 0,
+              salt: 0,
+              sugar: 0,
+            });
+        }
+      }
     }
   }, [data, savedFood]);
 

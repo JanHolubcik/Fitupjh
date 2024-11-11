@@ -66,7 +66,7 @@ export async function saveFoodInDay(
 
     const existingRecord = await SavedFood.findOne({
       day: date,
-      user_id: _id
+      user_id: _id,
     });
     if (!existingRecord) {
       console.log("Creating new food record...");
@@ -85,7 +85,6 @@ export async function saveFoodInDay(
     return { error };
   }
 }
-
 
 export async function checkForSavedFood(date: string, user_id: string) {
   try {

@@ -19,7 +19,6 @@ export async function GET(req: NextRequest) {
   if (date && user_id) {
     const food = await getSavedFood(date, user_id)
       .then((res) => {
-       
         if (!res.savedFood) {
           return {
             breakfast: [],
@@ -42,14 +41,12 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: Request) {
-  
-  const { date, savedFood,  userID } = await req.json();
-  const res = await saveFoodInDay(date, savedFood,  userID).catch(
+  const { date, savedFood, userID } = await req.json();
+  const res = await saveFoodInDay(date, savedFood, userID).catch(
     () =>
       new NextResponse("There was an error while sending data to db", {
         status: 500,
       })
   );
-  return Response.json({ res })
-
+  return Response.json({ res });
 }

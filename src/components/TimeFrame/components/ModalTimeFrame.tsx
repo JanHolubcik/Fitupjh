@@ -62,7 +62,7 @@ export const ModalTimeFrame = (props: props) => {
           <>
             <ModalHeader className="flex flex-col gap-1">
               <Input
-                 autoFocus
+                autoFocus
                 classNames={{
                   base: "max-w-full sm:max-w-[50rem] h-10",
                   mainWrapper: "h-full",
@@ -76,8 +76,8 @@ export const ModalTimeFrame = (props: props) => {
                     setFood([]);
                   } else {
                     data?.user?.id &&
-                      findInDatabase(event.target.value, data?.user?.id).then(
-                        (foundFood) => {
+                      findInDatabase(event.target.value, data?.user?.id)
+                        .then((foundFood) => {
                           setLoading(true);
                           setFood(foundFood.food);
                           if (foundFood.food)
@@ -86,10 +86,10 @@ export const ModalTimeFrame = (props: props) => {
                                 return key.calories_per_100g;
                               })
                             );
-                        }
-                      ).finally(() => {
-                        setLoading(false);
-                      });
+                        })
+                        .finally(() => {
+                          setLoading(false);
+                        });
                   }
                 }}
                 onClear={() => setFood([])}
@@ -178,7 +178,7 @@ export const ModalTimeFrame = (props: props) => {
                               `${id}inputGrams`
                             ) as HTMLInputElement
                           ).value;
-                         
+
                           addToFood(
                             calculatedCalories[id],
                             key.name,

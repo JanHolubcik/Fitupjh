@@ -2,12 +2,16 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Card, CardBody, CardHeader } from "@nextui-org/react";
+import { Button, Card, CardBody, CardHeader, Tooltip } from "@nextui-org/react";
+import { FaInfo, FaInfoCircle } from "react-icons/fa";
 
 export default function Signup() {
   const [username, setUsername] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [weight, setWeight] = useState("");
+  const [height, setHeight] = useState("");
+  const [goal, setGoal] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e: any) => {
@@ -18,7 +22,13 @@ export default function Signup() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username, userEmail, password }),
+      body: JSON.stringify({
+        username,
+        userEmail,
+        password,
+        weight,
+        height,
+      }),
     });
 
     const data = await res.json();
@@ -67,6 +77,56 @@ export default function Signup() {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <div className="flex flex-row">
+              <span className="m-1 mt-4">Height</span>{" "}
+              <Tooltip
+                content={
+                  <>
+                    <h1>Why do we need this information?</h1>
+                    <p>
+                      Knowing your weight, height and goal helps us determine
+                      your macros for the day.
+                    </p>
+                  </>
+                }
+              >
+                <FaInfoCircle className=" mt-5 "></FaInfoCircle>
+              </Tooltip>
+            </div>
+            <input
+              className="mr-1 ml-1"
+              type="number"
+              max={250}
+              placeholder="Height"
+              value={height}
+              onChange={(e) => setHeight(e.target.value)}
+              required
+            />
+            <div className="flex flex-row">
+              <span className="m-1 mt-4">Weight</span>{" "}
+              <Tooltip
+                content={
+                  <>
+                    <h1>Why do we need this information?</h1>
+                    <p>
+                      Knowing your weight, height and goal helps us determine
+                      your macros for the day.
+                    </p>
+                  </>
+                }
+              >
+                <FaInfoCircle className=" mt-5 "></FaInfoCircle>
+              </Tooltip>
+            </div>
+            <input
+              className="mr-1 ml-1"
+              type="number"
+              placeholder="Weight"
+              max={400}
+              value={weight}
+              onChange={(e) => setWeight(e.target.value)}
               required
             />
 

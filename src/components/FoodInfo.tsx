@@ -1,13 +1,7 @@
 "use client";
-import {
-  Card,
-  CardHeader,
-  CardFooter,
-  Image,
-} from "@nextui-org/react";
+import { Card, CardHeader, CardFooter, Image } from "@nextui-org/react";
 import { useState } from "react";
 import { MdExpandLess, MdExpandMore } from "react-icons/md";
-
 
 type Food = {
   name: string;

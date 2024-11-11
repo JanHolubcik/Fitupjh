@@ -5,16 +5,17 @@ export default function Home() {
   return (
     <main className="dark  flex min-h-screen flex-col items-center justify-between p-24">
       <div className="max-w-[550px] flex flex-col justify-center items-center">
-      <Image
-      
-            className="flex self-center"
-            alt="Cute calc"
-            height={125}
-            radius="sm"
-            src="calc.png"
-            width={125}
-          />
-        <h1 className="m-3 font-bold mt-8 text-3xl self-start">Welcome to FitUp - Calorie Tracker</h1>
+        <Image
+          className="flex self-center"
+          alt="Cute calc"
+          height={125}
+          radius="sm"
+          src="calc.png"
+          width={125}
+        />
+        <h1 className="m-3 font-bold mt-8 text-3xl self-start">
+          Welcome to FitUp - Calorie Tracker
+        </h1>
         <h2 className="m-3 font-bold self-start">Why FitUp?</h2>
         <ul>
           <li className="m-3">
@@ -33,8 +34,10 @@ export default function Home() {
           </li>
         </ul>
         <h2 className="m-3 font-bold self-start">Start your journey today!</h2>
-        <p className="m-3">Take the first step towards mindful eating and a healthier you. Register and transform the way you manage your nutrition.</p>
-
+        <p className="m-3">
+          Take the first step towards mindful eating and a healthier you.
+          Register and transform the way you manage your nutrition.
+        </p>
       </div>
     </main>
   );

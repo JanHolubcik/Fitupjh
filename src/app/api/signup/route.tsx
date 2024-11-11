@@ -5,9 +5,10 @@ import bcrypt from "bcrypt";
 import { users } from "@/models/users";
 
 export async function POST(request: Request) {
-  const { username, userEmail, password, image } = await request.json();
+  const { username, userEmail, password, weight, height, goal } =
+    await request.json();
 
-  if (!username || !userEmail || !password) {
+  if (!username || !userEmail || !password || !weight || !height) {
     return NextResponse.json(
       { error: "Missing required fields" },
       { status: 400 }
@@ -27,8 +28,8 @@ export async function POST(request: Request) {
       userPassword: hashedPassword,
       userEmail: userEmail,
       image: "pfps/1.png",
-      weight: 70,
-      height: 170,
+      weight: weight,
+      height: height,
       goal: "lose weight",
     });
 

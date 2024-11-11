@@ -10,7 +10,7 @@ declare global {
 const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI || MONGODB_URI.length === 0) {
-  throw new Error(MONGODB_URI+ " Please add your MongoDB URI to .env.local");
+  throw new Error(MONGODB_URI + " Please add your MongoDB URI to .env.local");
 }
 
 /**
@@ -32,11 +32,11 @@ async function connectDB() {
 
   if (!cached.promise) {
     const opts = {
-      dbName:"fitup",
+      dbName: "fitup",
       bufferCommands: false,
     };
 
-    cached.promise = connect(MONGODB_URI!,opts )
+    cached.promise = connect(MONGODB_URI!, opts)
       .then((mongoose) => {
         console.log("✅ New connection established");
         return mongoose;

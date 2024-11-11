@@ -4,7 +4,7 @@ import { users } from "@/models/users";
 import { connect } from "mongoose";
 
 const { MONGODB_URI } = process.env;
-import { User,NextAuthOptions } from "next-auth";
+import { User, NextAuthOptions } from "next-auth";
 import connectDB from "@/lib/connect-db";
 
 import { type DefaultSession } from "next-auth";
@@ -70,17 +70,17 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
 
-    cookies: {
-      sessionToken: {
-        name: `__Secure-next-auth.session-token`,
-        options: {
-          httpOnly: true,
-          sameSite: "lax",
-          path: "/",
-          secure: true,
-        },
+  cookies: {
+    sessionToken: {
+      name: `__Secure-next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: true,
       },
     },
+  },
   callbacks: {
     async jwt({ token, user, trigger, session }) {
       if (trigger === "update" && session?.user.weight) {

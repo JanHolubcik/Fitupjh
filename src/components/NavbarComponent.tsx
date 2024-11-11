@@ -17,7 +17,7 @@ import {
 } from "@nextui-org/react";
 import { signOut, useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
-import {Spinner} from "@nextui-org/spinner";
+import { Spinner } from "@nextui-org/spinner";
 
 import React from "react";
 import { useState } from "react";
@@ -44,7 +44,7 @@ const NavbarComponent = () => {
     if (status === "authenticated") {
       return (
         <>
-     <Dropdown>
+          <Dropdown>
             <DropdownTrigger>
               <Button variant="light"> {data.user?.name}</Button>
             </DropdownTrigger>
@@ -109,18 +109,21 @@ const NavbarComponent = () => {
         </NavbarContent>
 
         <NavbarContent as="div" justify="end">
-        {showSession()}
-        
+          {showSession()}
 
-         {status === "authenticated" ?   <Avatar
+          {status === "authenticated" ? (
+            <Avatar
               isBordered
               className="transition-transform"
               color="secondary"
               size="sm"
               src="pfps/3.png"
-            /> :<Link href="/signup">
-            <p>Sign up</p>
-          </Link>}  
+            />
+          ) : (
+            <Link href="/signup">
+              <p>Sign up</p>
+            </Link>
+          )}
         </NavbarContent>
       </Navbar>
     </>
