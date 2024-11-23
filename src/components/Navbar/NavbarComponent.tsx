@@ -15,7 +15,7 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const navigationPropeties = [
   {
@@ -34,7 +34,14 @@ const NavbarComponent = () => {
   const pathname = usePathname();
   const { status, data } = useSession();
   const router = useRouter();
+  const [showSpinner, setShowSpinner] = useState(true); // Spinner state
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSpinner(false);
+    }, 500);
 
+    return () => clearTimeout(timer);
+  }, [data?.user?.height, data?.user?.weight]);
   const showSession = () => {
     if (status === "authenticated") {
       return (
@@ -62,6 +69,8 @@ const NavbarComponent = () => {
           </Dropdown>
         </>
       );
+    } else if (showSpinner) {
+      return <></>;
     } else {
       return (
         <Link
