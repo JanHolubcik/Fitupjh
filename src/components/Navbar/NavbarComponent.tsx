@@ -14,7 +14,6 @@ import {
 } from "@nextui-org/react";
 import { signOut, useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
-import { Spinner } from "@nextui-org/spinner";
 
 import React from "react";
 import { User } from "next-auth";
@@ -63,6 +62,7 @@ const NavbarComponent = (prop: Prop) => {
                 onPress={() =>
                   signOut({ redirect: false }).then(() => {
                     router.push("/");
+                    prop.user = undefined;
                   })
                 }
                 key="copy"
