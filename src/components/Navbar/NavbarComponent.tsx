@@ -17,6 +17,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Spinner } from "@nextui-org/spinner";
 
 import React from "react";
+import { User } from "next-auth";
 
 const navigationPropeties = [
   {
@@ -31,18 +32,28 @@ const navigationPropeties = [
   },
 ];
 
-const NavbarComponent = () => {
+type Prop = {
+  user:
+    | ({
+        goal?: string | undefined;
+        height?: number | undefined;
+        weight?: number | undefined;
+      } & User)
+    | undefined;
+};
+
+const NavbarComponent = (prop: Prop) => {
   const pathname = usePathname();
-  const { status, data } = useSession();
+  const { status } = useSession();
   const router = useRouter();
 
   const showSession = () => {
-    if (status === "authenticated") {
+    if (prop.user) {
       return (
         <>
           <Dropdown>
             <DropdownTrigger>
-              <Button variant="light"> {data.user?.name}</Button>
+              <Button variant="light"> {prop.user?.name}</Button>
             </DropdownTrigger>
             <DropdownMenu variant="faded" aria-label="Static Actions">
               <DropdownItem href="/profile" key="new">
@@ -63,8 +74,6 @@ const NavbarComponent = () => {
           </Dropdown>
         </>
       );
-    } else if (status === "loading") {
-      return <Spinner />;
     } else {
       return (
         <Link
@@ -107,7 +116,7 @@ const NavbarComponent = () => {
         <NavbarContent as="div" justify="end">
           {showSession()}
 
-          {status === "authenticated" ? (
+          {prop.user ? (
             <Avatar
               isBordered
               className="transition-transform"

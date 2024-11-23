@@ -5,6 +5,5 @@ import { getServerSession } from "next-auth";
 import { SessionProvider } from "../SessionProvider";
 
 export default async function YourIntake() {
-  const session = await getServerSession();
   return <Food></Food>;
 }
