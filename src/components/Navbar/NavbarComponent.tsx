@@ -14,10 +14,10 @@ import {
 } from "@nextui-org/react";
 import { signOut, useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
-
 import { Spinner } from "@nextui-org/spinner";
 
 import React from "react";
+import { Session, User } from "next-auth";
 
 const navigationPropeties = [
   {
@@ -32,29 +32,43 @@ const navigationPropeties = [
   },
 ];
 
-const NavbarComponent = () => {
+type Prop = {
+  session: Session | null;
+  checkForNewSession: () => Promise<void>;
+};
+type user =
+  | ({
+      goal?: string;
+      height?: number;
+      weight?: number;
+    } & User)
+  | undefined;
+
+const NavbarComponent = (prop: Prop) => {
   const pathname = usePathname();
-  const { status, data } = useSession();
+
   const router = useRouter();
+  const user: user = prop.session?.user;
 
   const showSession = () => {
-    if (status === "authenticated") {
+    if (user) {
       return (
         <>
           <Dropdown>
             <DropdownTrigger>
-              <Button variant="light"> {data.user?.name}</Button>
+              <Button variant="light"> {user?.name}</Button>
             </DropdownTrigger>
             <DropdownMenu variant="faded" aria-label="Static Actions">
               <DropdownItem href="/profile" key="new">
                 Profile
               </DropdownItem>
               <DropdownItem
-                onPress={() =>
-                  signOut({ redirect: false }).then(() => {
+                onPress={async () => {
+                  await signOut({ redirect: false }).then(() => {
                     router.push("/");
-                  })
-                }
+                  });
+                  await prop.checkForNewSession();
+                }}
                 key="copy"
                 className="text-danger"
               >
@@ -64,8 +78,6 @@ const NavbarComponent = () => {
           </Dropdown>
         </>
       );
-    } else if (status === "loading") {
-      return <Spinner />;
     } else {
       return (
         <Link
@@ -108,7 +120,7 @@ const NavbarComponent = () => {
         <NavbarContent as="div" justify="end">
           {showSession()}
 
-          {status === "authenticated" ? (
+          {user ? (
             <Avatar
               isBordered
               className="transition-transform"
