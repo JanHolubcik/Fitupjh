@@ -36,19 +36,24 @@ type YourIntakeType = {
   ) => void;
 };
 
-const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+const YourIntakeProvider: React.FC<{
+  children: React.ReactNode;
+  serverFood?: foodType;
+}> = ({ children, serverFood }) => {
   const { status, data } = useSession();
   const currentDate = useRef(new Date());
 
   const isLast = useRef(false);
-  const [savedFood, setSavedFood] = useState<foodType>({
-    breakfast: [],
-    lunch: [],
-    dinner: [],
-  });
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [savedFood, setSavedFood] = useState<foodType>(
+    serverFood
+      ? serverFood
+      : {
+          breakfast: [],
+          lunch: [],
+          dinner: [],
+        }
+  );
+
   useLayoutEffect(() => {
     if (data?.user?.id) {
       const formattedDate = format(currentDate.current, "dd.MMM.yyyy");
@@ -70,15 +75,6 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
       };
       fetchFood();
     }
-    /*
-      getSavedFood(
-        format(currentDate.current, "dd.MMM.yyyy"),
-        data?.user?.id
-      ).then((res) => {
-        if (res.savedFood) {
-          setSavedFood(res.savedFood);
-        }
-      });*/
   }, [data]);
 
   useEffect(() => {
