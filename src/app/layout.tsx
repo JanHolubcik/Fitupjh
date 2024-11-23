@@ -22,17 +22,16 @@ export default async function RootLayout({
 }>) {
   let session = await getServerSession();
   const checkForNewSession = async () => {
-    "use server";
     session = await getServerSession();
   };
   return (
     <html lang="en" className="dark">
       <body className={inter.className}>
-        <NavbarComponent
-          session={session}
-          checkForNewSession={checkForNewSession}
-        />
-        <Providers>{children}</Providers>
+        <Providers>
+          <NavbarComponent />
+
+          {children}
+        </Providers>
       </body>
     </html>
   );
