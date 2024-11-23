@@ -15,8 +15,6 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 
-import { Spinner } from "@nextui-org/spinner";
-
 import React from "react";
 
 const navigationPropeties = [
@@ -64,8 +62,6 @@ const NavbarComponent = () => {
           </Dropdown>
         </>
       );
-    } else if (status === "loading") {
-      return <Spinner />;
     } else {
       return (
         <Link

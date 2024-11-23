@@ -6,6 +6,7 @@ import {
   Button,
   CircularProgress,
   Input,
+  Spinner,
   useDisclosure,
 } from "@nextui-org/react";
 import {
@@ -15,7 +16,7 @@ import {
   FaSearch,
 } from "react-icons/fa";
 import { add, format, isSameDay } from "date-fns";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ProgressBars from "@/components/ProgressBars/ProgressBars";
 import { useSession } from "next-auth/react";
 import { label } from "framer-motion/client";
@@ -28,9 +29,11 @@ export default function Food() {
   const { currentDate, setNewDateAndGetFood, savedFood } =
     useYourIntakeContext();
 
-  const { data, update } = useSession();
+  const { data } = useSession();
   const recommendedCalories = useRef<number>(0);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const [showSpinner, setShowSpinner] = useState(true); // Spinner state
 
   const caloriesSum = () => {
     let calorieSUm = 0;
@@ -53,8 +56,12 @@ export default function Food() {
         recommendedCalories.current = 0;
       }
     };
+    const timer = setTimeout(() => {
+      setShowSpinner(false);
+    }, 1000);
     recomendedCalories();
-  });
+    return () => clearTimeout(timer);
+  }, [data?.user?.height, data?.user?.weight]);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-11">
@@ -158,6 +165,8 @@ export default function Food() {
             <TimeFrame key={key} timeOfDay={key as timeOfDay} />
           ))}
         </div>
+      ) : showSpinner ? (
+        <Spinner></Spinner>
       ) : (
         <h1>Register or login!</h1>
       )}
