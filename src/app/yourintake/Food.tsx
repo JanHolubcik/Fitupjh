@@ -34,7 +34,7 @@ export default function Food() {
 
   useEffect(() => {
     update();
-  });
+  }, [update]);
   const caloriesSum = () => {
     let calorieSUm = 0;
     timeOfDay.forEach((value) => {
