@@ -1,9 +1,5 @@
 "use client";
-import { useYourIntakeContext } from "@/hooks/YourIntakeContext";
-import YourIntakeProvider from "@/hooks/YourIntakeProvider";
-import { saveFood } from "@/lib/YourIntake/saveFoodToDatabase-db";
-import { getSavedFood } from "@/lib/YourIntake/search-db";
-import { SavedFood } from "@/models/savedFood";
+
 import { foodType } from "@/types/foodTypes";
 import { Progress } from "@nextui-org/react";
 import { format } from "date-fns";
@@ -34,8 +30,6 @@ type timeOfDay = "breakfast" | "lunch" | "dinner";
 const timeOfDay = ["breakfast", "lunch", "dinner"];
 
 const ProgressBarsProfile = (props: Value) => {
-  const {savedFood} =     useYourIntakeContext();
-
   const [calculatedMacros, setCalculatedMacros] = useState<macros>({
     calories: 0,
     fat: 0,
@@ -164,11 +158,10 @@ const ProgressBarsProfile = (props: Value) => {
         });
       fetchFood();
     }
-  }, [data, props.date,savedFood]);
+  }, [data, props.date]);
 
   return (
     <div className="flex flex-col min-w-96">
- 
       <div className="flex flex-row  min-w-96">
         <Progress
           label="Protein"

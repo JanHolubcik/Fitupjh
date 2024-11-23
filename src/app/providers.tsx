@@ -15,10 +15,8 @@ export function Providers({
 }) {
   return (
     <NextUIProvider>
-      <SessionProvider session={session}>
-        <SpeedInsights />
-        {children}
-      </SessionProvider>
+      <SpeedInsights />
+      <SessionProvider session={session}>{children}</SessionProvider>
     </NextUIProvider>
   );
 }
