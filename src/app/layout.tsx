@@ -24,16 +24,9 @@ export default async function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={inter.className}>
-        <Providers>
-          {
-            //Why session is not in providers?
-            //Well session gets rendered on server side now,
-            // so there will not be any loading on client side.
-          }
-          <SessionProvider session={session}>
-            <NavbarComponent />
-            {children}
-          </SessionProvider>
+        <Providers session={session}>
+          <NavbarComponent />
+          {children}
         </Providers>
       </body>
     </html>
