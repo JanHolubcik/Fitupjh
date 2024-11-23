@@ -14,9 +14,9 @@ import {
 } from "@nextui-org/react";
 import { signOut, useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
+import { Spinner } from "@nextui-org/spinner";
 
 import React from "react";
-import { User } from "next-auth";
 
 const navigationPropeties = [
   {
@@ -31,28 +31,18 @@ const navigationPropeties = [
   },
 ];
 
-type Prop = {
-  user:
-    | ({
-        goal?: string | undefined;
-        height?: number | undefined;
-        weight?: number | undefined;
-      } & User)
-    | undefined;
-};
-
-const NavbarComponent = (prop: Prop) => {
+const NavbarComponent = () => {
   const pathname = usePathname();
-  const { status } = useSession();
+  const { status, data } = useSession();
   const router = useRouter();
 
   const showSession = () => {
-    if (prop.user) {
+    if (status === "authenticated") {
       return (
         <>
           <Dropdown>
             <DropdownTrigger>
-              <Button variant="light"> {prop.user?.name}</Button>
+              <Button variant="light"> {data.user?.name}</Button>
             </DropdownTrigger>
             <DropdownMenu variant="faded" aria-label="Static Actions">
               <DropdownItem href="/profile" key="new">
@@ -62,7 +52,6 @@ const NavbarComponent = (prop: Prop) => {
                 onPress={() =>
                   signOut({ redirect: false }).then(() => {
                     router.push("/");
-                    prop.user = undefined;
                   })
                 }
                 key="copy"
@@ -74,6 +63,8 @@ const NavbarComponent = (prop: Prop) => {
           </Dropdown>
         </>
       );
+    } else if (status === "loading") {
+      return <Spinner />;
     } else {
       return (
         <Link
@@ -116,7 +107,7 @@ const NavbarComponent = (prop: Prop) => {
         <NavbarContent as="div" justify="end">
           {showSession()}
 
-          {prop.user ? (
+          {status === "authenticated" ? (
             <Avatar
               isBordered
               className="transition-transform"

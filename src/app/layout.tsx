@@ -25,7 +25,9 @@ export default async function RootLayout({
     <html lang="en" className="dark">
       <body className={inter.className}>
         <Providers>
-          <NavbarComponent user={session?.user} />
+          <SessionProvider session={session}>
+            <NavbarComponent />
+          </SessionProvider>
           {children}
         </Providers>
       </body>
