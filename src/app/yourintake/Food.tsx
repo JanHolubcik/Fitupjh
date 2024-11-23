@@ -58,7 +58,7 @@ export default function Food() {
     };
     const timer = setTimeout(() => {
       setShowSpinner(false);
-    }, 1000);
+    }, 500);
     recomendedCalories();
     return () => clearTimeout(timer);
   }, [data?.user?.height, data?.user?.weight]);
