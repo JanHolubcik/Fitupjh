@@ -1,9 +1,11 @@
+import { getServerSession } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
-export default function App({
+export default async function App({
   Component,
-  pageProps: { session, ...pageProps },
+  pageProps: { ...pageProps },
 }: AppProps) {
+  const session = await getServerSession();
   return (
     <SessionProvider session={session}>
       <Component {...pageProps} />
