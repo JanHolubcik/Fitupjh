@@ -65,7 +65,7 @@ export default function Food() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-11">
-      {data?.user?.id ? (
+      {!showSpinner && data?.user?.id ? (
         <div className="flex flex-col">
           <div className="flex flex-row justify-evenly">
             <div className="flex flex-row">
@@ -166,7 +166,7 @@ export default function Food() {
           ))}
         </div>
       ) : showSpinner ? (
-        <Spinner></Spinner>
+        <Spinner size="lg" />
       ) : (
         <h1>Register or login!</h1>
       )}
