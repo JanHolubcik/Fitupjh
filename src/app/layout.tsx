@@ -24,12 +24,10 @@ export default async function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={inter.className}>
-        <Providers>
-          <SessionProvider session={session}>
-            <NavbarComponent />
-          </SessionProvider>
-          {children}
-        </Providers>
+        <SessionProvider session={session}>
+          <NavbarComponent />
+        </SessionProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
