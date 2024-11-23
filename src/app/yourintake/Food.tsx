@@ -32,9 +32,6 @@ export default function Food() {
   const recommendedCalories = useRef<number>(0);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  useEffect(() => {
-    update();
-  }, [update]);
   const caloriesSum = () => {
     let calorieSUm = 0;
     timeOfDay.forEach((value) => {
