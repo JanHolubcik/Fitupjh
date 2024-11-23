@@ -28,10 +28,13 @@ export default function Food() {
   const { currentDate, setNewDateAndGetFood, savedFood } =
     useYourIntakeContext();
 
-  const { data } = useSession();
+  const { data, update } = useSession();
   const recommendedCalories = useRef<number>(0);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
+  useEffect(() => {
+    update();
+  });
   const caloriesSum = () => {
     let calorieSUm = 0;
     timeOfDay.forEach((value) => {
