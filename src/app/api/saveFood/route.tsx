@@ -1,8 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-
 import { getSavedFood } from "@/lib/YourIntake/search-db";
 import { NextRequest, NextResponse } from "next/server";
-import { saveFood } from "@/lib/YourIntake/saveFoodToDatabase-db";
 import { saveFoodInDay } from "@/lib/food-db";
 
 interface GetSavedFood {

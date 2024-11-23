@@ -8,12 +8,8 @@ import YourIntakeProvider from "@/hooks/YourIntakeProvider";
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <NextUIProvider>
-      <SessionProvider>
-        <YourIntakeProvider>
-          <SpeedInsights />
-          {children}
-        </YourIntakeProvider>
-      </SessionProvider>
+      <SpeedInsights />
+      {children}
     </NextUIProvider>
   );
 }
