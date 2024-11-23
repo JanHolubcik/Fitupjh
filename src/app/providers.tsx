@@ -1,15 +1,21 @@
 "use client";
 
+import { SessionProvider, useSession } from "next-auth/react";
 import { NextUIProvider } from "@nextui-org/react";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import YourIntakeProvider from "@/hooks/YourIntakeProvider";
 import { Session } from "next-auth";
-import { SessionProvider } from "./SessionProvider";
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({
+  children,
+  session,
+}: {
+  children: React.ReactNode;
+  session: Session | null;
+}) {
   return (
     <NextUIProvider>
-      <SessionProvider>
+      <SessionProvider session={session}>
         <SpeedInsights />
         {children}
       </SessionProvider>
