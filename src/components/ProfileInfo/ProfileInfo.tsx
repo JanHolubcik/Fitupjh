@@ -23,7 +23,7 @@ const ProfileInfo = () => {
   });
   const [weight, setWeight] = useState<string>();
   const [height, setHeight] = useState<string>();
-  const [goal, setGoal] = useState<string>("");
+  const [goal, setGoal] = useState<string>();
   const { data, update } = useSession();
   const [error, setError] = useState("");
   const [showSpinner, setShowSpinner] = useState(true); // Spinner state
@@ -77,7 +77,10 @@ const ProfileInfo = () => {
                     size="sm"
                     variant="ghost"
                     isIconOnly
-                    onPress={() => setEdit({ ...edit, weight: true })}
+                    onPress={() => {
+                      setEdit({ ...edit, weight: true });
+                      setWeight(data?.user?.weight?.toString());
+                    }}
                   >
                     <FaPen className="text-sm text-default-400 pointer-events-none flex-shrink-0" />
                   </Button>
@@ -111,7 +114,10 @@ const ProfileInfo = () => {
                     size="sm"
                     variant="ghost"
                     isIconOnly
-                    onPress={() => setEdit({ ...edit, height: true })}
+                    onPress={() => {
+                      setEdit({ ...edit, height: true });
+                      setHeight(data?.user?.height?.toString());
+                    }}
                   >
                     <FaPen className="text-sm text-default-400 pointer-events-none flex-shrink-0" />
                   </Button>
@@ -146,7 +152,10 @@ const ProfileInfo = () => {
                   size="sm"
                   variant="ghost"
                   isIconOnly
-                  onPress={() => setEdit({ ...edit, goal: true })}
+                  onPress={() => {
+                    setEdit({ ...edit, goal: true });
+                    setGoal(data?.user?.goal);
+                  }}
                 >
                   <FaPen className="text-sm text-default-400 pointer-events-none flex-shrink-0" />
                 </Button>
