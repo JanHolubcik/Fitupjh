@@ -144,7 +144,7 @@ export default function Food() {
           ))}
         </div>
       ) : showSpinner ? (
-        <Spinner size="lg" />
+        <Spinner className=" m-2 self-center" size="lg" />
       ) : (
         <h1>Register or login!</h1>
       )}

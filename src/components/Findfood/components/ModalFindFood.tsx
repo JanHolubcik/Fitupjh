@@ -138,90 +138,95 @@ export const ModalFindFood = (props: props) => {
                     </div>
                   </div>
                 )}
-                {loading && <Spinner></Spinner>}
-                {food?.map((key, id) => (
-                  <div className=" flex flex-row " key={id}>
-                    <div className="flex-1 self-center">
-                      <Tooltip
-                        content={
-                          <Image
-                            alt="nextui logo"
-                            height={100}
-                            radius="sm"
-                            src={
-                              "https://www.themealdb.com/images/ingredients/" +
-                              key.name +
-                              ".png"
+                {loading ? (
+                  <Spinner className=" m-2 self-center" size="lg" />
+                ) : (
+                  <>
+                    {food?.map((key, id) => (
+                      <div className=" flex flex-row " key={id}>
+                        <div className="flex-1 self-center">
+                          <Tooltip
+                            content={
+                              <Image
+                                alt="nextui logo"
+                                height={100}
+                                radius="sm"
+                                src={
+                                  "https://www.themealdb.com/images/ingredients/" +
+                                  key.name +
+                                  ".png"
+                                }
+                                width={100}
+                              />
                             }
-                            width={100}
+                          >
+                            <p>{key.name}</p>
+                          </Tooltip>
+                        </div>
+                        <div className="flex-1 self-center max-w-11">
+                          <Input
+                            key={id + "inputGrams"}
+                            id={id + "inputGrams"}
+                            min={0}
+                            max={999}
+                            defaultValue="100"
+                            size="sm"
+                            type="number"
+                            onChange={(event) => {
+                              setCalculatedCalories((prevState) => {
+                                const newState = [...prevState];
+                                if (event.target.value !== null)
+                                  newState[id] =
+                                    (Number(event.target.value) / 100) *
+                                    key.calories_per_100g;
+                                return newState;
+                              });
+                            }}
                           />
-                        }
-                      >
-                        <p>{key.name}</p>
-                      </Tooltip>
-                    </div>
-                    <div className="flex-1 self-center max-w-11">
-                      <Input
-                        key={id + "inputGrams"}
-                        id={id + "inputGrams"}
-                        min={0}
-                        max={999}
-                        defaultValue="100"
-                        size="sm"
-                        type="number"
-                        onChange={(event) => {
-                          setCalculatedCalories((prevState) => {
-                            const newState = [...prevState];
-                            if (event.target.value !== null)
-                              newState[id] =
-                                (Number(event.target.value) / 100) *
-                                key.calories_per_100g;
-                            return newState;
-                          });
-                        }}
-                      />
-                    </div>
-                    <div className="flex-1 ml-10  self-center text-end max-w-11">
-                      <Input
-                        disabled
-                        id={id + "readOnlyInput"}
-                        min={0}
-                        value={calculatedCalories[id].toString()}
-                        size="sm"
-                        type="number"
-                      />
-                    </div>
+                        </div>
+                        <div className="flex-1 ml-10  self-center text-end max-w-11">
+                          <Input
+                            disabled
+                            id={id + "readOnlyInput"}
+                            min={0}
+                            value={calculatedCalories[id].toString()}
+                            size="sm"
+                            type="number"
+                          />
+                        </div>
 
-                    <div className="max-w-11 ml-10   flex-1 text-end">
-                      <Button
-                        onPress={() => {
-                          const valueGrams = (
-                            document.getElementById(
-                              `${id}inputGrams`
-                            ) as HTMLInputElement
-                          ).value;
+                        <div className="max-w-11 ml-10   flex-1 text-end">
+                          <Button
+                            onPress={() => {
+                              const valueGrams = (
+                                document.getElementById(
+                                  `${id}inputGrams`
+                                ) as HTMLInputElement
+                              ).value;
 
-                          addToFood(
-                            calculatedCalories[id],
-                            key.name,
-                            getTimeOfDay(),
-                            valueGrams,
-                            key.fat,
-                            key.protein,
-                            key.sugar,
-                            key.carbohydrates,
-                            key.fiber,
-                            key.salt
-                          );
-                          onClose();
-                        }}
-                        isIconOnly
-                      >
-                        <FaPlusCircle />
-                      </Button>
-                    </div>
-                  </div>
-                ))}
+                              addToFood(
+                                calculatedCalories[id],
+                                key.name,
+                                getTimeOfDay(),
+                                valueGrams,
+                                key.fat,
+                                key.protein,
+                                key.sugar,
+                                key.carbohydrates,
+                                key.fiber,
+                                key.salt
+                              );
+                              onClose();
+                            }}
+                            isIconOnly
+                          >
+                            <FaPlusCircle />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </>
+                )}
               </div>
             </ModalBody>
           </>
