@@ -46,12 +46,17 @@ const ProfileInfo = () => {
     data?.user?.goal && data?.user.height && data?.user.weight ? true : false;
 
   useEffect(() => {
+    if (data) {
+      setHeight(data?.user?.height?.toString());
+      setWeight(data?.user?.weight?.toString());
+      setGoal(data?.user?.goal);
+    }
     const timer = setTimeout(() => {
       setShowSpinner(false);
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [data?.user?.height, data?.user?.weight]);
+  }, [data, data?.user]);
   return (
     <div className="flex  flex-col min-w-60 pb-10">
       {showSpinner ? (
