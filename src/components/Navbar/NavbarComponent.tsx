@@ -34,14 +34,7 @@ const NavbarComponent = () => {
   const pathname = usePathname();
   const { status, data } = useSession();
   const router = useRouter();
-  const [showSpinner, setShowSpinner] = useState(true); // Spinner state
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowSpinner(false);
-    }, 500);
 
-    return () => clearTimeout(timer);
-  }, [data?.user?.height, data?.user?.weight]);
   const showSession = () => {
     if (status === "authenticated") {
       return (
@@ -69,8 +62,6 @@ const NavbarComponent = () => {
           </Dropdown>
         </>
       );
-    } else if (showSpinner) {
-      return <></>;
     } else {
       return (
         <Link

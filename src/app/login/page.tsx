@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Card, CardHeader, CardBody, Button, Link } from "@nextui-org/react";
+import { Link, Input, Button } from "@nextui-org/react";
 import { signIn } from "next-auth/react";
 
 export default function Login() {
@@ -33,33 +33,33 @@ export default function Login() {
     <section className="w-full h-screen flex items-center justify-center">
       <form
         className="p-6 w-full max-w-[400px] flex flex-col justify-between items-center gap-2 
-        border border-solid border-white rounded"
+        bg-zinc-900 rounded-2xl"
         onSubmit={handleSubmit}
       >
-        {error && <div className="text-black">{error}</div>}
+        {error && <div className="text-red">{error}</div>}
         <h1 className="mb-5 w-full text-2xl font-bold">Sign In</h1>
-        <label className="w-full text-sm">Email</label>
-        <input
+        <label className="w-full text-sm ml-2">Email</label>
+        <Input
           type="email"
           placeholder="Email"
-          className="w-full h-8 border border-solid border-white rounded p-2"
+          className="w-full    m-1"
           name="email"
         />
-        <label className="w-full text-sm">Password</label>
-        <div className="flex w-full">
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full h-8 border border-solid border-white rounded p-2"
-            name="password"
-          />
-        </div>
-        <button className="w-full border border-solid border-white rounded">
+        <label className="w-full text-sm ml-2">Password</label>
+
+        <Input
+          type="password"
+          placeholder="Password"
+          className="w-full   m-1"
+          name="password"
+        />
+
+        <Button className="self-center w-32 mt-5" type="submit" isIconOnly>
           Sign In
-        </button>
+        </Button>
         <Link
           href="/signup"
-          className="text-sm text-[#888] transition duration-150 ease hover:text-black"
+          className="text-sm text-[#888] transition duration-150 ease hover:text-white"
         >
           Do not have an account?
         </Link>

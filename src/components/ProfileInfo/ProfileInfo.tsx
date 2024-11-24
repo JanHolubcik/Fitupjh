@@ -23,6 +23,7 @@ const ProfileInfo = () => {
   const { data, update } = useSession();
   const [error, setError] = useState("");
   const [showSpinner, setShowSpinner] = useState(true); // Spinner state
+
   const handleSubmit = async () => {
     if (weight && height && goal) {
       await getUpdateUser(Number(height), Number(weight), goal).catch((err) =>
