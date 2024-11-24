@@ -92,7 +92,7 @@ const ProfileInfo = () => {
               <p className="self-center max-w-36 ml-3 m-1 mr-9">New weight:</p>
               <Input
                 type="number"
-                placeholder={data?.user?.weight?.toString()}
+                value={weight}
                 className="self-center max-w-36 m-1"
                 endContent={
                   <FaPen className="text-sm text-default-400 pointer-events-none flex-shrink-0" />
@@ -133,6 +133,7 @@ const ProfileInfo = () => {
                 type="number"
                 labelPlacement="outside"
                 placeholder={data?.user?.height?.toString()}
+                value={height}
                 className="self-center max-w-36 m-1"
                 onChange={(e) => setHeight(e.target.value)}
                 endContent={
@@ -167,6 +168,7 @@ const ProfileInfo = () => {
               <Select
                 className="w-36 self-center m-1  mb-4"
                 onChange={(e) => setGoal(e.target.value)}
+                value={goal}
               >
                 {goals.map((goal) => (
                   <SelectItem className="max-w-34 " key={goal}>
