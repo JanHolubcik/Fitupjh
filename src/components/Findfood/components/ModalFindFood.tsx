@@ -35,7 +35,6 @@ type ReturnTypeFood =
 type props = {
   onOpenChange: () => void;
   isOpen: boolean | undefined;
-
 };
 
 type timeOfDay = "breakfast" | "lunch" | "dinner";
@@ -53,22 +52,19 @@ export const ModalFindFood = (props: props) => {
     const hour = now.getHours();
 
     switch (true) {
-        case (hour >= 0 && hour < 8):
-            return 'breakfast';
-         
-        case (hour >= 8 && hour < 16):
-            return 'lunch';
-           
-        case (hour >= 16 && hour < 24):
-            return'dinner';
-           
-        default:
-          return 'lunch';
-         
-    }
+      case hour >= 0 && hour < 8:
+        return "breakfast";
 
-  
-  }
+      case hour >= 8 && hour < 16:
+        return "lunch";
+
+      case hour >= 16 && hour < 24:
+        return "dinner";
+
+      default:
+        return "lunch";
+    }
+  };
 
   return (
     <Modal
@@ -87,8 +83,7 @@ export const ModalFindFood = (props: props) => {
           <>
             <ModalHeader className="flex flex-col gap-1">
               <Input
-              autoFocus
-              
+                autoFocus
                 classNames={{
                   base: "max-w-full sm:max-w-[50rem] h-10",
                   mainWrapper: "h-full",
@@ -97,25 +92,28 @@ export const ModalFindFood = (props: props) => {
                     "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
                 }}
                 placeholder="Type to search..."
-                onChange={(event) => {
+                onChange={async (event) => {
+                  setLoading(true);
                   if (event.target.value.length === 0) {
                     setFood([]);
                   } else {
-                    data?.user?.id &&
-                      findInDatabase(event.target.value, data?.user?.id).then(
-                        (foundFood) => {
-                          setLoading(true);
+                    if (data?.user?.id) {
+                      await findInDatabase(event.target.value, data?.user?.id)
+                        .then((foundFood) => {
                           setFood(foundFood.food);
+                          setLoading(false);
                           if (foundFood.food)
                             setCalculatedCalories(
                               foundFood.food.map((key) => {
                                 return key.calories_per_100g;
                               })
                             );
-                        }
-                      ).finally(() => {
-                        setLoading(false);
-                      });
+                        })
+                        .catch((err) => {
+                          console.log(err);
+                        });
+                      setLoading(false);
+                    }
                   }
                 }}
                 onClear={() => setFood([])}
@@ -142,7 +140,7 @@ export const ModalFindFood = (props: props) => {
                     </div>
                   </div>
                 )}
-                {loading && <Spinner></Spinner>}
+                {food && <Spinner></Spinner>}
                 {food?.map((key, id) => (
                   <div className=" flex flex-row " key={id}>
                     <div className="flex-1 self-center">
@@ -204,7 +202,7 @@ export const ModalFindFood = (props: props) => {
                               `${id}inputGrams`
                             ) as HTMLInputElement
                           ).value;
-                         
+
                           addToFood(
                             calculatedCalories[id],
                             key.name,
