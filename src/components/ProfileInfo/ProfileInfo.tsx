@@ -120,11 +120,11 @@ const ProfileInfo = () => {
             </>
           ) : (
             <>
-              <p className="max-w-36 ml-3 m-1">New Height:</p>
+              <p className="max-w-36 ml-3 m-1">New height:</p>
               <Input
                 type="number"
                 labelPlacement="outside"
-                placeholder="Put your weight here"
+                placeholder={data?.user?.height?.toString()}
                 className="max-w-36 m-1"
                 onChange={(e) => setHeight(e.target.value)}
                 endContent={
@@ -152,6 +152,7 @@ const ProfileInfo = () => {
             </div>
           ) : (
             <>
+              <p className="max-w-36 ml-3 m-1">New goal:</p>
               <Select
                 labelPlacement="outside"
                 label="Select your goal:"
