@@ -37,6 +37,7 @@ const ProfileInfo = () => {
         user: { ...data?.user, weight: weight, height: height, goal: goal },
       });
       setEdit({ weight: false, height: false, goal: false });
+      setError("");
     } else {
       setError("Please fill out all inputs");
     }

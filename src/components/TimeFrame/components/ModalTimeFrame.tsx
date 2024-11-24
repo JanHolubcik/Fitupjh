@@ -117,7 +117,7 @@ export const ModalTimeFrame = (props: props) => {
                     </div>
                   </div>
                 )}
-                {loading && <Spinner></Spinner>}
+                {loading && <Spinner className=" m-2 self-center" size="lg" />}
                 {food?.map((key, id) => (
                   <div className=" flex flex-row " key={id}>
                     <div className="flex-1 self-center">

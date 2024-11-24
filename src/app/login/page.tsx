@@ -2,23 +2,25 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Link, Input, Button } from "@nextui-org/react";
+import { Link, Input, Button, Spinner } from "@nextui-org/react";
 import { signIn } from "next-auth/react";
 
 export default function Login() {
   const [error, setError] = useState("");
   const router = useRouter(); // after succesfull login we will route to yourintake
-
+  const [loading, setLoading] = useState(false);
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
     //next auth logging to session
+    setLoading(true);
     const res = await signIn("credentials", {
       email: formData.get("email"),
       password: formData.get("password"),
       redirect: false,
     });
+    setLoading(false);
     console.log("Response from signIn:", res);
     if (res?.error) {
       setError(res.error as string);
@@ -29,8 +31,19 @@ export default function Login() {
     }
   };
 
+  if (loading) {
+    return (
+      <section className="w-full h-screen flex flex-col items-center justify-center">
+        <div className="bg-zinc-900 rounded-2xl   p-10 flex flex-col ">
+          <p className="m-1 ">Please wait while we log you in...</p>
+          <Spinner className="m-3 self-center" color="current"></Spinner>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section className="w-full h-screen flex items-center justify-center">
+    <section className="w-full h-screen flex flex-col items-center justify-center">
       <form
         className="p-6 w-full max-w-[400px] flex flex-col justify-between items-center gap-2 
         bg-zinc-900 rounded-2xl"
@@ -53,6 +66,12 @@ export default function Login() {
           name="password"
         />
         {error && <div className="text-red-600">{error}</div>}
+        {loading && (
+          <>
+            <p>Please wait while we log you in...</p>
+          </>
+        )}
+
         <Button className="self-center w-32 mt-5" type="submit" isIconOnly>
           Sign In
         </Button>
