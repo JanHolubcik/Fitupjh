@@ -36,7 +36,7 @@ export default function Login() {
         bg-zinc-900 rounded-2xl"
         onSubmit={handleSubmit}
       >
-        {error && <div className="text-red">{error}</div>}
+        {error && <div className="text-red-600">{error}</div>}
         <h1 className="mb-5 w-full text-2xl font-bold">Sign In</h1>
         <label className="w-full text-sm ml-2">Email</label>
         <Input

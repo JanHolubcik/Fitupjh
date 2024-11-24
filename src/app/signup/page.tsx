@@ -53,12 +53,7 @@ export default function Signup() {
     <main className=" self-center flex min-h-screen flex-col items-center justify-between p-11 ">
       <Card className="max-w-[500px] min-w-[400px] p-2 mt-5">
         <CardHeader className="flex flex-col items-center bg-zinc-900">
-          <h1 className="mb-5 w-full text-2xl text-center font-bold">
-            Sign up!
-          </h1>
-          <p className="max-w-72 text-center">
-            Create an account to start tracking your calories.
-          </p>
+          <h1 className="text-left mt-2 w-full text-2xl font-bold">Sign up!</h1>
         </CardHeader>
         <CardBody className="bg-zinc-900 flex flex-col">
           <form className="flex flex-col" onSubmit={handleSubmit}>
@@ -158,7 +153,7 @@ export default function Signup() {
               <p>Sign up!</p>
             </Button>
             <Link
-              href="/signup"
+              href="/login"
               className="text-sm self-center mt-2 text-[#888] transition duration-150 ease hover:text-white"
             >
               Already have an account?
