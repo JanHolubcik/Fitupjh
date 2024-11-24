@@ -86,11 +86,11 @@ const ProfileInfo = () => {
             </>
           ) : (
             <>
-              <p className="max-w-54 ml-3 m-1">New weight:</p>
+              <p className="max-w-36 ml-3 m-1">New weight:</p>
               <Input
                 type="number"
                 placeholder={data?.user?.weight?.toString()}
-                className="max-w-54 m-1"
+                className="max-w-36 m-1"
                 endContent={
                   <FaPen className="text-sm text-default-400 pointer-events-none flex-shrink-0" />
                 }
@@ -120,12 +120,12 @@ const ProfileInfo = () => {
             </>
           ) : (
             <>
-              <p className="max-w-54 ml-3 m-1">New Height:</p>
+              <p className="max-w-36 ml-3 m-1">New Height:</p>
               <Input
                 type="number"
                 labelPlacement="outside"
                 placeholder="Put your weight here"
-                className="max-w-54 m-1"
+                className="max-w-36 m-1"
                 onChange={(e) => setHeight(e.target.value)}
                 endContent={
                   <FaPen className="text-sm text-default-400 pointer-events-none flex-shrink-0" />
@@ -155,15 +155,19 @@ const ProfileInfo = () => {
               <Select
                 labelPlacement="outside"
                 label="Select your goal:"
-                className="max-w-40  self-center mb-4"
+                className="max-w-34  self-center mb-4"
                 onChange={(e) => setGoal(e.target.value)}
               >
                 {goals.map((goal) => (
-                  <SelectItem className="max-w-54 " key={goal}>
+                  <SelectItem className="max-w-34 " key={goal}>
                     {goal}
                   </SelectItem>
                 ))}
               </Select>
+            </>
+          )}
+          {edit.goal && edit.height && edit.weight && (
+            <>
               <p className="text-red-600 text-center mb-2">{error}</p>
               <Button
                 onPress={() => handleSubmit()}
