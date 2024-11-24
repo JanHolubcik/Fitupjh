@@ -16,7 +16,11 @@ import { FaCheck, FaPen } from "react-icons/fa";
 const goals = ["Lose weight", "Gain weight", "Stay same"];
 
 const ProfileInfo = () => {
-  const [edit, setEdit] = useState<boolean>(false);
+  const [edit, setEdit] = useState({
+    weight: false,
+    height: false,
+    goal: false,
+  });
   const [weight, setWeight] = useState<string>();
   const [height, setHeight] = useState<string>();
   const [goal, setGoal] = useState<string>("");
@@ -32,7 +36,7 @@ const ProfileInfo = () => {
       await update({
         user: { ...data?.user, weight: weight, height: height, goal: goal },
       });
-      await setEdit(false);
+      setEdit({ weight: false, height: false, goal: false });
     } else {
       setError("Please fill out all inputs");
     }
@@ -61,7 +65,7 @@ const ProfileInfo = () => {
             className="transition-transform w-32 h-32 text-large m-1 self-center"
           />
           <p className="m-1 self-center ">{data?.user?.name}</p>
-          {data?.user?.weight && canCalculate && !edit ? (
+          {data?.user?.weight && canCalculate && !edit.weight ? (
             <>
               <div className="flex justify-evenly m-1">
                 <div className="w-36 self-center flex-4">
@@ -73,7 +77,7 @@ const ProfileInfo = () => {
                     size="sm"
                     variant="ghost"
                     isIconOnly
-                    onPress={() => setEdit(true)}
+                    onPress={() => setEdit({ ...edit, weight: true })}
                   >
                     <FaPen className="text-sm text-default-400 pointer-events-none flex-shrink-0" />
                   </Button>
@@ -81,19 +85,21 @@ const ProfileInfo = () => {
               </div>
             </>
           ) : (
-            <Input
-              type="number"
-              labelPlacement="outside"
-              placeholder="Put your height here"
-              className="max-w-54 m-1"
-              endContent={
-                <FaPen className="text-sm text-default-400 pointer-events-none flex-shrink-0" />
-              }
-              onChange={(e) => setHeight(e.target.value)}
-            />
+            <>
+              <p className="max-w-54 ml-3 m-1">New weight:</p>
+              <Input
+                type="number"
+                placeholder={data?.user?.weight?.toString()}
+                className="max-w-54 m-1"
+                endContent={
+                  <FaPen className="text-sm text-default-400 pointer-events-none flex-shrink-0" />
+                }
+                onChange={(e) => setWeight(e.target.value)}
+              />
+            </>
           )}
 
-          {data?.user?.height && canCalculate && !edit ? (
+          {data?.user?.height && canCalculate && !edit.height ? (
             <>
               <div className="flex justify-evenly m-1">
                 <div className="w-36 self-center flex-4 ">
@@ -105,7 +111,7 @@ const ProfileInfo = () => {
                     size="sm"
                     variant="ghost"
                     isIconOnly
-                    onPress={() => setEdit(true)}
+                    onPress={() => setEdit({ ...edit, height: true })}
                   >
                     <FaPen className="text-sm text-default-400 pointer-events-none flex-shrink-0" />
                   </Button>
@@ -113,18 +119,21 @@ const ProfileInfo = () => {
               </div>
             </>
           ) : (
-            <Input
-              type="number"
-              labelPlacement="outside"
-              placeholder="Put your weight here"
-              className="max-w-54 m-1"
-              onChange={(e) => setWeight(e.target.value)}
-              endContent={
-                <FaPen className="text-sm text-default-400 pointer-events-none flex-shrink-0" />
-              }
-            />
+            <>
+              <p className="max-w-54 ml-3 m-1">New Height:</p>
+              <Input
+                type="number"
+                labelPlacement="outside"
+                placeholder="Put your weight here"
+                className="max-w-54 m-1"
+                onChange={(e) => setHeight(e.target.value)}
+                endContent={
+                  <FaPen className="text-sm text-default-400 pointer-events-none flex-shrink-0" />
+                }
+              />
+            </>
           )}
-          {data?.user?.goal && canCalculate && !edit ? (
+          {data?.user?.goal && canCalculate && !edit.goal ? (
             <div className="flex justify-evenly m-1">
               <div className="w-36 self-center flex-4 ">
                 <p>goal: {data?.user?.goal} </p>
@@ -135,7 +144,7 @@ const ProfileInfo = () => {
                   size="sm"
                   variant="ghost"
                   isIconOnly
-                  onPress={() => setEdit(true)}
+                  onPress={() => setEdit({ ...edit, goal: true })}
                 >
                   <FaPen className="text-sm text-default-400 pointer-events-none flex-shrink-0" />
                 </Button>
@@ -146,7 +155,7 @@ const ProfileInfo = () => {
               <Select
                 labelPlacement="outside"
                 label="Select your goal:"
-                className="max-w-40  self-center pt-5 pb-5"
+                className="max-w-40  self-center mb-4"
                 onChange={(e) => setGoal(e.target.value)}
               >
                 {goals.map((goal) => (
@@ -155,7 +164,7 @@ const ProfileInfo = () => {
                   </SelectItem>
                 ))}
               </Select>
-              <p>{error}</p>
+              <p className="text-red-600 text-center mb-2">{error}</p>
               <Button
                 onPress={() => handleSubmit()}
                 size="sm"
