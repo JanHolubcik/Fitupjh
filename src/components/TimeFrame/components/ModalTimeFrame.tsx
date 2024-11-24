@@ -71,25 +71,26 @@ export const ModalTimeFrame = (props: props) => {
                     "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
                 }}
                 placeholder="Type to search..."
-                onChange={(event) => {
+                onChange={async (event) => {
                   if (event.target.value.length === 0) {
                     setFood([]);
                   } else {
-                    data?.user?.id &&
-                      findInDatabase(event.target.value, data?.user?.id)
-                        .then((foundFood) => {
-                          setLoading(true);
-                          setFood(foundFood.food);
-                          if (foundFood.food)
-                            setCalculatedCalories(
-                              foundFood.food.map((key) => {
-                                return key.calories_per_100g;
-                              })
-                            );
-                        })
-                        .finally(() => {
-                          setLoading(false);
-                        });
+                    setLoading(true);
+                    if (data?.user?.id) {
+                      await findInDatabase(
+                        event.target.value,
+                        data?.user?.id
+                      ).then((foundFood) => {
+                        setFood(foundFood.food);
+                        if (foundFood.food)
+                          setCalculatedCalories(
+                            foundFood.food.map((key) => {
+                              return key.calories_per_100g;
+                            })
+                          );
+                      });
+                    }
+                    setLoading(false);
                   }
                 }}
                 onClear={() => setFood([])}

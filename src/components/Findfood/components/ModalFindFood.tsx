@@ -93,27 +93,25 @@ export const ModalFindFood = (props: props) => {
                 }}
                 placeholder="Type to search..."
                 onChange={async (event) => {
-                  setLoading(true);
                   if (event.target.value.length === 0) {
                     setFood([]);
                   } else {
+                    setLoading(true);
                     if (data?.user?.id) {
-                      await findInDatabase(event.target.value, data?.user?.id)
-                        .then((foundFood) => {
-                          setFood(foundFood.food);
-                          setLoading(false);
-                          if (foundFood.food)
-                            setCalculatedCalories(
-                              foundFood.food.map((key) => {
-                                return key.calories_per_100g;
-                              })
-                            );
-                        })
-                        .catch((err) => {
-                          console.log(err);
-                        });
-                      setLoading(false);
+                      await findInDatabase(
+                        event.target.value,
+                        data?.user?.id
+                      ).then((foundFood) => {
+                        setFood(foundFood.food);
+                        if (foundFood.food)
+                          setCalculatedCalories(
+                            foundFood.food.map((key) => {
+                              return key.calories_per_100g;
+                            })
+                          );
+                      });
                     }
+                    setLoading(false);
                   }
                 }}
                 onClear={() => setFood([])}
@@ -140,7 +138,7 @@ export const ModalFindFood = (props: props) => {
                     </div>
                   </div>
                 )}
-                {food && <Spinner></Spinner>}
+                {loading && <Spinner></Spinner>}
                 {food?.map((key, id) => (
                   <div className=" flex flex-row " key={id}>
                     <div className="flex-1 self-center">

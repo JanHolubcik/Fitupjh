@@ -17,22 +17,21 @@ import { FoodClass } from "@/models/Food";
 import { ModalFindFood } from "./components/ModalFindFood";
 import { useYourIntakeContext } from "@/hooks/YourIntakeContext";
 
-
-
 const TimeFrame = () => {
   //when this state changes, we sent data to server
   const { savedFood, removeFromSavedFood } = useYourIntakeContext();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
- <>
-        <Button className="self-end" onPress={onOpen} isIconOnly>
-          <FaPlusCircle />
-        </Button>
-        <ModalFindFood
+    <>
+      <Button className="self-end" onPress={onOpen} isIconOnly>
+        <FaPlusCircle />
+      </Button>
+      <ModalFindFood
         isOpen={isOpen}
-        onOpenChange={onOpenChange}        ></ModalFindFood>
-</>
+        onOpenChange={onOpenChange}
+      ></ModalFindFood>
+    </>
   );
 };
 
