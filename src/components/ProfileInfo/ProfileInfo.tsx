@@ -1,5 +1,5 @@
 "use client";
-import { getSavedUser, getUpdateUser } from "@/lib/YourIntake/search-db";
+import { getUpdateUser } from "@/lib/YourIntake/search-db";
 import {
   Avatar,
   Button,

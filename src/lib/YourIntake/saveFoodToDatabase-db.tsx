@@ -1,7 +1,7 @@
 "use server";
 
 import { foodType } from "@/types/foodTypes";
-import { getFood, saveFoodInDay } from "../food-db";
+import { saveFoodInDay } from "../food-db";
 import mongoose from "mongoose";
 
 export const saveFood = async (
