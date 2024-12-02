@@ -9,6 +9,7 @@ import {
   CardHeader,
   Input,
   Link,
+  Spinner,
   Tooltip,
 } from "@nextui-org/react";
 import { FaInfoCircle } from "react-icons/fa";
@@ -20,7 +21,9 @@ export default function Signup() {
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [goal, setGoal] = useState("");
+  const [error, setError] = useState("");
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -38,16 +41,29 @@ export default function Signup() {
         height,
       }),
     });
-
+    setLoading(true);
     const data = await res.json();
 
     if (res.ok) {
-      alert("User created successfully!");
+      setError("");
       router.push("/login"); // Redirect to login page after successful signup
+      setLoading(false);
     } else {
-      alert(`Error: ${data.error}`);
+      setError(data.error);
     }
   };
+
+  if (loading) {
+    return (
+      <section className="w-full h-screen flex flex-col items-center justify-center">
+        <div className="bg-zinc-900 rounded-2xl   p-10 flex flex-col ">
+          <p className="m-1 ">Please wait...</p>
+          <Spinner className="m-3 self-center" color="current"></Spinner>
+        </div>
+      </section>
+    );
+  }
+
 
   return (
     <main className=" self-center flex min-h-screen flex-col items-center justify-between p-11 ">
@@ -110,6 +126,7 @@ export default function Signup() {
             <Input
               className="mr-1 ml-1"
               type="number"
+              min={0}
               max={250}
               placeholder="Height"
               value={height}
@@ -143,6 +160,7 @@ export default function Signup() {
               className="mr-1 ml-1"
               type="number"
               placeholder="Weight"
+              min={0}
               max={400}
               value={weight}
               onChange={(e) => setWeight(e.target.value)}
@@ -159,6 +177,7 @@ export default function Signup() {
               Already have an account?
             </Link>
           </form>
+          {error && <div className="text-red-600 text-center pt-5">{error}</div>}
         </CardBody>
       </Card>
     </main>

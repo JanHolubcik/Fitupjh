@@ -16,14 +16,29 @@ export async function POST(request: Request) {
 
   if (!username || !userEmail || !password || !weight || !height) {
     return NextResponse.json(
-      { error: "Missing required fields" },
+      { error: "Missing required fields." },
       { status: 400 }
     );
   }
 
+  if(username.length< 2){
+    return NextResponse.json(
+      { error: "User name is too long." },
+      { status: 400 }
+    );
+  }
+
+  if (weight<0 || height < 0) {
+    return NextResponse.json(
+      { error: "Height or weight can't be negative." },
+      { status: 400 }
+    );
+  }
+
+
   if (!validateEmail(userEmail)) {
     return NextResponse.json(
-      { error: "Wrong format of email" },
+      { error: "Wrong format of email." },
       { status: 400 }
     );
   }
