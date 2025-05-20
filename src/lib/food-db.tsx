@@ -5,33 +5,16 @@ import { Food } from "@/models/Food";
 import { SavedFood } from "@/models/savedFood";
 import mongoose from "mongoose";
 
-export async function getFoods(searchTerm?: string) {
+export async function getFoods() {
   try {
     await connectDB();
 
-    let food;
-
-    // If a search term is provided, try to find matching foods
-    if (searchTerm) {
-      food = await Food.find({
-        name: { $regex: searchTerm, $options: "i" }, // case-insensitive partial match
-      })
-        .lean()
-        .exec();
-
-      // If no results found, fetch all
-      if (food.length === 0) {
-        food = await Food.find().lean().exec();
-      }
-    } else {
-      // No search term provided, fetch all
-      food = await Food.find().lean().exec();
-    }
+    const food = await Food.find().lean().exec();
 
     const results = food.length;
 
     return {
-      food,
+      food: food,
       results,
     };
   } catch (error) {
