@@ -26,13 +26,17 @@ export async function getFood(substring: string) {
   try {
     await connectDB();
 
-    const food = await Food.find({
+    let food = await Food.find({
       name: { $regex: ".*" + substring + ".*", $options: "i" },
     })
       .limit(5)
       .lean()
       .exec();
-
+    console.log("Food found:", food);
+    if (food.length === 0) {
+      console.log("No food found, returning all foods.");
+      food = await Food.find().limit(5).lean().exec(); // Fallback to fetching all foods
+    }
     if (food) {
       return {
         food: food.map((value) => {
