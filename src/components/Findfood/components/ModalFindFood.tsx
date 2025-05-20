@@ -1,6 +1,4 @@
 import { useYourIntakeContext } from "@/hooks/YourIntakeContext";
-import { FoodClass } from "@/models/Food";
-import { foodType } from "@/types/foodTypes";
 import { findInDatabase } from "@/lib/YourIntake/search-db";
 import {
   Button,

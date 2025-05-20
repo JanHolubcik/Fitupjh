@@ -6,10 +6,6 @@ import { format } from "date-fns";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-type Food = {
-  timeOfDay: "breakfast" | "lunch" | "dinner";
-};
-
 type ValuePiece = Date | null;
 
 type Value = {

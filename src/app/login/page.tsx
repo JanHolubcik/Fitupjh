@@ -66,11 +66,7 @@ export default function Login() {
           name="password"
         />
         {error && <div className="text-red-600">{error}</div>}
-        {loading && (
-          <>
-            <p>Please wait while we log you in...</p>
-          </>
-        )}
+ 
 
         <Button className="self-center w-32 mt-5" type="submit" isIconOnly>
           Sign In

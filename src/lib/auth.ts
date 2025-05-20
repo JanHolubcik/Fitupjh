@@ -1,9 +1,9 @@
 import credentials from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import { users } from "@/models/users";
-import { connect } from "mongoose";
 
-const { MONGODB_URI } = process.env;
+
+
 import { User, NextAuthOptions, getServerSession } from "next-auth";
 import connectDB from "@/lib/connect-db";
 
@@ -25,7 +25,7 @@ declare module "next-auth" {
 
 const authOptions: NextAuthOptions = {
   secret: process.env.SECRET,
-
+debug: true,
   providers: [
     credentials({
       name: "Credentials",
@@ -49,7 +49,7 @@ const authOptions: NextAuthOptions = {
           user.userPassword
         );
         if (!passwordMatch) throw new Error("Wrong Password");
-
+console.log(user);
         return {
           _id: user._id,
           name: user.userName,
