@@ -42,7 +42,7 @@ export const ModalFindFood = (props: props) => {
   const { addToFood } = useYourIntakeContext();
   const [food, setFood] = useState<ReturnTypeFood>([]);
   const [calculatedCalories, setCalculatedCalories] = useState<number[]>([]);
-  const { data } = useSession();
+
   const [loading, setLoading] = useState<boolean>();
 
   const getTimeOfDay = () => {
@@ -95,11 +95,9 @@ export const ModalFindFood = (props: props) => {
                     setFood([]);
                   } else {
                     setLoading(true);
-                    if (data?.user?.id) {
-                      await findInDatabase(
-                        event.target.value,
-                        data?.user?.id
-                      ).then((foundFood) => {
+
+                    await findInDatabase(event.target.value).then(
+                      (foundFood) => {
                         setFood(foundFood.food);
                         if (foundFood.food)
                           setCalculatedCalories(
@@ -107,8 +105,9 @@ export const ModalFindFood = (props: props) => {
                               return key.calories_per_100g;
                             })
                           );
-                      });
-                    }
+                      }
+                    );
+
                     setLoading(false);
                   }
                 }}
