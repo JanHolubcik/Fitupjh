@@ -70,14 +70,14 @@ export async function saveFoodInDay(
 
     const existingRecord = await SavedFood.findOne({
       day: date,
-      user_id: _id,
+      user_id: new mongoose.Types.ObjectId(_id),
     });
     if (!existingRecord) {
       console.log("Creating new food record...");
       await SavedFood.insertMany({
         savedFood: food,
         day: date,
-        user_id: _id,
+        user_id: new mongoose.Types.ObjectId(_id),
       });
     } else {
       existingRecord.savedFood = food;
@@ -96,7 +96,7 @@ export async function checkForSavedFood(date: string, user_id: string) {
 
     const existingRecord = await SavedFood.findOne({
       day: date,
-      user_id: user_id,
+      user_id: new mongoose.Types.ObjectId(user_id),
     });
 
     return existingRecord ? { savedFood: existingRecord.savedFood } : {};
