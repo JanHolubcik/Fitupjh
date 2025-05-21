@@ -43,5 +43,12 @@ class FoodClass {
   salt: number;
 }
 
-const Food = getModelForClass(FoodClass);
+const Food =
+  mongoose.models.Food ??
+  getModelForClass(FoodClass, {
+    schemaOptions: {
+      collection: "food",
+    },
+  });
+
 export { Food, FoodClass };
