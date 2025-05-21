@@ -30,7 +30,7 @@ class SavedFoodClass {
   @prop({ required: false }) // can be empty or not defined
   savedFood: foodType;
   @prop({ required: true }) //false for now, when i figure out how to make users
-  user_id: mongoose.Types.ObjectId | string;
+  user_id: mongoose.Types.ObjectId;
 }
 
 const SavedFood = getModelForClass(SavedFoodClass);

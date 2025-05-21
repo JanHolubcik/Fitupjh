@@ -1,8 +1,6 @@
 import credentials from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
-import { users } from "@/models/users";
-
-
+import { User as UserModel } from "@/models/users";
 
 import { User, NextAuthOptions, getServerSession } from "next-auth";
 import connectDB from "@/lib/connect-db";
@@ -25,7 +23,7 @@ declare module "next-auth" {
 
 const authOptions: NextAuthOptions = {
   secret: process.env.SECRET,
-debug: true,
+  debug: true,
   providers: [
     credentials({
       name: "Credentials",
@@ -37,11 +35,9 @@ debug: true,
       authorize: async (credentials) => {
         await connectDB();
 
-        const user = await users
-          .findOne({
-            userEmail: credentials?.email,
-          })
-          .select("+userPassword");
+        const user = await UserModel.findOne({
+          userEmail: credentials?.email,
+        }).select("+userPassword");
 
         if (!user) throw new Error("Wrong Email");
         const passwordMatch = await bcrypt.compare(
@@ -49,7 +45,7 @@ debug: true,
           user.userPassword
         );
         if (!passwordMatch) throw new Error("Wrong Password");
-console.log(user);
+        console.log(user);
         return {
           _id: user._id,
           name: user.userName,

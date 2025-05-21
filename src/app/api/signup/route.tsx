@@ -2,12 +2,10 @@
 import connectDB from "@/lib/connect-db";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
-import { users } from "@/models/users";
+import { User } from "@/models/users";
 
 const validateEmail = (email: string) => {
-  return email.match(
-   /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-  );
+  return email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
 };
 
 export async function POST(request: Request) {
@@ -21,20 +19,19 @@ export async function POST(request: Request) {
     );
   }
 
-  if(username.length< 2){
+  if (username.length < 2) {
     return NextResponse.json(
       { error: "User name is too long." },
       { status: 400 }
     );
   }
 
-  if (weight<0 || height < 0) {
+  if (weight < 0 || height < 0) {
     return NextResponse.json(
       { error: "Height or weight can't be negative." },
       { status: 400 }
     );
   }
-
 
   if (!validateEmail(userEmail)) {
     return NextResponse.json(
@@ -51,7 +48,7 @@ export async function POST(request: Request) {
 
     // Insert user into the collection
     console.log("Creating user record...");
-    const result = await users.insertMany({
+    const result = await User.insertMany({
       userName: username,
       userPassword: hashedPassword,
       userEmail: userEmail,
