@@ -77,18 +77,17 @@ export const ModalTimeFrame = (props: props) => {
                   } else {
                     setLoading(true);
                     if (data?.user?.id) {
-                      await findInDatabase(
-                        event.target.value,
-                        data?.user?.id
-                      ).then((foundFood) => {
-                        setFood(foundFood.food);
-                        if (foundFood.food)
-                          setCalculatedCalories(
-                            foundFood.food.map((key) => {
-                              return key.calories_per_100g;
-                            })
-                          );
-                      });
+                      await findInDatabase(event.target.value).then(
+                        (foundFood) => {
+                          setFood(foundFood.food);
+                          if (foundFood.food)
+                            setCalculatedCalories(
+                              foundFood.food.map((key) => {
+                                return key.calories_per_100g;
+                              })
+                            );
+                        }
+                      );
                     }
                     setLoading(false);
                   }
