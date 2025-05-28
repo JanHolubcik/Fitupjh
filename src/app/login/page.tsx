@@ -21,7 +21,6 @@ export default function Login() {
       redirect: false,
     });
     setLoading(false);
-    console.log("Response from signIn:", res);
     if (res?.error) {
       setError(res.error as string);
     }
@@ -66,7 +65,6 @@ export default function Login() {
           name="password"
         />
         {error && <div className="text-red-600">{error}</div>}
- 
 
         <Button className="self-center w-32 mt-5" type="submit" isIconOnly>
           Sign In

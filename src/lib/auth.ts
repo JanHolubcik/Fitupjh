@@ -20,9 +20,9 @@ declare module "next-auth" {
     } & User;
   }
 }
-
+const isProd = process.env.NODE_ENV === "production";
 const authOptions: NextAuthOptions = {
-  secret: process.env.SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   debug: true,
   providers: [
     credentials({
@@ -34,6 +34,9 @@ const authOptions: NextAuthOptions = {
       },
       authorize: async (credentials) => {
         await connectDB();
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error("Missing credentials");
+        }
 
         const user = await UserModel.findOne({
           userEmail: credentials?.email,
@@ -45,7 +48,7 @@ const authOptions: NextAuthOptions = {
           user.userPassword
         );
         if (!passwordMatch) throw new Error("Wrong Password");
-        console.log(user);
+
         return {
           _id: user._id,
           name: user.userName,
@@ -66,27 +69,33 @@ const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
 
-  cookies: {
-    sessionToken: {
-      name: `__Secure-next-auth.session-token`,
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        secure: true,
+  ...(isProd && {
+    cookies: {
+      sessionToken: {
+        name: `__Secure-next-auth.session-token`,
+        options: {
+          httpOnly: true,
+          sameSite: "lax",
+          path: "/",
+          secure: true,
+        },
       },
     },
-  },
+  }),
   callbacks: {
     async jwt({ token, user, trigger, session }) {
-      if (trigger === "update" && session?.user.weight) {
-        // Note, that `session` can be any arbitrary object, remember to validate it!
-
-        token.user = session.user;
-      }
       if (user) {
         token.user = user;
       }
+      if (trigger === "update" && session?.user.weight) {
+        // Note, that `session` can be any arbitrary object, remember to validate it!
+
+        token.user = {
+          ...(token.user ?? {}),
+          ...(session.user ?? {}),
+        };
+      }
+
       return token;
     },
     async session({ session, token }) {
