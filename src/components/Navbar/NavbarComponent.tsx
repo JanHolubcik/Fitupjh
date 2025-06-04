@@ -17,24 +17,27 @@ import { usePathname, useRouter } from "next/navigation";
 
 import React from "react";
 
-const navigationPropeties = [
-  {
-    id: 1,
-    href: "/",
-    description: "Home",
-  },
-  {
-    id: 2,
-    href: "/yourintake",
-    description: "Your intake",
-  },
-];
-
 const NavbarComponent = () => {
   const pathname = usePathname();
   const { status, data } = useSession();
   const router = useRouter();
 
+  const navigationProperties = [
+    ...(status === "authenticated"
+      ? [
+          {
+            id: 2,
+            href: "/yourintake",
+            description: "Your intake",
+          },
+          {
+            id: 2,
+            href: "/profile",
+            description: "Profile",
+          },
+        ]
+      : []),
+  ];
   const showSession = () => {
     if (status === "authenticated") {
       return (
@@ -77,11 +80,13 @@ const NavbarComponent = () => {
     <>
       <Navbar>
         <NavbarBrand>
-          <p className="font-bold text-inherit">FitUp</p>
+          <Link href="/">
+            <p className="font-bold text-inherit text-white">FitUp</p>
+          </Link>
         </NavbarBrand>
 
-        <NavbarContent className="hidden sm:flex gap-4" justify="center">
-          {navigationPropeties.map((navigationProperty) => (
+        <NavbarContent className="sm:flex gap-4" justify="center">
+          {navigationProperties.map((navigationProperty) => (
             <NavbarItem
               key={navigationProperty.id}
               isActive={pathname === navigationProperty.href ? true : false}

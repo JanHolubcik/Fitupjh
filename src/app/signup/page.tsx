@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Button,
+  Image,
   Card,
   CardBody,
   CardHeader,
@@ -13,6 +14,7 @@ import {
   Tooltip,
 } from "@nextui-org/react";
 import { FaInfoCircle } from "react-icons/fa";
+import PulsingButton from "@/components/PulsingButton/PulsingButton";
 
 export default function Signup() {
   const [username, setUsername] = useState("");
@@ -64,9 +66,8 @@ export default function Signup() {
     );
   }
 
-
   return (
-    <main className=" self-center flex min-h-screen flex-col items-center justify-between p-11 ">
+    <main className="dark flex flex-col items-center justify-start sm:p-10 p-6">
       <Card className="max-w-[500px] min-w-[400px] p-2 mt-5">
         <CardHeader className="flex flex-col items-center bg-zinc-900">
           <h1 className="text-left mt-2 w-full text-2xl font-bold">Sign up!</h1>
@@ -75,7 +76,12 @@ export default function Signup() {
           <form className="flex flex-col" onSubmit={handleSubmit}>
             <p className="m-1 ml-2 mt-4">User name </p>
             <Input
-              className="mr-1 ml-1"
+              classNames={{
+                inputWrapper:
+                  "transition-all duration-200 ring-1 ring-transparent focus-within:ring-[#00FFAA] focus-within:ring-2 shadow-md focus-within:shadow-[#00FFAA]/50",
+                input: "text-white ",
+                label: "text-white",
+              }}
               type="text"
               placeholder="Username"
               value={username}
@@ -84,7 +90,12 @@ export default function Signup() {
             />
             <p className="m-1 ml-2 mt-4">User email </p>
             <Input
-              className="mr-1 ml-1"
+              classNames={{
+                inputWrapper:
+                  "transition-all duration-200 ring-1 ring-transparent focus-within:ring-[#00FFAA] focus-within:ring-2 shadow-md focus-within:shadow-[#00FFAA]/50",
+                input: "text-white ",
+                label: "text-white",
+              }}
               type="email"
               placeholder="Email"
               value={userEmail}
@@ -93,7 +104,12 @@ export default function Signup() {
             />
             <p className="m-1 ml-2 mt-4">User password </p>
             <Input
-              className="mr-1 ml-1"
+              classNames={{
+                inputWrapper:
+                  "transition-all duration-200 ring-1 ring-transparent focus-within:ring-[#00FFAA] focus-within:ring-2 shadow-md focus-within:shadow-[#00FFAA]/50",
+                input: "text-white ",
+                label: "text-white",
+              }}
               type="password"
               placeholder="Password"
               value={password}
@@ -106,6 +122,15 @@ export default function Signup() {
                 showArrow
                 content={
                   <div className="p-1 m-1 max-w-64">
+                    <div className="flex justify-center">
+                      <Image
+                        className="object-contain"
+                        alt="Info"
+                        src="eplaining_owl.png"
+                        width={90}
+                        height={90}
+                      />
+                    </div>
                     <h1 className="bold text-center font-bold  mb-1 text-b">
                       Why do we need this information?
                     </h1>
@@ -124,7 +149,12 @@ export default function Signup() {
               </Tooltip>
             </div>
             <Input
-              className="mr-1 ml-1"
+              classNames={{
+                inputWrapper:
+                  "transition-all duration-200 ring-1 ring-transparent focus-within:ring-[#00FFAA] focus-within:ring-2 shadow-md focus-within:shadow-[#00FFAA]/50",
+                input: "text-white ",
+                label: "text-white",
+              }}
               type="number"
               min={0}
               max={250}
@@ -139,6 +169,15 @@ export default function Signup() {
                 showArrow
                 content={
                   <div className="p-1 m-1 max-w-64">
+                    <div className="flex justify-center">
+                      <Image
+                        className="object-contain"
+                        alt="Info"
+                        src="eplaining_owl.png"
+                        width={90}
+                        height={90}
+                      />
+                    </div>
                     <h1 className="bold text-center font-bold  mb-1 text-b">
                       Why do we need this information?
                     </h1>
@@ -157,7 +196,12 @@ export default function Signup() {
               </Tooltip>
             </div>
             <Input
-              className="mr-1 ml-1"
+              classNames={{
+                inputWrapper:
+                  "transition-all duration-200 ring-1 ring-transparent focus-within:ring-[#00FFAA] focus-within:ring-2 shadow-md focus-within:shadow-[#00FFAA]/50",
+                input: "text-white ",
+                label: "text-white",
+              }}
               type="number"
               placeholder="Weight"
               min={0}
@@ -167,17 +211,23 @@ export default function Signup() {
               required
             />
 
-            <Button className="self-center w-32 mt-5" type="submit" isIconOnly>
+            <PulsingButton
+              className="self-center w-32 mt-5"
+              type="submit"
+              isIconOnly
+            >
               <p>Sign up!</p>
-            </Button>
+            </PulsingButton>
             <Link
               href="/login"
-              className="text-sm self-center mt-2 text-[#888] transition duration-150 ease hover:text-white"
+              className="text-sm self-center mt-2 text-[#888] transition duration-150 ease hover:text-white hover:scale-110"
             >
               Already have an account?
             </Link>
           </form>
-          {error && <div className="text-red-600 text-center pt-5">{error}</div>}
+          {error && (
+            <div className="text-red-600 text-center pt-5">{error}</div>
+          )}
         </CardBody>
       </Card>
     </main>

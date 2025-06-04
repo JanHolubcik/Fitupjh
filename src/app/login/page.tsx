@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Link, Input, Button, Spinner } from "@nextui-org/react";
 import { signIn } from "next-auth/react";
+import PulsingButton from "@/components/PulsingButton/PulsingButton";
 
 export default function Login() {
   const [error, setError] = useState("");
@@ -42,36 +43,51 @@ export default function Login() {
   }
 
   return (
-    <section className="w-full h-screen flex flex-col items-center justify-center">
+    <section className="dark mt-20 flex flex-col items-center justify-start sm:p-10 p-6">
       <form
         className="p-6 w-full max-w-[400px] flex flex-col justify-between items-center gap-2 
         bg-zinc-900 rounded-2xl"
         onSubmit={handleSubmit}
       >
         <h1 className="mb-5 w-full text-2xl font-bold">Sign In</h1>
-        <label className="w-full text-sm ml-2">Email</label>
+        <label className="w-full text-sm ml-3 pb-1">Email</label>
         <Input
           type="email"
           placeholder="Email"
-          className="w-full    m-1"
+          classNames={{
+            inputWrapper:
+              "transition-all duration-200 ring-1 ring-transparent focus-within:ring-[#00FFAA] focus-within:ring-2 shadow-md focus-within:shadow-[#00FFAA]/50",
+            input: "text-white ",
+            label: "text-white",
+          }}
           name="email"
         />
-        <label className="w-full text-sm ml-2">Password</label>
+        <label className="w-full text-sm ml-3 pt-1 pb-1">Password</label>
 
         <Input
           type="password"
           placeholder="Password"
-          className="w-full   m-1"
+          classNames={{
+            inputWrapper:
+              "transition-all duration-200 ring-1 ring-transparent focus-within:ring-[#00FFAA] focus-within:ring-2 shadow-md focus-within:shadow-[#00FFAA]/50",
+            input: "text-white",
+            label: "text-white",
+          }}
           name="password"
         />
         {error && <div className="text-red-600">{error}</div>}
 
-        <Button className="self-center w-32 mt-5" type="submit" isIconOnly>
+        <PulsingButton
+          className="self-center w-32 mt-5"
+          type="submit"
+          isIconOnly
+          noPulsing
+        >
           Sign In
-        </Button>
+        </PulsingButton>
         <Link
           href="/signup"
-          className="text-sm text-[#888] transition duration-150 ease hover:text-white"
+          className="text-sm text-[#888] transition duration-150 ease hover:text-white hover:scale-110"
         >
           Do not have an account?
         </Link>
