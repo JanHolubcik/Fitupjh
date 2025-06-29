@@ -28,6 +28,27 @@ const ProfileInfo = () => {
   const [error, setError] = useState("");
   const [showSpinner, setShowSpinner] = useState(true); // Spinner state
 
+  const handleAutoSubmit = async (
+    newWeight = weight,
+    newHeight = height,
+    newGoal = goal
+  ) => {
+    if (newWeight && newHeight && newGoal) {
+      await getUpdateUser(Number(newHeight), Number(newWeight), newGoal).catch(
+        console.log
+      );
+      await update({
+        user: {
+          ...data?.user,
+          weight: newWeight,
+          height: newHeight,
+          goal: newGoal,
+        },
+      });
+      setEditingField(null);
+    }
+  };
+
   const handleSubmit = async () => {
     if (weight && height && goal) {
       await getUpdateUser(Number(height), Number(weight), goal).catch((err) =>
@@ -43,9 +64,20 @@ const ProfileInfo = () => {
     }
   };
 
+  const handleKeyDown = async (
+    e: React.KeyboardEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    if (e.key === "Enter") {
+      await handleAutoSubmit();
+      setEditingField(null);
+    }
+  };
+
   const canCalculate =
     data?.user?.goal && data?.user.height && data?.user.weight ? true : false;
-
+  const [editingField, setEditingField] = useState<
+    "weight" | "height" | "goal" | null
+  >(null);
   useEffect(() => {
     if (data) {
       setHeight(data?.user?.height?.toString());
@@ -71,65 +103,79 @@ const ProfileInfo = () => {
             className="transition-transform w-32 h-32 text-large m-1 self-center"
           />
           <p className="m-1 self-center ">{data?.user?.name}</p>
-          {data?.user?.weight && canCalculate && !edit.weight ? (
-            <>
-              <div className="flex justify-evenly m-1">
-                <div className="w-36 self-center flex-4">
-                  <p>Weight: {data?.user?.weight} kg</p>
-                </div>
-                <div>
-                  <Button
-                    className="bg-transparent border-none"
-                    size="sm"
-                    variant="ghost"
-                    isIconOnly
-                    onPress={() => {
-                      setEdit({ ...edit, weight: true });
-                      setWeight(data?.user?.weight?.toString());
-                    }}
+          {data?.user?.weight && canCalculate && !edit.weight && (
+            <div className="flex justify-evenly items-center m-1">
+              <div className="w-36 self-center text-center flex-4">
+                {editingField === "weight" ? (
+                  <Input
+                    type="number"
+                    value={weight}
+                    autoFocus
+                    onChange={(e) => setWeight(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    className="max-w-36"
+                  />
+                ) : (
+                  <p
+                    className="cursor-pointer"
+                    onClick={() => setEditingField("weight")}
                   >
-                    <FaPen className="text-sm text-default-400 pointer-events-none flex-shrink-0" />
-                  </Button>
-                </div>
+                    Weight: {weight} kg
+                  </p>
+                )}
               </div>
-            </>
-          ) : (
-            <>
-              <p className="self-center max-w-36 ml-3 m-1 mr-9">New weight:</p>
-              <Input
-                type="number"
-                value={weight}
-                className="self-center max-w-36 m-1"
-                endContent={
-                  <FaPen className="text-sm text-default-400 pointer-events-none flex-shrink-0" />
-                }
-                onChange={(e) => setWeight(e.target.value)}
-              />
-            </>
-          )}
 
+              {editingField === "weight" && (
+                <Button
+                  isIconOnly
+                  size="sm"
+                  variant="light"
+                  onPress={async () => {
+                    await handleAutoSubmit();
+                    setEditingField(null);
+                  }}
+                >
+                  <FaCheck className="text-success" />
+                </Button>
+              )}
+            </div>
+          )}
           {data?.user?.height && canCalculate && !edit.height ? (
-            <>
-              <div className="flex justify-evenly m-1">
-                <div className="w-36 self-center flex-4 ">
-                  <p>Height: {data?.user?.height} cm</p>
-                </div>
-                <div className=" self-center flex-2">
-                  <Button
-                    className="bg-transparent border-none"
-                    size="sm"
-                    variant="ghost"
-                    isIconOnly
-                    onPress={() => {
-                      setEdit({ ...edit, height: true });
-                      setHeight(data?.user?.height?.toString());
-                    }}
+            <div className="flex justify-evenly items-center m-1">
+              <div className="w-36 self-center text-center flex-4">
+                {editingField === "height" ? (
+                  <Input
+                    type="number"
+                    value={height}
+                    autoFocus
+                    onChange={(e) => setHeight(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    className="max-w-36"
+                  />
+                ) : (
+                  <p
+                    className="cursor-pointer"
+                    onClick={() => setEditingField("height")}
                   >
-                    <FaPen className="text-sm text-default-400 pointer-events-none flex-shrink-0" />
-                  </Button>
-                </div>
+                    Height: {height} cm
+                  </p>
+                )}
               </div>
-            </>
+
+              {editingField === "height" && (
+                <Button
+                  isIconOnly
+                  size="sm"
+                  variant="light"
+                  onPress={async () => {
+                    await handleAutoSubmit();
+                    setEditingField(null);
+                  }}
+                >
+                  <FaCheck className="text-success" />
+                </Button>
+              )}
+            </div>
           ) : (
             <>
               <p className="self-center max-w-36 ml-3 m-1  mr-10">
@@ -148,42 +194,47 @@ const ProfileInfo = () => {
               />
             </>
           )}
-          {data?.user?.goal && canCalculate && !edit.goal ? (
-            <div className="flex justify-evenly m-1">
-              <div className="w-36 self-center flex-4 ">
-                <p>goal: {data?.user?.goal} </p>
-              </div>
-              <div className=" self-center flex-2">
-                <Button
-                  className="bg-transparent border-none"
-                  size="sm"
-                  variant="ghost"
-                  isIconOnly
-                  onPress={() => {
-                    setEdit({ ...edit, goal: true });
-                    setGoal(data?.user?.goal);
+          <div className="flex justify-evenly items-center m-1">
+            <div className="w-36 self-center text-center  flex-4">
+              {editingField === "goal" ? (
+                <Select
+                  className="w-36"
+                  selectedKeys={[goal || ""]}
+                  autoFocus
+                  onKeyDown={handleKeyDown}
+                  onChange={(e) => {
+                    setGoal(e.target.value);
                   }}
                 >
-                  <FaPen className="text-sm text-default-400 pointer-events-none flex-shrink-0" />
-                </Button>
-              </div>
+                  {goals.map((g) => (
+                    <SelectItem key={g}>{g}</SelectItem>
+                  ))}
+                </Select>
+              ) : (
+                <p
+                  className="cursor-pointer"
+                  onClick={() => setEditingField("goal")}
+                >
+                  Goal: {goal}
+                </p>
+              )}
             </div>
-          ) : (
-            <>
-              <p className="self-center max-w-36 ml-3 m-1 mr-14">New goal:</p>
-              <Select
-                className="w-36 self-center m-1  mb-4"
-                onChange={(e) => setGoal(e.target.value)}
-                value={goal}
+
+            {editingField === "goal" && (
+              <Button
+                isIconOnly
+                size="sm"
+                variant="light"
+                onPress={async () => {
+                  await handleAutoSubmit();
+                  setEditingField(null);
+                }}
               >
-                {goals.map((goal) => (
-                  <SelectItem className="max-w-34 " key={goal}>
-                    {goal}
-                  </SelectItem>
-                ))}
-              </Select>
-            </>
-          )}
+                <FaCheck className="text-success" />
+              </Button>
+            )}
+          </div>
+
           {(edit.goal || edit.height || edit.weight) && (
             <>
               <p className="text-red-600 text-center mb-2">{error}</p>
