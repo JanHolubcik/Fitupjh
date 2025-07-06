@@ -12,37 +12,64 @@ import {
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { FaCheck, FaPen } from "react-icons/fa";
+import ProfileGallery from "../ProfileGallery/ProfileGallery";
 
+type pfps = string[];
+
+type Value = {
+  pfps: string[];
+};
 const goals = ["Lose weight", "Gain weight", "Stay same"];
 
-const ProfileInfo = () => {
+const ProfileInfo = (props: Value) => {
   const [edit, setEdit] = useState({
     weight: false,
     height: false,
     goal: false,
   });
+  const [showGallery, setShowGallery] = useState<boolean>(false);
   const [weight, setWeight] = useState<string>();
   const [height, setHeight] = useState<string>();
   const [goal, setGoal] = useState<string>();
+  const [pfpImage, setPfpImage] = useState<string>();
   const { data, update } = useSession();
   const [error, setError] = useState("");
   const [showSpinner, setShowSpinner] = useState(true); // Spinner state
 
+  const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
+
+  const handleSelect = (img: string) => {
+    setSelectedAvatar(img);
+    console.log("Selected image in parent:", img);
+  };
+
+  const handleConfirm = () => {
+    if (!selectedAvatar) return;
+    setPfpImage(selectedAvatar);
+    handleAutoSubmit();
+    setShowGallery(false);
+  };
+
   const handleAutoSubmit = async (
     newWeight = weight,
     newHeight = height,
-    newGoal = goal
+    newGoal = goal,
+    newPfpPicture = pfpImage
   ) => {
-    if (newWeight && newHeight && newGoal) {
-      await getUpdateUser(Number(newHeight), Number(newWeight), newGoal).catch(
-        console.log
-      );
+    if (newWeight && newHeight && newGoal && newPfpPicture) {
+      await getUpdateUser(
+        Number(newHeight),
+        Number(newWeight),
+        newGoal,
+        newPfpPicture
+      ).catch(console.log);
       await update({
         user: {
           ...data?.user,
           weight: newWeight,
           height: newHeight,
           goal: newGoal,
+          image: newPfpPicture,
         },
       });
       setEditingField(null);
@@ -50,9 +77,9 @@ const ProfileInfo = () => {
   };
 
   const handleSubmit = async () => {
-    if (weight && height && goal) {
-      await getUpdateUser(Number(height), Number(weight), goal).catch((err) =>
-        console.log(err)
+    if (weight && height && goal && pfpImage) {
+      await getUpdateUser(Number(height), Number(weight), goal, pfpImage).catch(
+        (err) => console.log(err)
       );
       await update({
         user: { ...data?.user, weight: weight, height: height, goal: goal },
@@ -83,6 +110,7 @@ const ProfileInfo = () => {
       setHeight(data?.user?.height?.toString());
       setWeight(data?.user?.weight?.toString());
       setGoal(data?.user?.goal);
+      setPfpImage(data?.user?.image ?? undefined);
     }
     const timer = setTimeout(() => {
       setShowSpinner(false);
@@ -96,12 +124,21 @@ const ProfileInfo = () => {
         <Spinner />
       ) : (
         <>
-          <Avatar
-            isBordered
-            color="secondary"
-            src="pfps/3.png"
-            className="transition-transform w-32 h-32 text-large m-1 self-center"
-          />
+          {!showGallery ? (
+            <Avatar
+              isBordered
+              color="secondary"
+              src={data?.user?.image || "pfps/3.png"}
+              className="transition-transform w-32 h-32 text-large m-1 self-center cursor-pointer"
+              onClick={() => setShowGallery(true)}
+            />
+          ) : (
+            <ProfileGallery
+              onSelect={handleSelect}
+              onConfirm={handleConfirm}
+              images={props.pfps}
+            />
+          )}
           <p className="m-1 self-center ">{data?.user?.name}</p>
           {data?.user?.weight && canCalculate && !edit.weight && (
             <div className="flex justify-evenly items-center m-1">
