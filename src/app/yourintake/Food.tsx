@@ -19,7 +19,7 @@ import {
   FaSearch,
 } from "react-icons/fa";
 import { add, format, isSameDay } from "date-fns";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import ProgressBars from "@/components/ProgressBars/ProgressBars";
 import { useSession } from "next-auth/react";
 import { label } from "framer-motion/client";
@@ -33,7 +33,6 @@ export default function Food() {
     useYourIntakeContext();
 
   const { data } = useSession();
-  const recommendedCalories = useRef<number>(0);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const [showSpinner, setShowSpinner] = useState(true); // Spinner state
@@ -49,22 +48,23 @@ export default function Food() {
     return calorieSUm;
   };
 
+  const recommendedCaloriesValue = useMemo(() => {
+    if (data?.user?.weight && data?.user?.height) {
+      return (
+        (10 * data?.user?.weight + 6.25 * data?.user?.height - 5 * 25 + 5) * 1.2
+      );
+    } else {
+      return 0;
+    }
+  }, [data?.user?.height, data?.user?.weight]);
+
   useEffect(() => {
-    const recomendedCalories = () => {
-      if (data?.user?.weight && data?.user?.height) {
-        recommendedCalories.current =
-          (10 * data?.user?.weight + 6.25 * data?.user?.height - 5 * 25 + 5) *
-          1.2;
-      } else {
-        recommendedCalories.current = 0;
-      }
-    };
     const timer = setTimeout(() => {
       setShowSpinner(false);
     }, 500);
-    recomendedCalories();
+
     return () => clearTimeout(timer);
-  }, [data?.user?.height, data?.user?.weight]);
+  }, []);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-11">
@@ -96,14 +96,12 @@ export default function Food() {
                 size="lg"
                 value={caloriesSum()}
                 color={
-                  caloriesSum() > recommendedCalories.current
+                  caloriesSum() > recommendedCaloriesValue
                     ? "warning"
                     : "danger"
                 }
-                label={
-                  caloriesSum() + "/" + recommendedCalories.current + " Kcal"
-                }
-                maxValue={recommendedCalories.current}
+                label={caloriesSum() + "/" + recommendedCaloriesValue + " Kcal"}
+                maxValue={recommendedCaloriesValue}
                 showValueLabel={true}
               />
 
