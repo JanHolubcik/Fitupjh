@@ -33,6 +33,25 @@ type timeOfDay = "breakfast" | "lunch" | "dinner";
 
 const timeOfDay = ["breakfast", "lunch", "dinner"];
 
+const calculateRecommendedMacros = (weight: number, height: number): macros => {
+  const calories = (10 * weight + 6.25 * height - 5 * 25 + 5) * 1.2; // BMR × sedentary activity
+
+  const macros = {
+    calories: Math.round(calories),
+    fat: calories * 0.2,
+    protein: Math.round(1.2 * weight),
+    fiber: 38,
+    salt: 2.3,
+  };
+
+  return {
+    ...macros,
+    carbohydrates: Math.round((calories - macros.protein + macros.fat) / 4),
+    fat: Math.round(macros.fat / 9),
+    sugar: Math.round((calories * 0.1) / 4),
+  };
+};
+
 const ProgressBars = (props: Value) => {
   const { savedFood } = useYourIntakeContext();
 
@@ -71,16 +90,7 @@ const ProgressBars = (props: Value) => {
             salt: 2.3,
           } as macros;
           //set remaining macros to g
-          setRecommendedDailyMacros({
-            ...macros,
-            carbohydrates: Number(
-              Math.round((calories - macros.protein + macros.fat) / 4).toFixed(
-                2
-              )
-            ),
-            fat: Number(Math.round(macros.fat / 9).toFixed(2)),
-            sugar: Number(((calories * 0.1) / 4).toFixed(2)),
-          });
+          setRecommendedDailyMacros(calculateRecommendedMacros(weight, height));
           if (data && savedFood) {
             setCalculatedMacros(() => {
               if (savedFood) {
