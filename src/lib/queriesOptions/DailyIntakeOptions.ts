@@ -4,8 +4,13 @@ export const DailyIntakeOptions = (userId: string, date: string) =>
   queryOptions({
     queryKey: ["savedFood", userId, date],
     queryFn: async () => {
+      const isServer = typeof window === "undefined";
+      const baseUrl = isServer
+        ? process.env.NEXT_PUBLIC_BASE_URL // full URL on server
+        : ""; // relative on client
+
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/saveFood?date=${date}&user_id=${userId}`,
+        `${baseUrl}/api/saveFood?date=${date}&user_id=${userId}`,
         { cache: "no-store" }
       );
 
