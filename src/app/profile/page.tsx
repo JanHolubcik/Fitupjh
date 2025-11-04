@@ -12,7 +12,7 @@ import { DailyIntakeOptions } from "@/lib/queriesOptions/DailyIntakeOptions";
 import { getServerSession } from "next-auth";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
-export async function getProfileServerImages(): Promise<string[]> {
+async function getProfileServerImages(): Promise<string[]> {
   const dir = path.join(process.cwd(), "public", "pfps");
   const files = fs.readdirSync(dir);
 
