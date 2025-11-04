@@ -52,7 +52,7 @@ const calculateRecommendedMacros = (weight: number, height: number): macros => {
   };
 };
 
-const ProgressBars = (props: Value) => {
+const ProgressBars = () => {
   const { savedFood } = useYourIntakeContext();
 
   const [calculatedMacros, setCalculatedMacros] = useState<macros>({

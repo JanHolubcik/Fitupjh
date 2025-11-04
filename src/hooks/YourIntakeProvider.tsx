@@ -1,7 +1,15 @@
+"use client";
+import { DailyIntakeOptions } from "@/lib/queriesOptions/DailyIntakeOptions";
 import { saveFood } from "@/lib/YourIntake/saveFoodToDatabase-db";
 import { getSavedFood } from "@/lib/YourIntake/search-db";
 import { foodType } from "@/types/foodTypes";
 import { useDisclosure } from "@nextui-org/react";
+import {
+  hydrate,
+  QueryClient,
+  useMutation,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import { format } from "date-fns";
 import { useSession } from "next-auth/react";
 
@@ -36,50 +44,44 @@ type YourIntakeType = {
   ) => void;
 };
 
-const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+const YourIntakeProvider: React.FC<{
+  children: React.ReactNode;
+  date: string;
+  userID: string;
+}> = ({ children, date, userID }) => {
   const { status, data } = useSession();
   const currentDate = useRef(new Date());
 
   const isLast = useRef(false);
-  const [savedFood, setSavedFood] = useState<foodType>({
-    breakfast: [],
-    lunch: [],
-    dinner: [],
-  });
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  useLayoutEffect(() => {
-    if (data?.user?.id) {
-      const formattedDate = format(currentDate.current, "dd.MMM.yyyy");
-      const fetchFood = async () => {
-        const dataD: foodType = await fetch(
-          `/api/saveFood?date=${formattedDate}&user_id=${data?.user?.id}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        ).then(async (res) => {
-          if (res.ok) {
-            return await res.json();
-          }
-        });
-        setSavedFood(dataD);
-      };
-      fetchFood();
-    }
-    /*
-      getSavedFood(
-        format(currentDate.current, "dd.MMM.yyyy"),
-        data?.user?.id
-      ).then((res) => {
-        if (res.savedFood) {
-          setSavedFood(res.savedFood);
+  const { data: initialSavedFood } = useSuspenseQuery(
+    DailyIntakeOptions(userID, date)
+  );
+
+  const [savedFood, setSavedFood] = useState<foodType>(
+    initialSavedFood || { breakfast: [], lunch: [], dinner: [] }
+  );
+
+  const fetchFoodMutation = useMutation({
+    mutationFn: async (date: Date): Promise<foodType> => {
+      if (!data?.user?.id) throw new Error("No user ID");
+
+      const formattedDate = format(date, "dd.MMM.yyyy");
+
+      const res = await fetch(
+        `/api/saveFood?date=${formattedDate}&user_id=${data.user.id}`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
         }
-      });*/
-  }, [data]);
+      );
+
+      if (!res.ok) throw new Error("Failed to fetch food");
+      return res.json();
+    },
+    onSuccess: (dataD) => {
+      setSavedFood(dataD);
+    },
+  });
 
   useEffect(() => {
     if (
@@ -88,7 +90,6 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
       savedFood.lunch.length > 0 ||
       isLast.current
     ) {
-      // Send data to the database only if the foods array is not empty
       const sendDataToDB = async () => {
         try {
           if (status !== "unauthenticated" && data?.user?.id) {
@@ -101,8 +102,6 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
               },
               body: JSON.stringify({ date, savedFood, userID }),
             });
-
-            //const response = await res.json();
 
             saveFood(
               format(currentDate.current, "dd.MMM.yyyy"),
@@ -144,26 +143,7 @@ const YourIntakeProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const setNewDateAndGetFood = (date: Date) => {
     currentDate.current = date;
-    const formattedDate = format(currentDate.current, "dd.MMM.yyyy");
-    if (data?.user?.id) {
-      const fetchFood = async () => {
-        const dataD: foodType = await fetch(
-          `/api/saveFood?date=${formattedDate}&user_id=${data?.user?.id}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        ).then(async (res) => {
-          if (res.ok) {
-            return await res.json();
-          }
-        });
-        setSavedFood(dataD);
-      };
-      fetchFood();
-    }
+    fetchFoodMutation.mutate(date);
   };
 
   const addToFood = (

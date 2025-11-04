@@ -5,7 +5,6 @@ import { useYourIntakeContext } from "@/hooks/YourIntakeContext";
 import {
   Button,
   CircularProgress,
-  Input,
   Image,
   Spinner,
   Tooltip,
@@ -18,11 +17,11 @@ import {
   FaInfoCircle,
   FaSearch,
 } from "react-icons/fa";
-import { add, format, isSameDay } from "date-fns";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { add, format } from "date-fns";
+import React, { useEffect, useMemo, useState } from "react";
 import ProgressBars from "@/components/ProgressBars/ProgressBars";
 import { useSession } from "next-auth/react";
-import { label } from "framer-motion/client";
+
 import { ModalFindFood } from "@/components/Findfood/components/ModalFindFood";
 const timeFrames = ["breakfast", "lunch", "dinner"];
 
@@ -177,7 +176,7 @@ export default function Food() {
             Click to find food...
           </Button>
 
-          <ProgressBars date={currentDate.current} />
+          <ProgressBars />
 
           {timeFrames.map((key) => (
             <TimeFrame key={key} timeOfDay={key as timeOfDay} />

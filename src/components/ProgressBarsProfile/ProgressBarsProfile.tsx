@@ -1,7 +1,9 @@
 "use client";
 
+import { DailyIntakeOptions } from "@/lib/queriesOptions/DailyIntakeOptions";
 import { foodType } from "@/types/foodTypes";
 import { Progress } from "@nextui-org/react";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -11,6 +13,25 @@ type ValuePiece = Date | null;
 type Value = {
   date: ValuePiece | [ValuePiece, ValuePiece];
 };
+
+export type FoodItem = {
+  calories: number;
+  carbohydrates: number;
+  fat: number;
+  fiber: number;
+  protein: number;
+  salt: number;
+  sugar: number;
+};
+
+type MacroKey =
+  | "calories"
+  | "carbohydrates"
+  | "fat"
+  | "fiber"
+  | "protein"
+  | "salt"
+  | "sugar";
 
 type macros = {
   calories: number;
@@ -23,7 +44,56 @@ type macros = {
 };
 type timeOfDay = "breakfast" | "lunch" | "dinner";
 
-const timeOfDay = ["breakfast", "lunch", "dinner"];
+const timeOfDay: timeOfDay[] = ["breakfast", "lunch", "dinner"];
+
+function calculateRecommendedMacros(weight: number, height: number) {
+  const calories = (10 * weight + 6.25 * height - 5 * 25 + 5) * 1.2;
+
+  const base = {
+    calories: Math.round(calories),
+    fat: calories * 0.2,
+    protein: Number(Math.round(1.2 * weight).toFixed(2)),
+    fiber: 38,
+    salt: 2.3,
+  };
+
+  return {
+    ...base,
+    carbohydrates: Number(
+      Math.round((calories - base.protein + base.fat) / 4).toFixed(2)
+    ),
+    fat: Number((base.fat / 9).toFixed(2)),
+    sugar: Number(((calories * 0.1) / 4).toFixed(2)),
+  };
+}
+
+type MacroTotals = Record<MacroKey, number>;
+
+export function calculateConsumedMacros(fetchedData: foodType): MacroTotals {
+  const totals: MacroTotals = {
+    calories: 0,
+    carbohydrates: 0,
+    fat: 0,
+    fiber: 0,
+    protein: 0,
+    salt: 0,
+    sugar: 0,
+  };
+
+  for (const slot of timeOfDay) {
+    for (const item of fetchedData[slot]) {
+      (Object.keys(totals) as MacroKey[]).forEach((macro) => {
+        totals[macro] += item[macro];
+      });
+    }
+  }
+
+  (Object.keys(totals) as MacroKey[]).forEach((macro) => {
+    totals[macro] = Number(totals[macro].toFixed(2));
+  });
+
+  return totals;
+}
 
 const ProgressBarsProfile = (props: Value) => {
   const [calculatedMacros, setCalculatedMacros] = useState<macros>({
@@ -45,116 +115,25 @@ const ProgressBarsProfile = (props: Value) => {
     salt: 0,
   });
 
-  const { data } = useSession();
-  useEffect(() => {
-    if (props.date && data?.user?.id) {
-      const formattedDate = format(props.date as Date, "dd.MMM.yyyy");
-      const fetchFood = async () =>
-        fetch(`/api/saveFood?date=${formattedDate}&user_id=${data?.user?.id}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }).then(async (res) => {
-          const fetchedData: foodType = await res.json();
-          if (data) {
-            const weight = data.user?.weight;
-            const height = data.user?.height;
-            if (weight && height) {
-              const calories = (10 * weight + 6.25 * height - 5 * 25 + 5) * 1.2;
-              const macros = {
-                calories: Math.round(calories), //for now age is fixed to 25 and calories are calculated for men and sedentary lifestyle
-                fat: calories * 0.2,
-                protein: Number(Math.round(1.2 * weight).toFixed(2)),
-                fiber: 38,
-                salt: 2.3,
-              } as macros;
-              //set remaining macros to g
-              setRecommendedDailyMacros({
-                ...macros,
-                carbohydrates: Number(
-                  Math.round(
-                    (calories - macros.protein + macros.fat) / 4
-                  ).toFixed(2)
-                ),
-                fat: Number(Math.round(macros.fat / 9).toFixed(2)),
-                sugar: Number(((calories * 0.1) / 4).toFixed(2)),
-              });
-              if (data && fetchedData) {
-                setCalculatedMacros(() => {
-                  if (fetchedData) {
-                    const savedMacros = {
-                      calories: 0,
-                      carbohydrates: 0,
-                      fat: 0,
-                      fiber: 0,
-                      protein: 0,
-                      salt: 0,
-                      sugar: 0,
-                    };
-                    timeOfDay.forEach((value) => {
-                      const timeInDaySavedMacro = fetchedData[
-                        value as timeOfDay
-                      ].reduce(
-                        (acc, item) => {
-                          acc.calories += item.calories;
-                          acc.carbohydrates += item.carbohydrates;
-                          acc.fat += item.fat;
-                          acc.fiber += item.fiber;
-                          acc.protein += item.protein;
-                          acc.salt += item.salt;
-                          acc.sugar += item.sugar;
-                          return acc;
-                        },
-                        {
-                          calories: 0,
-                          carbohydrates: 0,
-                          fat: 0,
-                          fiber: 0,
-                          protein: 0,
-                          salt: 0,
-                          sugar: 0,
-                        }
-                      );
+  const formattedDate = props.date
+    ? format(props.date as Date, "dd.MMM.yyyy")
+    : null;
 
-                      Object.keys(savedMacros).forEach((key) => {
-                        const keyT = key as keyof typeof macros;
-                        savedMacros[keyT] += timeInDaySavedMacro[keyT];
-                      });
-                    });
-                    //savedMacros.calories = Math.round;
-                    Object.keys(savedMacros).forEach((key) => {
-                      const keyT = key as keyof typeof macros;
-                      savedMacros[keyT] = Number(savedMacros[keyT].toFixed(2));
-                    });
-                    return savedMacros;
-                  }
-                  return {
-                    calories: 0,
-                    carbohydrates: 0,
-                    fat: 0,
-                    fiber: 0,
-                    protein: 0,
-                    salt: 0,
-                    sugar: 0,
-                  };
-                });
-              } else
-                setCalculatedMacros({
-                  calories: 0,
-                  carbohydrates: 0,
-                  fat: 0,
-                  fiber: 0,
-                  protein: 0,
-                  salt: 0,
-                  sugar: 0,
-                });
-            }
-          }
-        });
-      fetchFood();
-    }
-  }, [data, props.date]);
+  const { data } = useSession();
+  const user = data?.user;
+  const { data: savedFood } = useSuspenseQuery(
+    DailyIntakeOptions(user?.id!, formattedDate!)
+  );
+
+  useEffect(() => {
+    if (!user?.weight || !user?.height) return;
+
+    const rec = calculateRecommendedMacros(user.weight, user.height);
+    const cons = calculateConsumedMacros(savedFood);
+
+    setRecommendedDailyMacros(rec);
+    setCalculatedMacros(cons);
+  }, [user?.weight, user?.height, savedFood, formattedDate]);
 
   return (
     <div className="flex flex-col min-w-96">

@@ -115,7 +115,7 @@ const NavbarComponent = () => {
               className="transition-transform"
               color="secondary"
               size="sm"
-              src="pfps/3.png"
+              src={data.user?.image || "pfps/3.png"}
             />
           ) : (
             <Link href="/signup">
