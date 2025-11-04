@@ -14,14 +14,19 @@ export async function getUser() {
   }
 }
 
-export async function updateUser(height: number, weight: number, goal: string) {
+export async function updateUser(
+  height: number,
+  weight: number,
+  goal: string,
+  image: string
+) {
   try {
     await connectDB();
     const user = await User.updateOne(
       {
         userEmail: "Janko@manko.sk",
       },
-      { $set: { height: height, weight: weight, goal: goal } }
+      { $set: { height: height, weight: weight, goal: goal, image: image } }
     );
 
     return user;

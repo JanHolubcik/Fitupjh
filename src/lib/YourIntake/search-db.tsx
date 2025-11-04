@@ -30,11 +30,14 @@ export const getSavedUser = async () => {
 export const getUpdateUser = async (
   height: number,
   weight: number,
-  goal: string
+  goal: string,
+  image: string
 ) => {
-  const user = await updateUser(height, weight, goal).then((response) => {
-    return response;
-  });
+  const user = await updateUser(height, weight, goal, image).then(
+    (response) => {
+      return response;
+    }
+  );
 
   return user;
 };

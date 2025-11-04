@@ -4,6 +4,7 @@
         "Food",
         "Yourintake",
         "Database",
-        "users"
+        "users",
+        "Tanstack query"
     ]
 }
