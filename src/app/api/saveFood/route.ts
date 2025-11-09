@@ -2,14 +2,7 @@ import { getSavedFood } from "@/lib/YourIntake/search-db";
 import { NextRequest, NextResponse } from "next/server";
 import { saveFoodInDay } from "@/lib/food-db";
 
-interface GetSavedFood {
-  date: string;
-  user_id: string;
-}
-// Rest api
 export async function GET(req: NextRequest) {
-  // Get data from your database
-
   const date = req.nextUrl.searchParams.get("date");
   const user_id = req.nextUrl.searchParams.get("user_id");
 

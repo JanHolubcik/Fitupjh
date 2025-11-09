@@ -3,7 +3,7 @@
 import { checkForSavedFood, getFood } from "../food-db";
 import { getUser, updateUser } from "../user-db";
 
-export const findInDatabase = async (searchValue: string) => {
+export const searchFood = async (searchValue: string) => {
   const food = await getFood(searchValue).then((response) => {
     return response;
   });
@@ -17,14 +17,6 @@ export const getSavedFood = async (date: string, user_id: string) => {
   });
 
   return food;
-};
-
-export const getSavedUser = async () => {
-  const user = await getUser().then((response) => {
-    return response;
-  });
-
-  return user;
 };
 
 export const getUpdateUser = async (

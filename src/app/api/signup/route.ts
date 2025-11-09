@@ -43,11 +43,8 @@ export async function POST(request: Request) {
   try {
     await connectDB();
 
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Insert user into the collection
-    console.log("Creating user record...");
     const result = await User.insertMany({
       userName: username,
       userPassword: hashedPassword,
