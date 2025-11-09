@@ -1,6 +1,4 @@
-"use client";
-import { Image, Link, Tooltip } from "@nextui-org/react";
-import { FaInfoCircle } from "react-icons/fa";
+import { Image, Link } from "@nextui-org/react";
 
 export default function Home() {
   return (

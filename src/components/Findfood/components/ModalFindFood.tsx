@@ -1,5 +1,5 @@
 import { useYourIntakeContext } from "@/hooks/YourIntakeContext";
-import { findInDatabase } from "@/lib/YourIntake/search-db";
+import { searchFood } from "@/lib/YourIntake/search-db";
 import {
   Button,
   Input,
@@ -96,17 +96,15 @@ export const ModalFindFood = (props: props) => {
                   } else {
                     setLoading(true);
 
-                    await findInDatabase(event.target.value).then(
-                      (foundFood) => {
-                        setFood(foundFood.food);
-                        if (foundFood.food)
-                          setCalculatedCalories(
-                            foundFood.food.map((key) => {
-                              return key.calories_per_100g;
-                            })
-                          );
-                      }
-                    );
+                    await searchFood(event.target.value).then((foundFood) => {
+                      setFood(foundFood.food);
+                      if (foundFood.food)
+                        setCalculatedCalories(
+                          foundFood.food.map((key) => {
+                            return key.calories_per_100g;
+                          })
+                        );
+                    });
 
                     setLoading(false);
                   }

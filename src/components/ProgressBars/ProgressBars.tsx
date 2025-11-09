@@ -1,7 +1,7 @@
 "use client";
 import { useYourIntakeContext } from "@/hooks/YourIntakeContext";
 import YourIntakeProvider from "@/hooks/YourIntakeProvider";
-import { saveFood } from "@/lib/YourIntake/saveFoodToDatabase-db";
+import { saveFood } from "@/lib/YourIntake/save-db";
 import { getSavedFood } from "@/lib/YourIntake/search-db";
 import { SavedFood } from "@/models/savedFood";
 import { foodType } from "@/types/foodTypes";

@@ -1,18 +1,30 @@
 import { User } from "@/models/users";
 import connectDB from "./connect-db";
 
-export async function getUser() {
+export async function getUser(email: string) {
   try {
     await connectDB();
     const user = await User.findOne({
-      userEmail: "Janko@manko.sk",
-    }).select("+userPassword");
-
+      userEmail: email,
+    });
     return user;
   } catch (error) {
     return { error };
   }
 }
+
+// export async function getUser(email: string) {
+//   try {
+//     await connectDB();
+//     const user = await User.findOne({
+//       userEmail: "Janko@manko.sk",
+//     }).select("+userPassword");
+
+//     return user;
+//   } catch (error) {
+//     return { error };
+//   }
+// }
 
 export async function updateUser(
   height: number,

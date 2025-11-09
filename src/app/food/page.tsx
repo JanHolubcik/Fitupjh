@@ -1,7 +1,7 @@
 "use client";
 
 import FoodInfo from "@/components/FoodInfo";
-import { saveFood } from "@/lib/YourIntake/saveFoodToDatabase-db";
+import { saveFood } from "@/lib/YourIntake/save-db";
 
 import { Button, Input } from "@nextui-org/react";
 import { useState } from "react";

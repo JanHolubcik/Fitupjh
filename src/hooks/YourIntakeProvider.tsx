@@ -1,6 +1,6 @@
 "use client";
 import { DailyIntakeOptions } from "@/lib/queriesOptions/DailyIntakeOptions";
-import { saveFood } from "@/lib/YourIntake/saveFoodToDatabase-db";
+import { saveFood } from "@/lib/YourIntake/save-db";
 import { getSavedFood } from "@/lib/YourIntake/search-db";
 import { foodType } from "@/types/foodTypes";
 import { useDisclosure } from "@nextui-org/react";
