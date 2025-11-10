@@ -20,10 +20,10 @@ export const getSavedFood = async (date: string, user_id: string) => {
 };
 
 export const getUpdateUser = async (
-  height: number,
-  weight: number,
-  goal: string,
-  image: string
+  height?: number,
+  weight?: number,
+  goal?: string,
+  image?: string
 ) => {
   const user = await updateUser(height, weight, goal, image).then(
     (response) => {

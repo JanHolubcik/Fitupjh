@@ -1,4 +1,4 @@
-import { User } from "@/models/users";
+import { User, UsersClass } from "@/models/users";
 import connectDB from "./connect-db";
 
 export async function getUser(email: string) {
@@ -27,19 +27,34 @@ export async function getUser(email: string) {
 // }
 
 export async function updateUser(
-  height: number,
-  weight: number,
-  goal: string,
-  image: string
+  height?: number,
+  weight?: number,
+  goal?: string,
+  image?: string,
+  email?: string
 ) {
   try {
     await connectDB();
-    const user = await User.updateOne(
-      {
-        userEmail: "Janko@manko.sk",
-      },
-      { $set: { height: height, weight: weight, goal: goal, image: image } }
-    );
+
+    const updateFields: Partial<UsersClass> = {};
+
+    if (height !== undefined && height !== null) updateFields.height = height;
+    if (weight !== undefined && weight !== null) updateFields.weight = weight;
+    if (
+      goal === "lose weight" ||
+      goal === "gain weight" ||
+      goal === "remain same"
+    ) {
+      updateFields.goal = goal;
+    }
+    if (image) updateFields.image = image;
+    if (email) updateFields.userEmail = email;
+
+    if (Object.keys(updateFields).length === 0) {
+      return { message: "No fields to update" };
+    }
+
+    const user = await User.updateOne({ $set: updateFields });
 
     return user;
   } catch (error) {
