@@ -18,18 +18,3 @@ export const getSavedFood = async (date: string, user_id: string) => {
 
   return food;
 };
-
-export const getUpdateUser = async (
-  height?: number,
-  weight?: number,
-  goal?: string,
-  image?: string
-) => {
-  const user = await updateUser(height, weight, goal, image).then(
-    (response) => {
-      return response;
-    }
-  );
-
-  return user;
-};
