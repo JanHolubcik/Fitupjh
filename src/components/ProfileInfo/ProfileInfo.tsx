@@ -13,8 +13,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { FaCheck, FaPen } from "react-icons/fa";
 import ProfileGallery from "../ProfileGallery/ProfileGallery";
-
-type pfps = string[];
+import { useMutation } from "@tanstack/react-query";
 
 type Value = {
   pfps: string[];
@@ -27,6 +26,25 @@ const ProfileInfo = (props: Value) => {
     height: false,
     goal: false,
   });
+
+  const updateUserMutation = useMutation({
+    mutationFn: async (payload: {
+      email: string;
+      height?: number;
+      weight?: number;
+      goal?: string;
+      image?: string;
+    }) => {
+      const res = await fetch("/api/user", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error("Update failed");
+      return res.json();
+    },
+  });
+
   const [showGallery, setShowGallery] = useState<boolean>(false);
   const [weight, setWeight] = useState<string>();
   const [height, setHeight] = useState<string>();
@@ -54,15 +72,17 @@ const ProfileInfo = (props: Value) => {
     newWeight = weight,
     newHeight = height,
     newGoal = goal,
-    newPfpPicture = pfpImage
+    newPfpPicture = pfpImage,
+    email = data?.user?.email
   ) => {
     if (newWeight && newHeight && newGoal && newPfpPicture) {
-      await getUpdateUser(
-        Number(newHeight),
-        Number(newWeight),
-        newGoal,
-        newPfpPicture
-      ).catch(console.log);
+      updateUserMutation.mutate({
+        email: email || "",
+        weight: Number(newWeight),
+        height: Number(newHeight),
+        goal: newGoal,
+        image: newPfpPicture,
+      });
       await update({
         user: {
           ...data?.user,
@@ -73,21 +93,6 @@ const ProfileInfo = (props: Value) => {
         },
       });
       setEditingField(null);
-    }
-  };
-
-  const handleSubmit = async () => {
-    if (weight && height && goal && pfpImage) {
-      await getUpdateUser(Number(height), Number(weight), goal, pfpImage).catch(
-        (err) => console.log(err)
-      );
-      await update({
-        user: { ...data?.user, weight: weight, height: height, goal: goal },
-      });
-      setEdit({ weight: false, height: false, goal: false });
-      setError("");
-    } else {
-      setError("Please fill out all inputs");
     }
   };
 
@@ -271,19 +276,6 @@ const ProfileInfo = (props: Value) => {
               </Button>
             )}
           </div>
-
-          {(edit.goal || edit.height || edit.weight) && (
-            <>
-              <p className="text-red-600 text-center mb-2">{error}</p>
-              <Button
-                onPress={() => handleSubmit()}
-                size="sm"
-                className="max-w-12 rounded-large self-center "
-              >
-                <FaCheck color="#08ca1f" size={15} />
-              </Button>
-            </>
-          )}
         </>
       )}
     </div>

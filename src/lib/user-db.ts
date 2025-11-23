@@ -1,5 +1,6 @@
 import { User, UsersClass } from "@/models/users";
 import connectDB from "./connect-db";
+import mongoose from "mongoose";
 
 export async function getUser(email: string) {
   try {
@@ -27,6 +28,7 @@ export async function getUser(email: string) {
 // }
 
 export async function updateUser(
+  userID: mongoose.Types.ObjectId,
   height?: number,
   weight?: number,
   goal?: string,
@@ -54,8 +56,7 @@ export async function updateUser(
       return { message: "No fields to update" };
     }
 
-    const user = await User.updateOne({ $set: updateFields });
-
+    const user = await User.updateOne({ _id: userID }, { $set: updateFields });
     return user;
   } catch (error) {
     return { error };

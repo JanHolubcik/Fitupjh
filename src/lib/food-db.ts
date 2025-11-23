@@ -69,7 +69,6 @@ export async function saveFoodInDay(
       user_id: new mongoose.Types.ObjectId(_id),
     });
     if (!existingRecord) {
-      console.log("Creating new food record...");
       await SavedFood.insertMany({
         savedFood: food,
         day: date,
@@ -77,11 +76,9 @@ export async function saveFoodInDay(
       });
     } else {
       existingRecord.savedFood = food;
-      console.log("Updating food record...");
       await existingRecord.save();
     }
   } catch (error) {
-    console.log(error);
     return { error };
   }
 }
@@ -97,7 +94,6 @@ export async function checkForSavedFood(date: string, user_id: string) {
 
     return existingRecord ? { savedFood: existingRecord.savedFood } : {};
   } catch (error) {
-    console.log(error);
     return { error };
   }
 }

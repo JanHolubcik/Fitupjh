@@ -6,7 +6,7 @@ export const DailyIntakeOptions = (userId: string, date: string) =>
     queryFn: async () => {
       const isServer = typeof window === "undefined";
       const baseUrl = isServer
-        ? process.env.NEXT_PUBLIC_BASE_URL // full URL on server
+        ? process.env.NEXTAUTH_URL // full URL on server
         : ""; // relative on client
 
       const res = await fetch(

@@ -15,10 +15,8 @@ export async function POST(req: NextRequest) {
       return new NextResponse("User not found", { status: 404 });
     }
 
-    //if for some reason password got into response
     const safeUser = {
       ...user,
-      userPassword: undefined,
     };
 
     return NextResponse.json(safeUser);
@@ -29,12 +27,8 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function Update(req: NextRequest) {
-  const email = req.nextUrl.searchParams.get("email");
-  const height = req.nextUrl.searchParams.get("height");
-  const weight = req.nextUrl.searchParams.get("weight");
-  const goal = req.nextUrl.searchParams.get("goal");
-  const image = req.nextUrl.searchParams.get("image");
+export async function PATCH(req: NextRequest) {
+  const { email, height, weight, goal, image } = await req.json();
 
   if (!email) {
     return new NextResponse("Email was not specified", { status: 400 });
@@ -46,10 +40,11 @@ export async function Update(req: NextRequest) {
   }
 
   const updatedUser = await updateUser(
-    height ? Number(height) : undefined,
-    weight ? Number(weight) : undefined,
-    goal || undefined,
-    image || undefined,
+    user._id,
+    height,
+    weight,
+    goal,
+    image,
     email
   );
 
