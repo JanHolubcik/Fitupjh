@@ -49,7 +49,13 @@ export async function POST(req: Request) {
     return new Response("Missing or invalid date", { status: 400 });
   }
 
-  if (!savedFood || !Array.isArray(savedFood)) {
+  if (
+    !savedFood ||
+    typeof savedFood !== "object" ||
+    !Array.isArray(savedFood.breakfast) ||
+    !Array.isArray(savedFood.lunch) ||
+    !Array.isArray(savedFood.dinner)
+  ) {
     return new Response("Missing or invalid savedFood", { status: 400 });
   }
 
