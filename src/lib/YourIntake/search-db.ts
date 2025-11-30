@@ -1,7 +1,6 @@
 "use server";
 
 import { checkForSavedFood, getFood } from "../food-db";
-import { getUser, updateUser } from "../user-db";
 
 export const searchFood = async (searchValue: string) => {
   const food = await getFood(searchValue).then((response) => {
