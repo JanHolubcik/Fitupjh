@@ -2,7 +2,7 @@
 import { DailyIntakeOptions } from "@/lib/queriesOptions/DailyIntakeOptions";
 import { saveFood } from "@/lib/YourIntake/save-db";
 import { getSavedFood } from "@/lib/YourIntake/search-db";
-import { foodType } from "@/types/foodTypes";
+import { foodType } from "@/types/Types";
 import { useDisclosure } from "@nextui-org/react";
 import {
   hydrate,

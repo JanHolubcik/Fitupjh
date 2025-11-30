@@ -26,7 +26,7 @@ const NavbarComponent = () => {
     ...(status === "authenticated"
       ? [
           {
-            id: 2,
+            id: 1,
             href: "/yourintake",
             description: "Your intake",
           },

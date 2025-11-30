@@ -1,4 +1,3 @@
-import ProgressBars from "@/components/ProgressBars/ProgressBars";
 import "./calendar.css"; // styling only for calendar
 
 import fs from "fs";

@@ -7,13 +7,11 @@ import {
   Tooltip,
   Image,
 } from "@nextui-org/react";
-import { SetStateAction, useState } from "react";
+
 import { FaPlusCircle, FaTimes } from "react-icons/fa";
 
 import { useDisclosure } from "@nextui-org/react";
 
-import { FlattenMaps, ObjectId, Types } from "mongoose";
-import { FoodClass } from "@/models/Food";
 import { ModalTimeFrame } from "./components/ModalTimeFrame";
 import { useYourIntakeContext } from "@/hooks/YourIntakeContext";
 

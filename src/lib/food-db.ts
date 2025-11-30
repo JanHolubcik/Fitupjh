@@ -1,4 +1,4 @@
-import { foodType } from "@/types/foodTypes";
+import { foodType } from "@/types/Types";
 import connectDB from "./connect-db";
 import { stringToObjectId } from "./utils";
 import { Food } from "@/models/Food";
@@ -93,6 +93,30 @@ export async function checkForSavedFood(date: string, user_id: string) {
     });
 
     return existingRecord ? { savedFood: existingRecord.savedFood } : {};
+  } catch (error) {
+    return { error };
+  }
+}
+
+export async function checkForSavedFoodMonth(
+  dateFrom: string,
+  dateTo: string,
+  user_id: string
+) {
+  try {
+    await connectDB();
+
+    const existingRecords = await SavedFood.find({
+      user_id: new mongoose.Types.ObjectId(user_id),
+      day: {
+        $gte: new Date(dateFrom),
+        $lte: new Date(dateTo),
+      },
+    }).lean();
+
+    if (!existingRecords.length) return {};
+
+    return existingRecords;
   } catch (error) {
     return { error };
   }

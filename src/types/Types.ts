@@ -16,3 +16,13 @@ export type food = {
   fiber: number;
   salt: number;
 }[];
+
+export type macros = {
+  calories: number;
+  fat: number;
+  protein: number;
+  sugar: number;
+  carbohydrates: number;
+  fiber: number;
+  salt: number;
+};

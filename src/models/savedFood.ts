@@ -1,4 +1,4 @@
-import type { foodType } from "@/types/foodTypes";
+import type { foodType } from "@/types/Types";
 import {
   ModelOptions,
   Severity,

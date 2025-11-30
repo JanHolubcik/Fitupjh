@@ -1,6 +1,6 @@
 "use server";
 
-import { foodType } from "@/types/foodTypes";
+import { foodType } from "@/types/Types";
 import { saveFoodInDay } from "../food-db";
 import mongoose from "mongoose";
 

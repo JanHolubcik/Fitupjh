@@ -1,7 +1,7 @@
 import { getSavedFood } from "@/lib/YourIntake/search-db";
 import { NextRequest, NextResponse } from "next/server";
 import { saveFoodInDay } from "@/lib/food-db";
-import { foodType } from "@/types/foodTypes";
+import { foodType } from "@/types/Types";
 
 type SaveFoodRequest = {
   date: string;
