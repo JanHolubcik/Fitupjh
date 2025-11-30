@@ -11,13 +11,15 @@ import {
   ChartOptions,
   ChartData,
   ChartDataset,
+  BarController,
 } from "chart.js";
-import { Chart as ReactChart } from "react-chartjs-2";
+import { Bar, Chart as ReactChart } from "react-chartjs-2";
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
+  BarController,
   PointElement,
   LineElement,
   Title,
