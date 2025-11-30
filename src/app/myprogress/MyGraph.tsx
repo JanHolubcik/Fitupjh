@@ -5,8 +5,10 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { FoodItem } from "@/components/ProgressBarsProfile/ProgressBarsProfile";
 import Chart from "./Chart";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { macros } from "@/types/Types";
+import useRecommendedMacros from "./useRecomendedMacros";
+import { Button, ButtonGroup } from "@nextui-org/react";
 
 type SavedFood = {
   breakfast: FoodItem[];
@@ -46,57 +48,36 @@ const calculateRecommendedMacros = (
 };
 
 const MyGraph = () => {
-  const date = format(new Date(), "yyyy-MM-dd");
-  const { data } = useSession();
+  const { labels, macroDatasets, RecommendedMacros } = useRecommendedMacros();
+  const [selectedMacro, setSelectedMacro] =
+    useState<keyof typeof macroDatasets>("protein");
 
-  const { data: savedFood } = useSuspenseQuery(
-    LastMonthFoodOptions(data?.user?.id!, "", date.toString())
-  );
-  const sortedFood = [...savedFood].sort(
-    (a, b) => new Date(a.day).getTime() - new Date(b.day).getTime()
-  );
-  const labels = sortedFood.map((item) => format(item.day, "dd-MM-yyyy"));
-
-  const RecomendedMacros = data?.user
-    ? calculateRecommendedMacros(data?.user?.weight, data?.user?.height)
-    : {
-        calories: 0,
-        fat: 0,
-        protein: 0,
-        fiber: 0,
-        salt: 0,
-      };
-  const dataValues = useMemo(
-    () =>
-      sortedFood.map((item) => {
-        const breakfastProtein =
-          item.savedFood.breakfast?.reduce(
-            (total, food) => total + food.protein,
-            0
-          ) || 0;
-        const lunchProtein =
-          item.savedFood.lunch?.reduce(
-            (total, food) => total + food.protein,
-            0
-          ) || 0;
-        const dinnerProtein =
-          item.savedFood.dinner?.reduce(
-            (total, food) => total + food.protein,
-            0
-          ) || 0;
-
-        return breakfastProtein + lunchProtein + dinnerProtein;
-      }),
-    [sortedFood]
-  );
+  if (labels.length === 0) {
+    return <p>No data available to display the graph.</p>;
+  }
 
   return (
-    <div>
-      <Chart
-        labels={labels}
-        dataValues={dataValues}
-        recommendedValue={RecomendedMacros.protein}
-      />
+    <div className="flex flex-col gap-4">
+      <div>
+        <Chart
+          labels={labels}
+          dataValues={macroDatasets[selectedMacro]}
+          recommendedValue={RecommendedMacros[selectedMacro]}
+        />
+      </div>
+      <ButtonGroup>
+        {Object.keys(macroDatasets).map((macro) => (
+          <Button
+            key={macro}
+            color={macro === selectedMacro ? "primary" : "default"}
+            onPress={() =>
+              setSelectedMacro(macro as keyof typeof macroDatasets)
+            }
+          >
+            {macro}
+          </Button>
+        ))}
+      </ButtonGroup>
     </div>
   );
 };

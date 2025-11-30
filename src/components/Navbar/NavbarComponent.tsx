@@ -35,6 +35,11 @@ const NavbarComponent = () => {
             href: "/profile",
             description: "Profile",
           },
+          {
+            id: 3,
+            href: "/myprogress",
+            description: "My progress",
+          },
         ]
       : []),
   ];
