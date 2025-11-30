@@ -1,12 +1,8 @@
 "use client";
 import { useYourIntakeContext } from "@/hooks/YourIntakeContext";
-import YourIntakeProvider from "@/hooks/YourIntakeProvider";
-import { saveFood } from "@/lib/YourIntake/save-db";
-import { getSavedFood } from "@/lib/YourIntake/search-db";
-import { SavedFood } from "@/models/savedFood";
-import { foodType } from "@/types/foodTypes";
+
 import { Progress } from "@nextui-org/react";
-import { format } from "date-fns";
+
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 

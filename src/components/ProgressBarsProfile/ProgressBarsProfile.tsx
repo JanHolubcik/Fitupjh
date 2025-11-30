@@ -1,7 +1,7 @@
 "use client";
 
 import { DailyIntakeOptions } from "@/lib/queriesOptions/DailyIntakeOptions";
-import { foodType } from "@/types/foodTypes";
+import { foodType } from "@/types/Types";
 import { Progress } from "@nextui-org/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
