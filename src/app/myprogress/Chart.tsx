@@ -12,6 +12,7 @@ import {
   ChartData,
   ChartDataset,
   BarController,
+  LineController,
 } from "chart.js";
 import { Bar, Chart as ReactChart } from "react-chartjs-2";
 
@@ -22,6 +23,7 @@ ChartJS.register(
   BarController,
   PointElement,
   LineElement,
+  LineController,
   Title,
   Tooltip,
   Legend
