@@ -84,38 +84,25 @@ const YourIntakeProvider: React.FC<{
   });
 
   useEffect(() => {
-    if (
-      savedFood.breakfast.length > 0 ||
-      savedFood.dinner.length > 0 ||
-      savedFood.lunch.length > 0 ||
-      isLast.current
-    ) {
-      const sendDataToDB = async () => {
-        try {
-          if (status !== "unauthenticated" && data?.user?.id) {
-            const userID = data?.user?.id;
-            const date = format(currentDate.current, "yyyy.mm.dd");
-            const res = await fetch("/api/saveFood", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ date, savedFood, userID }),
-            });
-
-            saveFood(
-              format(currentDate.current, "yyyy-MM-dd"),
-              savedFood,
-              data?.user?.id
-            );
-          }
-        } catch (error) {
-          console.error("Error sending data to the database:", error);
+    const sendDataToDB = async () => {
+      try {
+        if (status !== "unauthenticated" && data?.user?.id) {
+          const userID = data?.user?.id;
+          const date = format(currentDate.current, "yyyy-MM-dd");
+          const res = await fetch("/api/saveFood", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ date, savedFood, userID }),
+          });
         }
-      };
-      sendDataToDB();
-      isLast.current = false;
-    }
+      } catch (error) {
+        console.error("Error sending data to the database:", error);
+      }
+    };
+    sendDataToDB();
+    isLast.current = false;
   }, [
     data?.user?.id,
     savedFood,

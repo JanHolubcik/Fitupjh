@@ -63,7 +63,12 @@ export async function POST(req: Request) {
     return new Response("Missing or invalid userID", { status: 400 });
   }
 
-  const res = await saveFoodInDay(date, savedFood, userID).catch(
+  const parsed = parseISO(date);
+  if (!isValid(parsed)) {
+    return new Response("Invalid date format", { status: 400 });
+  }
+  const isoDate = parsed.toISOString();
+  const res = await saveFoodInDay(isoDate, savedFood, userID).catch(
     () =>
       new NextResponse("There was an error while sending data to db", {
         status: 500,
