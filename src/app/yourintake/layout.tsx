@@ -17,7 +17,7 @@ export default async function Page({
 
   if (session?.user?.id) {
     const userId = session.user.id;
-    const today = format(new Date(), "dd.MMM.yyyy");
+    const today = format(new Date(), "yyyy-MM-dd");
 
     await queryClient.prefetchQuery(DailyIntakeOptions(userId, today));
   }
@@ -25,7 +25,7 @@ export default async function Page({
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <YourIntakeProvider
-        date={format(new Date(), "dd.MMM.yyyy")}
+        date={format(new Date(), "yyyy-MM-dd")}
         userID={session?.user?.id || ""}
       >
         {children}

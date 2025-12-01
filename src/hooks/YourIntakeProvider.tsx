@@ -65,7 +65,7 @@ const YourIntakeProvider: React.FC<{
     mutationFn: async (date: Date): Promise<foodType> => {
       if (!data?.user?.id) throw new Error("No user ID");
 
-      const formattedDate = format(date, "dd.MMM.yyyy");
+      const formattedDate = format(date, "yyyy-MM-dd");
 
       const res = await fetch(
         `/api/saveFood?date=${formattedDate}&user_id=${data.user.id}`,
@@ -94,7 +94,7 @@ const YourIntakeProvider: React.FC<{
         try {
           if (status !== "unauthenticated" && data?.user?.id) {
             const userID = data?.user?.id;
-            const date = format(currentDate.current, "dd.MMM.yyyy");
+            const date = format(currentDate.current, "yyyy.mm.dd");
             const res = await fetch("/api/saveFood", {
               method: "POST",
               headers: {
@@ -104,7 +104,7 @@ const YourIntakeProvider: React.FC<{
             });
 
             saveFood(
-              format(currentDate.current, "dd.MMM.yyyy"),
+              format(currentDate.current, "yyyy-MM-dd"),
               savedFood,
               data?.user?.id
             );

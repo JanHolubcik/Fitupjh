@@ -28,7 +28,7 @@ export default async function Profile() {
 
   if (session?.user?.id) {
     const userId = session.user.id;
-    const today = format(new Date(), "dd.MMM.yyyy");
+    const today = format(new Date(), "yyyy-MM-dd");
 
     await queryClient.prefetchQuery(DailyIntakeOptions(userId, today));
   }

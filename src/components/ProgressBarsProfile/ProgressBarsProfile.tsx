@@ -116,7 +116,7 @@ const ProgressBarsProfile = (props: Value) => {
   });
 
   const formattedDate = props.date
-    ? format(props.date as Date, "dd.MMM.yyyy")
+    ? format(props.date as Date, "yyyy-MM-dd")
     : null;
 
   const { data } = useSession();
