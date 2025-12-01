@@ -31,7 +31,6 @@ async function connectDB() {
 
   if (!cached.promise) {
     const opts = {
-      dbName: "fitup",
       bufferCommands: false,
     };
 
