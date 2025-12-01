@@ -1,6 +1,9 @@
+"use client";
 import { Image, Link } from "@nextui-org/react";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
+  const { status, data } = useSession();
   return (
     <main className="dark flex flex-col items-center justify-start sm:p-10 p-6">
       <div className="max-w-[550px] w-full bg-white/10 backdrop-blur-lg rounded-2xl p-6 shadow-lg">
@@ -38,7 +41,7 @@ export default function Home() {
             Start your journey today!
           </h2>
 
-          <Link href="/signup">
+          <Link href={data?.user?.id ? "/yourintake" : "signup"}>
             <button className="mt-6 px-4 py-2 rounded-xl font-bold  text-black bg-[#00FFAA] hover:scale-105 transition-transform animate-pulse">
               Start Tracking Now
             </button>

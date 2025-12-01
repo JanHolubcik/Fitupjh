@@ -11,11 +11,9 @@ import {
   Image,
   Spinner,
 } from "@nextui-org/react";
-import { FlattenMaps, Types } from "mongoose";
-import React, { useContext } from "react";
-import { Dispatch, SetStateAction, useRef, useState } from "react";
+import React, { Dispatch, useEffect } from "react";
+import { useState } from "react";
 import { FaPlusCircle, FaSearch } from "react-icons/fa";
-import { useSession } from "next-auth/react";
 
 type ReturnTypeFood =
   | {
@@ -37,13 +35,56 @@ type props = {
 
 type timeOfDay = "breakfast" | "lunch" | "dinner";
 
+function useDebounce<T>(
+  value: T,
+  delay: number,
+  setLoading: Dispatch<React.SetStateAction<boolean>>
+) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    setLoading(true);
+    const handler = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(handler);
+  }, [value, delay, setLoading]);
+
+  return debouncedValue;
+}
+
 export const ModalFindFood = (props: props) => {
-  //finding food in database
   const { addToFood } = useYourIntakeContext();
   const [food, setFood] = useState<ReturnTypeFood>([]);
   const [calculatedCalories, setCalculatedCalories] = useState<number[]>([]);
 
-  const [loading, setLoading] = useState<boolean>();
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebounce(searchTerm, 500, setLoading);
+
+  useEffect(() => {
+    if (debouncedSearchTerm.length === 0) {
+      setFood([]);
+      setLoading(false);
+      return;
+    }
+
+    const fetchFood = async () => {
+      setLoading(true);
+
+      const foundFood = await searchFood(debouncedSearchTerm);
+
+      setFood(foundFood.food || []);
+      if (foundFood.food) {
+        setCalculatedCalories(
+          foundFood.food.map((key) => key.calories_per_100g)
+        );
+      }
+
+      setLoading(false);
+    };
+
+    fetchFood();
+  }, [debouncedSearchTerm]);
 
   const getTimeOfDay = () => {
     const now = new Date();
@@ -90,25 +131,8 @@ export const ModalFindFood = (props: props) => {
                     "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
                 }}
                 placeholder="Type to search..."
-                onChange={async (event) => {
-                  if (event.target.value.length === 0) {
-                    setFood([]);
-                  } else {
-                    setLoading(true);
-
-                    await searchFood(event.target.value).then((foundFood) => {
-                      setFood(foundFood.food);
-                      if (foundFood.food)
-                        setCalculatedCalories(
-                          foundFood.food.map((key) => {
-                            return key.calories_per_100g;
-                          })
-                        );
-                    });
-
-                    setLoading(false);
-                  }
-                }}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 onClear={() => setFood([])}
                 size="sm"
                 startContent={<FaSearch size={18} />}

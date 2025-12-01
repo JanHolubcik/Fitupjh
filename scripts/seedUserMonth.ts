@@ -177,8 +177,8 @@ const generateDayDocument = (
   indexFromToday: number
 ): { day: Date; savedFood: SavedFood; user_id: ObjectId } => {
   const day = new Date();
-  day.setHours(0, 0, 0, 0);
-  day.setDate(day.getDate() - indexFromToday);
+  day.setUTCHours(0, 0, 0, 0);
+  day.setUTCDate(day.getUTCDate() - indexFromToday);
 
   const isHighSugarDay = Math.random() < 0.3;
 
