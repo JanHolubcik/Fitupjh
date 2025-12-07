@@ -56,6 +56,16 @@ export const ModalTimeFrame = (props: props) => {
         setFood([]);
         props.onOpenChange();
       }}
+      motionProps={{
+        variants: {
+          enter: { opacity: 1, scale: 1 },
+          exit: { opacity: 0, scale: 1 },
+        },
+        transition: {
+          enter: { duration: 0.15 }, // animate when opening
+          exit: { duration: 0 }, // instant close
+        },
+      }}
     >
       <ModalContent>
         {(onClose) => (
@@ -97,7 +107,7 @@ export const ModalTimeFrame = (props: props) => {
               />
             </ModalHeader>
             <ModalBody className="max-h-52">
-              <div className="max-h-52 overflow-visible">
+              <div className="max-h-52 overflow-visible  space-y-1">
                 {!loading && food?.length !== 0 && (
                   <div className=" flex flex-row ">
                     <div className="flex-1 self-center">

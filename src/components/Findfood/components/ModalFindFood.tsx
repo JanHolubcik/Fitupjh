@@ -116,6 +116,16 @@ export const ModalFindFood = (props: props) => {
         setFood([]);
         props.onOpenChange();
       }}
+      motionProps={{
+        variants: {
+          enter: { opacity: 1, scale: 1 },
+          exit: { opacity: 0, scale: 1 },
+        },
+        transition: {
+          enter: { duration: 0.15 }, // animate when opening
+          exit: { duration: 0 }, // instant close
+        },
+      }}
     >
       <ModalContent>
         {(onClose) => (

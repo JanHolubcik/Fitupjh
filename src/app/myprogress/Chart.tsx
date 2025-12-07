@@ -29,21 +29,28 @@ ChartJS.register(
   Legend
 );
 
+const capitalizeFirstLetter = (string: string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
 const Chart = ({
   labels,
   dataValues,
   recommendedValue,
+  selectedMacro,
 }: {
   labels: string[];
   dataValues: number[];
   recommendedValue: number;
+  selectedMacro: string;
 }) => {
+  const capitalizedMacro = capitalizeFirstLetter(selectedMacro);
   const data: ChartData<"bar" | "line", number[], string> = {
     labels,
     datasets: [
       {
         type: "bar" as const,
-        label: "Protein Intake (g)",
+        label: `${capitalizedMacro} Intake `,
         data: dataValues,
         backgroundColor: "rgba(75, 192, 192, 0.6)",
       },
@@ -58,7 +65,6 @@ const Chart = ({
       },
     ],
   };
-
   const options: ChartOptions<"bar" | "line"> = {
     responsive: true,
     maintainAspectRatio: false,
@@ -66,7 +72,7 @@ const Chart = ({
       legend: { position: "top" as const },
       title: {
         display: true,
-        text: "Daily Protein Intake",
+        text: `Daily ${capitalizedMacro} intake: `,
       },
     },
     scales: {

@@ -25,26 +25,8 @@ type FoodLog = {
   createdAt?: string;
   updatedAt?: string;
 };
-const calculateRecommendedMacros = (
-  weight: number = 70,
-  height: number = 60
-): macros => {
-  const calories = (10 * weight + 6.25 * height - 5 * 25 + 5) * 1.2; // BMR × sedentary activity
-
-  const macros = {
-    calories: Math.round(calories),
-    fat: calories * 0.2,
-    protein: Math.round(1.2 * weight),
-    fiber: 38,
-    salt: 2.3,
-  };
-
-  return {
-    ...macros,
-    carbohydrates: Math.round((calories - macros.protein + macros.fat) / 4),
-    fat: Math.round(macros.fat / 9),
-    sugar: Math.round((calories * 0.1) / 4),
-  };
+const capitalizeFirstLetter = (string: string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
 const MyGraph = () => {
@@ -63,6 +45,7 @@ const MyGraph = () => {
           labels={labels}
           dataValues={macroDatasets[selectedMacro]}
           recommendedValue={RecommendedMacros[selectedMacro]}
+          selectedMacro={selectedMacro}
         />
       </div>
       <ButtonGroup>
@@ -74,7 +57,7 @@ const MyGraph = () => {
               setSelectedMacro(macro as keyof typeof macroDatasets)
             }
           >
-            {macro}
+            {capitalizeFirstLetter(macro)}
           </Button>
         ))}
       </ButtonGroup>
