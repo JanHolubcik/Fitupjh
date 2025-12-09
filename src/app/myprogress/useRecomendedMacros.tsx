@@ -7,6 +7,20 @@ import { FoodItem } from "@/components/ProgressBarsProfile/ProgressBarsProfile";
 import Chart from "./Chart";
 import { useMemo } from "react";
 import { macros } from "@/types/Types";
+import { capitalizeFirstLetter } from "../constants/FunctionsHelper";
+import strings from "../../app/constants/CalorieMacrosDescription.json";
+const calculateAverage = (array: number[]) => {
+  if (array.length === 0) return 0;
+
+  const total = array.reduce((sum, value) => {
+    return sum + value;
+  }, 0);
+
+  return total / array.length;
+};
+
+const DEFICIT_THRESHOLD = 0.75;
+const SURPLUS_THRESHOLD = 1.25;
 
 const calculateRecommendedMacros = (
   weight: number = 70,
@@ -30,7 +44,7 @@ const calculateRecommendedMacros = (
   };
 };
 
-const useRecommendedMacros = () => {
+const useMacros = () => {
   const date = format(new Date(), "yyyy-MM-dd");
   const { data } = useSession();
 
@@ -93,9 +107,19 @@ const useRecommendedMacros = () => {
   const dataFat = isEmpty ? [] : dataMacros.map((m) => m.fat);
   const dataCalories = isEmpty ? [] : dataMacros.map((m) => m.calories);
   const dataSugar = isEmpty ? [] : dataMacros.map((m) => m.sugar);
+  const dataFiber = isEmpty ? [] : dataMacros.map((m) => m.fiber);
   const dataCarbohydrates = isEmpty
     ? []
     : dataMacros.map((m) => m.carbohydrates);
+
+  const CurrentDailyIntake = {
+    calories: calculateAverage(dataCalories),
+    protein: calculateAverage(dataProtein),
+    fat: calculateAverage(dataFat),
+    sugar: calculateAverage(dataSugar),
+    carbohydrates: calculateAverage(dataCarbohydrates),
+    fiber: calculateAverage(dataFiber),
+  };
 
   const macroDatasets = {
     protein: dataProtein,
@@ -103,14 +127,37 @@ const useRecommendedMacros = () => {
     calories: dataCalories,
     sugar: dataSugar,
     carbohydrates: dataCarbohydrates,
+    fiber: dataFiber,
+  };
+
+  const getMacroMessage = (macro: keyof typeof CurrentDailyIntake) => {
+    const current = CurrentDailyIntake[macro];
+    const recommended = RecommendedMacros[macro];
+
+    let keySuffix: "Optional" | "Deficit" | "Surplus";
+
+    if (current < recommended * DEFICIT_THRESHOLD) keySuffix = "Deficit";
+    else if (current > recommended * SURPLUS_THRESHOLD) keySuffix = "Surplus";
+    else keySuffix = "Optional";
+
+    const jsonKey = `${capitalizeFirstLetter(
+      macro
+    )}${keySuffix}` as keyof typeof strings;
+    const template = strings[jsonKey];
+
+    return template
+      .replace("{X}", current.toFixed(1))
+      .replace("{Y}", recommended.toFixed(1));
   };
 
   return {
+    getMacroMessage,
     macroDatasets,
+    CurrentDailyIntake,
     dataMacros: isEmpty ? [] : dataMacros,
     labels,
     RecommendedMacros,
   };
 };
 
-export default useRecommendedMacros;
+export default useMacros;

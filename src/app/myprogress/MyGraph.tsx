@@ -1,46 +1,29 @@
 "use client";
-import { format } from "date-fns";
-import { LastMonthFoodOptions } from "@/lib/queriesOptions/LastMonthFoodOptions";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
-import { FoodItem } from "@/components/ProgressBarsProfile/ProgressBarsProfile";
+
 import Chart from "./Chart";
 import { useMemo, useState } from "react";
-import { macros } from "@/types/Types";
-import useRecommendedMacros from "./useRecomendedMacros";
-import { Button, ButtonGroup } from "@nextui-org/react";
-
-type SavedFood = {
-  breakfast: FoodItem[];
-  lunch: FoodItem[];
-  dinner: FoodItem[];
-};
-
-type FoodLog = {
-  _id: string;
-  day: string;
-  savedFood: SavedFood;
-  user_id: string;
-  __v?: number;
-  createdAt?: string;
-  updatedAt?: string;
-};
-const capitalizeFirstLetter = (string: string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-};
+import useMacros from "./useRecomendedMacros";
+import { Button, ButtonGroup, Card, CardBody } from "@nextui-org/react";
+import { capitalizeFirstLetter } from "../constants/FunctionsHelper";
+import { Image } from "@nextui-org/react";
 
 const MyGraph = () => {
-  const { labels, macroDatasets, RecommendedMacros } = useRecommendedMacros();
+  const { labels, macroDatasets, RecommendedMacros, getMacroMessage } =
+    useMacros();
   const [selectedMacro, setSelectedMacro] =
     useState<keyof typeof macroDatasets>("protein");
+
+  const messageForSelectedMacro = useMemo(() => {
+    return getMacroMessage(selectedMacro);
+  }, [getMacroMessage, selectedMacro]);
 
   if (labels.length === 0) {
     return <p>No data available to display the graph.</p>;
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <div>
+    <div className="flex flex-col items-center gap-4">
+      <div className="w-full max-w-3xl">
         <Chart
           labels={labels}
           dataValues={macroDatasets[selectedMacro]}
@@ -48,6 +31,7 @@ const MyGraph = () => {
           selectedMacro={selectedMacro}
         />
       </div>
+
       <ButtonGroup>
         {Object.keys(macroDatasets).map((macro) => (
           <Button
@@ -61,6 +45,23 @@ const MyGraph = () => {
           </Button>
         ))}
       </ButtonGroup>
+
+      <Card className="max-w-4xl w-full">
+        <CardBody className="flex flex-row items-center h-36 gap-4">
+          <div className="flex-shrink-0 w-1/10">
+            <Image
+              className="object-contain"
+              alt="Info"
+              src="/eplaining_owl.png"
+              width={90}
+              height={90}
+            />
+          </div>
+          <div className="w-9/10 break-words ">
+            <p>{messageForSelectedMacro}</p>
+          </div>
+        </CardBody>
+      </Card>
     </div>
   );
 };
