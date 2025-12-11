@@ -84,7 +84,7 @@ const Chart = ({
 
   return (
     <ReactChart
-      className="min-h-96"
+      className="min-h-[400px]"
       data={data}
       options={options}
       type={"bar"}

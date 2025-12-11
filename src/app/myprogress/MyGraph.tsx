@@ -22,33 +22,41 @@ const MyGraph = () => {
   }
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <div className="w-full max-w-3xl">
-        <Chart
-          labels={labels}
-          dataValues={macroDatasets[selectedMacro]}
-          recommendedValue={RecommendedMacros[selectedMacro]}
-          selectedMacro={selectedMacro}
-        />
+    <div className="flex flex-col items-center gap-6 w-full px-4">
+      <div className="w-full max-w-3xl overflow-auto">
+        <div className="w-full min-w-[760px] ">
+          <Chart
+            labels={labels}
+            dataValues={macroDatasets[selectedMacro]}
+            recommendedValue={RecommendedMacros[selectedMacro]}
+            selectedMacro={selectedMacro}
+          />
+        </div>
       </div>
-
-      <ButtonGroup>
+      <ButtonGroup className="flex flex-wrap justify-center gap-2 w-full max-w-3xl">
         {Object.keys(macroDatasets).map((macro) => (
-          <Button
+          <div
             key={macro}
-            color={macro === selectedMacro ? "primary" : "default"}
-            onPress={() =>
-              setSelectedMacro(macro as keyof typeof macroDatasets)
-            }
+            className="flex-1 sm:flex-none sm:basis-1/3 md:basis-1/4"
           >
-            {capitalizeFirstLetter(macro)}
-          </Button>
+            <Button
+              color={macro === selectedMacro ? "primary" : "default"}
+              onPress={() =>
+                setSelectedMacro(macro as keyof typeof macroDatasets)
+              }
+              radius="md"
+              className="w-full"
+              variant="bordered"
+            >
+              {capitalizeFirstLetter(macro)}
+            </Button>
+          </div>
         ))}
       </ButtonGroup>
 
-      <Card className="max-w-4xl w-full">
-        <CardBody className="flex flex-row items-center h-36 gap-4">
-          <div className="flex-shrink-0 w-1/10">
+      <Card className="w-full max-w-3xl">
+        <CardBody className="flex flex-row items-center gap-4 p-4">
+          <div className="flex-shrink-0 w-1/6 sm:w-24 hidden sm:block">
             <Image
               className="object-contain"
               alt="Info"
@@ -57,7 +65,7 @@ const MyGraph = () => {
               height={90}
             />
           </div>
-          <div className="w-9/10 break-words ">
+          <div className="flex-1 break-words">
             <p>{messageForSelectedMacro}</p>
           </div>
         </CardBody>
