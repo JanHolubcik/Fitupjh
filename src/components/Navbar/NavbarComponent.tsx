@@ -18,6 +18,8 @@ import {
   Button,
 } from "@nextui-org/react";
 
+import imagepfp3 from "../../../public/pfps/3.png";
+
 import { signOut, useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -111,7 +113,7 @@ const NavbarComponent = () => {
             isBordered
             color="secondary"
             size="sm"
-            src={data.user?.image || "pfps/3.png"}
+            src={data.user?.image || imagepfp3.src}
           />
         ) : (
           <Link href="/signup">
