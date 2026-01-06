@@ -12,8 +12,8 @@ import { FaPlusCircle, FaTimes } from "react-icons/fa";
 
 import { useDisclosure } from "@nextui-org/react";
 
-import { useYourIntakeContext } from "@/hooks/YourIntakeContext";
 import { ModalFindFood } from "../Findfood/components/ModalFindFood";
+import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 
 type Food = {
   timeOfDay: "breakfast" | "lunch" | "dinner";
@@ -21,7 +21,7 @@ type Food = {
 
 const FindFood = (props: Food) => {
   //when this state changes, we sent data to server
-  const { savedFood, removeFromSavedFood } = useYourIntakeContext();
+  const { savedFood, removeFromSavedFood } = useYourIntakeOperations();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (

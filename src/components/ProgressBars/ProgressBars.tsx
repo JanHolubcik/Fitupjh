@@ -1,5 +1,5 @@
 "use client";
-import { useYourIntakeContext } from "@/hooks/YourIntakeContext";
+import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 
 import { Progress } from "@nextui-org/react";
 
@@ -49,7 +49,7 @@ const calculateRecommendedMacros = (weight: number, height: number): macros => {
 };
 
 const ProgressBars = () => {
-  const { savedFood } = useYourIntakeContext();
+  const { savedFood } = useYourIntakeOperations();
 
   const [calculatedMacros, setCalculatedMacros] = useState<macros>({
     calories: 0,

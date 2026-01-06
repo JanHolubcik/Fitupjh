@@ -1,6 +1,6 @@
 import TimeFrame from "@/components/TimeFrame/TimeFrame";
 import ProgressBars from "@/components/ProgressBars/ProgressBars";
-import { useYourIntakeContext } from "@/hooks/YourIntakeContext";
+
 import { timeOfDay } from "@/types/Types";
 import { Button, Tooltip, Image, CircularProgress } from "@nextui-org/react";
 import { add, format } from "date-fns";
@@ -12,18 +12,20 @@ import {
   FaSearch,
 } from "react-icons/fa";
 import { useCalculateRecommendedCalories } from "../hooks/useCalculateRecomendedCalories";
+import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 
 const NavigationYourIntake = ({ onOpen }: { onOpen: () => void }) => {
   const { currentDate, setNewDateAndGetFood, savedFood } =
-    useYourIntakeContext();
+    useYourIntakeOperations();
   const { recommendedCaloriesValue, caloriesSum } =
     useCalculateRecommendedCalories(savedFood);
   const color = caloriesSum > recommendedCaloriesValue ? "warning" : "danger";
 
   const setNewDateAndFetchFood = (numberOfDays: number) => {
-    const date = add(currentDate.current, {
+    const date = add(currentDate, {
       days: numberOfDays,
     });
+
     setNewDateAndGetFood(date);
   };
 
@@ -71,9 +73,7 @@ const NavigationYourIntake = ({ onOpen }: { onOpen: () => void }) => {
       </div>
       <div className="flex flex-row items-center justify-center p-4">
         <FaCalendarAlt></FaCalendarAlt>
-        <p className="text-sm ml-2">
-          {format(currentDate.current, "dd.MMM, eeee")}
-        </p>
+        <p className="text-sm ml-2">{format(currentDate, "dd.MMM, eeee")}</p>
         <Tooltip
           showArrow
           content={

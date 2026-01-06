@@ -1,25 +1,16 @@
 "use client";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  Button,
-  Tooltip,
-  Image,
-} from "@nextui-org/react";
-import { SetStateAction, useState } from "react";
-import { FaPlusCircle, FaTimes } from "react-icons/fa";
+import { Button } from "@nextui-org/react";
 
 import { useDisclosure } from "@nextui-org/react";
 
-import { FlattenMaps, ObjectId, Types } from "mongoose";
-import { FoodClass } from "@/models/Food";
 import { ModalFindFood } from "./components/ModalFindFood";
-import { useYourIntakeContext } from "@/hooks/YourIntakeContext";
+
+import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
+import { FaPlusCircle } from "react-icons/fa";
 
 const TimeFrame = () => {
   //when this state changes, we sent data to server
-  const { savedFood, removeFromSavedFood } = useYourIntakeContext();
+  const { savedFood, removeFromSavedFood } = useYourIntakeOperations();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (

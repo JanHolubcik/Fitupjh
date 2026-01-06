@@ -1,25 +1,86 @@
+// features/savedFoodSlice/savedFoodSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
 import { RootState } from "@/store/store";
-import { SavedFoodClass } from "@/models/savedFood";
-import { foodType } from "@/types/Types";
+import { Food, FoodType, foodType, SavedFoodMonth } from "@/types/Types";
+import { format } from "date-fns";
 
-const initialState: SavedFoodClass[] = [];
+type SavedFoodState = {
+  currentDate: string; // yyyy-MM-dd
+  month: SavedFoodMonth;
+};
 
+const emptyDay: FoodType = {
+  breakfast: [],
+  lunch: [],
+  dinner: [],
+};
+
+const initialState: SavedFoodState = {
+  currentDate: format(new Date(), "yyyy-MM-dd"),
+  month: {},
+};
 const savedFoodSlice = createSlice({
-  initialState,
   name: "savedFood",
+  initialState,
   reducers: {
-    setSavedFoodMonth: (state, action: PayloadAction<SavedFoodClass[]>) => {
-      state.length = 0; // empty current array
-      console.log("Setting saved food month:", action.payload);
-      state.push(...action.payload); // add new items
+    setCurrentDate: (state, action: PayloadAction<string>) => {
+      state.currentDate = action.payload;
+    },
+    setSavedFoodMonth: (_state, action: PayloadAction<SavedFoodMonth>) => {
+      console.log("Setting saved food month in slice", action.payload);
+      return {
+        currentDate: format(new Date(), "yyyy-MM-dd"),
+        month: action.payload,
+      };
+    },
+
+    addFoodForDate: (
+      state,
+      action: PayloadAction<{
+        date: string;
+        timeOfDay: keyof FoodType;
+        food: Food;
+      }>
+    ) => {
+      const { date, timeOfDay, food } = action.payload;
+
+      // ensure date exists
+      if (!state.month[date]) {
+        state.month[date] = { ...emptyDay };
+      }
+
+      state.month[date][timeOfDay].push(food);
+    },
+    removeFromFood: (
+      state,
+      action: PayloadAction<{
+        date: string;
+        timeOfDay: keyof FoodType;
+        id: number;
+      }>
+    ) => {
+      const { date, timeOfDay, id } = action.payload;
+      if (!state.month[date]) {
+        state.month[date] = { ...emptyDay };
+      }
+      state.month[date][timeOfDay] = state.month[date][timeOfDay].filter(
+        (foodItem) => foodItem.id !== id
+      );
     },
   },
 });
 
-export const { setSavedFoodMonth } = savedFoodSlice.actions;
+export const {
+  setCurrentDate,
+  setSavedFoodMonth,
+  addFoodForDate,
+  removeFromFood,
+} = savedFoodSlice.actions;
 
-export const selectSavedFood = (state: { savedFood: SavedFoodClass[] }) =>
-  state.savedFood;
+export const selectSavedFoodByDate = (
+  state: RootState,
+  date: string
+): FoodType => state.savedFood.month[date] ?? emptyDay;
 
 export default savedFoodSlice.reducer;

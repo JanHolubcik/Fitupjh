@@ -1,4 +1,4 @@
-import { useYourIntakeContext } from "@/hooks/YourIntakeContext";
+import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 import { searchFood } from "@/lib/YourIntake/search-db";
 import {
   Button,
@@ -11,7 +11,7 @@ import {
   Image,
   Spinner,
 } from "@nextui-org/react";
-import React, { Dispatch, useEffect, useRef } from "react";
+import React, { Dispatch, use, useEffect, useRef } from "react";
 import { useState } from "react";
 import { FaPlusCircle, FaSearch } from "react-icons/fa";
 
@@ -53,7 +53,7 @@ function useDebounce<T>(
 }
 
 export const ModalFindFood = (props: props) => {
-  const { addToFood } = useYourIntakeContext();
+  const { addToFood } = useYourIntakeOperations();
   const isSubmittingRef = useRef(false);
   const [food, setFood] = useState<ReturnTypeFood>([]);
   const [calculatedCalories, setCalculatedCalories] = useState<number[]>([]);
