@@ -26,3 +26,9 @@ export type macros = {
   fiber: number;
   salt: number;
 };
+
+export const timeOfDay = ["breakfast", "lunch", "dinner"] as const;
+//as const freezes the array so i cannot push anything to it
+
+export type timeOfDay = (typeof timeOfDay)[number];
+//type timeOfDay = "breakfast" | "lunch" | "dinner";

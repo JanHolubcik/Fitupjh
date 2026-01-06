@@ -24,12 +24,7 @@ export default async function Page({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <YourIntakeProvider
-        date={format(new Date(), "yyyy-MM-dd")}
-        userID={session?.user?.id || ""}
-      >
-        {children}
-      </YourIntakeProvider>
+      {children}
     </HydrationBoundary>
   );
 }
