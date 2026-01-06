@@ -8,7 +8,7 @@ import {
   hydrate,
   QueryClient,
   useMutation,
-  useSuspenseQuery,
+  useQuery,
 } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { useSession } from "next-auth/react";
@@ -53,9 +53,7 @@ const YourIntakeProvider: React.FC<{
   const currentDate = useRef(new Date());
 
   const isLast = useRef(false);
-  const { data: initialSavedFood } = useSuspenseQuery(
-    DailyIntakeOptions(userID, date)
-  );
+  const { data: initialSavedFood } = useQuery(DailyIntakeOptions(userID, date));
 
   const [savedFood, setSavedFood] = useState<foodType>(
     initialSavedFood || { breakfast: [], lunch: [], dinner: [] }

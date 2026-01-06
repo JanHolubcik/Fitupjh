@@ -23,6 +23,7 @@ export const LastMonthFoodOptions = (
       // Tell TypeScript this returns an array of SavedFoodClass
       return res.json() as Promise<SavedFoodClass[]>;
     },
-    staleTime: 30_000,
+    staleTime: 600000,
     retry: 1,
+    refetchOnWindowFocus: false,
   });

@@ -7,6 +7,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Session } from "next-auth";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { getQueryClient } from "@/get-query-client";
+import StoreProvider from "@/StoreProvider";
 
 export default function Providers({
   session,
@@ -16,12 +17,15 @@ export default function Providers({
   children: React.ReactNode;
 }) {
   const queryClient = getQueryClient();
+
   return (
     <NextUIProvider>
-      <QueryClientProvider client={queryClient}>
-        <SpeedInsights />
-        <SessionProvider session={session}>{children}</SessionProvider>
-      </QueryClientProvider>
+      <StoreProvider>
+        <QueryClientProvider client={queryClient}>
+          <SpeedInsights />
+          <SessionProvider session={session}>{children}</SessionProvider>
+        </QueryClientProvider>
+      </StoreProvider>
     </NextUIProvider>
   );
 }
