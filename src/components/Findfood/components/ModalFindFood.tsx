@@ -11,7 +11,7 @@ import {
   Image,
   Spinner,
 } from "@nextui-org/react";
-import React, { Dispatch, useEffect } from "react";
+import React, { Dispatch, useEffect, useRef } from "react";
 import { useState } from "react";
 import { FaPlusCircle, FaSearch } from "react-icons/fa";
 
@@ -31,6 +31,7 @@ type ReturnTypeFood =
 type props = {
   onOpenChange: () => void;
   isOpen: boolean | undefined;
+  timeOfDay?: "breakfast" | "lunch" | "dinner";
 };
 
 type timeOfDay = "breakfast" | "lunch" | "dinner";
@@ -53,6 +54,7 @@ function useDebounce<T>(
 
 export const ModalFindFood = (props: props) => {
   const { addToFood } = useYourIntakeContext();
+  const isSubmittingRef = useRef(false);
   const [food, setFood] = useState<ReturnTypeFood>([]);
   const [calculatedCalories, setCalculatedCalories] = useState<number[]>([]);
 
@@ -103,6 +105,45 @@ export const ModalFindFood = (props: props) => {
       default:
         return "lunch";
     }
+  };
+
+  const AddFood = (
+    id: number,
+    key: {
+      name: string;
+      calories_per_100g: number;
+      fat: number;
+      protein: number;
+      sugar: number;
+      carbohydrates: number;
+      fiber: number;
+      salt: number;
+    },
+    onClose: () => void
+  ) => {
+    const valueGrams = (
+      document.getElementById(`${id}inputGrams`) as HTMLInputElement
+    ).value;
+    if (isSubmittingRef.current) return;
+    isSubmittingRef.current = true;
+    addToFood(
+      calculatedCalories[id],
+      key.name,
+      props.timeOfDay ?? getTimeOfDay(),
+      valueGrams,
+      key.fat,
+      key.protein,
+      key.sugar,
+      key.carbohydrates,
+      key.fiber,
+      key.salt
+    );
+    onClose();
+    setSearchTerm("");
+    // unlock AFTER modal is fully gone
+    setTimeout(() => {
+      isSubmittingRef.current = false;
+    }, 300); // match modal animation duration
   };
 
   return (
@@ -226,27 +267,8 @@ export const ModalFindFood = (props: props) => {
 
                         <div className="max-w-11 ml-10   flex-1 text-end">
                           <Button
-                            onPress={() => {
-                              const valueGrams = (
-                                document.getElementById(
-                                  `${id}inputGrams`
-                                ) as HTMLInputElement
-                              ).value;
-
-                              addToFood(
-                                calculatedCalories[id],
-                                key.name,
-                                getTimeOfDay(),
-                                valueGrams,
-                                key.fat,
-                                key.protein,
-                                key.sugar,
-                                key.carbohydrates,
-                                key.fiber,
-                                key.salt
-                              );
-                              onClose();
-                            }}
+                            onPress={() => AddFood(id, key, onClose)}
+                            disabled={isSubmittingRef.current}
                             isIconOnly
                           >
                             <FaPlusCircle />

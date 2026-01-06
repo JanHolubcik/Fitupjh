@@ -12,8 +12,8 @@ import { FaPlusCircle, FaTimes } from "react-icons/fa";
 
 import { useDisclosure } from "@nextui-org/react";
 
-import { ModalTimeFrame } from "./components/ModalTimeFrame";
 import { useYourIntakeContext } from "@/hooks/YourIntakeContext";
+import { ModalFindFood } from "../Findfood/components/ModalFindFood";
 
 type Food = {
   timeOfDay: "breakfast" | "lunch" | "dinner";
@@ -80,11 +80,11 @@ const FindFood = (props: Food) => {
             ))}
           </div>
         )}
-        <ModalTimeFrame
+        <ModalFindFood
           isOpen={isOpen}
           onOpenChange={onOpenChange}
           timeOfDay={props.timeOfDay}
-        ></ModalTimeFrame>
+        />
       </CardBody>
     </Card>
   );

@@ -27,10 +27,7 @@ const TimeFrame = () => {
       <Button className="self-end" onPress={onOpen} isIconOnly>
         <FaPlusCircle />
       </Button>
-      <ModalFindFood
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-      ></ModalFindFood>
+      <ModalFindFood isOpen={isOpen} onOpenChange={onOpenChange} />
     </>
   );
 };
