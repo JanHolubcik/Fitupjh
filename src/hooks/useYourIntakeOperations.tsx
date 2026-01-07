@@ -5,25 +5,19 @@ import {
   setCurrentDate,
 } from "@/features/savedFoodslice/savedFoodSlice";
 
-import { foodType } from "@/types/Types";
-
 import { format } from "date-fns";
 import { useSession } from "next-auth/react";
 import { selectSavedFoodByDate } from "@/features/savedFoodslice/savedFoodSlice";
 
-import { createContext, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import useLoadSavedFood from "./useLoadSavedFood";
 
 type timeOfDay = "breakfast" | "lunch" | "dinner";
 
 const useYourIntakeOperations = () => {
   const { status, data } = useSession();
-
-  //const [currentDate, setCurrentDate] = useState(new Date());
   const dispatch = useDispatch();
-  const isLast = useRef(false);
+
   const currentDate = useSelector(
     (state: RootState) => state.savedFood.currentDate
   );
@@ -31,58 +25,43 @@ const useYourIntakeOperations = () => {
     selectSavedFoodByDate(state, format(currentDate, "yyyy-MM-dd"))
   );
 
-  useEffect(() => {
-    const sendDataToDB = async () => {
-      try {
-        if (status !== "unauthenticated" && data?.user?.id) {
-          const userID = data?.user?.id;
-          const date = format(currentDate, "yyyy-MM-dd");
-          const res = await fetch("/api/saveFood", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ date, savedFood, userID }),
-          });
-        }
-      } catch (error) {
-        console.error("Error sending data to the database:", error);
-      }
-    };
-    sendDataToDB();
-    isLast.current = false;
-  }, [
-    data?.user?.id,
-    savedFood,
-    savedFood.breakfast,
-    savedFood.dinner,
-    savedFood.lunch,
-    status,
-  ]);
+  // ✅ Manual save function
+  const saveFood = async (foodToSave?: typeof savedFood) => {
+    if (status !== "authenticated" || !data?.user?.id) return;
 
-  const removeFromSavedFood = (id: number, timeOfDay: timeOfDay) => {
-    dispatch(
-      removeFromFood({
-        date: format(currentDate, "yyyy-MM-dd"),
-        timeOfDay,
-        id,
-      })
-    );
+    const food = foodToSave || savedFood;
+
+    const hasAnyFood =
+      food.breakfast.length > 0 ||
+      food.lunch.length > 0 ||
+      food.dinner.length > 0;
+
+    if (!hasAnyFood) return;
+
+    try {
+      await fetch("/api/saveFood", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          date: format(currentDate, "yyyy-MM-dd"),
+          savedFood: food,
+          userID: data.user.id,
+        }),
+      });
+    } catch (err) {
+      console.error("Error saving food:", err);
+    }
   };
 
-  const setNewDateAndGetFood = (date: Date) => {
-    dispatch(setCurrentDate(format(date, "yyyy-MM-dd")));
-  };
-
-  const addToFood = (
-    calculatedCalories: number,
+  const addToFood = async (
+    calories: number,
     name: string,
-    timeOfDay: "breakfast" | "lunch" | "dinner",
-    valueGrams: string,
+    timeOfDay: timeOfDay,
+    amount: string,
     fat: number,
     protein: number,
     sugar: number,
-    carbohydrates: number,
+    carbs: number,
     fiber: number,
     salt: number
   ) => {
@@ -93,19 +72,60 @@ const useYourIntakeOperations = () => {
         date,
         timeOfDay,
         food: {
-          id: Date.now(), // ✅ stable unique id
+          id: Date.now(),
           name,
-          calories: calculatedCalories,
-          amount: valueGrams,
+          calories,
+          amount,
           fat,
           protein,
           sugar,
-          carbohydrates,
+          carbohydrates: carbs,
           fiber,
           salt,
         },
       })
     );
+
+    // Save immediately after adding
+    await saveFood({
+      ...savedFood,
+      [timeOfDay]: [
+        ...savedFood[timeOfDay],
+        {
+          id: Date.now(),
+          name,
+          calories,
+          amount,
+          fat,
+          protein,
+          sugar,
+          carbohydrates: carbs,
+          fiber,
+          salt,
+        },
+      ],
+    });
+  };
+
+  const removeFromSavedFood = async (id: number, timeOfDay: timeOfDay) => {
+    dispatch(
+      removeFromFood({
+        date: format(currentDate, "yyyy-MM-dd"),
+        timeOfDay,
+        id,
+      })
+    );
+
+    // Save immediately after removing
+    const updatedFood = {
+      ...savedFood,
+      [timeOfDay]: savedFood[timeOfDay].filter((f) => f.id !== id),
+    };
+    await saveFood(updatedFood);
+  };
+
+  const setNewDateAndGetFood = (date: Date) => {
+    dispatch(setCurrentDate(format(date, "yyyy-MM-dd")));
   };
 
   return {
@@ -116,4 +136,5 @@ const useYourIntakeOperations = () => {
     addToFood,
   };
 };
+
 export default useYourIntakeOperations;

@@ -107,11 +107,8 @@ export async function checkForSavedFoodMonth(
     await connectDB();
 
     const existingRecords = await SavedFood.find({
-      user_id: new mongoose.Types.ObjectId(user_id),
-      day: {
-        $gte: new Date(dateFrom),
-        $lte: new Date(dateTo),
-      },
+      user_id: { $exists: true, $eq: new mongoose.Types.ObjectId(user_id) },
+      day: { $gte: new Date(dateFrom), $lte: new Date(dateTo) },
     }).lean();
 
     if (!existingRecords.length) return {};

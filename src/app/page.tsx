@@ -1,33 +1,11 @@
 "use client";
-import {
-  decrement,
-  increment,
-  selectCount,
-} from "@/features/counter/counterSlice";
-import {
-  selectSavedFoodByDate,
-  setSavedFoodMonth,
-} from "@/features/savedFoodslice/savedFoodSlice";
-import { LastMonthFoodOptions } from "@/lib/queriesOptions/LastMonthFoodOptions";
+
 import { Button, Image, Link } from "@nextui-org/react";
-import { useQuery } from "@tanstack/react-query";
-import { format } from "date-fns";
+
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 export default function Home() {
-  const { status, data } = useSession();
-  const dispatch = useDispatch();
-  const count = useSelector(selectCount);
-
-  const { data: monthData, isSuccess } = useQuery(
-    LastMonthFoodOptions(
-      data?.user?.id || "",
-      "",
-      format(new Date(), "yyyy-MM-dd")
-    )
-  );
+  const { data } = useSession();
 
   return (
     <main className="dark flex flex-col items-center justify-start sm:p-10 p-6">
@@ -71,19 +49,6 @@ export default function Home() {
               Start Tracking Now
             </button>
           </Link>
-          <Button
-            onPress={() => dispatch(increment())}
-            className="mt-4 px-4 py-2 rounded-xl font-bold  text-black bg-[#FFAA00] hover:scale-105 transition-transform animate-pulse"
-          >
-            +
-          </Button>
-          <span className="text-xl font-bold">{count}</span>
-          <Button
-            onPress={() => dispatch(decrement())}
-            className="mt-4 px-4 py-2 rounded-xl font-bold  text-black bg-[#FFAA00] hover:scale-105 transition-transform animate-pulse"
-          >
-            -
-          </Button>
         </div>
       </div>
     </main>
