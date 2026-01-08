@@ -1,7 +1,9 @@
 "use client";
 
+import { GET_FOOD } from "@/app/graphql/queries";
 import { DailyIntakeOptions } from "@/lib/queriesOptions/DailyIntakeOptions";
-import { foodType } from "@/types/Types";
+import { FoodType, foodType } from "@/types/Types";
+import { useQuery } from "@apollo/client/react";
 import { Progress } from "@nextui-org/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
@@ -45,6 +47,15 @@ type macros = {
 type timeOfDay = "breakfast" | "lunch" | "dinner";
 
 const timeOfDay: timeOfDay[] = ["breakfast", "lunch", "dinner"];
+
+type GetFoodVars = {
+  date: string;
+  userId: string;
+};
+
+type GetFoodData = {
+  getFood: FoodType;
+};
 
 function calculateRecommendedMacros(weight: number, height: number) {
   const calories = (10 * weight + 6.25 * height - 5 * 25 + 5) * 1.2;
@@ -121,15 +132,17 @@ const ProgressBarsProfile = (props: Value) => {
 
   const { data } = useSession();
   const user = data?.user;
-  const { data: savedFood } = useSuspenseQuery(
-    DailyIntakeOptions(user?.id!, formattedDate!)
-  );
+  const userId = data?.user?.id;
+  const { data: savedFood } = useQuery<GetFoodData, GetFoodVars>(GET_FOOD, {
+    variables: { date: formattedDate || "", userId: user?.id! },
+    skip: !formattedDate || !user?.id,
+  });
 
   useEffect(() => {
     if (!user?.weight || !user?.height) return;
-
+    if (!savedFood) return;
     const rec = calculateRecommendedMacros(user.weight, user.height);
-    const cons = calculateConsumedMacros(savedFood);
+    const cons = calculateConsumedMacros(savedFood.getFood);
 
     setRecommendedDailyMacros(rec);
     setCalculatedMacros(cons);

@@ -60,7 +60,6 @@ export async function POST(request: Request) {
       { status: 201 }
     );
   } catch (error) {
-    console.log(error);
     return NextResponse.json({ error: "Error creating user" }, { status: 500 });
   }
 }

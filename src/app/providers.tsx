@@ -8,6 +8,7 @@ import { Session } from "next-auth";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { getQueryClient } from "@/get-query-client";
 import StoreProvider from "@/StoreProvider";
+import { ApolloWrapper } from "@/lib/apolloClient";
 
 export default function Providers({
   session,
@@ -21,10 +22,12 @@ export default function Providers({
   return (
     <NextUIProvider>
       <StoreProvider>
-        <QueryClientProvider client={queryClient}>
-          <SpeedInsights />
-          <SessionProvider session={session}>{children}</SessionProvider>
-        </QueryClientProvider>
+        <ApolloWrapper>
+          <QueryClientProvider client={queryClient}>
+            <SpeedInsights />
+            <SessionProvider session={session}>{children}</SessionProvider>
+          </QueryClientProvider>
+        </ApolloWrapper>
       </StoreProvider>
     </NextUIProvider>
   );

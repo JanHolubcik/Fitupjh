@@ -28,7 +28,6 @@ const savedFoodSlice = createSlice({
       state.currentDate = action.payload;
     },
     setSavedFoodMonth: (_state, action: PayloadAction<SavedFoodMonth>) => {
-      console.log("Setting saved food month in slice", action.payload);
       return {
         currentDate: format(new Date(), "yyyy-MM-dd"),
         month: action.payload,

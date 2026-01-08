@@ -7,6 +7,7 @@ import {
 } from "@typegoose/typegoose";
 
 import mongoose from "mongoose";
+
 @index({ title: 1 })
 @ModelOptions({
   schemaOptions: {

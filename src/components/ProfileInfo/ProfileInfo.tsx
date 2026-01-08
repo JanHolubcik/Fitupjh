@@ -58,7 +58,6 @@ const ProfileInfo = (props: Value) => {
 
   const handleSelect = (img: string) => {
     setSelectedAvatar(img);
-    console.log("Selected image in parent:", img);
   };
 
   const handleConfirm = () => {

@@ -25,7 +25,6 @@ const useYourIntakeOperations = () => {
     selectSavedFoodByDate(state, format(currentDate, "yyyy-MM-dd"))
   );
 
-  // ✅ Manual save function
   const saveFood = async (foodToSave?: typeof savedFood) => {
     if (status !== "authenticated" || !data?.user?.id) return;
 

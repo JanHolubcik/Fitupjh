@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@apollo/client": "^4.0.11",
+    "@apollo/client-integration-nextjs": "^0.14.4",
     "@apollo/server": "^5.2.0",
     "@as-integrations/next": "^4.1.0",
     "@headlessui/react": "^2.2.4",

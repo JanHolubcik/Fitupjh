@@ -23,20 +23,10 @@ async function getProfileServerImages(): Promise<string[]> {
 }
 export default async function Profile() {
   const images = await getProfileServerImages();
-  const session = await getServerSession(authOptions);
-  const queryClient = getQueryClient();
 
-  if (session?.user?.id) {
-    const userId = session.user.id;
-    const today = format(new Date(), "yyyy-MM-dd");
-
-    await queryClient.prefetchQuery(DailyIntakeOptions(userId, today));
-  }
   return (
     <main className="flex min-h-screen flex-col items-center p-24 pt-0">
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <ProfileMainComponent images={images}></ProfileMainComponent>
-      </HydrationBoundary>
+      <ProfileMainComponent images={images}></ProfileMainComponent>
     </main>
   );
 }

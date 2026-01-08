@@ -6,11 +6,16 @@ import { NextRequest } from "next/server";
 
 const typeDefs = gql`
   type Meal {
-    name: String
-    calories: Int
-    protein: Float
-    carbs: Float
-    fat: Float
+    id: Int!
+    name: String!
+    calories: Int!
+    amount: String!
+    fat: Float!
+    protein: Float!
+    sugar: Float!
+    carbohydrates: Float!
+    fiber: Float!
+    salt: Float!
   }
 
   type FoodDay {
@@ -42,7 +47,11 @@ const resolvers = {
 
       const food = await getSavedFood(parsedDate.toISOString(), userID);
 
-      return food.savedFood || { breakfast: [], lunch: [], dinner: [] };
+      return {
+        breakfast: food.savedFood?.breakfast || [],
+        lunch: food.savedFood?.lunch || [],
+        dinner: food.savedFood?.dinner || [],
+      };
     },
   },
 };
