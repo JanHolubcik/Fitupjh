@@ -14,6 +14,8 @@ import { useEffect, useState } from "react";
 import { FaCheck, FaPen } from "react-icons/fa";
 import ProfileGallery from "../ProfileGallery/ProfileGallery";
 import { useMutation } from "@tanstack/react-query";
+import { FaPencilAlt } from "react-icons/fa";
+import ProfileInfoButton from "./ProfileInfoButton";
 
 type Value = {
   pfps: string[];
@@ -72,7 +74,7 @@ const ProfileInfo = (props: Value) => {
     newHeight = height,
     newGoal = goal,
     newPfpPicture = pfpImage,
-    email = data?.user?.email
+    email = data?.user?.email,
   ) => {
     if (newWeight && newHeight && newGoal && newPfpPicture) {
       updateUserMutation.mutate({
@@ -96,7 +98,7 @@ const ProfileInfo = (props: Value) => {
   };
 
   const handleKeyDown = async (
-    e: React.KeyboardEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.KeyboardEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     if (e.key === "Enter") {
       await handleAutoSubmit();
@@ -146,7 +148,7 @@ const ProfileInfo = (props: Value) => {
           <p className="m-1 self-center ">{data?.user?.name}</p>
           {data?.user?.weight && canCalculate && !edit.weight && (
             <div className="flex justify-evenly items-center m-1">
-              <div className="w-36 self-center text-center flex-4">
+              <div className=" self-center text-center flex-4">
                 {editingField === "weight" ? (
                   <Input
                     type="number"
@@ -157,12 +159,12 @@ const ProfileInfo = (props: Value) => {
                     className="max-w-36"
                   />
                 ) : (
-                  <p
-                    className="cursor-pointer"
-                    onClick={() => setEditingField("weight")}
+                  <Button
+                    className="cursor-pointer flex flex-row bg-transparent hover:bg-gray-800"
+                    onPress={() => setEditingField("weight")}
                   >
-                    Weight: {weight} kg
-                  </p>
+                    <ProfileInfoButton headline="Weight" value={weight} />
+                  </Button>
                 )}
               </div>
 
@@ -183,7 +185,7 @@ const ProfileInfo = (props: Value) => {
           )}
           {data?.user?.height && canCalculate && !edit.height ? (
             <div className="flex justify-evenly items-center m-1">
-              <div className="w-36 self-center text-center flex-4">
+              <div className=" self-center text-center flex-4">
                 {editingField === "height" ? (
                   <Input
                     type="number"
@@ -191,15 +193,15 @@ const ProfileInfo = (props: Value) => {
                     autoFocus
                     onChange={(e) => setHeight(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    className="max-w-36"
+                    className="max-w-36 "
                   />
                 ) : (
-                  <p
-                    className="cursor-pointer"
-                    onClick={() => setEditingField("height")}
+                  <Button
+                    className="cursor-pointer flex flex-row bg-transparent hover:bg-gray-800"
+                    onPress={() => setEditingField("height")}
                   >
-                    Height: {height} cm
-                  </p>
+                    <ProfileInfoButton headline="Height" value={height} />
+                  </Button>
                 )}
               </div>
 
@@ -236,7 +238,7 @@ const ProfileInfo = (props: Value) => {
             </>
           )}
           <div className="flex justify-evenly items-center m-1">
-            <div className="w-36 self-center text-center  flex-4">
+            <div className=" self-center text-center  flex-4">
               {editingField === "goal" ? (
                 <Select
                   className="w-36"
@@ -252,12 +254,12 @@ const ProfileInfo = (props: Value) => {
                   ))}
                 </Select>
               ) : (
-                <p
-                  className="cursor-pointer"
-                  onClick={() => setEditingField("goal")}
+                <Button
+                  className="cursor-pointer bg-transparent hover:bg-gray-800"
+                  onPress={() => setEditingField("goal")}
                 >
-                  Goal: {goal}
-                </p>
+                  <ProfileInfoButton headline="Goal" value={goal} />
+                </Button>
               )}
             </div>
 
