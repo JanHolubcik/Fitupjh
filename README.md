@@ -1,24 +1,18 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
-TODO: Mandatory login, styling, add gender and age to user, live hosting.
-
-After the app is ready, I will p
-ost link with live hosting.
-
 Finished application should resemble [https://kaloricketabulky.sk/]. This is my own personal project for learning Next.js.
-![image](https://github.com/user-attachments/assets/27e8125a-ee63-4702-af93-5e6259fbf29b)
 
-Project uses mongodb on localhost.
 
-## LIVEHOSTING YOU CAN CHECK APP HERE!
+
+Project uses mongodb on localhost or you can also livehost it trough mongo.
+
+## LIVEHOSTING YOU CAN CHECK APP HERE
 
 [https://fitupjh.vercel.app/]
 
-## Set up your env file!!!
+## Set up your env file
 
-Once live hosting will be online there will be no need for local hosting.
+When cloning this repo we need to create file .env.local.
 
-I recommend using Mongodb Compass.
+Having a mongo account and cluster is highy recomndet
 
 1. Create env file (.env.local) and inside file add following line:
 
@@ -29,6 +23,12 @@ MONGODB_URI=mongodb://(yourmongodblocalhost)/fitup
 Database should create automatically after running npm run dev, if not create new database with name "fitup".
 
 2. Create collection with name "food". And insert json file content in public folder.
+
+## Some pictures showing the demo
+<img width="1045" height="785" alt="image" src="https://github.com/user-attachments/assets/3dd63b89-d3e9-4bb3-a3ce-c1807215371c" />
+<img width="1083" height="803" alt="image" src="https://github.com/user-attachments/assets/7f37bf9c-532b-435e-9b7b-d0c51084fd6a" />
+<img width="1055" height="765" alt="image" src="https://github.com/user-attachments/assets/ffa60721-5ed2-49ab-8118-057f78734f69" />
+
 
 ## Getting Started
 
@@ -54,21 +54,4 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
