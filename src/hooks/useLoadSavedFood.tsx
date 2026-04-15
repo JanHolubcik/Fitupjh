@@ -19,7 +19,7 @@ const useLoadSavedFood = (userId: string | undefined) => {
   } = useQuery(LastMonthFoodOptions(userId || "", "", today));
 
   useEffect(() => {
-    if (isSuccess && monthData) {
+    if (isSuccess && Array.isArray(monthData)) {
       const dateKeyedData = monthData.reduce((acc, item) => {
         const date = format(item.day, "yyyy-MM-dd");
         const { breakfast, lunch, dinner } = item.savedFood;
