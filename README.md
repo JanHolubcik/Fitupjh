@@ -1,5 +1,5 @@
 Finished application should resemble [https://kaloricketabulky.sk/]. This is my own personal project for learning Next.js.
-![image](https://github.com/user-attachments/assets/27e8125a-ee63-4702-af93-5e6259fbf29b)
+
 
 
 Project uses mongodb on localhost or you can also livehost it trough mongo.
@@ -24,6 +24,7 @@ Database should create automatically after running npm run dev, if not create ne
 
 2. Create collection with name "food". And insert json file content in public folder.
 
+## Some pictures showing the demo
 <img width="1045" height="785" alt="image" src="https://github.com/user-attachments/assets/3dd63b89-d3e9-4bb3-a3ce-c1807215371c" />
 <img width="1083" height="803" alt="image" src="https://github.com/user-attachments/assets/7f37bf9c-532b-435e-9b7b-d0c51084fd6a" />
 <img width="1055" height="765" alt="image" src="https://github.com/user-attachments/assets/ffa60721-5ed2-49ab-8118-057f78734f69" />
