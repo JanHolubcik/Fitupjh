@@ -25,6 +25,7 @@
     "bcryptjs": "^2.4.3",
     "date-fns": "^4.1.0",
     "dotenv": "^17.2.3",
+    "formik": "^2.4.9",
     "framer-motion": "^11.0.18",
     "graphql": "^16.12.0",
     "graphql-tag": "^2.12.6",

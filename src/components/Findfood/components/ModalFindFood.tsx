@@ -10,10 +10,12 @@ import {
   Tooltip,
   Image,
   Spinner,
+  useDisclosure,
 } from "@nextui-org/react";
 import React, { Dispatch, use, useEffect, useRef } from "react";
 import { useState } from "react";
 import { FaPlusCircle, FaSearch } from "react-icons/fa";
+import { ModalCreateFood } from "./ModalCreateFood";
 
 type ReturnTypeFood =
   | {
@@ -62,7 +64,8 @@ export const ModalFindFood = (props: props) => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 500, setLoading);
-
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  
   useEffect(() => {
     if (debouncedSearchTerm.length === 0) {
       setFood([]);
@@ -106,6 +109,8 @@ export const ModalFindFood = (props: props) => {
         return "lunch";
     }
   };
+
+  
 
   const AddFood = (
     id: number,
@@ -276,6 +281,20 @@ export const ModalFindFood = (props: props) => {
                         </div>
                       </div>
                     ))}
+                    {searchTerm.length > 0 && food?.length === 0 && (
+                      <div className="flex flex-row">
+                          <Button
+                            onPress={onOpen}
+                            disabled={isSubmittingRef.current}
+                            isIconOnly
+                          >
+                            <FaPlusCircle />
+                              
+                          </Button>
+                          <ModalCreateFood isOpen={isOpen} onOpenChange={onOpenChange} ></ModalCreateFood>
+                      <p className="ml-5 text-center self-center">If you didn't find your food, you can add it here.</p>
+                     </div>
+                    )}
                   </>
                 )}
               </div>
