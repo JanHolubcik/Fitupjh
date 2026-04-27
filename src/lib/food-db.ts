@@ -4,6 +4,7 @@ import { stringToObjectId } from "./utils";
 import { Food } from "@/models/Food";
 import { SavedFood } from "@/models/savedFood";
 import mongoose from "mongoose";
+import { FoodInput } from "./validationShemas/foodValidationSchema";
 
 export async function getFoods() {
   try {
@@ -56,6 +57,13 @@ export async function getFood(substring: string) {
   }
 }
 
+/**
+ *  Saving food after user adds it.
+ * @param date 
+ * @param food 
+ * @param _id 
+ * @returns Error.
+ */
 export async function saveFoodInDay(
   date: string,
   food: foodType,
@@ -80,6 +88,45 @@ export async function saveFoodInDay(
     }
   } catch (error) {
     return { error };
+  }
+}
+
+export async function addNewFood(newFood: FoodInput) {
+  try {
+    await connectDB();
+
+
+    const existingRecord = await Food.findOne({
+      name: { $regex: new RegExp(`^${newFood.name}$`, "i") } //handling use case sensitivity
+    });
+
+    if (existingRecord) {
+      return { success: false, error: "This food item already exists." };
+    }
+
+
+    const insertedNew = await Food.create({
+      name: newFood.name,
+      protein: newFood.protein,
+      sugar: newFood.sugar,
+      fat: newFood.fat,
+      carbohydrates: newFood.carbohydrates,
+      salt: newFood.salt,
+      calories_per_100g: newFood.calories_per_100g,
+      fiber: 0
+    });
+
+    return { 
+      success: true, 
+      data: JSON.parse(JSON.stringify(insertedNew)) 
+    };
+
+  } catch (error) {
+    console.error("Database Error:", error);
+    return { 
+      success: false, 
+      error: "An unexpected error occurred while saving." 
+    };
   }
 }
 

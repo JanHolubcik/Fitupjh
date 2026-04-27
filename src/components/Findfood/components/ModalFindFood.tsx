@@ -203,10 +203,10 @@ export const ModalFindFood = (props: props) => {
                       <p>Name</p>
                     </div>
                     <div className="flex-1 self-center max-w-11">
-                      <p>grams</p>
+                      <p>Grams</p>
                     </div>
                     <div className="flex-1 ml-10  self-center text-center max-w-11">
-                      <p>cal</p>
+                      <p>Kcal</p>
                     </div>
                     <div className="max-w-11 ml-10   flex-1 text-end">
                       <div></div>

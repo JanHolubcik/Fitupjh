@@ -8,6 +8,9 @@ import {
 } from "@typegoose/typegoose";
 import mongoose from "mongoose";
 
+/**
+ * Food class represents food in name and macros.
+ */
 @post<FoodClass>("save", function (food) {
   if (food) {
     food.id = food._id.toString();

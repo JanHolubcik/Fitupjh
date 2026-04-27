@@ -44,7 +44,7 @@ const savedFoodSlice = createSlice({
     ) => {
       const { date, timeOfDay, food } = action.payload;
 
-      // ensure date exists
+
       if (!state.month[date]) {
         state.month[date] = { ...emptyDay };
       }

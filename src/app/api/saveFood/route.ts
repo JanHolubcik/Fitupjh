@@ -6,7 +6,7 @@ import { isValid, parseISO } from "date-fns";
 
 type SaveFoodRequest = {
   date: string;
-  savedFood: foodType; // or your specific type
+  savedFood: foodType; 
   userID: string;
 };
 

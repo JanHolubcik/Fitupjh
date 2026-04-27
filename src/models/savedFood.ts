@@ -9,6 +9,9 @@ import {
 } from "@typegoose/typegoose";
 import mongoose from "mongoose";
 
+/**
+ * Saved food class represent user saved food trough day.
+ */
 @post<SavedFoodClass>("find", function (food) {
   if (food) {
     food.day = food.day;
