@@ -290,7 +290,7 @@ export const ModalFindFood = (props: props) => {
                           >
                             <FaPlusCircle />
                               
-                          </Button>
+                          </Button>                  
                           <ModalCreateFood isOpen={isOpen} onOpenChange={onOpenChange} ></ModalCreateFood>
                       <p className="ml-5 text-center self-center">If you didn't find your food, you can add it here.</p>
                      </div>

@@ -1,11 +1,9 @@
 "use client";
 
 import { GET_FOOD } from "@/app/graphql/queries";
-import { DailyIntakeOptions } from "@/lib/queriesOptions/DailyIntakeOptions";
 import { FoodType, foodType } from "@/types/Types";
 import { useQuery } from "@apollo/client/react";
 import { Progress } from "@nextui-org/react";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";

@@ -2,11 +2,11 @@ import { getSavedFood } from "@/lib/YourIntake/search-db";
 import { NextRequest, NextResponse } from "next/server";
 import { saveFoodInDay } from "@/lib/food-db";
 import { foodType } from "@/types/Types";
-import { isValid, parseISO } from "date-fns";
+import { isValid, parse, parseISO } from "date-fns";
 
 type SaveFoodRequest = {
   date: string;
-  savedFood: foodType; 
+  savedFood: foodType;
   userID: string;
 };
 
@@ -62,17 +62,31 @@ export async function POST(req: Request) {
   if (!userID || typeof userID !== "string") {
     return new Response("Missing or invalid userID", { status: 400 });
   }
+  //before there was a problem with converting to ISO date, the converting was 2 hours from
+  //current date
+  const parsedDate = parse(date, "yyyy-MM-dd", new Date());
+  const utcDate = new Date(
+    Date.UTC(
+      parsedDate.getFullYear(),
+      parsedDate.getMonth(),
+      parsedDate.getDate(),
+      0,
+      0,
+      0,
+    ),
+  );
 
   const parsed = parseISO(date);
   if (!isValid(parsed)) {
     return new Response("Invalid date format", { status: 400 });
   }
-  const isoDate = parsed.toISOString();
-  const res = await saveFoodInDay(isoDate, savedFood, userID).catch(
+  const isoDate = utcDate.toISOString();
+  const formattedDate = isoDate.replace("Z", "+00:00");
+  const res = await saveFoodInDay(formattedDate, savedFood, userID).catch(
     () =>
       new NextResponse("There was an error while sending data to db", {
         status: 500,
-      })
+      }),
   );
   return Response.json({ res });
 }

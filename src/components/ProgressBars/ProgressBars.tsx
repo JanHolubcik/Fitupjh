@@ -205,7 +205,7 @@ const ProgressBars = () => {
         />
       </div>
       <div className="flex flex-row">
-        <Progress
+        <Progress       
           label="Sugar"
           showValueLabel
           value={calculatedMacros?.sugar}
