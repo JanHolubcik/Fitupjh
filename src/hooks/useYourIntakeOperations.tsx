@@ -11,6 +11,7 @@ import { selectSavedFoodByDate } from "@/features/savedFoodslice/savedFoodSlice"
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import { toast } from "react-toastify";
 
 type timeOfDay = "breakfast" | "lunch" | "dinner";
 
@@ -86,7 +87,7 @@ const useYourIntakeOperations = () => {
     );
 
     // Save immediately after adding
-    await saveFood({
+    const res = saveFood({
       ...savedFood,
       [timeOfDay]: [
         ...savedFood[timeOfDay],
@@ -104,6 +105,25 @@ const useYourIntakeOperations = () => {
         },
       ],
     });
+
+     toast.promise(
+       res,
+       {
+         pending: "Sending request...",
+         success: "Food was added!",
+         error: "There was an error while adding new intake.",
+       },
+       {
+         position: "bottom-left",
+         autoClose: 5000,
+         hideProgressBar: false,
+         closeOnClick: false,
+         pauseOnHover: true,
+         draggable: true,
+         progress: undefined,
+         theme: "dark",
+       },
+     );
   };
 
   const removeFromSavedFood = async (id: number, timeOfDay: timeOfDay) => {
