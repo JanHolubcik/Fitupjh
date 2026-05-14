@@ -19,7 +19,7 @@ export default async function MyProgress() {
     await queryClient.prefetchQuery(LastMonthFoodOptions(userId, "", today));
   }
   return (
-    <main className="flex min-h-screen flex-col items-center p-24 pt-0">
+    <main className="flex min-h-screen flex-col items-center p-24 pt-0 bg-black">
       <HydrationBoundary state={dehydrate(queryClient)}>
         <MyGraph />
       </HydrationBoundary>
