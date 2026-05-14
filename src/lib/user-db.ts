@@ -33,7 +33,8 @@ export async function updateUser(
   weight?: number,
   goal?: string,
   image?: string,
-  email?: string
+  email?: string,
+  name?: string
 ) {
   try {
     await connectDB();
@@ -51,6 +52,7 @@ export async function updateUser(
     }
     if (image) updateFields.image = image;
     if (email) updateFields.userEmail = email;
+    if (name) updateFields.userName = name;
 
     if (Object.keys(updateFields).length === 0) {
       return { message: "No fields to update" };

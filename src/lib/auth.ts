@@ -1,6 +1,6 @@
 import credentials from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
-import { User as UserModel } from "@/models/users";
+import { User as UserModel, UsersClass } from "@/models/users";
 
 import { User, NextAuthOptions, getServerSession } from "next-auth";
 import connectDB from "@/lib/connect-db";
@@ -38,9 +38,9 @@ const authOptions: NextAuthOptions = {
           throw new Error("Missing credentials");
         }
 
-        const user = await UserModel.findOne({
+        const user = (await UserModel.findOne({
           userEmail: credentials?.email,
-        }).select("+userPassword");
+        }).select("+userPassword").lean()) as UsersClass | null;
 
         if (!user) throw new Error("Wrong Email");
         const passwordMatch = await bcrypt.compare(
@@ -48,11 +48,11 @@ const authOptions: NextAuthOptions = {
           user.userPassword
         );
         if (!passwordMatch) throw new Error("Wrong Password");
-
+        const userEmail = user.userEmail.toString();
         return {
           _id: user._id,
           name: user.userName,
-          email: user.userEmail,
+          email: userEmail,
           // user.userEmail is empty even tho i have it in database, no idea how
           //im not getting this value, but since if the email would not be found in database
           //the login attempt would throw error so we can for sure know the user have this email.

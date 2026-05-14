@@ -2,18 +2,22 @@
 
 import { useState } from "react";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
-import { Avatar, Button } from "@nextui-org/react";
+import { Avatar, Button, Modal, ModalBody, ModalContent } from "@nextui-org/react";
 
 interface ProfileGalleryProps {
   images: string[];
   onConfirm: (par: string | null) => void;
   onSelect?: (img: string) => void;
+  onOpenChange: () => void;
+  isOpen: boolean | undefined;
 }
 
 export default function ProfileGallery({
   images,
   onConfirm,
   onSelect,
+  isOpen,
+  onOpenChange,
 }: ProfileGalleryProps) {
   const [selected, setSelected] = useState<string | null>(null);
 
@@ -23,44 +27,52 @@ export default function ProfileGallery({
   };
 
   return (
-    <div className="flex flex-col items-center p-6 space-y-6">
+    <Modal
+      placement="top-center"
+      hideCloseButton
+      size="2xl"
+      isOpen={isOpen}
+      isDismissable={false} 
+      onOpenChange={() => {
+        onOpenChange();
+      }}
+    >
       {/* Avatar Gallery */}
-      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-6">
-        {images.map((img, idx) => (
-          <div
-            key={idx}
-            onClick={() => handleSelect(img)}
-            className={`relative p-1 cursor-pointer transition duration-200 rounded-full 
-          flex justify-center items-center 
-          ${
-            selected === img
-              ? "border-4 border-blue-500 shadow-lg"
-              : "border-2 border-gray-200"
-          }
-        `}
-          >
-            <Avatar
-              src={img}
-              alt={`Profile ${idx}`}
-              className="w-24 h-24 rounded-full"
-            />
-            {selected === img && (
-              <CheckCircleIcon className="absolute top-1 right-1 w-6 h-6 text-blue-500" />
-            )}
-          </div>
-        ))}
-      </div>
+      <ModalContent >
+        {() => (
+          <>
+            <ModalBody className="font-bold text-lar flex items-center pt-4 gap-10 mb-3">
+              <h2 className="">Select your profile picture</h2>
+              <div  className="flex flex-row justify-center gap-8 items-center">
+              {images.map((img) => (
+                <Avatar
+                  key={img}
+                  src={img}
+                   isBordered       
+                  alt={`Profile ${img}`}
+                  color={selected===img? "primary":"default"}
+                  
+                  onClick={() =>handleSelect(img)}
+                  className="w-24 h-24 rounded-full cursor-pointer"
+                />
+              ))}
+           </div>
 
-      {/* Confirm Button */}
-      <Button
-        color="primary"
-        onPress={() => {
-          onConfirm(selected);
-        }}
-        isDisabled={!selected} // Disable if nothing selected
-      >
-        Confirm Selection
-      </Button>
-    </div>
+            {/* Confirm Button */}
+            <Button
+              color="primary"
+              
+              onPress={(e) => {
+                onConfirm(selected);
+              }}
+              isDisabled={!selected} 
+            >
+              Confirm Selection
+            </Button>
+            </ModalBody>
+          </>
+        )}
+      </ModalContent>
+    </Modal>
   );
 }

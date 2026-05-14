@@ -1,5 +1,7 @@
+import { authOptions } from "@/lib/auth";
 import { getUser, updateUser } from "@/lib/user-db";
 import { UsersClass } from "@/models/users";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -28,13 +30,20 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
-  const { email, height, weight, goal, image } = await req.json();
+  const session = await getServerSession(authOptions);
+  const { email, height, weight, goal, image,name } = await req.json();
+
+  if (!session || !session.user?.email) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
+
+  const currentUserEmail = session.user.email;
 
   if (!email) {
     return new NextResponse("Email was not specified", { status: 400 });
   }
 
-  const user: UsersClass | null = await getUser(email);
+  const user: UsersClass | null = await getUser(currentUserEmail);
   if (!user) {
     return new NextResponse("User not found", { status: 404 });
   }
@@ -45,7 +54,8 @@ export async function PATCH(req: NextRequest) {
     weight,
     goal,
     image,
-    email
+    email,
+    name
   );
 
   if ("error" in updatedUser) {
@@ -53,7 +63,7 @@ export async function PATCH(req: NextRequest) {
       `Failed to update user: ${
         (updatedUser.error as any).message || updatedUser.error
       }`,
-      { status: 500 }
+      { status: 500 },
     );
   }
 

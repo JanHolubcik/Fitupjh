@@ -12,7 +12,7 @@ The first change is to move from defining store as a global or module-singleton 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      counter: counterReducer, // ✅ include your slice here
+      counter: counterReducer, 
       savedFood: savedFoodReducer,
     },
   });

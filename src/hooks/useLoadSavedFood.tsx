@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo } from "react";
 
 import { useDispatch } from "react-redux";
 import { LastMonthFoodOptions } from "@/lib/queriesOptions/LastMonthFoodOptions";
