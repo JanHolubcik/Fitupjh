@@ -17,6 +17,19 @@ export type food = {
   salt: number;
 }[];
 
+export type ReturnTypeFood =
+  | {
+      name: string;
+      calories_per_100g: number;
+      fat: number;
+      protein: number;
+      sugar: number;
+      carbohydrates: number;
+      fiber: number;
+      salt: number;
+    }[]
+  | undefined;
+
 export type macros = {
   calories: number;
   fat: number;

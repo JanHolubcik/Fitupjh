@@ -16,19 +16,10 @@ import React, { Dispatch, use, useEffect, useRef } from "react";
 import { useState } from "react";
 import { FaPlusCircle, FaSearch } from "react-icons/fa";
 import { ModalCreateFood } from "./ModalCreateFood";
+import { ReturnTypeFood } from "@/types/Types";
+import AddFoodComponent from "./AddFoodComponent";
 
-type ReturnTypeFood =
-  | {
-      name: string;
-      calories_per_100g: number;
-      fat: number;
-      protein: number;
-      sugar: number;
-      carbohydrates: number;
-      fiber: number;
-      salt: number;
-    }[]
-  | undefined;
+
 
 type props = {
   onOpenChange: () => void;
@@ -124,11 +115,10 @@ export const ModalFindFood = (props: props) => {
       fiber: number;
       salt: number;
     },
+    valueGrams: string,
     onClose: () => void
   ) => {
-    const valueGrams = (
-      document.getElementById(`${id}inputGrams`) as HTMLInputElement
-    ).value;
+
     if (isSubmittingRef.current) return;
     isSubmittingRef.current = true;
     addToFood(
@@ -155,7 +145,7 @@ export const ModalFindFood = (props: props) => {
     <Modal
       placement="top"
       hideCloseButton
-      size="lg"
+      size="3xl"
       scrollBehavior="inside"
       isOpen={props.isOpen}
       onOpenChange={() => {
@@ -197,89 +187,12 @@ export const ModalFindFood = (props: props) => {
             </ModalHeader>
             <ModalBody className="max-h-52">
               <div className="max-h-52 overflow-visible">
-                {!loading && food?.length !== 0 && (
-                  <div className=" flex flex-row ">
-                    <div className="flex-1 self-center">
-                      <p>Name</p>
-                    </div>
-                    <div className="flex-1 self-center max-w-11">
-                      <p>Grams</p>
-                    </div>
-                    <div className="flex-1 ml-10  self-center text-center max-w-11">
-                      <p>Kcal</p>
-                    </div>
-                    <div className="max-w-11 ml-10   flex-1 text-end">
-                      <div></div>
-                    </div>
-                  </div>
-                )}
                 {loading ? (
                   <Spinner className=" m-2 self-center" size="lg" />
                 ) : (
                   <>
                     {food?.map((key, id) => (
-                      <div className=" flex flex-row " key={id}>
-                        <div className="flex-1 self-center">
-                          <Tooltip
-                            content={
-                              <Image
-                                alt="nextui logo"
-                                height={100}
-                                radius="sm"
-                                src={
-                                  "https://www.themealdb.com/images/ingredients/" +
-                                  key.name +
-                                  ".png"
-                                }
-                                width={100}
-                              />
-                            }
-                          >
-                            <p>{key.name}</p>
-                          </Tooltip>
-                        </div>
-                        <div className="flex-1 self-center max-w-11">
-                          <Input
-                            key={id + "inputGrams"}
-                            id={id + "inputGrams"}
-                            min={0}
-                            max={999}
-                            defaultValue="100"
-                            size="sm"
-                            type="number"
-                            onChange={(event) => {
-                              setCalculatedCalories((prevState) => {
-                                const newState = [...prevState];
-                                if (event.target.value !== null)
-                                  newState[id] =
-                                    (Number(event.target.value) / 100) *
-                                    key.calories_per_100g;
-                                return newState;
-                              });
-                            }}
-                          />
-                        </div>
-                        <div className="flex-1 ml-10  self-center text-end max-w-11">
-                          <Input
-                            disabled
-                            id={id + "readOnlyInput"}
-                            min={0}
-                            value={calculatedCalories[id].toString()}
-                            size="sm"
-                            type="number"
-                          />
-                        </div>
-
-                        <div className="max-w-11 ml-10   flex-1 text-end">
-                          <Button
-                            onPress={() => AddFood(id, key, onClose)}
-                            disabled={isSubmittingRef.current}
-                            isIconOnly
-                          >
-                            <FaPlusCircle />
-                          </Button>
-                        </div>
-                      </div>
+                    <AddFoodComponent key={key.name} id={id} macros={key} calculatedCalories={calculatedCalories} setCalculatedCalories={setCalculatedCalories} AddFood={AddFood} onClose={onClose}                    />
                     ))}
                     {searchTerm.length > 0 && food?.length === 0 && (
                       <div className="flex flex-row">

@@ -13,7 +13,7 @@ export default function ProfileMainComponent({ images }: { images: string[] }) {
     <main className="flex min-h-screen flex-col items-center p-24">
       <ProfileInfo pfps={images} />
       <ProgressBarsProfile date={value} />
-      <Calendar locale="en" onChange={onChange} value={value} />
+      <Calendar locale="en" onChange={onChange} value={value} />+
     </main>
   );
 }
