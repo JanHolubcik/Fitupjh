@@ -42,7 +42,6 @@ const AddFoodComponent = (props: props) => {
       className="flex flex-row items-center gap-4 sm:gap-6 p-4 bg-transparent border-b border-divider/50"
       key={props.macros.name}
     >
-      {/* Left: Image & Name (Fixed) */}
       <div className="flex items-center gap-4 min-w-[140px] sm:min-w-[180px]">
         <Image
           alt={props.macros.name}
@@ -58,8 +57,7 @@ const AddFoodComponent = (props: props) => {
         </p>
       </div>
 
-      {/* Middle: Macros Stacked Vertically */}
-      <div className="flex flex-col justify-center gap-1.5 flex-1 border-x border-divider/20 px-4">
+      <div className="flex flex-col justify-center gap-1 flex-1 border-x border-divider/20 px-4">
         <div className="flex items-center gap-2">
           <span className="text-[9px] text-default-500 font-bold uppercase w-8">
             Prot
@@ -76,7 +74,7 @@ const AddFoodComponent = (props: props) => {
             {((props.macros.carbohydrates / 100) * Grams).toFixed(2)}g
           </span>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 border-b border-divider/10 pb-0.5">
           <span className="text-[9px] text-default-500 font-bold uppercase w-8">
             Fat
           </span>
@@ -84,9 +82,16 @@ const AddFoodComponent = (props: props) => {
             {((props.macros.fat / 100) * Grams).toFixed(2)}g
           </span>
         </div>
+        <div className="flex items-center gap-2">
+          <span className="text-[9px] text-default-500 font-bold uppercase w-8">
+            Sug
+          </span>
+          <span className="text-purple-400 font-semibold text-xs">
+            {(((props.macros.sugar || 0) / 100) * Grams).toFixed(2)}g
+          </span>
+        </div>
       </div>
 
-      {/* Right: Inputs & Action (Fixed) */}
       <div className="flex items-end gap-3 shrink-0">
         <div className="w-16 sm:w-20">
           <Input
@@ -135,11 +140,17 @@ const AddFoodComponent = (props: props) => {
           />
         </div>
         <Button
-          onPress={() => props.AddFood(props.id, props.macros, Grams.toString(), props.onClose)}
+          onPress={() =>
+            props.AddFood(
+              props.id,
+              props.macros,
+              Grams.toString(),
+              props.onClose,
+            )
+          }
           isIconOnly
-        
+          radius="full"
           variant="light"
-          className="w-9 h-9 min-w-9"
         >
           <FaPlusCircle size={24} />
         </Button>
