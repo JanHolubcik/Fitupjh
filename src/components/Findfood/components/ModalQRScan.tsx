@@ -96,7 +96,7 @@ export const ModalQRScan = (props: props) => {
       const parsedFood: Food = {
         id: Date.now(),
         name: food.name,
-        amount: `${weight}g`,
+        amount: `${weight}`,
         calories: Math.round(food.calories_per_100g * multiplier),
         fat: Number((food.fat * multiplier).toFixed(1)),
         protein: Number((food.protein * multiplier).toFixed(1)),
