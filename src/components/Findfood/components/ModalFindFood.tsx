@@ -131,7 +131,7 @@ export const ModalFindFood = (props: props) => {
       key.carbohydrates,
       key.fiber,
       key.salt,
-      key.imgUrl
+      key.imgUrl,
     );
     onClose();
     setSearchTerm("");

@@ -27,6 +27,9 @@ try {
     });
 
     if (!apiResponse.ok) {
+      if (apiResponse.status === 404){
+        return NextResponse.json({ error: "Product was not on world.openfoodfacts.org" }, { status: 404 });
+      }
       return NextResponse.json({ error: "External product lookup registry down" }, { status: 502 });
     }
 
