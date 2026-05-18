@@ -49,7 +49,6 @@ function useDebounce<T>(
 export const ModalQRScan = (props: props) => {
   const { addToFoodObject } = useYourIntakeOperations();
 
-
   const { mutate: scanProduct, isPending, error, data } = useScanProduct();
 
   const getTimeOfDay = () => {
@@ -75,8 +74,16 @@ export const ModalQRScan = (props: props) => {
     if (!detectedCodes || detectedCodes.length === 0) return;
     if (isPending) return;
 
+    const rawValue = detectedCodes[0]?.rawValue;
+    console.log("Detected barcode(s):", detectedCodes);
+
+    if (!rawValue) {
+      console.warn("Detected barcode has no rawValue", detectedCodes);
+      return;
+    }
+
     try {
-      await scanProduct(detectedCodes[0].rawValue);
+      await scanProduct(rawValue);
     } catch (error) {
       console.error("Failed to scan and parse product:", error);
     }
@@ -138,7 +145,15 @@ export const ModalQRScan = (props: props) => {
               <div className="relative w-full aspect-square max-w-[340px] mx-auto overflow-hidden rounded-2xl dark:border-zinc-800 bg-slate-950 shadow-inner flex items-center justify-center">
                 <Scanner
                   onScan={handleScan}
-                  onError={(error) => console.error(error)}
+                  onError={(error) => console.error("Scanner error:", error)}
+                  constraints={{
+                    facingMode: "environment",
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 },
+                  }}
+                  formats={["ean_13", "ean_8", "upc_a"]}
+                  scanDelay={800}
+                  retryDelay={250}
                 />
               </div>
 
