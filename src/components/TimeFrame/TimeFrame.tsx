@@ -14,6 +14,7 @@ import { useDisclosure } from "@nextui-org/react";
 
 import { ModalFindFood } from "../Findfood/components/ModalFindFood";
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
+import ImageFromURL from "../ImageFromURL/ImageFromURL";
 
 type Food = {
   timeOfDay: "breakfast" | "lunch" | "dinner";
@@ -53,13 +54,9 @@ const FindFood = (props: Food) => {
                 key={key.id}
               >
                 <div className="flex-shrink-0">
-                  <Image
-                    alt={key.name}
-                    height={42}
-                    width={42}
-                    radius="md"
-                    src={`https://www.themealdb.com/images/ingredients/${key.name}.png`}
-                    className="object-contain bg-zinc-955 p-0.5"
+                  <ImageFromURL
+                  macroName={key.name}
+                  url={key.imgUrl }
                   />
                 </div>
 

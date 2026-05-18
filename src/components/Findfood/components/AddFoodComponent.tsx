@@ -1,11 +1,10 @@
+import ImageFromURL from "@/components/ImageFromURL/ImageFromURL";
 import { food, macros, ReturnTypeFood } from "@/types/Types";
 import { Button, Image, Input } from "@nextui-org/react";
 import { useState } from "react";
 import { FaPlusCircle } from "react-icons/fa";
 
-type props = {
-  id: number;
-  macros: {
+type macrosLocal = {
     name: string;
     calories_per_100g: number;
     fat: number;
@@ -14,21 +13,17 @@ type props = {
     carbohydrates: number;
     fiber: number;
     salt: number;
-  };
+    imgUrl: string;
+  }
+
+type props = {
+  id: number;
+  macros: macrosLocal;
   calculatedCalories: number[];
   setCalculatedCalories: React.Dispatch<React.SetStateAction<number[]>>;
   AddFood: (
     id: number,
-    key: {
-      name: string;
-      calories_per_100g: number;
-      fat: number;
-      protein: number;
-      sugar: number;
-      carbohydrates: number;
-      fiber: number;
-      salt: number;
-    },
+    key: macrosLocal,
     valueGrams: string,
     onClose: () => void,
   ) => void;
@@ -43,14 +38,9 @@ const AddFoodComponent = (props: props) => {
       key={props.macros.name}
     >
       <div className="flex items-center gap-4 min-w-[140px] sm:min-w-[180px]">
-        <Image
-          alt={props.macros.name}
-          height={40}
-          radius="md"
-          fallbackSrc={`foodPlaceholder.png`}
-          src={`https://www.themealdb.com/images/ingredients/${props.macros.name}.png`}
-          width={40}
-          className="object-contain"
+        <ImageFromURL
+          url={props.macros.imgUrl}
+          macroName={props.macros.name}
         />
         <p className="font-bold text-small sm:text-medium text-white capitalize leading-tight">
           {props.macros.name}

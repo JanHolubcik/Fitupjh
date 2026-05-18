@@ -8,12 +8,13 @@ import { useSession } from "next-auth/react";
 import useLoadSavedFood from "@/hooks/useLoadSavedFood";
 import { ModalFindFood } from "@/components/Findfood/components/ModalFindFood";
 import NavigationYourIntake from "./components/NavigationYourIntake";
+import { ModalQRScan } from "@/components/Findfood/components/ModalQRScan";
 
 export default function Food() {
   const { data } = useSession();
   const { isFetched } = useLoadSavedFood(data?.user?.id);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
+const { isOpen:QRisOpen, onOpen:QRonOpen, onOpenChange:QRonOpenChange, onClose:QRonClose } = useDisclosure();
   const [showSpinner, setShowSpinner] = useState(true); // Spinner state
 
   useEffect(() => {
@@ -27,7 +28,7 @@ export default function Food() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-11">
       {!showSpinner && isFetched && data?.user?.id ? (
-        <NavigationYourIntake onOpen={onOpen} />
+        <NavigationYourIntake onOpen={onOpen} onOpenQR={QRonOpen} />
       ) : showSpinner ? (
         <Spinner className=" m-2 self-center" size="lg" />
       ) : (
@@ -37,6 +38,11 @@ export default function Food() {
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       ></ModalFindFood>
+      <ModalQRScan
+        isOpen={QRisOpen}
+        onOpenChange={QRonOpenChange}
+        onClose={QRonClose}
+      ></ModalQRScan>
     </main>
   );
 }

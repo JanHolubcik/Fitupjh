@@ -13,8 +13,9 @@ import {
 } from "react-icons/fa";
 import { useCalculateRecommendedCalories } from "../hooks/useCalculateRecomendedCalories";
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
+import { QrCodeIcon } from "@heroicons/react/24/solid";
 
-const NavigationYourIntake = ({ onOpen }: { onOpen: () => void }) => {
+const NavigationYourIntake = ({ onOpen,onOpenQR }: { onOpen: () => void; onOpenQR: () => void }) => {
   const { currentDate, setNewDateAndGetFood, savedFood } =
     useYourIntakeOperations();
   const { recommendedCaloriesValue, caloriesSum } =
@@ -120,12 +121,21 @@ const NavigationYourIntake = ({ onOpen }: { onOpen: () => void }) => {
           <FaSearch className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
         }
         id="search"
-        className="m-6 "
+        className="mt-6 mr-6 ml-6 "
         onPress={onOpen}
       >
-        Click to find food...
+        Click to search 
       </Button>
-
+      <Button
+        startContent={
+          <QrCodeIcon className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
+        }
+        id="search"
+        className="mt-3 mr-6 ml-6 mb-3"
+        onPress={onOpenQR}
+      >
+        Scan your product
+      </Button>
       <ProgressBars />
 
       {timeOfDay.map((key) => (

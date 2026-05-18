@@ -44,6 +44,12 @@ class FoodClass {
   fiber: number;
   @prop({ required: true })
   salt: number;
+  @prop({ required: false})// means that food is a product (yogurt for example) which means he has fixed weight that needs to be calculated
+  ProductWeight: number;
+  @prop({ required: false })// we search for products by it's qrcode, if it doesn't exist, we need to call external api to get macros
+  QRcode: string;
+  @prop({required: false})
+  imgUrl: string;
 }
 
 const Food =

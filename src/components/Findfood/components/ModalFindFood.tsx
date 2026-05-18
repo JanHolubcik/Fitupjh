@@ -7,8 +7,6 @@ import {
   ModalBody,
   ModalContent,
   ModalHeader,
-  Tooltip,
-  Image,
   Spinner,
   useDisclosure,
 } from "@nextui-org/react";
@@ -114,6 +112,7 @@ export const ModalFindFood = (props: props) => {
       carbohydrates: number;
       fiber: number;
       salt: number;
+      imgUrl: string;
     },
     valueGrams: string,
     onClose: () => void
@@ -131,7 +130,8 @@ export const ModalFindFood = (props: props) => {
       key.sugar,
       key.carbohydrates,
       key.fiber,
-      key.salt
+      key.salt,
+      key.imgUrl
     );
     onClose();
     setSearchTerm("");

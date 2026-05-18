@@ -1,7 +1,6 @@
 import { foodType } from "@/types/Types";
 import connectDB from "./connect-db";
-import { stringToObjectId } from "./utils";
-import { Food } from "@/models/Food";
+import { Food, FoodClass } from "@/models/Food";
 import { SavedFood } from "@/models/savedFood";
 import mongoose from "mongoose";
 import { FoodInput } from "./validationShemas/foodValidationSchema";
@@ -46,6 +45,7 @@ export async function getFood(substring: string) {
             carbohydrates: value.carbohydrates,
             fiber: value.fiber,
             salt: value.salt,
+            imgUrl: value.imgUrl,
           };
         }),
       };
@@ -54,6 +54,43 @@ export async function getFood(substring: string) {
     }
   } catch (error) {
     return { error };
+  }
+}
+/**
+ * Retrieves a food item by its QR code.
+ * @param qrCode 
+ * @returns 
+ */
+export async function getFoodByQR(qrCode: string) {
+  try {
+    await connectDB();
+
+    const food = await Food.findOne({ QRcode: qrCode })
+      .lean<FoodClass>()
+      .exec();
+
+    if (!food) {
+      return { error: "Food not found" };
+    }
+
+    return {
+      name: food.name,
+      calories_per_100g: food.calories_per_100g,
+      fat: food.fat,
+      protein: food.protein,
+      sugar: food.sugar,
+      carbohydrates: food.carbohydrates,
+      fiber: food.fiber,
+      salt: food.salt,
+      qrCode: food.QRcode,
+      ProductWeight: food.ProductWeight,
+    };
+
+  } catch (error) {
+
+    return { 
+      error: error instanceof Error ? error.message : "An unknown database error occurred" 
+    };
   }
 }
 

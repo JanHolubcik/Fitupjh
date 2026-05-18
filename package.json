@@ -21,6 +21,7 @@
     "@typegoose/typegoose": "^12.3.0",
     "@types/bcryptjs": "^2.4.6",
     "@vercel/speed-insights": "^1.1.0",
+    "@yudiel/react-qr-scanner": "^2.6.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "date-fns": "^4.1.0",

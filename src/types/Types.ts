@@ -15,6 +15,7 @@ export type food = {
   carbohydrates: number;
   fiber: number;
   salt: number;
+  imgUrl?: string;
 }[];
 
 export type ReturnTypeFood =
@@ -27,6 +28,7 @@ export type ReturnTypeFood =
       carbohydrates: number;
       fiber: number;
       salt: number;
+      imgUrl: string;
     }[]
   | undefined;
 
@@ -51,6 +53,7 @@ export type Food = {
   carbohydrates: number;
   fiber: number;
   salt: number;
+  imgUrl?: string;
 };
 
 export type FoodType = {

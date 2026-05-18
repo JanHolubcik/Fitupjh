@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Image, Link } from "@nextui-org/react";
+import {  Image, Link } from "@nextui-org/react";
 
 import { useSession } from "next-auth/react";
 
