@@ -52,11 +52,12 @@ class FoodClass {
   imgUrl: string;
 }
 
-const Food = getModelForClass(FoodClass, {
-  existingMongoose: mongoose,
-  schemaOptions: {
-    collection: "food",
-  },
-});
-
+const Food =
+  mongoose.models.Food ??
+  getModelForClass(FoodClass, {
+    schemaOptions: {
+      collection: "food",
+    },
+  });
+  
 export { Food, FoodClass };
