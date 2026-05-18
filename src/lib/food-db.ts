@@ -84,6 +84,7 @@ export async function getFoodByQR(qrCode: string) {
       salt: food.salt,
       qrCode: food.QRcode,
       ProductWeight: food.ProductWeight,
+      imgUrl: food.imgUrl,
     };
 
   } catch (error) {
