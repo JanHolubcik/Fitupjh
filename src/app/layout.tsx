@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import 'reflect-metadata';
+
 
 import NavbarComponent from "@/components/Navbar/NavbarComponent";
 import { authOptions } from "@/lib/auth";
