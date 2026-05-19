@@ -11,7 +11,7 @@ import React, { Dispatch, useEffect } from "react";
 import { useState } from "react";
 
 import { Food } from "@/types/Types";
-import { Scanner } from "@yudiel/react-qr-scanner";
+import { Scanner, prepareZXingModule } from "@yudiel/react-qr-scanner";
 import { useScanProduct } from "./useScanProduct";
 import { FoodClass } from "@/models/Food";
 
@@ -26,6 +26,8 @@ type timeOfDay = "breakfast" | "lunch" | "dinner";
 
 export const ModalBarcodeScan = (props: props) => {
   const [isChrome, setIsChrome] = useState<boolean | null>(null);
+
+prepareZXingModule({ fireImmediately: true });
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -176,9 +178,7 @@ export const ModalBarcodeScan = (props: props) => {
           <>
             <ModalBody className="gap-6 py-6 px-6">
               <div className="relative w-full aspect-square max-w-[340px] mx-auto overflow-hidden rounded-2xl dark:border-zinc-800 bg-slate-950 shadow-inner flex items-center justify-center">
-                {isChrome ? (
-                  <BarcodeScanner onScan={handleScanChrome} />
-                ) : (
+            
                   <Scanner
                     onScan={handleScan}
                     components={{
@@ -196,7 +196,7 @@ export const ModalBarcodeScan = (props: props) => {
                     scanDelay={800}
                     retryDelay={250}
                   />
-                )}
+                
               </div>
 
               <div className="flex flex-col items-center text-center gap-3 bg-slate-50 dark:bg-zinc-900/50 p-4 rounded-xl">
