@@ -23,21 +23,7 @@ type props = {
 
 type timeOfDay = "breakfast" | "lunch" | "dinner";
 
-function useDebounce<T>(
-  value: T,
-  delay: number,
-  setLoading: Dispatch<React.SetStateAction<boolean>>,
-) {
-  const [debouncedValue, setDebouncedValue] = useState(value);
 
-  useEffect(() => {
-    setLoading(true);
-    const handler = setTimeout(() => setDebouncedValue(value), delay);
-    return () => clearTimeout(handler);
-  }, [value, delay, setLoading]);
-
-  return debouncedValue;
-}
 
 export const ModalQRScan = (props: props) => {
   const { addToFoodObject } = useYourIntakeOperations();
@@ -82,6 +68,27 @@ export const ModalQRScan = (props: props) => {
     }
   };
 
+useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const ua = navigator.userAgent;
+      const isChromeMobile = /Chrome/i.test(ua) && /Android|iPhone|iPad/i.test(ua);
+
+      if (isChromeMobile) {
+        try {
+          // Force redefine the property to bypass Chrome's write-protections
+          Object.defineProperty(window, 'BarcodeDetector', {
+            value: undefined,
+            writable: true,
+            configurable: true
+          });
+          console.log("Successfully tricked Chrome into using the software polyfill.");
+        } catch (error) {
+          console.error("Failed to intercept BarcodeDetector:", error);
+        }
+      }
+    }
+  }, []);
+  
   useEffect(() => {
     if (data) {
       if (!data) {
