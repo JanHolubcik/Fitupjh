@@ -13,6 +13,7 @@ import { Food } from "@/types/Types";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import { useScanProduct } from "./useScanProduct";
 import { FoodClass } from "@/models/Food";
+import BarcodeScanner from "@/components/BarcodeScanner/BarcodeScanner";
 
 type props = {
   onOpenChange: () => void;
@@ -26,6 +27,18 @@ type timeOfDay = "breakfast" | "lunch" | "dinner";
 
 
 export const ModalQRScan = (props: props) => {
+  const [isChrome, setIsChrome] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const ua = navigator.userAgent;
+      
+      // Check if the browser is Chrome (and exclude Edge/Opera which also use 'Chrome' in their UA)
+      const isGoogleChrome = /Chrome|CriOS/i.test(ua) && !/Edg|OPR/i.test(ua);
+      
+      setIsChrome(isGoogleChrome);
+    }
+  }, []);
   const { addToFoodObject } = useYourIntakeOperations();
 
   const { mutate: scanProduct, isPending, error, data } = useScanProduct();
@@ -58,6 +71,25 @@ export const ModalQRScan = (props: props) => {
 
     if (!rawValue) {
       console.warn("Detected barcode has no rawValue", detectedCodes);
+      return;
+    }
+
+    try {
+      await scanProduct(rawValue);
+    } catch (error) {
+      console.error("Failed to scan and parse product:", error);
+    }
+  };
+
+    const handleScanChrome = async (detectedCode: any) => {
+    if (!detectedCode || detectedCode.length === 0) return;
+    if (isPending) return;
+
+    const rawValue = detectedCode;
+    console.log("Detected barcode(s):", detectedCode);
+
+    if (!rawValue) {
+      console.warn("Detected barcode has no rawValue", detectedCode);
       return;
     }
 
@@ -143,6 +175,12 @@ useEffect(() => {
           <>
             <ModalBody className="gap-6 py-6 px-6">
               <div className="relative w-full aspect-square max-w-[340px] mx-auto overflow-hidden rounded-2xl dark:border-zinc-800 bg-slate-950 shadow-inner flex items-center justify-center">
+                {isChrome ? (
+        <div>
+          <p className="text-green-600 mb-2 font-semibold">🧪 Running Chrome-Only Software Test Scanner</p>
+          <BarcodeScanner onScan={handleScanChrome} />
+        </div>
+      ) : (
                 <Scanner
                   onScan={handleScan}
                   
@@ -161,6 +199,7 @@ useEffect(() => {
                   scanDelay={800}
                   retryDelay={250}
                 />
+      )}
               </div>
 
               <div className="flex flex-col items-center text-center gap-3 bg-slate-50 dark:bg-zinc-900/50 p-4 rounded-xl">
