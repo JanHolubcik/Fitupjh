@@ -26,18 +26,9 @@ type props = {
 type timeOfDay = "breakfast" | "lunch" | "dinner";
 
 export const ModalBarcodeScan = (props: props) => {
-  const [isChrome, setIsChrome] = useState<boolean | null>(null);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const ua = navigator.userAgent;
 
-      // Check if the browser is Chrome (and exclude Edge/Opera which also use 'Chrome' in their UA)
-      const isGoogleChrome = /Chrome|CriOS/i.test(ua) && !/Edg|OPR/i.test(ua);
 
-      setIsChrome(isGoogleChrome);
-    }
-  }, []);
   const { addToFoodObject } = useYourIntakeOperations();
 
   const { mutate: scanProduct, isPending, error, data } = useScanProduct();
@@ -80,48 +71,6 @@ export const ModalBarcodeScan = (props: props) => {
     }
   };
 
-  const handleScanChrome = async (detectedCode: any) => {
-    if (!detectedCode || detectedCode.length === 0) return;
-    if (isPending) return;
-
-    const rawValue = detectedCode;
-    console.log("Detected barcode(s):", detectedCode);
-
-    if (!rawValue) {
-      console.warn("Detected barcode has no rawValue", detectedCode);
-      return;
-    }
-
-    try {
-      await scanProduct(rawValue);
-    } catch (error) {
-      console.error("Failed to scan and parse product:", error);
-    }
-  };
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const ua = navigator.userAgent;
-      const isChromeMobile =
-        /Chrome/i.test(ua) && /Android|iPhone|iPad/i.test(ua);
-
-      if (isChromeMobile) {
-        try {
-          // Force redefine the property to bypass Chrome's write-protections
-          Object.defineProperty(window, "BarcodeDetector", {
-            value: undefined,
-            writable: true,
-            configurable: true,
-          });
-          console.log(
-            "Successfully tricked Chrome into using the software polyfill.",
-          );
-        } catch (error) {
-          console.error("Failed to intercept BarcodeDetector:", error);
-        }
-      }
-    }
-  }, []);
 
   useEffect(() => {
     if (data) {
@@ -176,8 +125,7 @@ export const ModalBarcodeScan = (props: props) => {
         {(onClose) => (
           <>
             <ModalBody className="gap-6 py-6 px-6">
-              <div className="relative w-full aspect-square max-w-[340px] mx-auto overflow-hidden rounded-2xl dark:border-zinc-800 bg-slate-950 shadow-inner flex items-center justify-center">
-           
+              <div className="relative w-full aspect-square max-w-[340px] mx-auto overflow-hidden rounded-2xl dark:border-zinc-800 bg-slate-950 shadow-inner flex items-center justify-center">      
                   <Scanner
                     onScan={handleScan}
                     components={{
@@ -195,7 +143,6 @@ export const ModalBarcodeScan = (props: props) => {
                     scanDelay={800}
                     retryDelay={250}
                   />
-            
               </div>
 
               <div className="flex flex-col items-center text-center gap-3 bg-slate-50 dark:bg-zinc-900/50 p-4 rounded-xl">
