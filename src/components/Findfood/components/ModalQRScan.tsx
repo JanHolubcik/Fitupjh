@@ -1,23 +1,16 @@
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 import {
   Button,
-  Input,
   Modal,
   ModalBody,
   ModalContent,
-  ModalHeader,
-  Spinner,
-  useDisclosure,
   Image,
 } from "@nextui-org/react";
-import React, { Dispatch, use, useEffect, useRef } from "react";
+import React, { Dispatch, useEffect } from "react";
 import { useState } from "react";
-import { FaPlusCircle, FaSearch } from "react-icons/fa";
-import { ModalCreateFood } from "./ModalCreateFood";
-import { Food, ReturnTypeFood } from "@/types/Types";
-import AddFoodComponent from "./AddFoodComponent";
+
+import { Food } from "@/types/Types";
 import { Scanner } from "@yudiel/react-qr-scanner";
-import { getFoodByQR } from "@/lib/food-db";
 import { useScanProduct } from "./useScanProduct";
 import { FoodClass } from "@/models/Food";
 
@@ -145,11 +138,17 @@ export const ModalQRScan = (props: props) => {
               <div className="relative w-full aspect-square max-w-[340px] mx-auto overflow-hidden rounded-2xl dark:border-zinc-800 bg-slate-950 shadow-inner flex items-center justify-center">
                 <Scanner
                   onScan={handleScan}
+                  
+                  components={{
+                    onOff: true,
+                    torch: true,
+                    zoom: true, 
+                    finder: true, 
+                  }}
                   onError={(error) => console.error("Scanner error:", error)}
                   constraints={{
                     facingMode: "environment",
-                    width: { ideal: 1280 },
-                    height: { ideal: 720 },
+                  aspectRatio: 1,
                   }}
                   formats={["ean_13", "ean_8", "upc_a"]}
                   scanDelay={800}
