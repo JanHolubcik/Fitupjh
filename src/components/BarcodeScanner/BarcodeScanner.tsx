@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
 
 interface BarcodeScannerProps {
@@ -8,32 +8,47 @@ interface BarcodeScannerProps {
 }
 
 export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
+  // Use refs to track the last scan without triggering React re-renders
+  const lastScannedCode = useRef<string | null>(null);
+  const lastScannedTime = useRef<number>(0);
+
   useEffect(() => {
-    // 1. Initialize the pure-JS scanner
     const scanner = new Html5QrcodeScanner(
       "barcode-reader", 
       { 
-        fps: 15, 
-        // A wider box is highly recommended for 1D barcodes like EAN/UPC
+        fps: 10,
         qrbox: { width: 300, height: 150 }, 
         aspectRatio: 1.0,
       },
-      false // Set to true if you want verbose logs in the console
+      false
     );
 
-    // 2. Start rendering the camera UI and scanning
     scanner.render(
       (decodedText) => {
-        // Success callback
+        const now = Date.now();
+        
+        // COOLDOWN LOGIC: 
+        // If it sees the exact same barcode, force it to wait 3 seconds (3000ms) 
+        // before allowing it to scan that same item again.
+        if (
+          decodedText === lastScannedCode.current && 
+          (now - lastScannedTime.current) < 3000
+        ) {
+          return; // Silently ignore the duplicate scan
+        }
+
+        // Record this new scan's details
+        lastScannedCode.current = decodedText;
+        lastScannedTime.current = now;
+
+    
         onScan(decodedText);
       },
       (errorMessage) => {
-        // Failure callback (This fires constantly as it scans empty space, 
-        // so it is best left empty or commented out to avoid console spam).
+        // fires continuously when no barcode is found.
       }
     );
 
-    // 3. React 19 Strict Mode Cleanup: safely unmount the camera
     return () => {
       scanner.clear().catch((error) => {
         console.error("Failed to clear scanner:", error);
@@ -43,7 +58,6 @@ export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
 
   return (
     <div className="w-full max-w-md mx-auto overflow-hidden rounded-lg shadow-md bg-white">
-      {/* The vanilla JS library will inject the camera feed directly into this div */}
       <div id="barcode-reader" className="w-full border-none"></div>
     </div>
   );
