@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
-import { Html5QrcodeScanner } from 'html5-qrcode';
+import { useEffect, useRef } from "react";
+import { Html5QrcodeScanner } from "html5-qrcode";
 
 interface BarcodeScannerProps {
   onScan: (decodedText: string) => void;
@@ -10,7 +10,6 @@ interface BarcodeScannerProps {
 export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
   const lastScannedCode = useRef<string | null>(null);
   const lastScannedTime = useRef<number>(0);
-
 
   useEffect(() => {
     let scanner: Html5QrcodeScanner | null = null;
@@ -24,21 +23,21 @@ export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
 
       try {
         scanner = new Html5QrcodeScanner(
-          "barcode-reader", 
-          { 
-            fps: 10, 
-            qrbox: { width: 250, height: 150 }, 
+          "barcode-reader",
+          {
+            fps: 10,
+            qrbox: { width: 300, height: 150 },
             aspectRatio: 1.0,
           },
-          false
+          false,
         );
 
         scanner.render(
           (decodedText) => {
             const now = Date.now();
             if (
-              decodedText === lastScannedCode.current && 
-              (now - lastScannedTime.current) < 3000
+              decodedText === lastScannedCode.current &&
+              now - lastScannedTime.current < 3000
             ) {
               return;
             }
@@ -49,18 +48,16 @@ export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
           },
           (err) => {
             // Ignore routine frame errors
-          }
+          },
         );
       } catch (err: any) {
         console.error("Scanner failed to mount:", err);
-    
       }
     };
 
-
+    // Wait for the modal to open
     timeoutId = setTimeout(startScanner, 300);
 
-    // Cleanup function when you close the modal
     return () => {
       clearTimeout(timeoutId);
       if (scanner) {
@@ -72,11 +69,8 @@ export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
   }, [onScan]);
 
   return (
-<div>
-    <div 
-      id="barcode-reader" 
-      className="w-full h-full min-h-[150px] border-none rounded-xl overflow-hidden"
-    />  
-  </div>
+    <div className="w-full">
+      <div id="barcode-reader" className="w-full border-none"></div>
+    </div>
   );
 }
