@@ -9,6 +9,7 @@ export const FoodSchema = z.object({
   carbohydrates: z.coerce.number().min(0).default(0),
   fiber: z.coerce.number().min(0).default(0),
   salt: z.coerce.number().min(0).default(0),
+  barcode: z.string().optional(),
 }).refine((data) => {
   const macros = [data.protein, data.sugar, data.fat, data.carbohydrates, data.salt, data.fiber];
   return macros.some(val => val > 0);

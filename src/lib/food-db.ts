@@ -143,7 +143,7 @@ export async function addNewFood(newFood: FoodInput) {
     }
 
 
-    const insertedNew = await Food.create({
+    const insertedNew:FoodClass = await Food.create({
       name: newFood.name,
       protein: newFood.protein,
       sugar: newFood.sugar,
@@ -151,7 +151,8 @@ export async function addNewFood(newFood: FoodInput) {
       carbohydrates: newFood.carbohydrates,
       salt: newFood.salt,
       calories_per_100g: newFood.calories_per_100g,
-      fiber: 0
+      fiber: 0,
+      QRcode: newFood.barcode
     });
 
     return { 

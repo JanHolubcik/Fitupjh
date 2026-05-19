@@ -6,6 +6,9 @@ import {
   ModalContent,
   Image,
   Spinner,
+  ModalHeader,
+  ModalFooter,
+  useDisclosure,
 } from "@nextui-org/react";
 import React, { Dispatch, useEffect } from "react";
 import { useState } from "react";
@@ -14,52 +17,41 @@ import { Food } from "@/types/Types";
 import { Scanner, prepareZXingModule } from "@yudiel/react-qr-scanner";
 import { useScanProduct } from "./useScanProduct";
 import { FoodClass } from "@/models/Food";
+import { useDispatch } from "react-redux";
+import { setNewFoodBarCode } from "@/features/savedFoodslice/yourIntakeSlice";
+import { getTimeOfDay } from "@/app/constants/FunctionsHelper";
 
 type props = {
   onOpenChange: () => void;
   isOpen: boolean | undefined;
   timeOfDay?: "breakfast" | "lunch" | "dinner";
   onClose?: () => void;
+  onOpenNewFood: () => void;
+  onCloseAll: () => void;
 };
 
 type timeOfDay = "breakfast" | "lunch" | "dinner";
 
 export const ModalBarcodeScan = (props: props) => {
-  const [isChrome, setIsChrome] = useState<boolean | null>(null);
+  const dispatch = useDispatch();
+  const [scannedBarcode, setScannedBarcode] = useState<string>("");
+  prepareZXingModule({ fireImmediately: true });
 
-prepareZXingModule({ fireImmediately: true });
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const ua = navigator.userAgent;
-
-      // Check if the browser is Chrome (and exclude Edge/Opera which also use 'Chrome' in their UA)
-      const isGoogleChrome = /Chrome|CriOS/i.test(ua) && !/Edg|OPR/i.test(ua);
-
-      setIsChrome(isGoogleChrome);
-    }
-  }, []);
   const { addToFoodObject } = useYourIntakeOperations();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const { mutate: scanProduct, isPending, error, data } = useScanProduct();
+  const {
+    mutate: scanProduct,
+    isPending,
+    error,
+    data,
+  } = useScanProduct(onOpen);
 
-  const getTimeOfDay = () => {
-    const now = new Date();
-    const hour = now.getHours();
 
-    switch (true) {
-      case hour >= 0 && hour < 8:
-        return "breakfast";
 
-      case hour >= 8 && hour < 16:
-        return "lunch";
-
-      case hour >= 16 && hour < 24:
-        return "dinner";
-
-      default:
-        return "lunch";
-    }
+  const handleYes = () => {
+    dispatch(setNewFoodBarCode(scannedBarcode));
+    props.onOpenNewFood();
   };
 
   const handleScan = async (detectedCodes: any) => {
@@ -67,45 +59,28 @@ prepareZXingModule({ fireImmediately: true });
     if (isPending) return;
 
     const rawValue = detectedCodes[0]?.rawValue;
-    console.log("Detected barcode(s):", detectedCodes);
+    if (!rawValue) return;
 
-    if (!rawValue) {
-      console.warn("Detected barcode has no rawValue", detectedCodes);
-      return;
-    }
-
+    setScannedBarcode(rawValue);
+    dispatch(setNewFoodBarCode(scannedBarcode));
     try {
       await scanProduct(rawValue);
-    } catch (error) {
-      console.error("Failed to scan and parse product:", error);
+    } catch (err: any) {
+      console.error("Failed to scan and parse product:", err);
+
+      // CHECK FOR 404 ERROR (Adjust this depending on how your API returns errors)
+      if (err?.response?.status === 404 || err?.message?.includes("404")) {
+        // only storing barcode if product is not found
+        onOpen();
+      }
     }
   };
 
-  const handleScanChrome = async (detectedCode: any) => {
-    if (!detectedCode || detectedCode.length === 0) return;
-    if (isPending) return;
-
-    const rawValue = detectedCode;
-    console.log("Detected barcode(s):", detectedCode);
-
-    if (!rawValue) {
-      console.warn("Detected barcode has no rawValue", detectedCode);
-      return;
-    }
-
-    try {
-      await scanProduct(rawValue);
-    } catch (error) {
-      console.error("Failed to scan and parse product:", error);
-    }
-  };
+  const ua = navigator.userAgent;
+  const isChromeMobile = /Chrome/i.test(ua) && /Android|iPhone|iPad/i.test(ua);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const ua = navigator.userAgent;
-      const isChromeMobile =
-        /Chrome/i.test(ua) && /Android|iPhone|iPad/i.test(ua);
-
       if (isChromeMobile) {
         try {
           // Force redefine the property to bypass Chrome's write-protections
@@ -126,8 +101,8 @@ prepareZXingModule({ fireImmediately: true });
 
   useEffect(() => {
     if (data) {
-      if (!data) {
-        console.error("Product not found");
+      if (!data.name) {
+
         return;
       }
       const food = (data as FoodClass) || undefined;
@@ -150,35 +125,37 @@ prepareZXingModule({ fireImmediately: true });
       };
 
       addToFoodObject(parsedFood, props.timeOfDay || getTimeOfDay());
-      props.onClose && props.onClose();
+      props.onCloseAll && props.onCloseAll();
     }
   }, [data]);
 
+
+
   return (
-    <Modal
-      placement="top"
-      hideCloseButton
-      onOpenChange={props.onOpenChange}
-      size="lg"
-      scrollBehavior="inside"
-      isOpen={props.isOpen}
-      motionProps={{
-        variants: {
-          enter: { opacity: 1, scale: 1 },
-          exit: { opacity: 0, scale: 1 },
-        },
-        transition: {
-          enter: { duration: 0.15 }, // animate when opening
-          exit: { duration: 0 }, // instant close
-        },
-      }}
-    >
-      <ModalContent>
-        {(onClose) => (
-          <>
-            <ModalBody className="gap-6 py-6 px-6">
-              <div className="relative w-full aspect-square max-w-[340px] mx-auto overflow-hidden rounded-2xl dark:border-zinc-800 bg-slate-950 shadow-inner flex items-center justify-center">
-            
+    <>
+      <Modal
+        placement="top"
+        hideCloseButton
+        onOpenChange={props.onOpenChange}
+        size="lg"
+        scrollBehavior="inside"
+        isOpen={props.isOpen}
+        motionProps={{
+          variants: {
+            enter: { opacity: 1, scale: 1 },
+            exit: { opacity: 0, scale: 1 },
+          },
+          transition: {
+            enter: { duration: 0.15 }, // animate when opening
+            exit: { duration: 0 }, // instant close
+          },
+        }}
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalBody className="gap-6 py-6 px-6">
+                <div className="relative w-full aspect-square max-w-[340px] mx-auto overflow-hidden rounded-2xl dark:border-zinc-800 bg-slate-950 shadow-inner flex items-center justify-center">
                   <Scanner
                     onScan={handleScan}
                     components={{
@@ -196,44 +173,88 @@ prepareZXingModule({ fireImmediately: true });
                     scanDelay={800}
                     retryDelay={250}
                   />
-                
-              </div>
-
-              <div className="flex flex-col items-center text-center gap-3 bg-slate-50 dark:bg-zinc-900/50 p-4 rounded-xl">
-                <Image
-                  className="object-contain animate-pulse-slow"
-                  alt="Info Owl"
-                  src="eplaining_owl.png"
-                  width={120}
-                  height={80}
-                />
-                {isPending ?
-                <><Spinner /><p>We detected a barcode, please wait until your food is loaded.</p></>
-                :
-                <div className="space-y-1">
-                  <h4 className="text-sm font-semibold text-slate-800 dark:text-zinc-200">
-                    Position the barcode inside the frame
-                  </h4>
-                  <p className="text-xs text-slate-500 dark:text-zinc-400 max-w-sm leading-relaxed">
-                    We'll automatically fetch the macros. If the product isn't
-                    found, you can add it manually.
-                  </p>
                 </div>
-                }
-              </div>
-              
-              <Button
-                variant="solid"
-                color="danger"
-                onPress={onClose}
-                className="w-full max-w-[340px] mx-auto font-medium"
-              >
-                Cancel Scanning
-              </Button>
-            </ModalBody>
-          </>
-        )}
-      </ModalContent>
-    </Modal>
+
+                <div className="flex flex-col items-center text-center gap-3 bg-slate-50 dark:bg-zinc-900/50 p-4 rounded-xl">
+                  <Image
+                    className="object-contain animate-pulse-slow"
+                    alt="Info Owl"
+                    src="eplaining_owl.png"
+                    width={120}
+                    height={80}
+                  />
+                  {isPending ? (
+                    <>
+                      <p>
+                        We detected a barcode, please wait until your food is
+                        loaded.
+                      </p>
+                      <Spinner />
+                    </>
+                  ) : (
+                    <div className="space-y-1">
+                      <h4 className="text-sm font-semibold text-slate-800 dark:text-zinc-200">
+                        Position the barcode inside the frame
+                      </h4>
+                      {isChromeMobile && (
+                        <p className="text-xs text-slate-500 dark:text-zinc-400">
+                          For chrome users: try to press zoom buttons while
+                          scanning if you have trouble with detection. Chrome's
+                          built-in scanner is very buggy, but this usually
+                          helps.
+                        </p>
+                      )}
+                      <p className="text-xs text-slate-500 dark:text-zinc-400 max-w-sm leading-relaxed">
+                        We'll automatically fetch the macros. If the product
+                        isn't found, you can add it manually.
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                <Button
+                  variant="solid"
+                  color="danger"
+                  onPress={onClose}
+                  className="w-full max-w-[340px] mx-auto font-medium"
+                >
+                  Cancel Scanning
+                </Button>
+              </ModalBody>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                Confirm Action
+              </ModalHeader>
+              <ModalBody>
+                <p>
+                  The barcode you scanned was not found. Would you like to add
+                  it manually?
+                </p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Cancel
+                </Button>
+                <Button
+                  color="primary"
+                  onPress={() => {
+                    handleYes();
+                  }}
+                >
+                  Yes
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+    </>
   );
 };

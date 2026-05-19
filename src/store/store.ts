@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import counterReducer from "@/features/counter/counterSlice";
-import savedFoodReducer from "@/features/savedFoodslice/savedFoodSlice";
+import savedFoodReducer from "@/features/savedFoodslice/yourIntakeSlice";
 
 /*
 Creating a Redux Store per Request

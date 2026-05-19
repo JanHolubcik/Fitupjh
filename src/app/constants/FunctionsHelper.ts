@@ -17,3 +17,22 @@ export const calculateCaloriesSum = (savedFood: foodType): number => {
 
   return calorieSum;
 };
+
+  export const getTimeOfDay = () => {
+    const now = new Date();
+    const hour = now.getHours();
+
+    switch (true) {
+      case hour >= 0 && hour < 8:
+        return "breakfast";
+
+      case hour >= 8 && hour < 16:
+        return "lunch";
+
+      case hour >= 16 && hour < 24:
+        return "dinner";
+
+      default:
+        return "lunch";
+    }
+  };

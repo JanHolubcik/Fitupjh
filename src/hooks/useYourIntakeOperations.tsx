@@ -3,11 +3,11 @@ import {
   addFoodForDate,
   removeFromFood,
   setCurrentDate,
-} from "@/features/savedFoodslice/savedFoodSlice";
+} from "@/features/savedFoodslice/yourIntakeSlice";
 
 import { format } from "date-fns";
 import { useSession } from "next-auth/react";
-import { selectSavedFoodByDate } from "@/features/savedFoodslice/savedFoodSlice";
+import { selectSavedFoodByDate } from "@/features/savedFoodslice/yourIntakeSlice";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";

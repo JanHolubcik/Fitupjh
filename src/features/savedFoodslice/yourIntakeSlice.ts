@@ -1,13 +1,16 @@
-// features/savedFoodSlice/savedFoodSlice.ts
+
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { RootState } from "@/store/store";
 import { Food, FoodType, foodType, SavedFoodMonth } from "@/types/Types";
 import { format } from "date-fns";
+import { set } from "mongoose";
+import { clear } from "console";
 
 type SavedFoodState = {
   currentDate: string; // yyyy-MM-dd
   month: SavedFoodMonth;
+  newFoodBarCode?: string;
 };
 
 const emptyDay: FoodType = {
@@ -19,6 +22,7 @@ const emptyDay: FoodType = {
 const initialState: SavedFoodState = {
   currentDate: format(new Date(), "yyyy-MM-dd"),
   month: {},
+  newFoodBarCode: "",
 };
 const savedFoodSlice = createSlice({
   name: "savedFood",
@@ -33,7 +37,6 @@ const savedFoodSlice = createSlice({
         month: action.payload,
       };
     },
-
     addFoodForDate: (
       state,
       action: PayloadAction<{
@@ -50,6 +53,12 @@ const savedFoodSlice = createSlice({
       }
 
       state.month[date][timeOfDay].push(food);
+    },
+    setNewFoodBarCode: (state, action: PayloadAction<string>) => {
+      state.newFoodBarCode = action.payload;
+    },
+    clearNewFoodBarCode: (state) => {
+      state.newFoodBarCode = "";
     },
     removeFromFood: (
       state,
@@ -75,6 +84,8 @@ export const {
   setSavedFoodMonth,
   addFoodForDate,
   removeFromFood,
+  setNewFoodBarCode,
+  clearNewFoodBarCode,
 } = savedFoodSlice.actions;
 
 export const selectSavedFoodByDate = (

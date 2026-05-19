@@ -16,6 +16,7 @@ import { FaPlusCircle, FaSearch } from "react-icons/fa";
 import { ModalCreateFood } from "./ModalCreateFood";
 import { ReturnTypeFood } from "@/types/Types";
 import AddFoodComponent from "./AddFoodComponent";
+import { getTimeOfDay } from "@/app/constants/FunctionsHelper";
 
 
 
@@ -79,28 +80,7 @@ export const ModalFindFood = (props: props) => {
 
     fetchFood();
   }, [debouncedSearchTerm]);
-
-  const getTimeOfDay = () => {
-    const now = new Date();
-    const hour = now.getHours();
-
-    switch (true) {
-      case hour >= 0 && hour < 8:
-        return "breakfast";
-
-      case hour >= 8 && hour < 16:
-        return "lunch";
-
-      case hour >= 16 && hour < 24:
-        return "dinner";
-
-      default:
-        return "lunch";
-    }
-  };
-
   
-
   const AddFood = (
     id: number,
     key: {
@@ -204,7 +184,7 @@ export const ModalFindFood = (props: props) => {
                             <FaPlusCircle />
                               
                           </Button>                  
-                          <ModalCreateFood isOpen={isOpen} onOpenChange={onOpenChange} ></ModalCreateFood>
+                          <ModalCreateFood  isOpen={isOpen} onOpenChange={onOpenChange} ></ModalCreateFood>
                       <p className="ml-5 text-center self-center">If you didn't find your food, you can add it here.</p>
                      </div>
                     )}

@@ -2,7 +2,7 @@ import { useEffect, useMemo } from "react";
 
 import { useDispatch } from "react-redux";
 import { LastMonthFoodOptions } from "@/lib/queriesOptions/LastMonthFoodOptions";
-import { setSavedFoodMonth } from "@/features/savedFoodslice/savedFoodSlice";
+import { setSavedFoodMonth } from "@/features/savedFoodslice/yourIntakeSlice";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { SavedFoodMonth } from "@/types/Types";
