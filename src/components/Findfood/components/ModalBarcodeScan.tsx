@@ -14,7 +14,7 @@ import { Food } from "@/types/Types";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import { useScanProduct } from "./useScanProduct";
 import { FoodClass } from "@/models/Food";
-import BarcodeScanner from "@/components/BarcodeScanner/BarcodeScanner";
+import { ChromeSafeScanner } from "@/components/ChromeSafeScanner/ChromeSafeScanner";
 
 type props = {
   onOpenChange: () => void;
@@ -26,9 +26,6 @@ type props = {
 type timeOfDay = "breakfast" | "lunch" | "dinner";
 
 export const ModalBarcodeScan = (props: props) => {
-
-
-
   const { addToFoodObject } = useYourIntakeOperations();
 
   const { mutate: scanProduct, isPending, error, data } = useScanProduct();
@@ -71,6 +68,28 @@ export const ModalBarcodeScan = (props: props) => {
     }
   };
 
+  const handleScanChrome = async (detectedCode: any) => {
+    if (!detectedCode) return;
+    if (isPending) return;
+
+    const rawValue = detectedCode;
+    console.log("Detected barcode(s):", detectedCode);
+
+    if (!rawValue) {
+      console.warn("Detected barcode has no rawValue", detectedCode);
+      return;
+    }
+
+    try {
+      await scanProduct(rawValue);
+    } catch (error) {
+      console.error("Failed to scan and parse product:", error);
+    }
+  };
+
+  const isChromeMobile =
+    typeof navigator !== "undefined" &&
+    /Chrome/i.test(navigator.userAgent) ;
 
   useEffect(() => {
     if (data) {
@@ -125,7 +144,13 @@ export const ModalBarcodeScan = (props: props) => {
         {(onClose) => (
           <>
             <ModalBody className="gap-6 py-6 px-6">
-              <div className="relative w-full aspect-square max-w-[340px] mx-auto overflow-hidden rounded-2xl dark:border-zinc-800 bg-slate-950 shadow-inner flex items-center justify-center">      
+              <div className="relative w-full aspect-square max-w-[340px] mx-auto overflow-hidden rounded-2xl dark:border-zinc-800 bg-slate-950 shadow-inner flex items-center justify-center">
+                {isChromeMobile ? (
+                  <ChromeSafeScanner
+                    onScan={handleScanChrome}
+                    onError={(e) => console.error("Scanner error:", e)}
+                  />
+                ) : (
                   <Scanner
                     onScan={handleScan}
                     components={{
@@ -143,6 +168,7 @@ export const ModalBarcodeScan = (props: props) => {
                     scanDelay={800}
                     retryDelay={250}
                   />
+                )}
               </div>
 
               <div className="flex flex-col items-center text-center gap-3 bg-slate-50 dark:bg-zinc-900/50 p-4 rounded-xl">
@@ -153,21 +179,27 @@ export const ModalBarcodeScan = (props: props) => {
                   width={120}
                   height={80}
                 />
-                {isPending ?
-                <><Spinner /><p>We detected a barcode, please wait until your food is loaded.</p></>
-                :
-                <div className="space-y-1">
-                  <h4 className="text-sm font-semibold text-slate-800 dark:text-zinc-200">
-                    Position the barcode inside the frame
-                  </h4>
-                  <p className="text-xs text-slate-500 dark:text-zinc-400 max-w-sm leading-relaxed">
-                    We'll automatically fetch the macros. If the product isn't
-                    found, you can add it manually.
-                  </p>
-                </div>
-                }
+                {isPending ? (
+                  <>
+                    <Spinner />
+                    <p>
+                      We detected a barcode, please wait until your food is
+                      loaded.
+                    </p>
+                  </>
+                ) : (
+                  <div className="space-y-1">
+                    <h4 className="text-sm font-semibold text-slate-800 dark:text-zinc-200">
+                      Position the barcode inside the frame
+                    </h4>
+                    <p className="text-xs text-slate-500 dark:text-zinc-400 max-w-sm leading-relaxed">
+                      We'll automatically fetch the macros. If the product isn't
+                      found, you can add it manually.
+                    </p>
+                  </div>
+                )}
               </div>
-              
+
               <Button
                 variant="solid"
                 color="danger"
