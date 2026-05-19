@@ -5,6 +5,7 @@ import {
   ModalBody,
   ModalContent,
   Image,
+  Spinner,
 } from "@nextui-org/react";
 import React, { Dispatch, useEffect } from "react";
 import { useState } from "react";
@@ -176,9 +177,7 @@ export const ModalBarcodeScan = (props: props) => {
           <>
             <ModalBody className="gap-6 py-6 px-6">
               <div className="relative w-full aspect-square max-w-[340px] mx-auto overflow-hidden rounded-2xl dark:border-zinc-800 bg-slate-950 shadow-inner flex items-center justify-center">
-                {isChrome ? (
-                  <BarcodeScanner onScan={handleScanChrome} />
-                ) : (
+           
                   <Scanner
                     onScan={handleScan}
                     components={{
@@ -196,7 +195,7 @@ export const ModalBarcodeScan = (props: props) => {
                     scanDelay={800}
                     retryDelay={250}
                   />
-                )}
+            
               </div>
 
               <div className="flex flex-col items-center text-center gap-3 bg-slate-50 dark:bg-zinc-900/50 p-4 rounded-xl">
@@ -207,7 +206,9 @@ export const ModalBarcodeScan = (props: props) => {
                   width={120}
                   height={80}
                 />
-
+                {isPending ?
+                <><Spinner /><p>We detected a barcode, please wait until your food is loaded.</p></>
+                :
                 <div className="space-y-1">
                   <h4 className="text-sm font-semibold text-slate-800 dark:text-zinc-200">
                     Position the barcode inside the frame
@@ -217,7 +218,9 @@ export const ModalBarcodeScan = (props: props) => {
                     found, you can add it manually.
                   </p>
                 </div>
+                }
               </div>
+              
               <Button
                 variant="solid"
                 color="danger"

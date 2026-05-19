@@ -49,19 +49,6 @@ body {
     display: none;
   }
 }
-/* Container Box */
-#barcode-reader {
-  border: none !important;
-}
-
-#barcode-reader img[alt="Info icon"],
-#barcode-reader img[alt="Camera based scan"] {
-  display: none !important;
-}
-
-#html5-qrcode-button-camera-stop {
-  display: none !important;
-}
 
 
 
