@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
 
 interface BarcodeScannerProps {
@@ -10,17 +10,15 @@ interface BarcodeScannerProps {
 export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
   const lastScannedCode = useRef<string | null>(null);
   const lastScannedTime = useRef<number>(0);
-  const [errorMsg, setErrorMsg] = useState<string>("");
+
 
   useEffect(() => {
     let scanner: Html5QrcodeScanner | null = null;
     let timeoutId: NodeJS.Timeout;
 
     const startScanner = () => {
-      // Safety check: Ensure the modal actually rendered the div
       const container = document.getElementById("barcode-reader");
       if (!container) {
-        setErrorMsg("Camera container not found in modal.");
         return;
       }
 
@@ -55,7 +53,7 @@ export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
         );
       } catch (err: any) {
         console.error("Scanner failed to mount:", err);
-        setErrorMsg(err.message || "Failed to load camera UI.");
+    
       }
     };
 
@@ -74,16 +72,11 @@ export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
   }, [onScan]);
 
   return (
-    <div className="w-full max-w-md mx-auto overflow-hidden rounded-lg bg-white">
-      {errorMsg && (
-        <div className="p-4 bg-red-100 text-red-700 text-sm font-semibold">
-          Error: {errorMsg}
-        </div>
-      )}
-      <div 
-        id="barcode-reader" 
-        className="w-full min-h-[300px] border-none"
-      ></div>
-    </div>
+<div>
+    <div 
+      id="barcode-reader" 
+      className="w-full h-full min-h-[150px] border-none rounded-xl overflow-hidden"
+    />  
+  </div>
   );
 }

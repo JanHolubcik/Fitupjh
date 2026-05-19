@@ -8,7 +8,7 @@ import { useSession } from "next-auth/react";
 import useLoadSavedFood from "@/hooks/useLoadSavedFood";
 import { ModalFindFood } from "@/components/Findfood/components/ModalFindFood";
 import NavigationYourIntake from "./components/NavigationYourIntake";
-import { ModalQRScan } from "@/components/Findfood/components/ModalQRScan";
+import { ModalBarcodeScan } from "@/components/Findfood/components/ModalBarcodeScan";
 
 export default function Food() {
   const { data } = useSession();
@@ -38,11 +38,11 @@ const { isOpen:QRisOpen, onOpen:QRonOpen, onOpenChange:QRonOpenChange, onClose:Q
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       ></ModalFindFood>
-      <ModalQRScan
+      <ModalBarcodeScan
         isOpen={QRisOpen}
         onOpenChange={QRonOpenChange}
         onClose={QRonClose}
-      ></ModalQRScan>
+      ></ModalBarcodeScan>
     </main>
   );
 }
