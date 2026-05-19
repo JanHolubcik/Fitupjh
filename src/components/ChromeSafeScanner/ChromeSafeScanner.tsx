@@ -25,8 +25,10 @@ export const ChromeSafeScanner = ({ onScan, onError }: Props) => {
       },
       (decodedText) => {
         if (hasScanned.current) return;
+        if (!decodedText) return;
         hasScanned.current = true;
-        scanner.stop().then(() => onScan(decodedText)).catch(() => onScan(decodedText));
+        
+        //scanner.stop().then(() => onScan(decodedText)).catch(() => onScan(decodedText));
       },
       () => {} // ignore per-frame failures, they're normal
     ).catch(onError);

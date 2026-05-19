@@ -14,7 +14,6 @@ import { Food } from "@/types/Types";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import { useScanProduct } from "./useScanProduct";
 import { FoodClass } from "@/models/Food";
-import { ChromeSafeScanner } from "@/components/ChromeSafeScanner/ChromeSafeScanner";
 
 type props = {
   onOpenChange: () => void;
@@ -26,6 +25,18 @@ type props = {
 type timeOfDay = "breakfast" | "lunch" | "dinner";
 
 export const ModalBarcodeScan = (props: props) => {
+  const [isChrome, setIsChrome] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const ua = navigator.userAgent;
+
+      // Check if the browser is Chrome (and exclude Edge/Opera which also use 'Chrome' in their UA)
+      const isGoogleChrome = /Chrome|CriOS/i.test(ua) && !/Edg|OPR/i.test(ua);
+
+      setIsChrome(isGoogleChrome);
+    }
+  }, []);
   const { addToFoodObject } = useYourIntakeOperations();
 
   const { mutate: scanProduct, isPending, error, data } = useScanProduct();
@@ -69,7 +80,7 @@ export const ModalBarcodeScan = (props: props) => {
   };
 
   const handleScanChrome = async (detectedCode: any) => {
-    if (!detectedCode) return;
+    if (!detectedCode || detectedCode.length === 0) return;
     if (isPending) return;
 
     const rawValue = detectedCode;
@@ -87,9 +98,29 @@ export const ModalBarcodeScan = (props: props) => {
     }
   };
 
-  const isChromeMobile =
-    typeof navigator !== "undefined" &&
-    /Chrome/i.test(navigator.userAgent) ;
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const ua = navigator.userAgent;
+      const isChromeMobile =
+        /Chrome/i.test(ua) && /Android|iPhone|iPad/i.test(ua);
+
+      if (isChromeMobile) {
+        try {
+          // Force redefine the property to bypass Chrome's write-protections
+          Object.defineProperty(window, "BarcodeDetector", {
+            value: undefined,
+            writable: true,
+            configurable: true,
+          });
+          console.log(
+            "Successfully tricked Chrome into using the software polyfill.",
+          );
+        } catch (error) {
+          console.error("Failed to intercept BarcodeDetector:", error);
+        }
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (data) {
@@ -145,11 +176,8 @@ export const ModalBarcodeScan = (props: props) => {
           <>
             <ModalBody className="gap-6 py-6 px-6">
               <div className="relative w-full aspect-square max-w-[340px] mx-auto overflow-hidden rounded-2xl dark:border-zinc-800 bg-slate-950 shadow-inner flex items-center justify-center">
-                {isChromeMobile ? (
-                  <ChromeSafeScanner
-                    onScan={handleScanChrome}
-                    onError={(e) => console.error("Scanner error:", e)}
-                  />
+                {isChrome ? (
+                  <BarcodeScanner onScan={handleScanChrome} />
                 ) : (
                   <Scanner
                     onScan={handleScan}
@@ -179,27 +207,21 @@ export const ModalBarcodeScan = (props: props) => {
                   width={120}
                   height={80}
                 />
-                {isPending ? (
-                  <>
-                    <Spinner />
-                    <p>
-                      We detected a barcode, please wait until your food is
-                      loaded.
-                    </p>
-                  </>
-                ) : (
-                  <div className="space-y-1">
-                    <h4 className="text-sm font-semibold text-slate-800 dark:text-zinc-200">
-                      Position the barcode inside the frame
-                    </h4>
-                    <p className="text-xs text-slate-500 dark:text-zinc-400 max-w-sm leading-relaxed">
-                      We'll automatically fetch the macros. If the product isn't
-                      found, you can add it manually.
-                    </p>
-                  </div>
-                )}
+                {isPending ?
+                <><Spinner /><p>We detected a barcode, please wait until your food is loaded.</p></>
+                :
+                <div className="space-y-1">
+                  <h4 className="text-sm font-semibold text-slate-800 dark:text-zinc-200">
+                    Position the barcode inside the frame
+                  </h4>
+                  <p className="text-xs text-slate-500 dark:text-zinc-400 max-w-sm leading-relaxed">
+                    We'll automatically fetch the macros. If the product isn't
+                    found, you can add it manually.
+                  </p>
+                </div>
+                }
               </div>
-
+              
               <Button
                 variant="solid"
                 color="danger"
