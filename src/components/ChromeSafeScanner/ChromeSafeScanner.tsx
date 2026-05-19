@@ -1,53 +1,41 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { BrowserMultiFormatReader, DecodeHintType, BarcodeFormat } from "@zxing/library";
-import { BrowserCodeReader } from "@zxing/browser";
+import { Html5Qrcode, Html5QrcodeSupportedFormats } from "html5-qrcode";
 
 type Props = {
   onScan: (result: string) => void;
   onError?: (err: unknown) => void;
 };
 
+const SCANNER_ID = "chrome-safe-scanner";
+
 export const ChromeSafeScanner = ({ onScan, onError }: Props) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const readerRef = useRef<BrowserMultiFormatReader | null>(null);
- const hasScanned = useRef(false);
+  const scannerRef = useRef<Html5Qrcode | null>(null);
+  const hasScanned = useRef(false);
 
   useEffect(() => {
-    const hints = new Map();
-    hints.set(DecodeHintType.POSSIBLE_FORMATS, [
-      BarcodeFormat.EAN_13,
-      BarcodeFormat.EAN_8,
-      BarcodeFormat.UPC_A,
-    ]);
+    const scanner = new Html5Qrcode(SCANNER_ID);
+    scannerRef.current = scanner;
 
-    const reader = new BrowserMultiFormatReader(hints, 800);
-    readerRef.current = reader;
-
-    BrowserCodeReader.listVideoInputDevices().then((devices) => {
-      // prefer back camera
-      const back = devices.find(d => /back|rear|environment/i.test(d.label)) ?? devices[devices.length - 1];
-      const deviceId = back?.deviceId;
-
-      reader.decodeFromVideoDevice(deviceId ?? null, videoRef.current!, (result, err) => {
-        if (result && !hasScanned.current) {
-          hasScanned.current = true;
-          reader.reset();
-          onScan(result.getText());
-        }
-        // ignore NotFoundException — it fires constantly between frames
-      });
-    }).catch(onError);
+    scanner.start(
+      { facingMode: "environment" },
+      {
+        fps: 10,
+        qrbox: { width: 250, height: 250 },
+      },
+      (decodedText) => {
+        if (hasScanned.current) return;
+        hasScanned.current = true;
+        scanner.stop().then(() => onScan(decodedText)).catch(() => onScan(decodedText));
+      },
+      () => {} // ignore per-frame failures, they're normal
+    ).catch(onError);
 
     return () => {
-      reader.reset();
+      scanner.stop().catch(() => {});
     };
   }, []);
 
-  return (
-    <video
-      ref={videoRef}
-      style={{ width: "100%", height: "100%", objectFit: "cover" }}
-    />
-  );
+  // html5-qrcode needs a real DOM div with this id to mount into
+  return <div id={SCANNER_ID} style={{ width: "100%" }} />;
 };
