@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
 
 interface BarcodeScannerProps {
@@ -8,57 +8,82 @@ interface BarcodeScannerProps {
 }
 
 export default function BarcodeScanner({ onScan }: BarcodeScannerProps) {
-  // Use refs to track the last scan without triggering React re-renders
   const lastScannedCode = useRef<string | null>(null);
   const lastScannedTime = useRef<number>(0);
+  const [errorMsg, setErrorMsg] = useState<string>("");
 
   useEffect(() => {
-    const scanner = new Html5QrcodeScanner(
-      "barcode-reader", 
-      { 
-        fps: 10,
-        qrbox: { width: 300, height: 150 }, 
-        aspectRatio: 1.0,
-      },
-      false
-    );
+    let scanner: Html5QrcodeScanner | null = null;
+    let timeoutId: NodeJS.Timeout;
 
-    scanner.render(
-      (decodedText) => {
-        const now = Date.now();
-        
-        // COOLDOWN LOGIC: 
-        // If it sees the exact same barcode, force it to wait 3 seconds (3000ms) 
-        // before allowing it to scan that same item again.
-        if (
-          decodedText === lastScannedCode.current && 
-          (now - lastScannedTime.current) < 3000
-        ) {
-          return; // Silently ignore the duplicate scan
-        }
-
-        // Record this new scan's details
-        lastScannedCode.current = decodedText;
-        lastScannedTime.current = now;
-
-    
-        onScan(decodedText);
-      },
-      (errorMessage) => {
-        // fires continuously when no barcode is found.
+    const startScanner = () => {
+      // Safety check: Ensure the modal actually rendered the div
+      const container = document.getElementById("barcode-reader");
+      if (!container) {
+        setErrorMsg("Camera container not found in modal.");
+        return;
       }
-    );
 
+      try {
+        scanner = new Html5QrcodeScanner(
+          "barcode-reader", 
+          { 
+            fps: 10, 
+            qrbox: { width: 250, height: 150 }, 
+            aspectRatio: 1.0,
+          },
+          false
+        );
+
+        scanner.render(
+          (decodedText) => {
+            const now = Date.now();
+            if (
+              decodedText === lastScannedCode.current && 
+              (now - lastScannedTime.current) < 3000
+            ) {
+              return;
+            }
+
+            lastScannedCode.current = decodedText;
+            lastScannedTime.current = now;
+            onScan(decodedText);
+          },
+          (err) => {
+            // Ignore routine frame errors
+          }
+        );
+      } catch (err: any) {
+        console.error("Scanner failed to mount:", err);
+        setErrorMsg(err.message || "Failed to load camera UI.");
+      }
+    };
+
+
+    timeoutId = setTimeout(startScanner, 300);
+
+    // Cleanup function when you close the modal
     return () => {
-      scanner.clear().catch((error) => {
-        console.error("Failed to clear scanner:", error);
-      });
+      clearTimeout(timeoutId);
+      if (scanner) {
+        scanner.clear().catch((error) => {
+          console.error("Failed to clear scanner:", error);
+        });
+      }
     };
   }, [onScan]);
 
   return (
-    <div className="w-full max-w-md mx-auto overflow-hidden rounded-lg shadow-md bg-white">
-      <div id="barcode-reader" className="w-full border-none"></div>
+    <div className="w-full max-w-md mx-auto overflow-hidden rounded-lg bg-white">
+      {errorMsg && (
+        <div className="p-4 bg-red-100 text-red-700 text-sm font-semibold">
+          Error: {errorMsg}
+        </div>
+      )}
+      <div 
+        id="barcode-reader" 
+        className="w-full min-h-[300px] border-none"
+      ></div>
     </div>
   );
 }
