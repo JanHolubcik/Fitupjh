@@ -21,13 +21,16 @@ const useYourIntakeOperations = () => {
   const dispatch = useDispatch();
 
   const currentDate = useSelector(
-    (state: RootState) => state.savedFood.currentDate
+    (state: RootState) => state.savedFood.currentDate,
   );
   const savedFood = useSelector((state: RootState) =>
-    selectSavedFoodByDate(state, format(currentDate, "yyyy-MM-dd"))
+    selectSavedFoodByDate(state, format(currentDate, "yyyy-MM-dd")),
   );
 
-  const saveFood = async (foodToSave?: typeof savedFood) => {
+  const saveFood = async (
+    foodToSave?: typeof savedFood,
+    isLastItem: boolean = false,
+  ) => {
     if (status !== "authenticated" || !data?.user?.id) return;
 
     const food = foodToSave || savedFood;
@@ -36,7 +39,7 @@ const useYourIntakeOperations = () => {
       food.breakfast.length > 0 ||
       food.lunch.length > 0 ||
       food.dinner.length > 0;
-    if (!hasAnyFood) return;
+    if (!hasAnyFood && !isLastItem) return;
 
     try {
       await fetch("/api/saveFood", {
@@ -54,8 +57,19 @@ const useYourIntakeOperations = () => {
   };
 
   const addToFoodObject = async (food: Food, timeOfDay: timeOfDay) => {
-  const date = format(currentDate, "yyyy-MM-dd");
-    const { name, calories, amount, fat, protein, sugar, carbohydrates: carbs, fiber, salt, imgUrl } = food;
+    const date = format(currentDate, "yyyy-MM-dd");
+    const {
+      name,
+      calories,
+      amount,
+      fat,
+      protein,
+      sugar,
+      carbohydrates: carbs,
+      fiber,
+      salt,
+      imgUrl,
+    } = food;
     const uniqueId = Date.now();
     dispatch(
       addFoodForDate({
@@ -74,7 +88,7 @@ const useYourIntakeOperations = () => {
           salt,
           imgUrl,
         },
-      })
+      }),
     );
     // Save immediately after adding
     const res = saveFood({
@@ -97,25 +111,25 @@ const useYourIntakeOperations = () => {
       ],
     });
 
-     toast.promise(
-       res,
-       {
-         pending: "Sending request...",
-         success: "Food was added!",
-         error: "There was an error while adding new intake.",
-       },
-       {
-         position: "bottom-left",
-         autoClose: 5000,
-         hideProgressBar: false,
-         closeOnClick: false,
-         pauseOnHover: true,
-         draggable: true,
-         progress: undefined,
-         theme: "dark",
-       },
-     );
-  }
+    toast.promise(
+      res,
+      {
+        pending: "Sending request...",
+        success: "Food was added!",
+        error: "There was an error while adding new intake.",
+      },
+      {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      },
+    );
+  };
 
   const addToFood = async (
     calories: number,
@@ -128,7 +142,7 @@ const useYourIntakeOperations = () => {
     carbs: number,
     fiber: number,
     salt: number,
-    imgUrl: string
+    imgUrl: string,
   ) => {
     const date = format(currentDate, "yyyy-MM-dd");
     const uniqueId = Date.now();
@@ -147,9 +161,9 @@ const useYourIntakeOperations = () => {
           carbohydrates: carbs,
           fiber,
           salt,
-          imgUrl
+          imgUrl,
         },
-      })
+      }),
     );
 
     // Save immediately after adding
@@ -168,29 +182,29 @@ const useYourIntakeOperations = () => {
           carbohydrates: carbs,
           fiber,
           salt,
-          imgUrl
+          imgUrl,
         },
       ],
     });
 
-     toast.promise(
-       res,
-       {
-         pending: "Sending request...",
-         success: "Food was added!",
-         error: "There was an error while adding new intake.",
-       },
-       {
-         position: "bottom-left",
-         autoClose: 5000,
-         hideProgressBar: false,
-         closeOnClick: false,
-         pauseOnHover: true,
-         draggable: true,
-         progress: undefined,
-         theme: "dark",
-       },
-     );
+    toast.promise(
+      res,
+      {
+        pending: "Sending request...",
+        success: "Food was added!",
+        error: "There was an error while adding new intake.",
+      },
+      {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      },
+    );
   };
 
   const removeFromSavedFood = async (id: number, timeOfDay: timeOfDay) => {
@@ -199,7 +213,7 @@ const useYourIntakeOperations = () => {
         date: format(currentDate, "yyyy-MM-dd"),
         timeOfDay,
         id,
-      })
+      }),
     );
 
     // Save immediately after removing
@@ -207,7 +221,12 @@ const useYourIntakeOperations = () => {
       ...savedFood,
       [timeOfDay]: savedFood[timeOfDay].filter((f) => f.id !== id),
     };
-    await saveFood(updatedFood);
+
+    const isLastItem =
+      updatedFood.breakfast.length === 0 &&
+      updatedFood.lunch.length === 0 &&
+      updatedFood.dinner.length === 0;
+    await saveFood(updatedFood, isLastItem);
   };
 
   const setNewDateAndGetFood = (date: Date) => {
