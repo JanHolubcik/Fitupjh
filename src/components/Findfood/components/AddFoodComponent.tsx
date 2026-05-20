@@ -1,9 +1,9 @@
 import ImageFromURL from "@/components/ImageFromURL/ImageFromURL";
-
 import { Button, Input } from "@nextui-org/react";
 import { useState } from "react";
 import { FaPlusCircle } from "react-icons/fa";
 import React from "react";
+
 type macrosLocal = {
   name: string;
   calories_per_100g: number;
@@ -32,57 +32,72 @@ type props = {
 
 const AddFoodComponent = (props: props) => {
   const [Grams, setGrams] = useState(100);
+
   return (
+    // CHANGED: Swapped sm:flex-row to md:flex-row, and sm:items-center to md:items-center
     <div
-      className="flex flex-row items-stretch gap-4 sm:gap-6 p-4 bg-transparent border-b border-divider/50"
+      className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 rounded-xl my-2 bg-zinc-900/20 border border-white/5 backdrop-blur-sm hover:bg-zinc-800/20 hover:border-white/10 transition-all duration-200"
       key={props.macros.name}
     >
-      <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 min-w-[60px] sm:min-w-[180px]">
-        <ImageFromURL url={props.macros.imgUrl} macroName={props.macros.name} />
-        <p className="font-bold text-small sm:text-medium text-white capitalize leading-tight text-center sm:text-left">
-          +{props.macros.name}
-        </p>
+      <div className="flex items-center gap-3.5 flex-1 min-w-0">
+        <div className="flex-shrink-0 bg-zinc-950/40 p-1.5 rounded-xl border border-white/5 shadow-inner">
+          <ImageFromURL
+            url={props.macros.imgUrl}
+            macroName={props.macros.name}
+          />
+        </div>
+        <div className="flex flex-col min-w-0">
+          <p className="font-bold text-sm md:text-base text-zinc-100 capitalize leading-tight truncate">
+            {props.macros.name}
+          </p>
+          <span className="text-[10px] text-zinc-500 font-medium mt-0.5">
+            Base: {props.macros.calories_per_100g} kcal / 100g
+          </span>
+        </div>
       </div>
 
-      <div className="flex flex-col justify-center gap-1 flex-1 border-x border-divider/20 px-4 self-stretch">
-        <div className="flex items-center gap-2">
-          <span className="text-[9px] text-default-500 font-bold uppercase w-8">
+      <div className="grid grid-cols-4 gap-1.5 md:flex md:flex-row md:items-center md:gap-4 px-1 md:px-4 md:border-x border-white/5 py-1">
+        <div className="flex flex-col md:items-center bg-zinc-900/40 md:bg-transparent p-2 md:p-0 rounded-lg border border-white/[0.02] md:border-none">
+          <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider md:mb-0.5">
             Prot
           </span>
-          <span className="text-success font-semibold text-xs">
-            {((props.macros.protein / 100) * Grams).toFixed(2)}g
+          <span className="text-success font-bold text-xs md:text-sm">
+            {((props.macros.protein / 100) * Grams).toFixed(1)}g
           </span>
         </div>
-        <div className="flex items-center gap-2 border-y border-divider/10 py-0.5">
-          <span className="text-[9px] text-default-500 font-bold uppercase w-8">
+
+        <div className="flex flex-col md:items-center bg-zinc-900/40 md:bg-transparent p-2 md:p-0 rounded-lg border border-white/[0.02] md:border-none">
+          <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider md:mb-0.5">
             Carb
           </span>
-          <span className="text-warning font-semibold text-xs">
-            {((props.macros.carbohydrates / 100) * Grams).toFixed(2)}g
+          <span className="text-warning font-bold text-xs md:text-sm">
+            {((props.macros.carbohydrates / 100) * Grams).toFixed(1)}g
           </span>
         </div>
-        <div className="flex items-center gap-2 border-b border-divider/10 pb-0.5">
-          <span className="text-[9px] text-default-500 font-bold uppercase w-8">
+
+        <div className="flex flex-col md:items-center bg-zinc-900/40 md:bg-transparent p-2 md:p-0 rounded-lg border border-white/[0.02] md:border-none">
+          <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider md:mb-0.5">
             Fat
           </span>
-          <span className="text-pink-500 font-semibold text-xs">
-            {((props.macros.fat / 100) * Grams).toFixed(2)}g
+          <span className="text-pink-500 font-bold text-xs md:text-sm">
+            {((props.macros.fat / 100) * Grams).toFixed(1)}g
           </span>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-[9px] text-default-500 font-bold uppercase w-8">
+
+        <div className="flex flex-col md:items-center bg-zinc-900/40 md:bg-transparent p-2 md:p-0 rounded-lg border border-white/[0.02] md:border-none">
+          <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider md:mb-0.5">
             Sug
           </span>
-          <span className="text-purple-400 font-semibold text-xs">
-            {(((props.macros.sugar || 0) / 100) * Grams).toFixed(2)}g
+          <span className="text-purple-400 font-bold text-xs md:text-sm">
+            {(((props.macros.sugar || 0) / 100) * Grams).toFixed(1)}g
           </span>
         </div>
       </div>
 
-      <div className="flex items-center gap-3 shrink-0">
-        <div className="w-16 sm:w-20">
+      <div className="flex items-center justify-between md:justify-end gap-3 shrink-0 pt-2 md:pt-0 border-t border-white/5 md:border-none">
+        <div className="w-[85px] md:w-20">
           <Input
-            label="Grams"
+            label="Portion (g)"
             labelPlacement="outside"
             placeholder="100"
             size="sm"
@@ -92,9 +107,11 @@ const AddFoodComponent = (props: props) => {
             min={0}
             max={999}
             classNames={{
-              label: "text-[10px] text-default-400 font-medium pb-1",
-              inputWrapper: "h-9 border-default-200",
-              input: "text-center",
+              label:
+                "text-[10px] text-zinc-400 font-semibold tracking-wide uppercase pb-1",
+              inputWrapper:
+                "h-9 border-white/10 group-data-[focus=true]:border-primary transition-colors bg-zinc-950/30",
+              input: "text-center font-bold text-zinc-200 text-xs",
             }}
             onChange={(event) => {
               const grams = Number(event.target.value);
@@ -111,23 +128,25 @@ const AddFoodComponent = (props: props) => {
           />
         </div>
 
-        <div className="w-16 sm:w-20">
+        <div className="w-[85px] md:w-20">
           <Input
             isReadOnly
-            label="kcal"
+            label="Energy"
             labelPlacement="outside"
             size="sm"
             variant="flat"
             classNames={{
-              label: "text-[10px] text-primary-400 font-medium pb-1",
-              inputWrapper: "h-9 bg-primary-900/20",
-              input: "text-center text-primary-400",
+              label:
+                "text-[10px] text-primary-400 font-semibold tracking-wide uppercase pb-1",
+              inputWrapper:
+                "h-9 bg-primary-500/10 border border-primary-500/20",
+              input: "text-center font-extrabold text-primary-400 text-xs",
             }}
-            value={props.calculatedCalories?.[props.id]?.toFixed(0) || "0"}
+            value={`${props.calculatedCalories?.[props.id]?.toFixed(0) || "0"} kcal`}
           />
         </div>
+
         <Button
-          className="mt-5"
           onPress={() =>
             props.AddFood(
               props.id,
@@ -139,8 +158,9 @@ const AddFoodComponent = (props: props) => {
           isIconOnly
           radius="full"
           variant="light"
+          className="w-9 h-9 min-w-9 ml-1 text-[#00FFAA] hover:bg-[#00FFAA]/10 hover:scale-105 transition-all duration-200 self-end"
         >
-          <FaPlusCircle size={24} />
+          <FaPlusCircle size={22} />
         </Button>
       </div>
     </div>

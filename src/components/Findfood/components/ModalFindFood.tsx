@@ -159,8 +159,8 @@ export const ModalFindFood = (props: props) => {
                 type="search"
               />
             </ModalHeader>
-            <ModalBody className="max-h-52">
-              <div className="max-h-52 overflow-visible">
+            <ModalBody className="max-h-96">
+              <div className="overflow-visible">
                 {loading ? (
                   <Spinner className=" m-2 self-center" size="lg" />
                 ) : (
