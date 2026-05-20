@@ -6,7 +6,6 @@ import {
   post,
   prop,
 } from "@typegoose/typegoose";
-import mongoose from "mongoose";
 
 /**
  * Food class represents food in name and macros.
@@ -44,20 +43,14 @@ class FoodClass {
   fiber: number;
   @prop({ required: true })
   salt: number;
-  @prop({ required: false }) // means that food is a product (yogurt for example) which means he has fixed weight that needs to be calculated
+  @prop({ required: false })
   ProductWeight: number;
-  @prop({ required: false }) // we search for products by it's qrcode, if it doesn't exist, we need to call external api to get macros
+  @prop({ required: false })
   QRcode: string;
   @prop({ required: false })
   imgUrl: string;
 }
 
-const Food =
-  mongoose.models.Food ??
-  getModelForClass(FoodClass, {
-    schemaOptions: {
-      collection: "food",
-    },
-  });
+const Food = getModelForClass(FoodClass);
 
 export { Food, FoodClass };
