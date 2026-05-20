@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import 'reflect-metadata';
-
+import "reflect-metadata";
+import React from "react";
 
 import NavbarComponent from "@/components/Navbar/NavbarComponent";
 import { authOptions } from "@/lib/auth";
@@ -25,11 +25,12 @@ export default async function RootLayout({
   const session = await getServerSession(authOptions);
   return (
     <html lang="en" className="dark">
- <head>
+      <head>
         <Script
           id="barcode-detector-fix"
           strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: `
+          dangerouslySetInnerHTML={{
+            __html: `
             (function() {
               var ua = navigator.userAgent;
               var isChromeMobile = /Chrome/i.test(ua) && /Android|iPhone|iPad/i.test(ua) && !/Edg|OPR/i.test(ua);
@@ -43,7 +44,8 @@ export default async function RootLayout({
                 delete window.BarcodeDetector;
               }
             })();
-          `}}
+          `,
+          }}
         />
       </head>
       <body className={inter.className}>

@@ -1,20 +1,17 @@
 import { getTimeOfDay } from "@/app/constants/FunctionsHelper";
-import PulsingButton from "@/components/PulsingButton/PulsingButton";
 import { setNewFoodBarCode } from "@/features/savedFoodslice/yourIntakeSlice";
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
-import { FoodClass } from "@/models/Food";
 import { RootState } from "@/store/store";
 import { Food } from "@/types/Types";
 import {
   Modal,
   ModalContent,
-  ModalHeader,
   ModalBody,
   Input,
   Button,
 } from "@nextui-org/react";
 
-import { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 type props = {
@@ -24,7 +21,6 @@ type props = {
 };
 
 export const ModalCreateFood = (props: props) => {
-  const [isLoading, setIsLoading] = useState(false);
   const { addToFoodObject } = useYourIntakeOperations();
   const dispatch = useDispatch();
   const newFoodBarCode = useSelector(
@@ -32,7 +28,6 @@ export const ModalCreateFood = (props: props) => {
   );
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
 
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
@@ -206,7 +201,7 @@ export const ModalCreateFood = (props: props) => {
                     Submit
                   </Button>
                   <Button
-                    onPress={()=>{
+                    onPress={() => {
                       props.onCloseAll && props.onCloseAll();
                       onClose();
                     }}

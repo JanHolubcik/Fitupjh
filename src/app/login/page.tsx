@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Link, Input, Button, Spinner } from "@nextui-org/react";
+import { Link, Input, Spinner } from "@nextui-org/react";
 import { signIn } from "next-auth/react";
 import PulsingButton from "@/components/PulsingButton/PulsingButton";
 

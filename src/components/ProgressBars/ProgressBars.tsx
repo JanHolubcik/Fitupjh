@@ -6,16 +6,6 @@ import { Progress } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-type Food = {
-  timeOfDay: "breakfast" | "lunch" | "dinner";
-};
-
-type ValuePiece = Date | null;
-
-type Value = {
-  date: ValuePiece | [ValuePiece, ValuePiece];
-};
-
 type macros = {
   calories: number;
   fat: number;
@@ -27,7 +17,7 @@ type macros = {
 };
 type timeOfDay = "breakfast" | "lunch" | "dinner";
 
-const timeOfDay = ["breakfast", "lunch", "dinner"];
+const timeOfDayArray = ["breakfast", "lunch", "dinner"];
 
 const calculateRecommendedMacros = (weight: number, height: number): macros => {
   const calories = (10 * weight + 6.25 * height - 5 * 25 + 5) * 1.2; // BMR × sedentary activity
@@ -78,7 +68,7 @@ const ProgressBars = () => {
         const height = data.user?.height;
         if (weight && height) {
           const calories = (10 * weight + 6.25 * height - 5 * 25 + 5) * 1.2;
-          const macros = {
+          const macrosV = {
             calories: Math.round(calories), //for now age is fixed to 25 and calories are calculated for men and sedentary lifestyle
             fat: calories * 0.2,
             protein: Number(Math.round(1.2 * weight).toFixed(2)),
@@ -99,7 +89,7 @@ const ProgressBars = () => {
                   salt: 0,
                   sugar: 0,
                 };
-                timeOfDay.forEach((value) => {
+                timeOfDayArray.forEach((value) => {
                   const timeInDaySavedMacro = savedFood[
                     value as timeOfDay
                   ].reduce(
@@ -121,17 +111,17 @@ const ProgressBars = () => {
                       protein: 0,
                       salt: 0,
                       sugar: 0,
-                    }
+                    },
                   );
 
                   Object.keys(savedMacros).forEach((key) => {
-                    const keyT = key as keyof typeof macros;
+                    const keyT = key as keyof typeof macrosV;
                     savedMacros[keyT] += timeInDaySavedMacro[keyT];
                   });
                 });
                 //savedMacros.calories = Math.round;
                 Object.keys(savedMacros).forEach((key) => {
-                  const keyT = key as keyof typeof macros;
+                  const keyT = key as keyof typeof macrosV;
                   savedMacros[keyT] = Number(savedMacros[keyT].toFixed(2));
                 });
                 return savedMacros;
@@ -205,7 +195,7 @@ const ProgressBars = () => {
         />
       </div>
       <div className="flex flex-row">
-        <Progress       
+        <Progress
           label="Sugar"
           showValueLabel
           value={calculatedMacros?.sugar}

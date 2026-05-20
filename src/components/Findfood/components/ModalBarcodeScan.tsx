@@ -24,7 +24,6 @@ import { FoodClass } from "@/models/Food";
 import { useDispatch } from "react-redux";
 import { setNewFoodBarCode } from "@/features/savedFoodslice/yourIntakeSlice";
 import { getTimeOfDay } from "@/app/constants/FunctionsHelper";
-import { error } from "console";
 
 type props = {
   onOpenChange: () => void;
@@ -34,8 +33,6 @@ type props = {
   onOpenNewFood: () => void;
   onCloseAll: () => void;
 };
-
-type timeOfDay = "breakfast" | "lunch" | "dinner";
 
 const onError = (
   error: IScannerError,
@@ -69,12 +66,7 @@ export const ModalBarcodeScan = (props: props) => {
   const { addToFoodObject } = useYourIntakeOperations();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const {
-    mutate: scanProduct,
-    isPending,
-    error,
-    data,
-  } = useScanProduct(onOpen);
+  const { mutate: scanProduct, isPending, data } = useScanProduct(onOpen);
 
   const handleYes = () => {
     props.onOpenNewFood();
@@ -94,8 +86,6 @@ export const ModalBarcodeScan = (props: props) => {
 
   const ua = navigator.userAgent;
   const isChromeMobile = /Chrome/i.test(ua) && /Android|iPhone|iPad/i.test(ua);
-
-
 
   useEffect(() => {
     if (data) {
@@ -132,9 +122,9 @@ export const ModalBarcodeScan = (props: props) => {
         placement="top"
         hideCloseButton
         onOpenChange={props.onOpenChange}
-        size="lg" 
+        size="lg"
         classNames={{
-          base: "max-sm:w-full max-sm:h-full max-sm:max-w-full max-sm:max-h-full max-sm:m-0 max-sm:rounded-none"
+          base: "max-sm:w-full max-sm:h-full max-sm:max-w-full max-sm:max-h-full max-sm:m-0 max-sm:rounded-none",
         }}
         scrollBehavior="inside"
         isOpen={props.isOpen}
@@ -162,7 +152,9 @@ export const ModalBarcodeScan = (props: props) => {
                       zoom: true,
                       finder: true,
                     }}
-                    onError={(error: IScannerError) => onError(error, setISErrorScan)}
+                    onError={(error: IScannerError) =>
+                      onError(error, setISErrorScan)
+                    }
                     constraints={{
                       facingMode: "environment",
                       aspectRatio: 1,

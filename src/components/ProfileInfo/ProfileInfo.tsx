@@ -6,11 +6,9 @@ import { useEffect, useState } from "react";
 
 import EditPersonCharacteristic from "../EditPersonCharacteristic/EditPersonCharacteristic";
 
-
 type Value = {
   pfps: string[];
 };
-const goals = ["Lose weight", "Gain weight", "Stay same"];
 
 const ProfileInfo = (props: Value) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure({
@@ -49,8 +47,12 @@ const ProfileInfo = (props: Value) => {
             onClick={onOpen}
           />
           <p className="m-1 self-center ">{data?.user?.name}</p>
-          <p className="text-center self-center">Weight {data?.user?.weight} kg</p>
-          <p className="text-center self-center">Height {data?.user?.height} cm</p>
+          <p className="text-center self-center">
+            Weight {data?.user?.weight} kg
+          </p>
+          <p className="text-center self-center">
+            Height {data?.user?.height} cm
+          </p>
           <Button color="primary" onPress={onOpen}>
             Edit your profile
           </Button>

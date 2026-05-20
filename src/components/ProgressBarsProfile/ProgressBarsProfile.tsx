@@ -44,7 +44,7 @@ type macros = {
 };
 type timeOfDay = "breakfast" | "lunch" | "dinner";
 
-const timeOfDay: timeOfDay[] = ["breakfast", "lunch", "dinner"];
+const timeOfDayArray: timeOfDay[] = ["breakfast", "lunch", "dinner"];
 
 type GetFoodVars = {
   date: string;
@@ -69,7 +69,7 @@ function calculateRecommendedMacros(weight: number, height: number) {
   return {
     ...base,
     carbohydrates: Number(
-      Math.round((calories - base.protein + base.fat) / 4).toFixed(2)
+      Math.round((calories - base.protein + base.fat) / 4).toFixed(2),
     ),
     fat: Number((base.fat / 9).toFixed(2)),
     sugar: Number(((calories * 0.1) / 4).toFixed(2)),
@@ -89,7 +89,7 @@ export function calculateConsumedMacros(fetchedData: foodType): MacroTotals {
     sugar: 0,
   };
 
-  for (const slot of timeOfDay) {
+  for (const slot of timeOfDayArray) {
     for (const item of fetchedData[slot]) {
       (Object.keys(totals) as MacroKey[]).forEach((macro) => {
         totals[macro] += item[macro];
@@ -130,7 +130,6 @@ const ProgressBarsProfile = (props: Value) => {
 
   const { data } = useSession();
   const user = data?.user;
-  const userId = data?.user?.id;
   const { data: savedFood } = useQuery<GetFoodData, GetFoodVars>(GET_FOOD, {
     variables: { date: formattedDate || "", userId: user?.id! },
     skip: !formattedDate || !user?.id,

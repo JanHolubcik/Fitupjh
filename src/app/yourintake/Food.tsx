@@ -2,7 +2,7 @@
 
 import { Spinner, useDisclosure } from "@nextui-org/react";
 
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useSession } from "next-auth/react";
 import useLoadSavedFood from "@/hooks/useLoadSavedFood";
@@ -14,8 +14,12 @@ import { ModalCreateFood } from "@/components/Findfood/components/ModalCreateFoo
 export default function Food() {
   const { data } = useSession();
   const { isFetched } = useLoadSavedFood(data?.user?.id);
-  const { isOpen, onOpen, onOpenChange,onClose } = useDisclosure();
-   const { isOpen:isOpenNewFood,  onOpen:onOpenNewFood,  onOpenChange:onOpenChangeNewFood } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenNewFood,
+    onOpen: onOpenNewFood,
+    onOpenChange: onOpenChangeNewFood,
+  } = useDisclosure();
   const {
     isOpen: QRisOpen,
     onOpen: QRonOpen,
@@ -36,9 +40,7 @@ export default function Food() {
     QRonClose();
     onClose();
     QRonClose();
-
-
-  }
+  };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-11">

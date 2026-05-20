@@ -10,8 +10,7 @@ import { getQueryClient } from "@/get-query-client";
 import StoreProvider from "@/StoreProvider";
 import { ApolloWrapper } from "@/lib/apolloClient";
 import { ToastContainer } from "react-toastify";
-import { useEffect } from "react";
-
+import React from "react";
 
 export default function Providers({
   session,
@@ -21,7 +20,6 @@ export default function Providers({
   children: React.ReactNode;
 }) {
   const queryClient = getQueryClient();
-
 
   return (
     <NextUIProvider>

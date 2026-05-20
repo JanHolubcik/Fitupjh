@@ -1,8 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { CheckCircleIcon } from "@heroicons/react/24/solid";
-import { Avatar, Button, Modal, ModalBody, ModalContent } from "@nextui-org/react";
+
+import {
+  Avatar,
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+} from "@nextui-org/react";
 
 interface ProfileGalleryProps {
   images: string[];
@@ -32,43 +38,41 @@ export default function ProfileGallery({
       hideCloseButton
       size="2xl"
       isOpen={isOpen}
-      isDismissable={false} 
+      isDismissable={false}
       onOpenChange={() => {
         onOpenChange();
       }}
     >
       {/* Avatar Gallery */}
-      <ModalContent >
+      <ModalContent>
         {() => (
           <>
             <ModalBody className="font-bold text-lar flex items-center pt-4 gap-10 mb-3">
               <h2 className="">Select your profile picture</h2>
-              <div  className="flex flex-row justify-center gap-8 items-center">
-              {images.map((img) => (
-                <Avatar
-                  key={img}
-                  src={img}
-                   isBordered       
-                  alt={`Profile ${img}`}
-                  color={selected===img? "primary":"default"}
-                  
-                  onClick={() =>handleSelect(img)}
-                  className="w-24 h-24 rounded-full cursor-pointer"
-                />
-              ))}
-           </div>
+              <div className="flex flex-row justify-center gap-8 items-center">
+                {images.map((img) => (
+                  <Avatar
+                    key={img}
+                    src={img}
+                    isBordered
+                    alt={`Profile ${img}`}
+                    color={selected === img ? "primary" : "default"}
+                    onClick={() => handleSelect(img)}
+                    className="w-24 h-24 rounded-full cursor-pointer"
+                  />
+                ))}
+              </div>
 
-            {/* Confirm Button */}
-            <Button
-              color="primary"
-              
-              onPress={(e) => {
-                onConfirm(selected);
-              }}
-              isDisabled={!selected} 
-            >
-              Confirm Selection
-            </Button>
+              {/* Confirm Button */}
+              <Button
+                color="primary"
+                onPress={() => {
+                  onConfirm(selected);
+                }}
+                isDisabled={!selected}
+              >
+                Confirm Selection
+              </Button>
             </ModalBody>
           </>
         )}

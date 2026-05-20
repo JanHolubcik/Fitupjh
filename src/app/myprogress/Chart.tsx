@@ -10,11 +10,10 @@ import {
   Legend,
   ChartOptions,
   ChartData,
-  ChartDataset,
   BarController,
   LineController,
 } from "chart.js";
-import { Bar, Chart as ReactChart } from "react-chartjs-2";
+import { Chart as ReactChart } from "react-chartjs-2";
 
 ChartJS.register(
   CategoryScale,
@@ -26,7 +25,7 @@ ChartJS.register(
   LineController,
   Title,
   Tooltip,
-  Legend
+  Legend,
 );
 
 const capitalizeFirstLetter = (string: string) => {

@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
-  Button,
   Image,
   Card,
   CardBody,
@@ -22,7 +21,6 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
-  const [goal, setGoal] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
   const [loading, setLoading] = useState(false);

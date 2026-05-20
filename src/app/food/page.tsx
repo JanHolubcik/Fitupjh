@@ -45,7 +45,7 @@ const findInFood = (props: foodType, searchValue: string) => {
   });
 };
 
-export default function Food(props: any) {
+export default function Food() {
   //until i have data from database we will use state with food array
   const [food, setfood] = useState<foodType>(foods);
 
@@ -91,7 +91,7 @@ export default function Food(props: any) {
                 lunch: [],
                 dinner: [],
               },
-              "672baa7b6b22d548e47b9fbf"
+              "672baa7b6b22d548e47b9fbf",
             );
           }}
         ></Button>

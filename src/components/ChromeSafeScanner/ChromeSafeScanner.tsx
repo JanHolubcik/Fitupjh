@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { Html5Qrcode, Html5QrcodeSupportedFormats } from "html5-qrcode";
+import { Html5Qrcode } from "html5-qrcode";
 
 type Props = {
   onScan: (result: string) => void;
@@ -9,7 +9,7 @@ type Props = {
 
 const SCANNER_ID = "chrome-safe-scanner";
 
-export const ChromeSafeScanner = ({ onScan, onError }: Props) => {
+export const ChromeSafeScanner = ({ onError }: Props) => {
   const scannerRef = useRef<Html5Qrcode | null>(null);
   const hasScanned = useRef(false);
 
@@ -17,21 +17,23 @@ export const ChromeSafeScanner = ({ onScan, onError }: Props) => {
     const scanner = new Html5Qrcode(SCANNER_ID);
     scannerRef.current = scanner;
 
-    scanner.start(
-      { facingMode: "environment" },
-      {
-        fps: 10,
-        qrbox: { width: 250, height: 250 },
-      },
-      (decodedText) => {
-        if (hasScanned.current) return;
-        if (!decodedText) return;
-        hasScanned.current = true;
-        
-        //scanner.stop().then(() => onScan(decodedText)).catch(() => onScan(decodedText));
-      },
-      () => {} // ignore per-frame failures, they're normal
-    ).catch(onError);
+    scanner
+      .start(
+        { facingMode: "environment" },
+        {
+          fps: 10,
+          qrbox: { width: 250, height: 250 },
+        },
+        (decodedText) => {
+          if (hasScanned.current) return;
+          if (!decodedText) return;
+          hasScanned.current = true;
+
+          //scanner.stop().then(() => onScan(decodedText)).catch(() => onScan(decodedText));
+        },
+        () => {}, // ignore per-frame failures, they're normal
+      )
+      .catch(onError);
 
     return () => {
       scanner.stop().catch(() => {});

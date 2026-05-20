@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useState } from "react";
 import {
   Navbar,
   NavbarBrand,
@@ -27,7 +26,6 @@ const NavbarComponent = () => {
   const pathname = usePathname();
   const { status, data } = useSession();
   const router = useRouter();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navigationProperties = [
     ...(status === "authenticated"
@@ -44,7 +42,11 @@ const NavbarComponent = () => {
       return (
         <Dropdown placement="bottom-end">
           <DropdownTrigger>
-            <Button variant="light" size="sm" className="text-zinc-200 font-medium">
+            <Button
+              variant="light"
+              size="sm"
+              className="text-zinc-200 font-medium"
+            >
               {data.user?.name}
             </Button>
           </DropdownTrigger>
@@ -83,9 +85,8 @@ const NavbarComponent = () => {
   };
 
   return (
-    <Navbar 
-      onMenuOpenChange={setIsMenuOpen} 
-      isBordered 
+    <Navbar
+      isBordered
       className="bg-zinc-950/70 border-white/5 backdrop-blur-md"
       maxWidth="xl"
     >
@@ -103,15 +104,14 @@ const NavbarComponent = () => {
 
       <NavbarContent className="hidden sm:flex gap-6" justify="center">
         {navigationProperties.map((item) => (
-          <NavbarItem
-            key={item.id}
-            isActive={pathname === item.href}
-          >
+          <NavbarItem key={item.id} isActive={pathname === item.href}>
             <Link
               href={item.href}
               color={pathname === item.href ? "primary" : "foreground"}
               className={`text-sm font-medium transition-colors ${
-                pathname === item.href ? "text-primary" : "text-zinc-400 hover:text-white"
+                pathname === item.href
+                  ? "text-primary"
+                  : "text-zinc-400 hover:text-white"
               }`}
             >
               {item.description}

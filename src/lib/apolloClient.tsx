@@ -7,7 +7,7 @@ import {
   ApolloClient,
   InMemoryCache,
 } from "@apollo/client-integration-nextjs";
-
+import React from "react";
 const isServer = typeof window === "undefined";
 
 // have a function to create a client for you

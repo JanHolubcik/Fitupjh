@@ -2,7 +2,7 @@
 import { useRef } from "react";
 import { Provider } from "react-redux";
 import { AppStore, makeStore } from "./store/store";
-
+import React from "react";
 /*
 To use this new makeStore function we need to create a new "client" component that will create the store 
 and share it using the React-Redux Provider component.

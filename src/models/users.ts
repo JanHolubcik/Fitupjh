@@ -28,10 +28,7 @@ class UsersClass {
   @prop({
     required: [true, "Email is required"],
     unique: true,
-    match: [
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      "Email is invalid",
-    ],
+    match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, "Email is invalid"],
   })
   userEmail: string;
   @prop({ required: false })

@@ -1,6 +1,5 @@
-import connectDB from "@/lib/connect-db";
 import { addNewFood, getFoodByQR } from "@/lib/food-db";
-import { Food } from "@/models/Food";
+
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -76,7 +75,7 @@ export async function GET(req: NextRequest) {
       ProductWeight: parseInt(targetProduct.quantity) || undefined,
     };
 
-    const res = await addNewFood(newlyMappedFood).catch(
+    await addNewFood(newlyMappedFood).catch(
       () =>
         new NextResponse("There was an error while sending data to db", {
           status: 500,

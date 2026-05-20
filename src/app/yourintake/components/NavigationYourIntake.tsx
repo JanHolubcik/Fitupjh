@@ -1,7 +1,7 @@
 import TimeFrame from "@/components/TimeFrame/TimeFrame";
 import ProgressBars from "@/components/ProgressBars/ProgressBars";
 
-import { timeOfDay } from "@/types/Types";
+import { timeOfDay, timeOfDayNumber } from "@/types/Types";
 import { Button, Tooltip, Image, CircularProgress } from "@nextui-org/react";
 import { add, format } from "date-fns";
 import {
@@ -15,7 +15,13 @@ import { useCalculateRecommendedCalories } from "../hooks/useCalculateRecomended
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 import { QrCodeIcon } from "@heroicons/react/24/solid";
 
-const NavigationYourIntake = ({ onOpen,onOpenQR }: { onOpen: () => void; onOpenQR: () => void }) => {
+const NavigationYourIntake = ({
+  onOpen,
+  onOpenQR,
+}: {
+  onOpen: () => void;
+  onOpenQR: () => void;
+}) => {
   const { currentDate, setNewDateAndGetFood, savedFood } =
     useYourIntakeOperations();
   const { recommendedCaloriesValue, caloriesSum } =
@@ -124,7 +130,7 @@ const NavigationYourIntake = ({ onOpen,onOpenQR }: { onOpen: () => void; onOpenQ
         className="mt-6 mr-6 ml-6 "
         onPress={onOpen}
       >
-        Click to search 
+        Click to search
       </Button>
       <Button
         startContent={
@@ -139,7 +145,7 @@ const NavigationYourIntake = ({ onOpen,onOpenQR }: { onOpen: () => void; onOpenQ
       <ProgressBars />
 
       {timeOfDay.map((key) => (
-        <TimeFrame key={key} timeOfDay={key as timeOfDay} />
+        <TimeFrame key={key} timeOfDay={key as timeOfDayNumber} />
       ))}
     </div>
   );

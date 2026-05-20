@@ -5,38 +5,38 @@ import bcrypt from "bcrypt";
 import { User } from "@/models/users";
 
 const validateEmail = (email: string) => {
-  return email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
+  return email.match(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/);
 };
 
 export async function POST(request: Request) {
-  const { username, userEmail, password, weight, height, goal } =
+  const { username, userEmail, password, weight, height } =
     await request.json();
 
   if (!username || !userEmail || !password || !weight || !height) {
     return NextResponse.json(
       { error: "Missing required fields." },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
   if (username.length < 2) {
     return NextResponse.json(
       { error: "User name is too long." },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
   if (weight < 0 || height < 0) {
     return NextResponse.json(
       { error: "Height or weight can't be negative." },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
   if (!validateEmail(userEmail)) {
     return NextResponse.json(
       { error: "Wrong format of email." },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -57,9 +57,12 @@ export async function POST(request: Request) {
 
     return NextResponse.json(
       { message: "User created successfully", result },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
-    return NextResponse.json({ error: "Error creating user" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Error creating user: " + error },
+      { status: 500 },
+    );
   }
 }

@@ -1,12 +1,5 @@
 "use client";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  Button,
-  Tooltip,
-  Image,
-} from "@nextui-org/react";
+import { Card, CardHeader, CardBody, Button } from "@nextui-org/react";
 
 import { FaPlusCircle, FaTimes } from "react-icons/fa";
 
@@ -54,14 +47,11 @@ const FindFood = (props: Food) => {
                 key={key.id}
               >
                 <div className="flex-shrink-0">
-                  <ImageFromURL
-                  macroName={key.name}
-                  url={key.imgUrl }
-                  />
+                  <ImageFromURL macroName={key.name} url={key.imgUrl} />
                 </div>
 
                 <div className="flex-1 min-w-0 flex flex-col gap-0.5">
-                  <p className="font-semibold text-sm sm:text-base text-white truncate capitalize leading-tight">
+                  <p className="flex flex-row items-center gap-3 p-2 min-h-[65px] min-w-0 border-b border-white/5 last:border-b-0 hover:bg-white/[0.02] rounded-lg transition-colors">
                     {key.name}
                   </p>
 
@@ -77,8 +67,12 @@ const FindFood = (props: Food) => {
                     <span className="text-purple-400">
                       S: {key.sugar || 0}g
                     </span>
-                    <span className="bg-primary/20 text-primary-400 px-1.5 py-0.5 rounded font-bold">{key.calories} kcal</span>
-                      <span className="bg-zinc-800 text-zinc-400 px-1.5 py-0.5 rounded">{key.amount}g</span>
+                    <span className="bg-primary/20 text-primary-400 px-1.5 py-0.5 rounded font-bold">
+                      {key.calories} kcal
+                    </span>
+                    <span className="bg-zinc-800 text-zinc-400 px-1.5 py-0.5 rounded">
+                      {key.amount}g
+                    </span>
                   </div>
                 </div>
 

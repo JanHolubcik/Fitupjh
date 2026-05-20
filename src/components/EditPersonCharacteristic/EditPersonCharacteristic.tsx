@@ -1,7 +1,6 @@
 import {
   Modal,
   ModalContent,
-  ModalHeader,
   ModalBody,
   Button,
   Input,
@@ -10,10 +9,10 @@ import {
 } from "@nextui-org/react";
 import { useState } from "react";
 import ProfileGallery from "../ProfileGallery/ProfileGallery";
-import PulsingButton from "../PulsingButton/PulsingButton";
 import { useSession } from "next-auth/react";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import React from "react";
 
 type props = {
   onOpenChange: () => void;
@@ -36,18 +35,15 @@ type UserFormData = {
 };
 
 const EditPersonCharacteristic = (props: props) => {
-  const [isLoading, setIsLoading] = useState(false);
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
 
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(
       formData.entries(),
     ) as unknown as UserFormData;
-
 
     handleManualSubmit(
       data.weight,
@@ -94,8 +90,6 @@ const EditPersonCharacteristic = (props: props) => {
     email = data?.user?.email,
     name: string,
   ) => {
-    setIsLoading(true);
-
     try {
       const updatePromise = (async () => {
         await updateUserMutation.mutateAsync({
@@ -149,9 +143,6 @@ const EditPersonCharacteristic = (props: props) => {
       props.onClose(); // Only close on success
     } catch (err) {
       console.error("Update Error:", err);
-      // Error is handled by toast.promise, so we don't need another alert here
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -187,7 +178,11 @@ const EditPersonCharacteristic = (props: props) => {
                     onClick={onOpenGallery}
                   />
 
-                  <Button className="max-w-xs self-center" color="secondary" onPress={onOpenGallery}>
+                  <Button
+                    className="max-w-xs self-center"
+                    color="secondary"
+                    onPress={onOpenGallery}
+                  >
                     Change your profile picture
                   </Button>
                   <div>

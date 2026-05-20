@@ -3,9 +3,7 @@ import { format } from "date-fns";
 import { LastMonthFoodOptions } from "@/lib/queriesOptions/LastMonthFoodOptions";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
-import { FoodItem } from "@/components/ProgressBarsProfile/ProgressBarsProfile";
-import Chart from "./Chart";
-import { useMemo } from "react";
+
 import { macros } from "@/types/Types";
 import { capitalizeFirstLetter } from "../constants/FunctionsHelper";
 import strings from "../../app/constants/CalorieMacrosDescription.json";
@@ -24,7 +22,7 @@ const SURPLUS_THRESHOLD = 1.25;
 
 const calculateRecommendedMacros = (
   weight: number = 70,
-  height: number = 60
+  height: number = 60,
 ): macros => {
   const calories = (10 * weight + 6.25 * height - 5 * 25 + 5) * 1.2; // BMR × sedentary activity
 
@@ -49,7 +47,7 @@ const useMacros = () => {
   const { data } = useSession();
 
   const { data: savedFood } = useSuspenseQuery(
-    LastMonthFoodOptions(data?.user?.id!, "", date.toString())
+    LastMonthFoodOptions(data?.user?.id!, "", date.toString()),
   );
   const isArray = Array.isArray(savedFood);
   const isEmpty = !isArray || savedFood.length === 0;
@@ -57,7 +55,7 @@ const useMacros = () => {
   const sortedFood = isEmpty
     ? []
     : [...savedFood].sort(
-        (a, b) => new Date(a.day).getTime() - new Date(b.day).getTime()
+        (a, b) => new Date(a.day).getTime() - new Date(b.day).getTime(),
       );
 
   const labels = isEmpty
@@ -141,7 +139,7 @@ const useMacros = () => {
     else keySuffix = "Optional";
 
     const jsonKey = `${capitalizeFirstLetter(
-      macro
+      macro,
     )}${keySuffix}` as keyof typeof strings;
     const template = strings[jsonKey];
 

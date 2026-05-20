@@ -1,14 +1,7 @@
-import { getSavedFood } from "@/lib/YourIntake/search-db";
 import { NextRequest, NextResponse } from "next/server";
-import { checkForSavedFoodMonth, saveFoodInDay } from "@/lib/food-db";
-import { foodType } from "@/types/Types";
-import { addDays, isValid, parseISO, subDays } from "date-fns";
+import { checkForSavedFoodMonth } from "@/lib/food-db";
 
-type SaveFoodRequest = {
-  date: string;
-  savedFood: foodType; // or your specific type
-  userID: string;
-};
+import { isValid, parseISO, subDays } from "date-fns";
 
 export async function GET(req: NextRequest) {
   const dateTo = req.nextUrl.searchParams.get("dateTo");
