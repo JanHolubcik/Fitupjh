@@ -14,12 +14,17 @@ import React, { Dispatch, useEffect } from "react";
 import { useState } from "react";
 
 import { Food } from "@/types/Types";
-import { Scanner, prepareZXingModule } from "@yudiel/react-qr-scanner";
+import {
+  IScannerError,
+  Scanner,
+  prepareZXingModule,
+} from "@yudiel/react-qr-scanner";
 import { useScanProduct } from "./useScanProduct";
 import { FoodClass } from "@/models/Food";
 import { useDispatch } from "react-redux";
 import { setNewFoodBarCode } from "@/features/savedFoodslice/yourIntakeSlice";
 import { getTimeOfDay } from "@/app/constants/FunctionsHelper";
+import { error } from "console";
 
 type props = {
   onOpenChange: () => void;
@@ -32,9 +37,33 @@ type props = {
 
 type timeOfDay = "breakfast" | "lunch" | "dinner";
 
+const onError = (
+  error: IScannerError,
+  setError: Dispatch<React.SetStateAction<string>>,
+) => {
+  switch (error.kind) {
+    case "permission-denied":
+      setError("Camera permission was denied.");
+      break;
+    case "no-camera":
+      setError("No camera was found on this device.");
+      break;
+    case "in-use":
+      setError("Camera is already in use by another application.");
+      break;
+    case "unsupported":
+      setError("This browser does not support camera access.");
+      break;
+    default:
+      setError(
+        "An error occurred while accessing the camera: " + error.message,
+      );
+  }
+};
 export const ModalBarcodeScan = (props: props) => {
   const dispatch = useDispatch();
-  const [scannedBarcode, setScannedBarcode] = useState<string>("");
+  const [isErrorScan, setISErrorScan] = useState("");
+
   prepareZXingModule({ fireImmediately: true });
 
   const { addToFoodObject } = useYourIntakeOperations();
@@ -47,10 +76,7 @@ export const ModalBarcodeScan = (props: props) => {
     data,
   } = useScanProduct(onOpen);
 
-
-
   const handleYes = () => {
-    dispatch(setNewFoodBarCode(scannedBarcode));
     props.onOpenNewFood();
   };
 
@@ -61,41 +87,19 @@ export const ModalBarcodeScan = (props: props) => {
     const rawValue = detectedCodes[0]?.rawValue;
     if (!rawValue) return;
 
-  
     dispatch(setNewFoodBarCode(rawValue));
-  
-      await scanProduct(rawValue);
- 
-    
+
+    await scanProduct(rawValue);
   };
 
   const ua = navigator.userAgent;
   const isChromeMobile = /Chrome/i.test(ua) && /Android|iPhone|iPad/i.test(ua);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (isChromeMobile) {
-        try {
-          // Force redefine the property to bypass Chrome's write-protections
-          Object.defineProperty(window, "BarcodeDetector", {
-            value: undefined,
-            writable: true,
-            configurable: true,
-          });
-          console.log(
-            "Successfully tricked Chrome into using the software polyfill.",
-          );
-        } catch (error) {
-          console.error("Failed to intercept BarcodeDetector:", error);
-        }
-      }
-    }
-  }, []);
+
 
   useEffect(() => {
     if (data) {
       if (!data.name) {
-
         return;
       }
       const food = (data as FoodClass) || undefined;
@@ -121,8 +125,6 @@ export const ModalBarcodeScan = (props: props) => {
       props.onCloseAll && props.onCloseAll();
     }
   }, [data]);
-
-
 
   return (
     <>
@@ -157,7 +159,7 @@ export const ModalBarcodeScan = (props: props) => {
                       zoom: true,
                       finder: true,
                     }}
-                    onError={(error) => console.error("Scanner error:", error)}
+                    onError={(error: IScannerError) => onError(error, setISErrorScan)}
                     constraints={{
                       facingMode: "environment",
                       aspectRatio: 1,
@@ -203,6 +205,11 @@ export const ModalBarcodeScan = (props: props) => {
                       </p>
                     </div>
                   )}
+                  {isErrorScan && (
+                    <p className="text-xs text-red-500 dark:text-red-400">
+                      {isErrorScan}
+                    </p>
+                  )}
                 </div>
 
                 <Button
@@ -223,7 +230,7 @@ export const ModalBarcodeScan = (props: props) => {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Confirm Action
+                Add new food
               </ModalHeader>
               <ModalBody>
                 <p>

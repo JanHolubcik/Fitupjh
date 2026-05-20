@@ -47,7 +47,7 @@ const EditPersonCharacteristic = (props: props) => {
     const data = Object.fromEntries(
       formData.entries(),
     ) as unknown as UserFormData;
-    console.log(JSON.stringify(data));
+
 
     handleManualSubmit(
       data.weight,
