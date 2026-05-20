@@ -44,10 +44,12 @@ const NavbarComponent = () => {
       return (
         <Dropdown placement="bottom-end">
           <DropdownTrigger>
-            <Button variant="light">{data.user?.name}</Button>
+            <Button variant="light" size="sm" className="text-zinc-200 font-medium">
+              {data.user?.name}
+            </Button>
           </DropdownTrigger>
 
-          <DropdownMenu variant="faded">
+          <DropdownMenu variant="faded" aria-label="User menu actions">
             <DropdownItem key="profile" href="/profile">
               Profile
             </DropdownItem>
@@ -55,6 +57,7 @@ const NavbarComponent = () => {
             <DropdownItem
               key="logout"
               className="text-danger"
+              color="danger"
               onPress={() =>
                 signOut({ redirect: false }).then(() => router.push("/"))
               }
@@ -67,68 +70,90 @@ const NavbarComponent = () => {
     }
 
     return (
-      <Link
+      <Button
+        as={Link}
         href="/login"
-        className="border border-solid border-black rounded px-2 py-1"
+        variant="bordered"
+        size="sm"
+        className="border-white/20 text-white hover:bg-white/10"
       >
         Sign In
-      </Link>
+      </Button>
     );
   };
 
   return (
-    <Navbar onMenuOpenChange={setIsMenuOpen}>
-      <NavbarContent>
-        <NavbarMenuToggle className="sm:hidden" />
+    <Navbar 
+      onMenuOpenChange={setIsMenuOpen} 
+      isBordered 
+      className="bg-zinc-950/70 border-white/5 backdrop-blur-md"
+      maxWidth="xl"
+    >
+      {/* Left side: Brand Logo & Mobile Toggle */}
+      <NavbarContent justify="start" className="flex-grow-0">
+        <NavbarMenuToggle className="sm:hidden text-white mr-2" />
         <NavbarBrand>
-          <Link href="/">
-            <p className="font-bold text-white">FitUp</p>
+          <Link href="/" className="gap-2">
+            <p className="font-black text-xl text-white tracking-wider bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">
+              FitUp
+            </p>
           </Link>
         </NavbarBrand>
       </NavbarContent>
 
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        {navigationProperties.map((navigationProperty) => (
+      <NavbarContent className="hidden sm:flex gap-6" justify="center">
+        {navigationProperties.map((item) => (
           <NavbarItem
-            key={navigationProperty.id}
-            isActive={pathname === navigationProperty.href}
+            key={item.id}
+            isActive={pathname === item.href}
           >
             <Link
-              href={navigationProperty.href}
-              color={
-                pathname === navigationProperty.href ? "primary" : "foreground"
-              }
+              href={item.href}
+              color={pathname === item.href ? "primary" : "foreground"}
+              className={`text-sm font-medium transition-colors ${
+                pathname === item.href ? "text-primary" : "text-zinc-400 hover:text-white"
+              }`}
             >
-              {navigationProperty.description}
+              {item.description}
             </Link>
           </NavbarItem>
         ))}
       </NavbarContent>
 
-      <NavbarContent justify="end" className="gap-3 ms-auto">
-        {showSession()}
+      <NavbarContent justify="end" className="flex-1 gap-4">
+        <div className="flex items-center gap-2">
+          {showSession()}
 
-        {status === "authenticated" ? (
-          <Avatar
-            isBordered
-            color="secondary"
-            size="sm"
-            src={data.user?.image || imagepfp3.src}
-          />
-        ) : (
-          <Link href="/signup">
-            <p>Sign up</p>
-          </Link>
-        )}
+          {status === "authenticated" ? (
+            <Avatar
+              isBordered
+              color="secondary"
+              size="sm"
+              src={data.user?.image || imagepfp3.src}
+              className="cursor-pointer transition-transform hover:scale-105 shrink-0"
+            />
+          ) : (
+            <Button
+              as={Link}
+              href="/signup"
+              color="primary"
+              size="sm"
+              className="font-medium"
+            >
+              Sign up
+            </Button>
+          )}
+        </div>
       </NavbarContent>
 
-      <NavbarMenu>
+      <NavbarMenu className="bg-zinc-950/95 pt-6 gap-4">
         {navigationProperties.map((item) => (
           <NavbarMenuItem key={item.id}>
             <Link
               href={item.href}
               color={pathname === item.href ? "primary" : "foreground"}
-              className="w-full"
+              className="w-full text-lg py-2 border-b border-white/5"
+              size="lg"
             >
               {item.description}
             </Link>

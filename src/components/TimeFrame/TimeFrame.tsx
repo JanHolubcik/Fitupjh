@@ -77,17 +77,9 @@ const FindFood = (props: Food) => {
                     <span className="text-purple-400">
                       S: {key.sugar || 0}g
                     </span>
+                    <span className="bg-primary/20 text-primary-400 px-1.5 py-0.5 rounded font-bold">{key.calories} kcal</span>
+                      <span className="bg-zinc-800 text-zinc-400 px-1.5 py-0.5 rounded">{key.amount}g</span>
                   </div>
-                </div>
-
-                <div className="text-end shrink-0">
-                  <p className="text-sm sm:text-base font-bold text-primary-400">
-                    {key.calories}{" "}
-                    <span className="text-xs font-normal text-default-400">
-                      kcal
-                    </span>
-                  </p>
-                  <p className="text-xs text-default-400">{key.amount}g</p>
                 </div>
 
                 <div className="flex items-center justify-center pl-1">
