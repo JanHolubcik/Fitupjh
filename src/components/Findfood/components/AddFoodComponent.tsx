@@ -79,7 +79,7 @@ const AddFoodComponent = (props: props) => {
         </div>
       </div>
 
-      <div className="flex items-end gap-3 shrink-0">
+      <div className="flex items-center gap-3 shrink-0">
         <div className="w-16 sm:w-20">
           <Input
             label="Grams"
@@ -127,6 +127,7 @@ const AddFoodComponent = (props: props) => {
           />
         </div>
         <Button
+          className="mt-5"
           onPress={() =>
             props.AddFood(
               props.id,
