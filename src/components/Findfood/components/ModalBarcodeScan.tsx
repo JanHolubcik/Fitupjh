@@ -132,7 +132,10 @@ export const ModalBarcodeScan = (props: props) => {
         placement="top"
         hideCloseButton
         onOpenChange={props.onOpenChange}
-        size="lg"
+        size="lg" 
+        classNames={{
+          base: "max-sm:w-full max-sm:h-full max-sm:max-w-full max-sm:max-h-full max-sm:m-0 max-sm:rounded-none"
+        }}
         scrollBehavior="inside"
         isOpen={props.isOpen}
         motionProps={{
