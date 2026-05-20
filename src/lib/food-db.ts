@@ -58,8 +58,8 @@ export async function getFood(substring: string) {
 }
 /**
  * Retrieves a food item by its QR code.
- * @param qrCode 
- * @returns 
+ * @param qrCode
+ * @returns
  */
 export async function getFoodByQR(qrCode: string) {
   try {
@@ -86,26 +86,27 @@ export async function getFoodByQR(qrCode: string) {
       ProductWeight: food.ProductWeight,
       imgUrl: food.imgUrl,
     };
-
   } catch (error) {
-
-    return { 
-      error: error instanceof Error ? error.message : "An unknown database error occurred" 
+    return {
+      error:
+        error instanceof Error
+          ? error.message
+          : "An unknown database error occurred",
     };
   }
 }
 
 /**
  *  Saving food after user adds it.
- * @param date 
- * @param food 
- * @param _id 
+ * @param date
+ * @param food
+ * @param _id
  * @returns Error.
  */
 export async function saveFoodInDay(
   date: string,
   food: foodType,
-  _id: mongoose.Types.ObjectId | string
+  _id: mongoose.Types.ObjectId | string,
 ) {
   try {
     await connectDB();
@@ -133,17 +134,15 @@ export async function addNewFood(newFood: FoodInput) {
   try {
     await connectDB();
 
-
     const existingRecord = await Food.findOne({
-      name: { $regex: new RegExp(`^${newFood.name}$`, "i") } //handling use case sensitivity
+      name: { $regex: new RegExp(`^${newFood.name}$`, "i") }, //handling use case sensitivity
     });
 
     if (existingRecord) {
       return { success: false, error: "This food item already exists." };
     }
 
-
-    const insertedNew:FoodClass = await Food.create({
+    const insertedNew: FoodClass = await Food.create({
       name: newFood.name,
       protein: newFood.protein,
       sugar: newFood.sugar,
@@ -152,19 +151,19 @@ export async function addNewFood(newFood: FoodInput) {
       salt: newFood.salt,
       calories_per_100g: newFood.calories_per_100g,
       fiber: 0,
-      QRcode: newFood.barcode
+      QRcode: newFood.barcode,
+      imgUrl: newFood.imgUrl,
     });
 
-    return { 
-      success: true, 
-      data: JSON.parse(JSON.stringify(insertedNew)) 
+    return {
+      success: true,
+      data: JSON.parse(JSON.stringify(insertedNew)),
     };
-
   } catch (error) {
     console.error("Database Error:", error);
-    return { 
-      success: false, 
-      error: "An unexpected error occurred while saving." 
+    return {
+      success: false,
+      error: "An unexpected error occurred while saving.",
     };
   }
 }
@@ -187,7 +186,7 @@ export async function checkForSavedFood(date: string, user_id: string) {
 export async function checkForSavedFoodMonth(
   dateFrom: string,
   dateTo: string,
-  user_id: string
+  user_id: string,
 ) {
   try {
     await connectDB();

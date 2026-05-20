@@ -10,15 +10,14 @@ const ImageFromURL = ({
   return (
     <Image
       alt={macroName}
-      height={100}
       radius="md"
+      height={80}
       fallbackSrc={`foodPlaceholder.png`}
       src={
         url === undefined || url === ""
           ? `https://www.themealdb.com/images/ingredients/${macroName}.png`
           : url
       }
-      width={100}
       className="object-contain"
     />
   );

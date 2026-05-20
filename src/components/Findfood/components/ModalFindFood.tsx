@@ -70,7 +70,6 @@ export const ModalFindFood = (props: props) => {
           foundFood.food.map((key) => key.calories_per_100g),
         );
       }
-
       setLoading(false);
     };
 
