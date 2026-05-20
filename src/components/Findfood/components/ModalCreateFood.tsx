@@ -25,7 +25,7 @@ type props = {
 
 export const ModalCreateFood = (props: props) => {
   const [isLoading, setIsLoading] = useState(false);
-  const {addToFoodObject} = useYourIntakeOperations();
+  const { addToFoodObject } = useYourIntakeOperations();
   const dispatch = useDispatch();
   const newFoodBarCode = useSelector(
     (state: RootState) => state.savedFood.newFoodBarCode,
@@ -37,10 +37,10 @@ export const ModalCreateFood = (props: props) => {
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
     const parsedFoodData: Food = {
-      id: Date.now(), 
+      id: Date.now(),
       name: formData.get("name") as string,
       calories: Number(formData.get("calories_per_100g")),
-      amount: "100g", 
+      amount: "100g",
       protein: Number(formData.get("protein")),
       sugar: Number(formData.get("sugar")),
       fiber: Number(formData.get("fiber")),
@@ -48,19 +48,19 @@ export const ModalCreateFood = (props: props) => {
       carbohydrates: Number(formData.get("carbohydrates")),
       salt: Number(formData.get("salt")),
     };
-    const res = 
-      fetch("/api/createFood", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }).finally(() => {dispatch(setNewFoodBarCode(""));
-        addToFoodObject(parsedFoodData,getTimeOfDay())
-      });
+    const res = fetch("/api/createFood", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).finally(() => {
+      dispatch(setNewFoodBarCode(""));
+      addToFoodObject(parsedFoodData, getTimeOfDay());
+    });
 
     toast.promise(
-      res,    
+      res,
       {
         pending: "Sending request...",
         success: "New food was saved successfully!",
@@ -74,7 +74,7 @@ export const ModalCreateFood = (props: props) => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",       
+        theme: "dark",
       },
     );
     props.onOpenChange();
@@ -109,7 +109,6 @@ export const ModalCreateFood = (props: props) => {
                     type="text"
                     placeholder="Barcode number"
                     value={newFoodBarCode}
-                    
                   />
                 </div>
                 <div>
@@ -207,7 +206,10 @@ export const ModalCreateFood = (props: props) => {
                     Submit
                   </Button>
                   <Button
-                    onPress={onClose}
+                    onPress={()=>{
+                      props.onCloseAll && props.onCloseAll();
+                      onClose();
+                    }}
                     color="danger"
                     className="font-bold flex-1"
                   >

@@ -14,7 +14,7 @@ import { ModalCreateFood } from "@/components/Findfood/components/ModalCreateFoo
 export default function Food() {
   const { data } = useSession();
   const { isFetched } = useLoadSavedFood(data?.user?.id);
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange,onClose } = useDisclosure();
    const { isOpen:isOpenNewFood,  onOpen:onOpenNewFood,  onOpenChange:onOpenChangeNewFood } = useDisclosure();
   const {
     isOpen: QRisOpen,
@@ -33,9 +33,11 @@ export default function Food() {
   }, []);
 
   const closeAllModals = () => {
-    onOpenChange();
-    QRonOpenChange();
-    onOpenChangeNewFood();
+    QRonClose();
+    onClose();
+    QRonClose();
+
+
   }
 
   return (

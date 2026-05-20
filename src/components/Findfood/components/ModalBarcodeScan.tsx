@@ -61,19 +61,12 @@ export const ModalBarcodeScan = (props: props) => {
     const rawValue = detectedCodes[0]?.rawValue;
     if (!rawValue) return;
 
-    setScannedBarcode(rawValue);
-    dispatch(setNewFoodBarCode(scannedBarcode));
-    try {
+  
+    dispatch(setNewFoodBarCode(rawValue));
+  
       await scanProduct(rawValue);
-    } catch (err: any) {
-      console.error("Failed to scan and parse product:", err);
-
-      // CHECK FOR 404 ERROR (Adjust this depending on how your API returns errors)
-      if (err?.response?.status === 404 || err?.message?.includes("404")) {
-        // only storing barcode if product is not found
-        onOpen();
-      }
-    }
+ 
+    
   };
 
   const ua = navigator.userAgent;
