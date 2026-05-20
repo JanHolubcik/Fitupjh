@@ -1,0 +1,19 @@
+<!-- Change width and height to 100% inside your file -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <!-- Soft background capsule matching your dark mode theme -->
+  <rect width="100" height="100" rx="16" fill="#18181b" opacity="0.4"/>
+  <rect width="100" height="100" rx="16" fill="none" stroke="#ffffff" stroke-width="1" opacity="0.05"/>
+  
+  <!-- Balanced & Aligned Minimalist Cutlery Layout -->
+  <g fill="none" stroke="#71717a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" transform="translate(25, 23)">
+    <!-- Fork -->
+    <path d="M10 5v24M6 5v5c0 2.2 1.8 4 4 4s4-1.8 4-4V5" />
+    
+    <!-- Knife -->
+    <path d="M34 5v24M40 12v-7c0 0-3 0-6 0" />
+    <path d="M40 12c0 4.4-4 8-6 8" />
+    
+    <!-- Plate/Bowl base curve -->
+    <path d="M2 44c5 3 13 5 23 5s18-2 23-5" opacity="0.4" />
+  </g>
+</svg>

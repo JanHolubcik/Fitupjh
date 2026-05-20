@@ -34,17 +34,17 @@ const AddFoodComponent = (props: props) => {
   const [Grams, setGrams] = useState(100);
   return (
     <div
-      className="flex flex-row items-center gap-4 sm:gap-6 p-4 bg-transparent border-b border-divider/50"
+      className="flex flex-row items-stretch gap-4 sm:gap-6 p-4 bg-transparent border-b border-divider/50"
       key={props.macros.name}
     >
-      <div className="flex items-center gap-4 min-w-[140px] sm:min-w-[180px]">
+      <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 min-w-[60px] sm:min-w-[180px]">
         <ImageFromURL url={props.macros.imgUrl} macroName={props.macros.name} />
-        <p className="font-bold text-small sm:text-medium text-white capitalize leading-tight">
-          {props.macros.name}
+        <p className="font-bold text-small sm:text-medium text-white capitalize leading-tight text-center sm:text-left">
+          +{props.macros.name}
         </p>
       </div>
 
-      <div className="flex flex-col justify-center gap-1 flex-1 border-x border-divider/20 px-4">
+      <div className="flex flex-col justify-center gap-1 flex-1 border-x border-divider/20 px-4 self-stretch">
         <div className="flex items-center gap-2">
           <span className="text-[9px] text-default-500 font-bold uppercase w-8">
             Prot
