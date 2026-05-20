@@ -47,7 +47,7 @@ const FindFood = (props: Food) => {
                 key={key.id}
               >
                 <div className="flex items-center gap-3 flex-1 min-w-0">
-                  <div className="flex-shrink-0 bg-zinc-950/40 p-1 rounded-xl border border-white/5 shadow-inner group-hover:scale-102 transition-transform">
+                  <div className="w-24 aspect-square flex items-center justify-center bg-zinc-950/40 p-1 rounded-xl border border-white/5 shadow-inner group-hover:scale-102 transition-transform">
                     <ImageFromURL macroName={key.name} url={key.imgUrl} />
                   </div>
 
