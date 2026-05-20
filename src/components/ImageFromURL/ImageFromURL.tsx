@@ -1,17 +1,16 @@
-import { Image, } from "@nextui-org/react";
+import { Image } from "@nextui-org/react";
 
 const ImageFromURL = ({
   url,
   macroName,
 }: {
-  url: string|undefined;
+  url: string | undefined;
   macroName: string;
 }) => {
-
   return (
     <Image
       alt={macroName}
-      height={40}
+      height={100}
       radius="md"
       fallbackSrc={`foodPlaceholder.png`}
       src={
@@ -19,7 +18,7 @@ const ImageFromURL = ({
           ? `https://www.themealdb.com/images/ingredients/${macroName}.png`
           : url
       }
-      width={40}
+      width={100}
       className="object-contain"
     />
   );

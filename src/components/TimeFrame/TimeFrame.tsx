@@ -46,16 +46,16 @@ const FindFood = (props: Food) => {
                 className="flex flex-row items-center gap-3 p-2 min-h-[65px] border-b border-white/5 last:border-b-0 hover:bg-white/[0.02] rounded-lg transition-colors"
                 key={key.id}
               >
-                <div className="flex-shrink-0">
+                <div className="flex-shrink-0 border-r-1 p-1 border-white/5">
                   <ImageFromURL macroName={key.name} url={key.imgUrl} />
                 </div>
 
                 <div className="flex-1 min-w-0 flex flex-col gap-0.5">
-                  <p className="flex flex-row items-center gap-3 p-2 min-h-[65px] min-w-0 border-b border-white/5 last:border-b-0 hover:bg-white/[0.02] rounded-lg transition-colors">
+                  <p className="flex flex-row items-center gap-3  min-h-[65px] min-w-0 border-b border-white/5 last:border-b-0 hover:bg-white/[0.02] rounded-lg transition-colors">
                     {key.name}
                   </p>
 
-                  <div className="flex flex-row items-center gap-1.5 text-[11px] font-medium mt-0.5 flex-wrap">
+                  <div className="flex flex-row items-center gap-1.5 text-[11px] font-medium mt-0.5   flex-wrap">
                     <span className="text-success">P: {key.protein || 0}g</span>
                     <span className="text-zinc-700">|</span>
                     <span className="text-warning">
