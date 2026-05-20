@@ -34,23 +34,23 @@ const AddFoodComponent = (props: props) => {
   const [Grams, setGrams] = useState(100);
 
   return (
-    // CHANGED: Swapped sm:flex-row to md:flex-row, and sm:items-center to md:items-center
     <div
       className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 rounded-xl my-2 bg-zinc-900/20 border border-white/5 backdrop-blur-sm hover:bg-zinc-800/20 hover:border-white/10 transition-all duration-200"
       key={props.macros.name}
     >
-      <div className="flex items-center gap-3.5 flex-1 min-w-0">
+      <div className="flex items-center gap-3.5 flex-1 min-w-0 w-full">
         <div className="flex-shrink-0 bg-zinc-950/40 p-1.5 rounded-xl border border-white/5 shadow-inner">
           <ImageFromURL
             url={props.macros.imgUrl}
             macroName={props.macros.name}
           />
         </div>
-        <div className="flex flex-col min-w-0">
+
+        <div className="flex flex-col min-w-0 flex-1">
           <p className="font-bold text-sm md:text-base text-zinc-100 capitalize leading-tight truncate">
             {props.macros.name}
           </p>
-          <span className="text-[10px] text-zinc-500 font-medium mt-0.5">
+          <span className="text-[10px] text-zinc-500 font-medium mt-0.5 whitespace-nowrap">
             Base: {props.macros.calories_per_100g} kcal / 100g
           </span>
         </div>

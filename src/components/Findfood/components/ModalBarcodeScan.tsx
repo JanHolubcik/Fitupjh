@@ -69,6 +69,7 @@ export const ModalBarcodeScan = (props: props) => {
   const { mutate: scanProduct, isPending, data } = useScanProduct(onOpen);
 
   const handleYes = () => {
+    onOpenChange();
     props.onOpenNewFood();
   };
 

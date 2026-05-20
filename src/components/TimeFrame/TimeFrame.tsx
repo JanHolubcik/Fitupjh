@@ -52,7 +52,7 @@ const FindFood = (props: Food) => {
                   </div>
 
                   <div className="flex-1 min-w-0 flex flex-col justify-center">
-                    <p className="font-bold text-xs sm:text-sm text-zinc-200 capitalize leading-tight truncate pr-2 group-hover:text-white transition-colors">
+                    <p className="font-bold text-xs sm:text-sm text-zinc-200 capitalize ">
                       {key.name}
                     </p>
 
