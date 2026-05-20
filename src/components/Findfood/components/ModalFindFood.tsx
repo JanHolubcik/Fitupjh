@@ -120,6 +120,7 @@ export const ModalFindFood = (props: props) => {
       placement="top"
       hideCloseButton
       size="3xl"
+      className="max-h-96"
       scrollBehavior="inside"
       isOpen={props.isOpen}
       onOpenChange={() => {
@@ -153,7 +154,10 @@ export const ModalFindFood = (props: props) => {
                 placeholder="Type to search..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                onClear={() => setFood([])}
+                onClear={() => {
+                  setFood([]);
+                  setSearchTerm("");
+                }}
                 size="sm"
                 startContent={<FaSearch size={18} />}
                 type="search"
