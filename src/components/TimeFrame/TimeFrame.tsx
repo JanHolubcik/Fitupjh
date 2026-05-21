@@ -3,17 +3,21 @@ import { Card, CardHeader, CardBody, Button } from "@nextui-org/react";
 import { FaPlusCircle, FaTimes } from "react-icons/fa";
 import { useDisclosure } from "@nextui-org/react";
 import { ModalFindFood } from "../Findfood/components/ModalFindFood";
-import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 import ImageFromURL from "../ImageFromURL/ImageFromURL";
+import { EditFoodModal, Food } from "../EditFoodModal/EditFoodModal";
+import { useState } from "react";
+import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 
-type Food = {
+type Props = {
   timeOfDay: "breakfast" | "lunch" | "dinner";
 };
 
-const FindFood = (props: Food) => {
+const FindFood = (props: Props) => {
   const { savedFood, removeFromSavedFood } = useYourIntakeOperations();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
+  const { onOpenChange: onEditOpenChange, isOpen: isEditOpen } =
+    useDisclosure();
+  const [selectedFood, setSelectedFood] = useState<Food | null>(null);
   return (
     <Card className="w-full max-w-[500px] mt-5 bg-zinc-900/30 border border-white/5 backdrop-blur-xl shadow-xl rounded-2xl overflow-hidden">
       <CardHeader className="flex flex-row items-center justify-between bg-gradient-to-r from-zinc-900/90 to-zinc-900/40 px-4 py-3.5 border-b border-white/5">
@@ -43,7 +47,11 @@ const FindFood = (props: Food) => {
           <div className="flex flex-col gap-1">
             {savedFood[props.timeOfDay].map((key) => (
               <div
-                className="flex flex-row items-center justify-between gap-3 p-2 bg-zinc-900/20 border border-white/[0.02] hover:bg-white/[0.03] hover:border-white/5 rounded-xl transition-all duration-200 group"
+                onClick={() => {
+                  setSelectedFood(key);
+                  onEditOpenChange();
+                }}
+                className="flex flex-row items-center justify-between gap-3 p-2 bg-zinc-900/20 border border-white/[0.02] hover:bg-white/[0.03] hover:border-white/5 rounded-xl transition-all duration-200 group hover:cursor-pointer"
                 key={key.id}
               >
                 <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -123,7 +131,12 @@ const FindFood = (props: Food) => {
             </p>
           </div>
         )}
-
+        <EditFoodModal
+          isOpen={isEditOpen}
+          onOpenChange={onEditOpenChange}
+          food={selectedFood}
+          timeOfDay={props.timeOfDay}
+        />
         <ModalFindFood
           isOpen={isOpen}
           onOpenChange={onOpenChange}

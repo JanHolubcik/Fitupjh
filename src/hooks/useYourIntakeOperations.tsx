@@ -1,6 +1,7 @@
 "use client";
 import {
   addFoodForDate,
+  editAndPersistFood,
   removeFromFood,
   setCurrentDate,
 } from "@/features/savedFoodslice/yourIntakeSlice";
@@ -10,7 +11,7 @@ import { useSession } from "next-auth/react";
 import { selectSavedFoodByDate } from "@/features/savedFoodslice/yourIntakeSlice";
 
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+import { AppDispatch, RootState } from "@/store/store";
 import { toast } from "react-toastify";
 import { Food } from "@/types/Types";
 
@@ -233,6 +234,22 @@ const useYourIntakeOperations = () => {
     dispatch(setCurrentDate(format(date, "yyyy-MM-dd")));
   };
 
+  const updateFood = async (updatedFood: Food, timeOfDay: timeOfDay) => {
+    const date = format(currentDate, "yyyy-MM-dd");
+
+    await (dispatch as AppDispatch)(
+      editAndPersistFood(
+        {
+          date,
+          timeOfDay,
+          id: updatedFood.id,
+          updatedFood,
+        },
+        saveFood,
+      ),
+    );
+  };
+
   return {
     currentDate,
     savedFood,
@@ -240,6 +257,7 @@ const useYourIntakeOperations = () => {
     removeFromSavedFood,
     addToFood,
     addToFoodObject,
+    updateFood,
   };
 };
 

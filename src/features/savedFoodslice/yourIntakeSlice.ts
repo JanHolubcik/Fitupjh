@@ -1,4 +1,9 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  PayloadAction,
+  ThunkAction,
+  UnknownAction,
+} from "@reduxjs/toolkit";
 
 import { RootState } from "@/store/store";
 import { Food, FoodType, SavedFoodMonth } from "@/types/Types";
@@ -72,6 +77,29 @@ const savedFoodSlice = createSlice({
         (foodItem) => foodItem.id !== id,
       );
     },
+    EditFood: (
+      state,
+      action: PayloadAction<{
+        date: string;
+        timeOfDay: keyof FoodType;
+        id: number;
+        updatedFood: Food;
+      }>,
+    ) => {
+      const { date, timeOfDay, id, updatedFood } = action.payload;
+
+      if (!state.month[date]) {
+        state.month[date] = { ...emptyDay };
+      }
+
+      // Replace old item value directly using its index reference
+      const foodArray = state.month[date][timeOfDay];
+      const targetIndex = foodArray.findIndex((foodItem) => foodItem.id === id);
+
+      if (targetIndex !== -1) {
+        foodArray[targetIndex] = updatedFood;
+      }
+    },
   },
 });
 
@@ -82,7 +110,25 @@ export const {
   removeFromFood,
   setNewFoodBarCode,
   clearNewFoodBarCode,
+  EditFood,
 } = savedFoodSlice.actions;
+
+export const editAndPersistFood = (
+  payload: {
+    date: string;
+    timeOfDay: keyof FoodType;
+    id: number;
+    updatedFood: Food;
+  },
+  saveFn: (state: any) => Promise<void>,
+): ThunkAction<Promise<void>, RootState, unknown, UnknownAction> => {
+  return async (dispatch, getState) => {
+    dispatch(EditFood(payload));
+    const updatedState = getState().savedFood.month[payload.date];
+
+    await saveFn(updatedState);
+  };
+};
 
 export const selectSavedFoodByDate = (
   state: RootState,
