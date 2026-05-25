@@ -40,12 +40,14 @@ const authOptions: NextAuthOptions = {
 
         const user = (await UserModel.findOne({
           userEmail: credentials?.email,
-        }).select("+userPassword").lean()) as UsersClass | null;
+        })
+          .select("+userPassword")
+          .lean()) as UsersClass | null;
 
         if (!user) throw new Error("Wrong Email");
         const passwordMatch = await bcrypt.compare(
           credentials!.password as string | Buffer, // type asserting
-          user.userPassword
+          user.userPassword,
         );
         if (!passwordMatch) throw new Error("Wrong Password");
         const userEmail = user.userEmail.toString();

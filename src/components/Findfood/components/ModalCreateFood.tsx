@@ -49,6 +49,7 @@ export const ModalCreateFood = (props: props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
+      credentials: "include",
     }).finally(() => {
       dispatch(setNewFoodBarCode(""));
       addToFoodObject(parsedFoodData, getTimeOfDay());
