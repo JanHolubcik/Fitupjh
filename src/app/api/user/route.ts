@@ -16,9 +16,10 @@ export async function POST(req: NextRequest) {
     if (!user) {
       return new NextResponse("User not found", { status: 404 });
     }
-
+    //post is only used once, but never ever leak the user password like this
     const safeUser = {
       ...user,
+      userPassword: undefined,
     };
 
     return NextResponse.json(safeUser);
