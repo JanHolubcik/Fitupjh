@@ -75,12 +75,11 @@ export async function GET(req: NextRequest) {
       ProductWeight: parseInt(targetProduct.quantity) || undefined,
     };
 
-    await addNewFood(newlyMappedFood).catch(
-      () =>
-        new NextResponse("There was an error while sending data to db", {
-          status: 500,
-        }),
-    );
+    await addNewFood(newlyMappedFood).catch(() => {
+      return new NextResponse("There was an error while sending data to db", {
+        status: 500,
+      });
+    });
 
     return NextResponse.json({
       ...newlyMappedFood,

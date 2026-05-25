@@ -111,10 +111,22 @@ export async function saveFoodInDay(
   try {
     await connectDB();
 
-    const existingRecord = await SavedFood.findOne({
-      day: date,
-      user_id: new mongoose.Types.ObjectId(_id),
-    });
+    const existingRecord = await SavedFood.findOneAndUpdate(
+      {
+        day: date,
+        user_id: new mongoose.Types.ObjectId(_id),
+      },
+      {
+        $set: {
+          saveFood: food,
+        },
+        $setOnInsert: {
+          day: date,
+          user_id: new mongoose.Types.ObjectId(_id),
+        },
+      },
+      { upsert: true, new: true },
+    );
     if (!existingRecord) {
       await SavedFood.insertMany({
         savedFood: food,

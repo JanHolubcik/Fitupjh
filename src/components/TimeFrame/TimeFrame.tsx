@@ -19,7 +19,7 @@ const FindFood = (props: Props) => {
     useDisclosure();
   const [selectedFood, setSelectedFood] = useState<Food | null>(null);
   return (
-    <Card className="w-full max-w-[500px] mt-5 bg-zinc-900/30 border border-white/5 backdrop-blur-xl shadow-xl rounded-2xl overflow-hidden">
+    <Card className="w-full max-w-[500px] md:min-w-[498px] mt-5 bg-zinc-900/30 border border-white/5 backdrop-blur-xl shadow-xl rounded-2xl overflow-hidden">
       <CardHeader className="flex flex-row items-center justify-between bg-gradient-to-r from-zinc-900/90 to-zinc-900/40 px-4 py-3.5 border-b border-white/5">
         <div className="flex flex-col gap-0.5">
           <h1 className="text-sm sm:text-base font-extrabold text-zinc-100 capitalize tracking-wider">

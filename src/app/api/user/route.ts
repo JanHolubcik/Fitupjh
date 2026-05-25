@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
   const session = await getServerSession(authOptions);
-  const { email, height, weight, goal, image,name } = await req.json();
+  const { email, height, weight, goal, image, name } = await req.json();
 
   if (!session || !session.user?.email) {
     return new NextResponse("Unauthorized", { status: 401 });
@@ -55,7 +55,7 @@ export async function PATCH(req: NextRequest) {
     goal,
     image,
     email,
-    name
+    name,
   );
 
   if ("error" in updatedUser) {

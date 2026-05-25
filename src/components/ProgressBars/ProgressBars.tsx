@@ -67,14 +67,6 @@ const ProgressBars = () => {
         const weight = data.user?.weight;
         const height = data.user?.height;
         if (weight && height) {
-          const calories = (10 * weight + 6.25 * height - 5 * 25 + 5) * 1.2;
-          const macrosV = {
-            calories: Math.round(calories), //for now age is fixed to 25 and calories are calculated for men and sedentary lifestyle
-            fat: calories * 0.2,
-            protein: Number(Math.round(1.2 * weight).toFixed(2)),
-            fiber: 38,
-            salt: 2.3,
-          } as macros;
           //set remaining macros to g
           setRecommendedDailyMacros(calculateRecommendedMacros(weight, height));
           if (data && savedFood) {
@@ -115,13 +107,13 @@ const ProgressBars = () => {
                   );
 
                   Object.keys(savedMacros).forEach((key) => {
-                    const keyT = key as keyof typeof macrosV;
+                    const keyT = key as keyof macros;
                     savedMacros[keyT] += timeInDaySavedMacro[keyT];
                   });
                 });
                 //savedMacros.calories = Math.round;
                 Object.keys(savedMacros).forEach((key) => {
-                  const keyT = key as keyof typeof macrosV;
+                  const keyT = key as keyof macros;
                   savedMacros[keyT] = Number(savedMacros[keyT].toFixed(2));
                 });
                 return savedMacros;

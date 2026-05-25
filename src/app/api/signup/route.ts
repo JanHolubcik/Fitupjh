@@ -21,7 +21,7 @@ export async function POST(request: Request) {
 
   if (username.length < 2) {
     return NextResponse.json(
-      { error: "User name is too long." },
+      { error: "User name is too short." },
       { status: 400 },
     );
   }

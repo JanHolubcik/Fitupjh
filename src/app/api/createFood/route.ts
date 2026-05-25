@@ -6,18 +6,17 @@ export async function POST(req: NextRequest) {
   const rawData = await req.json();
   const result = FoodSchema.safeParse(rawData);
 
-  if (!FoodSchema.safeParse(rawData).success) {
+  if (!result.success) {
     return NextResponse.json({ errors: result.error }, { status: 400 });
   }
   const validatedData = result.data;
 
   if (validatedData) {
-    const res = await addNewFood(validatedData).catch(
-      () =>
-        new NextResponse("There was an error while sending data to db", {
-          status: 500,
-        }),
-    );
+    const res = await addNewFood(validatedData).catch(() => {
+      return new NextResponse("There was an error while sending data to db", {
+        status: 500,
+      });
+    });
     return Response.json({ res });
   }
 }

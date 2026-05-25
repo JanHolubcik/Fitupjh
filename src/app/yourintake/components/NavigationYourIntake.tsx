@@ -36,6 +36,9 @@ const NavigationYourIntake = ({
     setNewDateAndGetFood(date);
   };
 
+  const disabledButton =
+    format(currentDate, "yyyy-MM-dd") === format(new Date(), "yyyy-MM-dd");
+
   return (
     <div className="flex flex-col">
       <div className="flex flex-row justify-evenly">
@@ -68,10 +71,19 @@ const NavigationYourIntake = ({
 
           <Button
             size="sm"
-            className="self-center"
-            onPress={() => {
-              setNewDateAndFetchFood(+1);
-            }}
+            className={
+              disabledButton
+                ? "self-center opacity-50 hover:cursor-not-allowed"
+                : "self-center"
+            }
+            onPress={
+              disabledButton
+                ? undefined
+                : () => {
+                    setNewDateAndFetchFood(+1);
+                  }
+            }
+            disabled={disabledButton}
             isIconOnly
           >
             <FaArrowRight />

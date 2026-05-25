@@ -83,10 +83,11 @@ export async function POST(req: Request) {
   const isoDate = utcDate.toISOString();
   const formattedDate = isoDate.replace("Z", "+00:00");
   const res = await saveFoodInDay(formattedDate, savedFood, userID).catch(
-    () =>
-      new NextResponse("There was an error while sending data to db", {
+    () => {
+      return new NextResponse("There was an error while sending data to db", {
         status: 500,
-      }),
+      });
+    },
   );
   return Response.json({ res });
 }
