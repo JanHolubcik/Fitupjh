@@ -24,8 +24,9 @@ export default async function RootLayout({
 }>) {
   const session = await getServerSession(authOptions);
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark" style={{ backgroundColor: "#000" }}>
       <head>
+        <meta name="color-scheme" content="dark" />
         <Script
           id="barcode-detector-fix"
           strategy="beforeInteractive"

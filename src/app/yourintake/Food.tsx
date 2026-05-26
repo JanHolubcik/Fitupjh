@@ -10,7 +10,7 @@ import { ModalBarcodeScan } from "@/components/Findfood/components/ModalBarcodeS
 import { ModalCreateFood } from "@/components/Findfood/components/ModalCreateFood";
 
 export default function Food() {
-  const { data } = useSession();
+  const { data, status } = useSession();
   const { isFetched } = useLoadSavedFood(data?.user?.id);
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const {
@@ -30,6 +30,14 @@ export default function Food() {
     onClose();
     QRonClose();
   };
+
+  if (status === "loading") {
+    return (
+      <main className="flex min-h-screen flex-col items-center justify-center bg-black">
+        <Spinner size="lg" />
+      </main>
+    );
+  }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-11">
