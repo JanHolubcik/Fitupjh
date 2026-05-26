@@ -24,6 +24,6 @@ export const LastMonthFoodOptions = (
       return res.json() as Promise<SavedFoodClass[]>;
     },
     staleTime: 600000,
-    retry: 1,
+    retry: 0,
     refetchOnWindowFocus: false,
   });

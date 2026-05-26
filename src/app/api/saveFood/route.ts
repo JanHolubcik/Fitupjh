@@ -93,6 +93,6 @@ export async function POST(req: NextRequest) {
         });
       },
     );
-    return NextResponse.json({ res });
+    return new NextResponse("Successfully saved to db", { status: 201 });
   });
 }

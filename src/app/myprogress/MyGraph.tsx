@@ -14,14 +14,28 @@ import { capitalizeFirstLetter } from "../constants/FunctionsHelper";
 import { Image } from "@nextui-org/react";
 
 const MyGraph = () => {
-  const { labels, macroDatasets, RecommendedMacros, getMacroMessage } =
-    useMacros();
+  const {
+    labels,
+    isLoading,
+    macroDatasets,
+    RecommendedMacros,
+    getMacroMessage,
+  } = useMacros();
   const [selectedMacro, setSelectedMacro] =
     useState<keyof typeof macroDatasets>("protein");
 
   const messageForSelectedMacro = useMemo(() => {
     return getMacroMessage(selectedMacro);
   }, [getMacroMessage, selectedMacro]);
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col">
+        <Spinner />
+        Loading graph, please wait...
+      </div>
+    );
+  }
 
   if (labels.length === 0) {
     return <p>No data available to display the graph.</p>;

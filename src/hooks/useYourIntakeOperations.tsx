@@ -73,6 +73,25 @@ const useYourIntakeOperations = () => {
       imgUrl,
     } = food;
     const uniqueId = Date.now();
+    const saveFoodObject = {
+      ...savedFood,
+      [timeOfDay]: [
+        ...savedFood[timeOfDay],
+        {
+          id: uniqueId,
+          name,
+          calories,
+          amount,
+          fat,
+          protein,
+          sugar,
+          carbohydrates: carbs,
+          fiber,
+          salt,
+          imgUrl,
+        },
+      ],
+    };
     dispatch(
       addFoodForDate({
         date,
@@ -92,26 +111,9 @@ const useYourIntakeOperations = () => {
         },
       }),
     );
+
     // Save immediately after adding
-    const res = saveFood({
-      ...savedFood,
-      [timeOfDay]: [
-        ...savedFood[timeOfDay],
-        {
-          id: uniqueId,
-          name,
-          calories,
-          amount,
-          fat,
-          protein,
-          sugar,
-          carbohydrates: carbs,
-          fiber,
-          salt,
-          imgUrl,
-        },
-      ],
-    });
+    const res = saveFood(saveFoodObject);
 
     toast.promise(
       res,
@@ -148,6 +150,25 @@ const useYourIntakeOperations = () => {
   ) => {
     const date = format(currentDate, "yyyy-MM-dd");
     const uniqueId = Date.now();
+    const saveFoodObject = {
+      ...savedFood,
+      [timeOfDay]: [
+        ...savedFood[timeOfDay],
+        {
+          id: uniqueId,
+          name,
+          calories,
+          amount,
+          fat,
+          protein,
+          sugar,
+          carbohydrates: carbs,
+          fiber,
+          salt,
+          imgUrl,
+        },
+      ],
+    };
     dispatch(
       addFoodForDate({
         date,
@@ -169,25 +190,7 @@ const useYourIntakeOperations = () => {
     );
 
     // Save immediately after adding
-    const res = saveFood({
-      ...savedFood,
-      [timeOfDay]: [
-        ...savedFood[timeOfDay],
-        {
-          id: uniqueId,
-          name,
-          calories,
-          amount,
-          fat,
-          protein,
-          sugar,
-          carbohydrates: carbs,
-          fiber,
-          salt,
-          imgUrl,
-        },
-      ],
-    });
+    const res = saveFood(saveFoodObject);
 
     toast.promise(
       res,

@@ -1,7 +1,7 @@
 "use client";
 import { format } from "date-fns";
 import { LastMonthFoodOptions } from "@/lib/queriesOptions/LastMonthFoodOptions";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 
 import { macros } from "@/types/Types";
@@ -46,7 +46,7 @@ const useMacros = () => {
   const date = format(new Date(), "yyyy-MM-dd");
   const { data } = useSession();
 
-  const { data: savedFood } = useSuspenseQuery(
+  const { data: savedFood, isLoading } = useQuery(
     LastMonthFoodOptions(data?.user?.id!, "", date.toString()),
   );
   const isArray = Array.isArray(savedFood);
@@ -155,6 +155,7 @@ const useMacros = () => {
     dataMacros: isEmpty ? [] : dataMacros,
     labels,
     RecommendedMacros,
+    isLoading,
   };
 };
 

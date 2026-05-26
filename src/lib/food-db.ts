@@ -137,6 +137,7 @@ export async function saveFoodInDay(
       existingRecord.savedFood = food;
       await existingRecord.save();
     }
+    return existingRecord;
   } catch (error) {
     return { error };
   }
