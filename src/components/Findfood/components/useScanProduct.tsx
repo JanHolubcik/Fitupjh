@@ -8,6 +8,7 @@ export const useScanProduct = (onProductNotFound: () => void) => {
     mutationFn: async (qrCode: string) => {
       const response = await fetch(
         `/api/food?QRCode=${encodeURIComponent(qrCode)}`,
+        { credentials: "include" },
       );
 
       if (!response.ok) {

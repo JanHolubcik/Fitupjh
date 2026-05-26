@@ -3,6 +3,7 @@ import { ApolloServer } from "@apollo/server";
 import { gql } from "graphql-tag";
 import { getSavedFood } from "@/lib/YourIntake/search-db";
 import { NextRequest } from "next/server";
+import { withAuth } from "../functions";
 
 const typeDefs = gql`
   type Meal {
@@ -65,9 +66,13 @@ const server = new ApolloServer({
 const handler = startServerAndCreateNextHandler(server);
 
 export async function GET(req: NextRequest) {
-  return handler(req);
+  return withAuth(req, async (req) => {
+    return handler(req);
+  });
 }
 
 export async function POST(req: NextRequest) {
-  return handler(req);
+  return withAuth(req, async (req) => {
+    return handler(req);
+  });
 }

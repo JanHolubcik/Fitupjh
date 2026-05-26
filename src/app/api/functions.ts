@@ -1,4 +1,4 @@
-import { getToken } from "next-auth/jwt";
+import { getToken, JWT } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 
@@ -31,10 +31,15 @@ export const validateToken = async (req: NextRequest) => {
 
   return token;
 };
-
+/**
+ *
+ * @param req
+ * @param handler
+ * @returns
+ */
 export const withAuth = async (
   req: NextRequest,
-  handler: (req: NextRequest, token: any) => Promise<NextResponse>,
+  handler: (req: NextRequest, token: JWT) => Promise<NextResponse>,
 ) => {
   try {
     const token = await validateToken(req);

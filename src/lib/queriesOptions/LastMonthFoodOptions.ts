@@ -4,7 +4,7 @@ import { queryOptions } from "@tanstack/react-query";
 export const LastMonthFoodOptions = (
   userId: string,
   dateFrom: string,
-  dateTo: string
+  dateTo: string,
 ) =>
   queryOptions({
     queryKey: ["lastMonthFood", userId, dateTo, dateFrom] as const,
@@ -15,7 +15,7 @@ export const LastMonthFoodOptions = (
 
       const res = await fetch(
         `${baseUrl}/api/lastMonthFood?dateFrom=${dateFrom}&dateTo=${dateTo}&user_id=${userId}`,
-        { cache: "no-store" }
+        { cache: "no-store", credentials: "include" },
       );
 
       if (!res.ok) throw new Error("Failed to fetch food");

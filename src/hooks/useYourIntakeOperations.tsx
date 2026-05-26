@@ -51,6 +51,7 @@ const useYourIntakeOperations = () => {
           savedFood: food,
           userID: data.user.id,
         }),
+        credentials: "include",
       });
     } catch (err) {
       console.error("Error saving food:", err);

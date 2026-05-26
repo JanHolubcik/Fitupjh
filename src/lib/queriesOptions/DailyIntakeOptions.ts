@@ -11,7 +11,7 @@ export const DailyIntakeOptions = (userId: string, date: string) =>
 
       const res = await fetch(
         `${baseUrl}/api/saveFood?date=${date}&user_id=${userId}`,
-        { cache: "no-store" }
+        { cache: "no-store", credentials: "include" },
       );
 
       if (!res.ok) throw new Error("Failed to fetch food");
