@@ -1,6 +1,8 @@
 import { getToken, JWT } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
+import { ApolloServer, BaseContext, ContextFunction } from "@apollo/server";
+import { NextApiRequest, NextApiResponse } from "next";
 
 export const validateToken = async (req: NextRequest) => {
   let token = await getToken({
@@ -51,3 +53,28 @@ export const withAuth = async (
     );
   }
 };
+
+type HandlerRequest = NextApiRequest | NextRequest | Request;
+interface Options<Req extends HandlerRequest, Context extends BaseContext> {
+  context?: ContextFunction<
+    [Req, Req extends NextApiRequest ? NextApiResponse : undefined],
+    Context
+  >;
+}
+declare function startServerAndCreateNextHandlerCustom<
+  Req extends HandlerRequest = NextApiRequest,
+  Context extends BaseContext = object,
+>(
+  server: ApolloServer<Context>,
+  options?: Options<Req, Context>,
+): {
+  <HandlerReq extends NextApiRequest>(
+    req: HandlerReq,
+    res: NextApiResponse,
+  ): NextResponse<unknown>;
+  <HandlerReq extends NextRequest | Request>(
+    req: HandlerReq,
+    res?: undefined,
+  ): NextResponse<Response>;
+};
+export { startServerAndCreateNextHandlerCustom };
