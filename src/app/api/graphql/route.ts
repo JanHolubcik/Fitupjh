@@ -2,7 +2,7 @@ import { ApolloServer } from "@apollo/server";
 import { gql } from "graphql-tag";
 import { getSavedFood } from "@/lib/YourIntake/search-db";
 import { NextRequest } from "next/server";
-import { startServerAndCreateNextHandlerCustom, withAuth } from "../functions";
+import { createApolloHandler, withAuth } from "../functions";
 
 const typeDefs = gql`
   type Meal {
@@ -61,8 +61,7 @@ const server = new ApolloServer({
   typeDefs,
 });
 
-// wrap Apollo handler in a function that matches app router types
-const handler = startServerAndCreateNextHandlerCustom(server);
+const handler = createApolloHandler(server);
 
 export async function GET(req: NextRequest) {
   return withAuth(req, async (req, _token) => {
