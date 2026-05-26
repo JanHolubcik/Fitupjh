@@ -66,13 +66,13 @@ const server = new ApolloServer({
 const handler = startServerAndCreateNextHandler(server);
 
 export async function GET(req: NextRequest) {
-  return withAuth(req, async (req) => {
-    return handler(req);
+  return withAuth(req, async (req, _token) => {
+    return await handler(req);
   });
 }
 
 export async function POST(req: NextRequest) {
-  return withAuth(req, async (req) => {
-    return handler(req);
+  return withAuth(req, async (req, _token) => {
+    return await handler(req);
   });
 }
