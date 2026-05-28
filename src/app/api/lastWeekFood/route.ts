@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
   return withAuth(req, async (req, token) => {
     const dateTo = req.nextUrl.searchParams.get("dateTo");
     const dateFrom = req.nextUrl.searchParams.get("dateFrom");
-    const userID = req.nextUrl.searchParams.get("user_id");
+    const userID = token.sub;
 
     if (!userID || typeof userID !== "string") {
       return new NextResponse("Missing or invalid userID", { status: 400 });
@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
     let dFrom: Date;
 
     if (!dateFrom) {
-      dFrom = subDays(dTo, 30);
+      dFrom = subDays(dTo, 7);
     } else {
       dFrom = parseISO(dateTo);
 

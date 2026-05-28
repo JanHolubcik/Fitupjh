@@ -3,7 +3,7 @@ import { foodType } from "@/types/Types";
 import { useSession } from "next-auth/react";
 import { useMemo } from "react";
 
-export const useCalculateRecommendedCalories = (savedFood: foodType) => {
+export const useCalculateRecommendedCalories = (savedFood: foodType | null) => {
   const { data } = useSession();
   const recommendedCaloriesValue = useMemo(() => {
     if (data?.user?.weight && data?.user?.height) {

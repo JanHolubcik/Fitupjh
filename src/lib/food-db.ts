@@ -4,6 +4,7 @@ import { Food, FoodClass } from "@/models/Food";
 import { SavedFood } from "@/models/savedFood";
 import mongoose from "mongoose";
 import { FoodInput } from "./validationShemas/foodValidationSchema";
+import { format } from "date-fns";
 
 export async function getFoods() {
   try {
@@ -208,6 +209,43 @@ export async function checkForSavedFoodMonth(
       user_id: { $exists: true, $eq: new mongoose.Types.ObjectId(user_id) },
       day: { $gte: new Date(dateFrom), $lte: new Date(dateTo) },
     }).lean();
+
+    const recordMap = new Map<string, any>();
+    existingRecords.forEach((record) => {
+      const dateStr = new Date(record.day).toISOString().split("T")[0];
+      recordMap.set(dateStr, record);
+    });
+
+    const completeRecords: any[] = [];
+
+    const start = new Date(dateFrom);
+    const end = new Date(dateTo);
+
+    const current = new Date(start);
+
+    while (current <= end) {
+      const dateStr = current.toISOString().split("T")[0];
+
+      if (recordMap.has(dateStr)) {
+        completeRecords.push(recordMap.get(dateStr));
+      } else {
+        completeRecords.push({
+          _id: new mongoose.Types.ObjectId(), // Generate a fake ID to match schema expectations
+          user_id: new mongoose.Types.ObjectId(user_id),
+          day: format(new Date(), "yyyy-MM-dd"),
+          savedFood: {
+            breakfast: [],
+            lunch: [],
+            dinner: [],
+          },
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+      }
+
+      // Move to the next day
+      current.setDate(current.getDate() + 1);
+    }
 
     if (!existingRecords.length) return {};
 
