@@ -1,25 +1,116 @@
-import { Button, Card, Image } from "@nextui-org/react";
+import { Button, useDisclosure } from "@nextui-org/react";
 
-import { ArrowRightCircleIcon } from "@heroicons/react/24/solid";
+import { ModalFindFood } from "@/components/Findfood/components/ModalFindFood";
+import { ModalCreateFood } from "@/components/Findfood/components/ModalCreateFood";
+import { ModalBarcodeScan } from "@/components/Findfood/components/ModalBarcodeScan";
+import { Food } from "@/types/Types";
+import { FaTimes } from "react-icons/fa";
+import ImageFromURL from "@/components/ImageFromURL/ImageFromURL";
+import { useState } from "react";
+import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
+import { EditFoodModal } from "@/components/EditFoodModal/EditFoodModal";
+
 type props = {
   timeFrame: "breakfast" | "dinner" | "lunch";
+  foodItems: Food[];
 };
 
 export const TimeFrameSmallCard = (props: props) => {
-  const { timeFrame } = props;
+  const { timeFrame, foodItems } = props;
+  const { removeFromSavedFood } = useYourIntakeOperations();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenNewFood,
+    onOpen: onOpenNewFood,
+    onOpenChange: onOpenChangeNewFood,
+  } = useDisclosure();
+  const {
+    isOpen: QRisOpen,
+    onOpen: QRonOpen,
+    onOpenChange: QRonOpenChange,
+    onClose: QRonClose,
+  } = useDisclosure();
+  const closeAllModals = () => {
+    QRonClose();
+    onClose();
+    QRonClose();
+  };
+  const { onOpenChange: onEditOpenChange, isOpen: isEditOpen } =
+    useDisclosure();
+
+  const [selectedFood, setSelectedFood] = useState<Food | null>(null);
   return (
-    <Card className="flex flex-row justify-between items-center text-left">
-      <Image
-        className=" pl-2"
-        alt="Info"
-        src="cloche.svg"
-        width={30}
-        height={50}
+    <div>
+      {foodItems.map((key) => (
+        <div
+          onClick={() => {
+            setSelectedFood(key);
+            onEditOpenChange();
+          }}
+          className="flex flex-row items-center justify-between gap-3 p-2 bg-zinc-900/20 border border-white/[0.02] hover:bg-white/[0.03] hover:border-white/5 rounded-xl transition-all duration-200 group hover:cursor-pointer"
+          key={key.id}
+        >
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <div className="aspect-square flex items-center justify-center bg-zinc-950/40 p-1 rounded-xl border border-white/5 shadow-inner group-hover:scale-102 transition-transform">
+              <ImageFromURL
+                width={35}
+                height={35}
+                macroName={key.name}
+                url={key.imgUrl}
+              />
+            </div>
+
+            <div className="flex-1 min-w-0 flex flex-col justify-center">
+              <p className="font-bold text-xs sm:text-sm text-zinc-200 capitalize ">
+                {key.name}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2.5 flex-shrink-0 pl-1">
+            <span className="text-zinc-500 font-bold text-[9px] sm:text-[10px] pr-1">
+              {key.amount}g
+            </span>
+            <span className="bg-primary-500/10 text-primary-400 px-2 py-0.5 rounded-md font-extrabold text-[10px] sm:text-[11px] tracking-wide border border-primary-500/10 shadow-sm">
+              {key.calories} kcal
+            </span>
+            <Button
+              size="sm"
+              onPress={() => removeFromSavedFood(key.id, props.timeFrame)}
+              isIconOnly
+              radius="lg"
+              variant="light"
+              className="w-8 h-8 min-w-8 text-zinc-500 hover:text-danger hover:bg-danger/10 group-hover:text-zinc-400 transition-all duration-150"
+            >
+              <FaTimes size={12} />
+            </Button>
+          </div>
+        </div>
+      ))}
+      <EditFoodModal
+        isOpen={isEditOpen}
+        onOpenChange={onEditOpenChange}
+        food={selectedFood}
+        timeOfDay={props.timeFrame}
       />
-      <p>{timeFrame}</p>
-      <Button variant="light" className="m-0 p-0" size="sm" onPress={() => {}}>
-        <ArrowRightCircleIcon fontSize={5}></ArrowRightCircleIcon>
-      </Button>
-    </Card>
+      <ModalFindFood
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        timeOfDay={props.timeFrame}
+      />
+      <ModalBarcodeScan
+        isOpen={QRisOpen}
+        onOpenChange={QRonOpenChange}
+        onClose={QRonClose}
+        onOpenNewFood={onOpenNewFood}
+        onCloseAll={closeAllModals}
+        timeOfDay={props.timeFrame}
+      />
+      <ModalCreateFood
+        isOpen={isOpenNewFood}
+        onOpenChange={onOpenChangeNewFood}
+        onCloseAll={closeAllModals}
+      />
+    </div>
   );
 };

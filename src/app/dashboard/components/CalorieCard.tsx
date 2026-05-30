@@ -11,20 +11,21 @@ export const CalorieCard = (props: props) => {
 
   const color = caloriesSum > recommendedCaloriesValue ? "warning" : "danger";
   return (
-    <Card>
-      <CardBody>
+    <Card className="w-56 h-56 flex items-center justify-center bg-content1 shadow-lg">
+      <CardBody className="flex justify-center items-center p-0 gap-2">
+        <p>Todays intake</p>
         <CircularProgress
           classNames={{
-            svg: "w-24 h-24 drop-shadow-md mr-4 ml-4",
+            svg: "w-36 h-36 drop-shadow-md",
             indicator: "stroke-white",
             track: "stroke-white/10",
-            value: "text-md font-semibold text-white",
-            label: "text-xs",
+            value: "text-md font-bold text-white",
+            label: "text-sm text-white",
           }}
-          size="lg"
+          size="lg" // 5. Upgraded NextUI base size to 'lg'
           value={caloriesSum}
           color={color}
-          label={caloriesSum + "/" + recommendedCaloriesValue + " Kcal"}
+          label={` ${recommendedCaloriesValue - caloriesSum} Kcal remaining`}
           maxValue={recommendedCaloriesValue}
           showValueLabel={true}
         />

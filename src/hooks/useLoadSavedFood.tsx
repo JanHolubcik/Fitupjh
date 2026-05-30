@@ -4,20 +4,35 @@ import { useDispatch } from "react-redux";
 import { LastMonthFoodOptions } from "@/lib/queriesOptions/LastMonthFoodOptions";
 import { setSavedFoodMonth } from "@/features/savedFoodslice/yourIntakeSlice";
 import { useQuery } from "@tanstack/react-query";
-import { format } from "date-fns";
+import { format, subDays } from "date-fns";
 import { SavedFoodMonth } from "@/types/Types";
 
-const useLoadSavedFood = (userId: string | undefined) => {
+type props = {
+  daysAgo?: number;
+  userId: string | undefined;
+};
+
+/**
+ *
+ * @param userId
+ * @param daysAgo In negative.
+ * @returns
+ */
+const useLoadSavedFood = ({ userId, daysAgo }: props) => {
   const dispatch = useDispatch();
 
   const today = useMemo(() => new Date().toISOString(), []);
+  const fromDate = useMemo(
+    () => (daysAgo ? subDays(new Date(), daysAgo).toISOString() : ""),
+    [],
+  );
 
   const {
     data: monthData,
     isSuccess,
     isFetched,
-  } = useQuery(LastMonthFoodOptions(userId || "", "", today));
-
+  } = useQuery(LastMonthFoodOptions(userId || "", fromDate, today));
+  console.log("days ago: " + fromDate);
   useEffect(() => {
     if (isSuccess && Array.isArray(monthData)) {
       const dateKeyedData = monthData.reduce((acc, item) => {

@@ -4,15 +4,19 @@ import placeholder from "../../../public/foodPlaceholder.svg";
 const ImageFromURL = ({
   url,
   macroName,
+  width = 75,
+  height = 75,
 }: {
   url: string | undefined;
   macroName: string;
+  width?: number;
+  height?: number;
 }) => {
   return (
     <Image
       alt={macroName}
-      height={75}
-      width={75}
+      height={width}
+      width={height}
       radius="md"
       fallbackSrc={placeholder.src}
       src={

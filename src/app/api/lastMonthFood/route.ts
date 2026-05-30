@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
     if (!dateFrom) {
       dFrom = subDays(dTo, 30);
     } else {
-      dFrom = parseISO(dateTo);
+      dFrom = parseISO(dateFrom);
 
       if (!isValid(dTo)) {
         return new NextResponse("Invalid dateTo format", { status: 400 });

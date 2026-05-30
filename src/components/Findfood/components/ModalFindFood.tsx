@@ -1,7 +1,6 @@
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 import { searchFood } from "@/lib/YourIntake/search-db";
 import {
-  Button,
   Input,
   Modal,
   ModalBody,
@@ -12,11 +11,13 @@ import {
 } from "@nextui-org/react";
 import React, { Dispatch, useEffect, useRef } from "react";
 import { useState } from "react";
-import { FaPlusCircle, FaSearch } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import { ModalCreateFood } from "./ModalCreateFood";
 import { ReturnTypeFood } from "@/types/Types";
 import AddFoodComponent from "./AddFoodComponent";
 import { getTimeOfDay } from "@/app/constants/FunctionsHelper";
+import { YesNoToggle } from "./YesNoComponent";
+import { ModalBarcodeScan } from "./ModalBarcodeScan";
 
 type props = {
   onOpenChange: () => void;
@@ -47,11 +48,17 @@ export const ModalFindFood = (props: props) => {
   const [calculatedCalories, setCalculatedCalories] = useState<number[]>([]);
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [showYesNoToggle, setShowYesNoToggle] = useState<boolean>(false);
 
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 500, setLoading);
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenBarScan,
+    onOpen: onOpenBarScan,
+    onOpenChange: onOpenChangeBarScan,
+    onClose: onCloseBarScan,
+  } = useDisclosure();
   useEffect(() => {
     if (debouncedSearchTerm.length === 0) {
       setFood([]);
@@ -181,21 +188,31 @@ export const ModalFindFood = (props: props) => {
                       />
                     ))}
                     {searchTerm.length > 0 && food?.length === 0 && (
-                      <div className="flex flex-row">
-                        <Button
-                          onPress={onOpen}
-                          disabled={isSubmittingRef.current}
-                          isIconOnly
-                        >
-                          <FaPlusCircle />
-                        </Button>
+                      <div className="flex flex-col items-center gap-2">
                         <ModalCreateFood
                           isOpen={isOpen}
                           onOpenChange={onOpenChange}
                         ></ModalCreateFood>
+                        <ModalBarcodeScan
+                          isOpen={isOpenBarScan}
+                          onOpenChange={onOpenChangeBarScan}
+                          onOpenNewFood={onOpen}
+                          onCloseAll={() => {
+                            onClose();
+                            onCloseBarScan();
+                          }}
+                        ></ModalBarcodeScan>
                         <p className="ml-5 text-center self-center">
                           If you didn't find your food, you can add it here.
                         </p>
+
+                        <YesNoToggle
+                          yesVariant="faded"
+                          yesLabel="Scan barcode"
+                          noLabel="Add manually"
+                          yesPress={onOpenBarScan}
+                          noPress={onOpen}
+                        />
                       </div>
                     )}
                   </>

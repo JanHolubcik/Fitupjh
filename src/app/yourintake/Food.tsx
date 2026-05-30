@@ -11,13 +11,14 @@ import { ModalCreateFood } from "@/components/Findfood/components/ModalCreateFoo
 
 export default function Food() {
   const { data, status } = useSession();
-  const { isFetched } = useLoadSavedFood(data?.user?.id);
+  const { isFetched } = useLoadSavedFood({ userId: data?.user?.id });
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const {
     isOpen: isOpenNewFood,
     onOpen: onOpenNewFood,
     onOpenChange: onOpenChangeNewFood,
   } = useDisclosure();
+
   const {
     isOpen: QRisOpen,
     onOpen: QRonOpen,
