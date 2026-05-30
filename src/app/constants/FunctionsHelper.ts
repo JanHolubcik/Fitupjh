@@ -1,5 +1,5 @@
 import { foodType, timeOfDay } from "@/types/Types";
-
+import { macros } from "@/types/Types";
 //readonly[("breakfast", "lunch", "dinner")];
 export const capitalizeFirstLetter = (string: string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -11,28 +11,50 @@ export const calculateCaloriesSum = (savedFood: foodType): number => {
   timeOfDay.forEach((value) => {
     calorieSum += savedFood[value].reduce(
       (acc, item) => acc + item.calories,
-      0
+      0,
     );
   });
 
   return calorieSum;
 };
 
-  export const getTimeOfDay = () => {
-    const now = new Date();
-    const hour = now.getHours();
+export const getTimeOfDay = () => {
+  const now = new Date();
+  const hour = now.getHours();
 
-    switch (true) {
-      case hour >= 0 && hour < 8:
-        return "breakfast";
+  switch (true) {
+    case hour >= 0 && hour < 8:
+      return "breakfast";
 
-      case hour >= 8 && hour < 16:
-        return "lunch";
+    case hour >= 8 && hour < 16:
+      return "lunch";
 
-      case hour >= 16 && hour < 24:
-        return "dinner";
+    case hour >= 16 && hour < 24:
+      return "dinner";
 
-      default:
-        return "lunch";
-    }
+    default:
+      return "lunch";
+  }
+};
+
+export const calculateRecommendedMacros = (
+  weight: number = 70,
+  height: number = 60,
+): macros => {
+  const calories = (10 * weight + 6.25 * height - 5 * 25 + 5) * 1.2; // BMR × sedentary activity
+
+  const macros = {
+    calories: Math.round(calories),
+    fat: calories * 0.2,
+    protein: Math.round(1.2 * weight),
+    fiber: 38,
+    salt: 2.3,
   };
+
+  return {
+    ...macros,
+    carbohydrates: Math.round((calories - macros.protein + macros.fat) / 4),
+    fat: Math.round(macros.fat / 9),
+    sugar: Math.round((calories * 0.1) / 4),
+  };
+};

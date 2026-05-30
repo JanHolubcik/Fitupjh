@@ -4,9 +4,17 @@ import { LastMonthFoodOptions } from "@/lib/queriesOptions/LastMonthFoodOptions"
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 
-import { macros } from "@/types/Types";
-import { capitalizeFirstLetter } from "../constants/FunctionsHelper";
+import {
+  calculateRecommendedMacros,
+  capitalizeFirstLetter,
+} from "../constants/FunctionsHelper";
 import strings from "../../app/constants/CalorieMacrosDescription.json";
+
+import { SavedFoodClass } from "@/models/savedFood";
+import { FoodType, SavedFoodMonth } from "@/types/Types";
+
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 const calculateAverage = (array: number[]) => {
   if (array.length === 0) return 0;
 
@@ -20,35 +28,34 @@ const calculateAverage = (array: number[]) => {
 const DEFICIT_THRESHOLD = 0.75;
 const SURPLUS_THRESHOLD = 1.25;
 
-const calculateRecommendedMacros = (
-  weight: number = 70,
-  height: number = 60,
-): macros => {
-  const calories = (10 * weight + 6.25 * height - 5 * 25 + 5) * 1.2; // BMR × sedentary activity
-
-  const macros = {
-    calories: Math.round(calories),
-    fat: calories * 0.2,
-    protein: Math.round(1.2 * weight),
-    fiber: 38,
-    salt: 2.3,
-  };
-
-  return {
-    ...macros,
-    carbohydrates: Math.round((calories - macros.protein + macros.fat) / 4),
-    fat: Math.round(macros.fat / 9),
-    sugar: Math.round((calories * 0.1) / 4),
-  };
+export type SavedFoodEntry = {
+  day: string;
+  savedFood: FoodType;
 };
+type ClientSavedFood = Omit<SavedFoodClass, "user_id">;
+
+function transformReduxToApi(month: SavedFoodMonth): ClientSavedFood[] {
+  return Object.entries(month).map(([dateKey, foodType]) => ({
+    day: new Date(dateKey),
+    savedFood: foodType,
+  }));
+}
 
 const useMacros = () => {
   const date = format(new Date(), "yyyy-MM-dd");
   const { data } = useSession();
 
-  const { data: savedFood, isLoading } = useQuery(
-    LastMonthFoodOptions(data?.user?.id!, "", date.toString()),
-  );
+  const reduxSavedFood = useSelector((state: RootState) => state.savedFood);
+  const hasReduxData = Object.keys(reduxSavedFood.month).length > 0;
+
+  const { data: apiSavedFood, isLoading } = useQuery({
+    ...LastMonthFoodOptions(data?.user?.id!, "", date.toString()),
+    enabled: !hasReduxData,
+  });
+
+  const savedFood = hasReduxData
+    ? transformReduxToApi(reduxSavedFood.month)
+    : apiSavedFood;
   const isArray = Array.isArray(savedFood);
   const isEmpty = !isArray || savedFood.length === 0;
 
@@ -60,7 +67,12 @@ const useMacros = () => {
 
   const labels = isEmpty
     ? []
-    : sortedFood.map((item) => format(item.day, "dd-MM-yyyy"));
+    : sortedFood.map((item) => {
+        const dateObj = new Date(item.day);
+        // "EEE" outputs Mon, Tue, Wed...
+        // "dd-MM" outputs 30-04, 01-05...
+        return format(dateObj, "dd.MM EEE");
+      });
 
   const RecommendedMacros = data?.user
     ? calculateRecommendedMacros(data?.user?.weight, data?.user?.height)

@@ -15,7 +15,7 @@ type props = {
 /**
  *
  * @param userId
- * @param daysAgo In negative.
+ * @param daysAgo greater than 0.
  * @returns
  */
 const useLoadSavedFood = ({ userId, daysAgo }: props) => {
@@ -32,20 +32,12 @@ const useLoadSavedFood = ({ userId, daysAgo }: props) => {
     isSuccess,
     isFetched,
   } = useQuery(LastMonthFoodOptions(userId || "", fromDate, today));
-  console.log("days ago: " + fromDate);
+
   useEffect(() => {
     if (isSuccess && Array.isArray(monthData)) {
       const dateKeyedData = monthData.reduce((acc, item) => {
         const date = format(item.day, "yyyy-MM-dd");
         const { breakfast, lunch, dinner } = item.savedFood;
-
-        if (
-          breakfast.length === 0 &&
-          lunch.length === 0 &&
-          dinner.length === 0
-        ) {
-          return acc;
-        }
 
         acc[date] = {
           breakfast,

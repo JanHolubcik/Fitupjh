@@ -1,5 +1,6 @@
 "use client";
 
+import { calculateRecommendedMacros } from "@/app/constants/FunctionsHelper";
 import { GET_FOOD } from "@/app/graphql/queries";
 import { FoodType, foodType } from "@/types/Types";
 import { useQuery } from "@apollo/client/react";
@@ -54,27 +55,6 @@ type GetFoodVars = {
 type GetFoodData = {
   getFood: FoodType;
 };
-
-function calculateRecommendedMacros(weight: number, height: number) {
-  const calories = (10 * weight + 6.25 * height - 5 * 25 + 5) * 1.2;
-
-  const base = {
-    calories: Math.round(calories),
-    fat: calories * 0.2,
-    protein: Number(Math.round(1.2 * weight).toFixed(2)),
-    fiber: 38,
-    salt: 2.3,
-  };
-
-  return {
-    ...base,
-    carbohydrates: Number(
-      Math.round((calories - base.protein + base.fat) / 4).toFixed(2),
-    ),
-    fat: Number((base.fat / 9).toFixed(2)),
-    sugar: Number(((calories * 0.1) / 4).toFixed(2)),
-  };
-}
 
 type MacroTotals = Record<MacroKey, number>;
 

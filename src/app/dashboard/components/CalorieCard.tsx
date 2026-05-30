@@ -11,9 +11,8 @@ export const CalorieCard = (props: props) => {
 
   const color = caloriesSum > recommendedCaloriesValue ? "warning" : "danger";
   return (
-    <Card className="w-56 h-56 flex items-center justify-center bg-content1 shadow-lg">
-      <CardBody className="flex justify-center items-center p-0 gap-2">
-        <p>Todays intake</p>
+    <Card className=" flex items-center justify-center bg-content1 shadow-lg">
+      <CardBody className="flex justify-center items-center mr-16 ml-16 gap-2">
         <CircularProgress
           classNames={{
             svg: "w-36 h-36 drop-shadow-md",

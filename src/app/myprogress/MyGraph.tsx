@@ -3,14 +3,8 @@
 import Chart from "./Chart";
 import { useMemo, useState } from "react";
 import useMacros from "./useRecomendedMacros";
-import {
-  Button,
-  ButtonGroup,
-  Card,
-  CardBody,
-  Spinner,
-} from "@nextui-org/react";
-import { capitalizeFirstLetter } from "../constants/FunctionsHelper";
+import { Card, CardBody, Spinner } from "@nextui-org/react";
+
 import { Image } from "@nextui-org/react";
 
 const MyGraph = () => {
@@ -41,61 +35,52 @@ const MyGraph = () => {
     return <p>No data available to display the graph.</p>;
   }
 
-  return (
-    <div className="flex flex-col items-center gap-6 w-full px-4">
-      {messageForSelectedMacro.length === 0 ? (
-        <Spinner />
-      ) : (
-        <>
-          <div className="w-full max-w-3xl overflow-auto">
-            <div className="w-full min-w-[760px] ">
-              <Chart
-                labels={labels}
-                dataValues={macroDatasets[selectedMacro]}
-                recommendedValue={RecommendedMacros[selectedMacro]}
-                selectedMacro={selectedMacro}
-              />
-            </div>
-          </div>
-          <ButtonGroup className="flex flex-wrap justify-center gap-2 w-full max-w-3xl">
-            {Object.keys(macroDatasets).map((macro) => (
-              <div
-                key={macro}
-                className="flex-1 sm:flex-none sm:basis-1/3 md:basis-1/4"
-              >
-                <Button
-                  color={macro === selectedMacro ? "primary" : "default"}
-                  onPress={() =>
-                    setSelectedMacro(macro as keyof typeof macroDatasets)
-                  }
-                  radius="md"
-                  className="w-full"
-                  variant="bordered"
-                >
-                  {capitalizeFirstLetter(macro)}
-                </Button>
-              </div>
-            ))}
-          </ButtonGroup>
+  const emptyDays = macroDatasets["calories"].filter((v) => v === 0).length;
 
-          <Card className="w-full max-w-3xl">
-            <CardBody className="flex flex-row items-center gap-4 p-4">
-              <div className="flex-shrink-0 w-1/6 sm:w-24 hidden sm:block">
-                <Image
-                  className="object-contain"
-                  alt="Info"
-                  src="/eplaining_owl.png"
-                  width={90}
-                  height={90}
-                />
+  return (
+    <div className="flex flex-col items-center gap-6 w-full x-2">
+      <Card>
+        <CardBody>
+          {messageForSelectedMacro.length === 0 ? (
+            <Spinner />
+          ) : (
+            <>
+              <div className="w-full max-w-3xl overflow-auto">
+                <div className="w-full min-w-[760px] ">
+                  <Chart
+                    labels={labels}
+                    dataValues={macroDatasets[selectedMacro]}
+                    recommendedValue={RecommendedMacros[selectedMacro]}
+                    selectedMacro={selectedMacro}
+                    macroDatasets={macroDatasets}
+                    setSelectedMacro={setSelectedMacro}
+                    emptyDays={emptyDays}
+                  />
+                </div>
               </div>
-              <div className="flex-1 break-words">
-                <p>{messageForSelectedMacro}</p>
+
+              <div className="w-full max-w-3xl flex flex-row items-center gap-4 p-4  shadow-sm">
+                <div className="flex-shrink-0 w-1/6 sm:w-24 hidden sm:block">
+                  <Image
+                    className="object-contain"
+                    alt="Info"
+                    src="/eplaining_owl.png"
+                    width={90}
+                    height={90}
+                  />
+                </div>
+
+                {/* The min-w-0 fix prevents the text from ballooning out your layout */}
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm text-default-700 break-words whitespace-normal">
+                    {messageForSelectedMacro}
+                  </p>
+                </div>
               </div>
-            </CardBody>
-          </Card>
-        </>
-      )}
+            </>
+          )}
+        </CardBody>
+      </Card>
     </div>
   );
 };
