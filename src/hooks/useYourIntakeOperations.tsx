@@ -60,6 +60,7 @@ const useYourIntakeOperations = () => {
 
   const addToFoodObject = async (food: Food, timeOfDay: timeOfDay) => {
     const date = format(currentDate, "yyyy-MM-dd");
+
     const {
       name,
       calories,
@@ -73,6 +74,7 @@ const useYourIntakeOperations = () => {
       imgUrl,
     } = food;
     const uniqueId = Date.now();
+    const coefficient = Number(amount) / 100;
     const saveFoodObject = {
       ...savedFood,
       [timeOfDay]: [
@@ -80,14 +82,14 @@ const useYourIntakeOperations = () => {
         {
           id: uniqueId,
           name,
-          calories,
-          amount,
-          fat,
-          protein,
-          sugar,
-          carbohydrates: carbs,
-          fiber,
-          salt,
+          calories: calories * coefficient,
+          amount: amount,
+          fat: fat * coefficient,
+          protein: protein * coefficient,
+          sugar: sugar * coefficient,
+          carbohydrates: carbs * coefficient,
+          fiber: fiber * coefficient,
+          salt: salt * coefficient,
           imgUrl,
         },
       ],
@@ -99,14 +101,14 @@ const useYourIntakeOperations = () => {
         food: {
           id: uniqueId,
           name,
-          calories,
-          amount,
-          fat,
-          protein,
-          sugar,
-          carbohydrates: carbs,
-          fiber,
-          salt,
+          calories: calories * coefficient,
+          amount: amount,
+          fat: fat * coefficient,
+          protein: protein * coefficient,
+          sugar: sugar * coefficient,
+          carbohydrates: carbs * coefficient,
+          fiber: fiber * coefficient,
+          salt: salt * coefficient,
           imgUrl,
         },
       }),
@@ -150,6 +152,7 @@ const useYourIntakeOperations = () => {
   ) => {
     const date = format(currentDate, "yyyy-MM-dd");
     const uniqueId = Date.now();
+    const coefficient = Number(amount) / 100;
     const saveFoodObject = {
       ...savedFood,
       [timeOfDay]: [
@@ -157,14 +160,14 @@ const useYourIntakeOperations = () => {
         {
           id: uniqueId,
           name,
-          calories,
-          amount,
-          fat,
-          protein,
-          sugar,
-          carbohydrates: carbs,
-          fiber,
-          salt,
+          calories: calories * coefficient,
+          amount: amount,
+          fat: fat * coefficient,
+          protein: protein * coefficient,
+          sugar: sugar * coefficient,
+          carbohydrates: carbs * coefficient,
+          fiber: fiber * coefficient,
+          salt: salt * coefficient,
           imgUrl,
         },
       ],
@@ -176,14 +179,14 @@ const useYourIntakeOperations = () => {
         food: {
           id: uniqueId,
           name,
-          calories,
-          amount,
-          fat,
-          protein,
-          sugar,
-          carbohydrates: carbs,
-          fiber,
-          salt,
+          calories: calories * coefficient,
+          amount: amount,
+          fat: fat * coefficient,
+          protein: protein * coefficient,
+          sugar: sugar * coefficient,
+          carbohydrates: carbs * coefficient,
+          fiber: fiber * coefficient,
+          salt: salt * coefficient,
           imgUrl,
         },
       }),

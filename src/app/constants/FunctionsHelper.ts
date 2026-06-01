@@ -1,5 +1,6 @@
 import { foodType, timeOfDay } from "@/types/Types";
 import { macros } from "@/types/Types";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 //readonly[("breakfast", "lunch", "dinner")];
 export const capitalizeFirstLetter = (string: string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -57,4 +58,24 @@ export const calculateRecommendedMacros = (
     fat: Math.round(macros.fat / 9),
     sugar: Math.round((calories * 0.1) / 4),
   };
+};
+
+export const useDebounce = <T>(
+  value: T,
+  delay: number,
+  setLoading: Dispatch<SetStateAction<boolean>>,
+): T => {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
+
+  useEffect(() => {
+    setLoading(true);
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+      setLoading(false);
+    }, delay);
+
+    return () => clearTimeout(handler);
+  }, [value, delay, setLoading]);
+
+  return debouncedValue;
 };

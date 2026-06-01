@@ -32,7 +32,6 @@ const macroConfig = [
   { key: "fat", label: "Fat", unit: "g", color: "danger" as const },
   { key: "fiber", label: "Fiber", unit: "g", color: "primary" as const },
   { key: "sugar", label: "Sugar", unit: "g", color: "default" as const },
-  { key: "salt", label: "Salt", unit: "g", color: "default" as const },
 ];
 
 export const TodayMacros = ({ savedFood }: props) => {
@@ -107,7 +106,7 @@ export const TodayMacros = ({ savedFood }: props) => {
       fat: 0,
       fiber: 0,
       protein: 0,
-      salt: 0,
+
       sugar: 0,
     };
   }, [data?.user?.weight, data?.user?.height, savedFood]);

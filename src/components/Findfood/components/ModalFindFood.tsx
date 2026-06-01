@@ -1,6 +1,7 @@
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 import { searchFood } from "@/lib/YourIntake/search-db";
 import {
+  Button,
   Input,
   Modal,
   ModalBody,
@@ -8,16 +9,18 @@ import {
   ModalHeader,
   Spinner,
   useDisclosure,
+  Image,
 } from "@nextui-org/react";
 import React, { Dispatch, useEffect, useRef } from "react";
 import { useState } from "react";
-import { FaSearch } from "react-icons/fa";
+import { FaBarcode, FaQrcode, FaSearch } from "react-icons/fa";
 import { ModalCreateFood } from "./ModalCreateFood";
 import { ReturnTypeFood } from "@/types/Types";
 import AddFoodComponent from "./AddFoodComponent";
 import { getTimeOfDay } from "@/app/constants/FunctionsHelper";
 import { YesNoToggle } from "./YesNoComponent";
 import { ModalBarcodeScan } from "./ModalBarcodeScan";
+import barcodeIcon from "barcodeIcon.svg";
 
 type props = {
   onOpenChange: () => void;
@@ -148,15 +151,15 @@ export const ModalFindFood = (props: props) => {
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">
+            <ModalHeader className="flex flex-row ">
               <Input
                 autoFocus
                 classNames={{
-                  base: "max-w-full sm:max-w-[50rem] h-10",
+                  base: "max-w-full sm:max-w-[50rem] h-10  ",
                   mainWrapper: "h-full",
                   input: "text-small",
                   inputWrapper:
-                    "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
+                    "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20 rounded-r-none",
                 }}
                 placeholder="Type to search..."
                 value={searchTerm}
@@ -169,6 +172,15 @@ export const ModalFindFood = (props: props) => {
                 startContent={<FaSearch size={18} />}
                 type="search"
               />
+              <div className="">
+                <Button
+                  onPress={onOpenBarScan}
+                  color="primary"
+                  className="rounded-l-none min-w-14"
+                >
+                  <img height={30} width={30} src="barcodeIcon.svg" />
+                </Button>
+              </div>
             </ModalHeader>
             <ModalBody className="max-h-96">
               <div className="overflow-visible">
@@ -193,15 +205,7 @@ export const ModalFindFood = (props: props) => {
                           isOpen={isOpen}
                           onOpenChange={onOpenChange}
                         ></ModalCreateFood>
-                        <ModalBarcodeScan
-                          isOpen={isOpenBarScan}
-                          onOpenChange={onOpenChangeBarScan}
-                          onOpenNewFood={onOpen}
-                          onCloseAll={() => {
-                            onClose();
-                            onCloseBarScan();
-                          }}
-                        ></ModalBarcodeScan>
+
                         <p className="ml-5 text-center self-center">
                           If you didn't find your food, you can add it here.
                         </p>
@@ -215,6 +219,15 @@ export const ModalFindFood = (props: props) => {
                         />
                       </div>
                     )}
+                    <ModalBarcodeScan
+                      isOpen={isOpenBarScan}
+                      onOpenChange={onOpenChangeBarScan}
+                      onOpenNewFood={onOpen}
+                      onCloseAll={() => {
+                        onClose();
+                        onCloseBarScan();
+                      }}
+                    ></ModalBarcodeScan>
                   </>
                 )}
               </div>

@@ -150,7 +150,8 @@ const Chart = ({
         titleFont: { weight: 500, size: 12 },
         bodyFont: { size: 12 },
         callbacks: {
-          label: (ctx) => ` ${ctx.dataset.label}: ${ctx.parsed.y} ${unit}`,
+          label: (ctx) =>
+            ` ${ctx.dataset.label}: ${ctx.parsed.y?.toFixed(2)} ${unit}`,
         },
       },
     },

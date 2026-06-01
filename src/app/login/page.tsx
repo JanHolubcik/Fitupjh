@@ -27,7 +27,7 @@ export default function Login() {
     }
 
     if (res?.ok) {
-      return router.push("/yourintake");
+      return router.push("/dashboard");
     }
   };
 

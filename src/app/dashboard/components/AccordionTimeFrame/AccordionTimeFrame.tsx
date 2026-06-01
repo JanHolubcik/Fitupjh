@@ -78,13 +78,10 @@ export const AccordionTimeFrame = ({ savedFood }: props) => {
               </div>
             }
           >
-            {/* Seamless layout wrapper for the content slot inside the drop-down */}
-            <div className="mt-2 border-t border-default-100/60 pt-3">
-              <TimeFrameSmallCard
-                timeFrame={key}
-                foodItems={savedFood[key as keyof FoodType]}
-              />
-            </div>
+            <TimeFrameSmallCard
+              timeFrame={key}
+              foodItems={savedFood[key as keyof FoodType]}
+            />
           </AccordionItem>
         );
       })}

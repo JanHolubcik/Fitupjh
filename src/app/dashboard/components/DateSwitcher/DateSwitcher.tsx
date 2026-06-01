@@ -1,0 +1,46 @@
+import { Button, Card, CardBody } from "@nextui-org/react";
+import { format } from "date-fns";
+import { FaArrowLeft, FaArrowRight, FaCalendarAlt } from "react-icons/fa";
+
+type props = {
+  currentDate: string;
+  setNewDateAndFetchFood: (n: number) => void;
+};
+
+export const DateSwitcher = ({
+  currentDate,
+  setNewDateAndFetchFood,
+}: props) => {
+  const disabledButton =
+    format(currentDate, "yyyy-MM-dd") === format(new Date(), "yyyy-MM-dd");
+  return (
+    <Card className="w-52 mt-3">
+      <CardBody className="flex flex-row items-center justify-between gap-1 py-2">
+        <Button
+          size="sm"
+          isIconOnly
+          onPress={() => setNewDateAndFetchFood(-1)}
+          aria-label="Previous day"
+          className="w-7 h-7 min-w-7"
+        >
+          <FaArrowLeft size={10} />
+        </Button>
+        <div className="flex items-center gap-1 text-xs font-semibold tracking-tight">
+          <FaCalendarAlt className="text-default-500 flex-shrink-0" size={12} />
+          <span>{format(currentDate, "dd.MM / EEE")}</span>
+        </div>
+
+        <Button
+          size="sm"
+          isIconOnly
+          isDisabled={disabledButton}
+          onPress={() => setNewDateAndFetchFood(1)}
+          aria-label="Next day"
+          className="w-7 h-7 min-w-7"
+        >
+          <FaArrowRight size={10} />
+        </Button>
+      </CardBody>
+    </Card>
+  );
+};

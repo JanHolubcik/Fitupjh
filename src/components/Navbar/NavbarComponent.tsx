@@ -30,10 +30,8 @@ const NavbarComponent = () => {
   const navigationProperties = [
     ...(status === "authenticated"
       ? [
-          { id: 1, href: "/yourintake", description: "Your intake" },
+          { id: 1, href: "/dashboard", description: "Dashboard" },
           { id: 2, href: "/profile", description: "Profile" },
-          { id: 3, href: "/myprogress", description: "My progress" },
-          { id: 4, href: "/dashboard", description: "Dashboard" },
         ]
       : []),
   ];

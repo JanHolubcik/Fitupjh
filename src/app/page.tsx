@@ -44,7 +44,7 @@ export default function Home() {
             Start your journey today!
           </h2>
 
-          <Link href={data?.user?.id ? "/yourintake" : "signup"}>
+          <Link href={data?.user?.id ? "/dashboard" : "signup"}>
             <button className="mt-6 px-4 py-2 rounded-xl font-bold  text-black bg-[#00FFAA] hover:scale-105 transition-transform animate-pulse">
               Start Tracking Now
             </button>
