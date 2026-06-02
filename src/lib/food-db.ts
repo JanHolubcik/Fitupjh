@@ -47,11 +47,13 @@ export async function getFood(substring: string) {
             fiber: value.fiber,
             salt: value.salt,
             imgUrl: value.imgUrl,
+            ProductWeight: value.ProductWeight,
+            qrCode: value.QRcode,
           };
         }),
       };
     } else {
-      return { error: "Food not found" };
+      return {};
     }
   } catch (error) {
     return { error };
@@ -167,6 +169,7 @@ export async function addNewFood(newFood: FoodInput) {
       fiber: 0,
       QRcode: newFood.barcode,
       imgUrl: newFood.imgUrl,
+      ProductWeight: newFood.ProductWeight,
     });
 
     return {

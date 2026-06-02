@@ -14,6 +14,7 @@ export const FoodSchema = z
     salt: z.coerce.number().min(0).default(0),
     barcode: z.string().optional(),
     imgUrl: z.string().optional(),
+    ProductWeight: z.coerce.number().min(0).optional(),
   })
   .refine(
     (data) => {

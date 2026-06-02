@@ -1,5 +1,4 @@
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
-import { searchFood } from "@/lib/YourIntake/search-db";
 import {
   Button,
   Input,
@@ -9,18 +8,17 @@ import {
   ModalHeader,
   Spinner,
   useDisclosure,
-  Image,
 } from "@nextui-org/react";
 import React, { Dispatch, useEffect, useRef } from "react";
 import { useState } from "react";
-import { FaBarcode, FaQrcode, FaSearch } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import { ModalCreateFood } from "./ModalCreateFood";
 import { ReturnTypeFood } from "@/types/Types";
 import AddFoodComponent from "./AddFoodComponent";
 import { getTimeOfDay } from "@/app/constants/FunctionsHelper";
-import { YesNoToggle } from "./YesNoComponent";
 import { ModalBarcodeScan } from "./ModalBarcodeScan";
-import barcodeIcon from "barcodeIcon.svg";
+import { useMutation } from "@tanstack/react-query";
+import { getSearchedFoodOptions } from "@/lib/queriesOptions/GetSearchedFoodOptions";
 
 type props = {
   onOpenChange: () => void;
@@ -55,6 +53,11 @@ export const ModalFindFood = (props: props) => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 500, setLoading);
+
+  const searchFoodMutation = useMutation(
+    getSearchedFoodOptions(debouncedSearchTerm),
+  );
+
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const {
     isOpen: isOpenBarScan,
@@ -71,14 +74,11 @@ export const ModalFindFood = (props: props) => {
 
     const fetchFood = async () => {
       setLoading(true);
+      const result = await searchFoodMutation.mutateAsync();
 
-      const foundFood = await searchFood(debouncedSearchTerm);
-
-      setFood(foundFood.food || []);
-      if (foundFood.food) {
-        setCalculatedCalories(
-          foundFood.food.map((key) => key.calories_per_100g),
-        );
+      setFood(result || []);
+      if (result) {
+        setCalculatedCalories(result.map((key) => key.calories_per_100g));
       }
       setLoading(false);
     };
@@ -206,17 +206,19 @@ export const ModalFindFood = (props: props) => {
                           onOpenChange={onOpenChange}
                         ></ModalCreateFood>
 
-                        <p className="ml-5 text-center self-center">
-                          If you didn't find your food, you can add it here.
+                        <p className="ml-5 text-sm text-center self-center">
+                          If you didn't find your food, you can add it here or
+                          scan a barcode.
                         </p>
-
-                        <YesNoToggle
-                          yesVariant="faded"
-                          yesLabel="Scan barcode"
-                          noLabel="Add manually"
-                          yesPress={onOpenBarScan}
-                          noPress={onOpen}
-                        />
+                        <Button
+                          size={"sm"}
+                          color={"default"}
+                          className={"text-white font-medium"}
+                          variant={"faded"}
+                          onPress={onOpen}
+                        >
+                          Add manually
+                        </Button>
                       </div>
                     )}
                     <ModalBarcodeScan

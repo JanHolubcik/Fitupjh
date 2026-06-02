@@ -43,7 +43,7 @@ export const ModalCreateFood = (props: props) => {
       carbohydrates: Number(formData.get("carbohydrates")),
       salt: Number(formData.get("salt")),
     };
-    const res = fetch("/api/createFood", {
+    const res = fetch("/api/food", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

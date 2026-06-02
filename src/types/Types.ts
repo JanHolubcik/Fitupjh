@@ -1,3 +1,5 @@
+import { FoodClass } from "@/models/Food";
+
 export type foodType = {
   breakfast: food;
   lunch: food;
@@ -18,19 +20,7 @@ export type food = {
   imgUrl?: string;
 }[];
 
-export type ReturnTypeFood =
-  | {
-      name: string;
-      calories_per_100g: number;
-      fat: number;
-      protein: number;
-      sugar: number;
-      carbohydrates: number;
-      fiber: number;
-      salt: number;
-      imgUrl: string;
-    }[]
-  | undefined;
+export type ReturnTypeFood = FoodClass[] | undefined;
 
 export type macros = {
   calories: number;

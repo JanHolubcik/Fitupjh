@@ -21,6 +21,7 @@ import imagepfp3 from "../../../public/pfps/3.png";
 
 import { signOut, useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
+import { InputSearchBar } from "../InputSearchBar/InputSearchBar";
 
 const NavbarComponent = () => {
   const pathname = usePathname();
@@ -43,10 +44,16 @@ const NavbarComponent = () => {
           <DropdownTrigger>
             <Button
               variant="light"
-              size="sm"
+              size="md"
               className="text-zinc-200 font-medium"
             >
-              {data.user?.name}
+              <Avatar
+                isBordered
+                color="secondary"
+                size="sm"
+                src={data.user?.image || imagepfp3.src}
+                className="cursor-pointer transition-transform hover:scale-105 shrink-0"
+              />
             </Button>
           </DropdownTrigger>
 
@@ -92,46 +99,41 @@ const NavbarComponent = () => {
       {/* Left side: Brand Logo & Mobile Toggle */}
       <NavbarContent justify="start" className="flex-grow-0">
         <NavbarMenuToggle className="sm:hidden text-white mr-2" />
-        <NavbarBrand>
+        <NavbarBrand className="gap-5">
           <Link href="/" className="gap-2">
             <p className="font-black text-xl text-white tracking-wider bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">
               FitUp
             </p>
           </Link>
+          <div className="hidden sm:flex gap-5">
+            {navigationProperties.map((item) => (
+              <NavbarItem key={item.href} isActive={pathname === item.href}>
+                <Link
+                  href={item.href}
+                  color={pathname === item.href ? "primary" : "foreground"}
+                  className={`text-sm font-medium transition-colors ${
+                    pathname === item.href
+                      ? "text-primary"
+                      : "text-zinc-400 hover:text-white"
+                  }`}
+                >
+                  {item.description}
+                </Link>
+              </NavbarItem>
+            ))}
+          </div>
         </NavbarBrand>
       </NavbarContent>
-
-      <NavbarContent className="hidden sm:flex gap-6" justify="center">
-        {navigationProperties.map((item) => (
-          <NavbarItem key={item.id} isActive={pathname === item.href}>
-            <Link
-              href={item.href}
-              color={pathname === item.href ? "primary" : "foreground"}
-              className={`text-sm font-medium transition-colors ${
-                pathname === item.href
-                  ? "text-primary"
-                  : "text-zinc-400 hover:text-white"
-              }`}
-            >
-              {item.description}
-            </Link>
-          </NavbarItem>
-        ))}
-      </NavbarContent>
-
+      {status === "authenticated" && (
+        <NavbarContent className=" sm:flex gap-6" justify="start">
+          <InputSearchBar />
+        </NavbarContent>
+      )}
       <NavbarContent justify="end" className="flex-1 gap-4">
         <div className="flex items-center gap-2">
           {showSession()}
 
-          {status === "authenticated" ? (
-            <Avatar
-              isBordered
-              color="secondary"
-              size="sm"
-              src={data.user?.image || imagepfp3.src}
-              className="cursor-pointer transition-transform hover:scale-105 shrink-0"
-            />
-          ) : (
+          {status !== "authenticated" && (
             <Button
               as={Link}
               href="/signup"

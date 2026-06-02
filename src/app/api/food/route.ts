@@ -1,102 +1,45 @@
-import { addNewFood, getFoodByQR } from "@/lib/food-db";
-
+import { addNewFood, getFood } from "@/lib/food-db";
+import { FoodSchema } from "@/lib/validationShemas/foodValidationSchema";
 import { NextRequest, NextResponse } from "next/server";
 import { withAuth } from "../functions";
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
   return withAuth(req, async (req) => {
-    const QRCode = req.nextUrl.searchParams.get("QRCode");
+    const rawData = await req.json();
+    const result = FoodSchema.safeParse(rawData);
 
-    if (!QRCode) {
-      return new NextResponse("Missing or invalid QRCode", { status: 400 });
+    if (!result.success) {
+      return NextResponse.json({ errors: result.error }, { status: 400 });
     }
-    try {
-      const localFood = await getFoodByQR(QRCode);
+    const validatedData = result.data;
 
-      if (localFood.error !== "Food not found") {
-        return NextResponse.json(localFood);
-      }
-
-      console.log(
-        `Barcode ${QRCode} not found in local database. Fetching from Open Food Facts API...`,
-      );
-
-      const apiResponse = await fetch(
-        `https://world.openfoodfacts.org/api/v3/product/${QRCode}`,
-        {
-          headers: {
-            "User-Agent": "MyCalorieTrackerApp/1.0 (contact@yourdomain.com)",
-          },
-        },
-      );
-
-      if (!apiResponse.ok) {
-        if (apiResponse.status === 404) {
-          return NextResponse.json(
-            { notFound: true, barcode: QRCode },
-            { status: 200 },
-          );
-        }
-        return NextResponse.json(
-          { error: "External product lookup registry down" },
-          { status: 502 },
-        );
-      }
-
-      const apiData = await apiResponse.json();
-
-      if (!apiData.product || apiData.status === 0) {
-        return NextResponse.json(
-          { error: "Product not found locally or globally" },
-          { status: 404 },
-        );
-      }
-
-      const targetProduct = apiData.product;
-      const nutriments = targetProduct.nutriments || {};
-
-      const rawCalories =
-        nutriments["energy-kcal_100g"] ||
-        (nutriments["energy_100g"]
-          ? Math.round(nutriments["energy_100g"] * 0.2390057)
-          : 0);
-
-      const newlyMappedFood = {
-        name:
-          targetProduct.product_name + " " + targetProduct.brands ||
-          `Unknown Product (${QRCode})`,
-        calories_per_100g: Number(rawCalories) || 0,
-        fat: Number(nutriments.fat_100g) || 0,
-        protein: Number(nutriments.proteins_100g) || 0,
-        sugar: Number(nutriments.sugars_100g) || 0,
-        carbohydrates: Number(nutriments.carbohydrates_100g) || 0,
-        fiber: Number(nutriments.fiber_100g) || 0,
-        salt: Number(nutriments.salt_100g) || 0,
-        QRcode: QRCode,
-        imgUrl: targetProduct.image_url || "",
-        ProductWeight: parseInt(targetProduct.quantity) || undefined,
-      };
-
-      await addNewFood(newlyMappedFood).catch(() => {
+    if (validatedData) {
+      const res = await addNewFood(validatedData).catch(() => {
         return new NextResponse("There was an error while sending data to db", {
           status: 500,
         });
       });
+      return NextResponse.json({ res });
+    }
 
-      return NextResponse.json({
-        ...newlyMappedFood,
-      });
+    return NextResponse.json({ error: "Invalid data" }, { status: 400 });
+  });
+}
+
+export async function GET(req: NextRequest) {
+  return withAuth(req, async (req) => {
+    const { searchParams } = req.nextUrl;
+    const searchTerm = searchParams.get("searchTerm") || "";
+
+    try {
+      const foodData = await getFood(searchTerm);
+
+      return NextResponse.json(foodData.food, { status: 200 });
     } catch (error) {
-      console.error("Critical Internal Server Error in GET Route:", error);
-      return NextResponse.json(
-        {
-          error:
-            error instanceof Error
-              ? error.message
-              : "Database connection lost or internal crash.",
-        },
-        { status: 500 },
-      );
+      console.error("Database error:", error);
+      return new NextResponse("There was an error while sending data to db", {
+        status: 500,
+      });
     }
   });
 }

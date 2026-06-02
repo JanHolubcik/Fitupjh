@@ -7,8 +7,8 @@ export const useScanProduct = (onProductNotFound: () => void) => {
   return useMutation<ScanResponse, Error, string>({
     mutationFn: async (qrCode: string) => {
       const response = await fetch(
-        `/api/food?QRCode=${encodeURIComponent(qrCode)}`,
-        { credentials: "include" },
+        `/api/foodScan?QRCode=${encodeURIComponent(qrCode)}`,
+        { credentials: "include", method: "POST" },
       );
 
       if (!response.ok) {

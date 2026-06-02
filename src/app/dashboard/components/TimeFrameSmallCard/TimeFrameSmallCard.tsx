@@ -69,12 +69,48 @@ export const TimeFrameSmallCard = (props: props) => {
             </div>
 
             <div className="flex items-center gap-2.5 flex-shrink-0 pl-1">
-              <span className="text-zinc-500 font-bold text-[9px] sm:text-[10px] pr-1">
-                {key.amount}g
+              <span className="w-[40px] text-center text-[10px] font-semibold text-success-400">
+                P:{" "}
+                <span className="text-zinc-300 font-medium">
+                  {key.protein || 0}g
+                </span>
               </span>
-              <span className="bg-primary-500/10 text-primary-400 px-2 py-0.5 rounded-md font-extrabold text-[10px] sm:text-[11px] tracking-wide border border-primary-500/10 shadow-sm">
-                {key.calories} kcal
+              <span className="text-zinc-800 font-normal text-[10px]">|</span>
+              <span className="w-[40px] text-center text-[10px] font-semibold text-warning-400">
+                C:{" "}
+                <span className="text-zinc-300 font-medium">
+                  {key.carbohydrates || 0}g
+                </span>
               </span>
+              <span className="text-zinc-800 font-normal text-[10px]">|</span>
+              <span className="w-[45px] text-center text-[10px] font-semibold text-pink-400">
+                F:{" "}
+                <span className="text-zinc-300 font-medium">
+                  {key.fat || 0}g
+                </span>
+              </span>
+
+              {key.sugar ? (
+                <>
+                  <span className="text-zinc-800 font-normal text-[10px]">
+                    |
+                  </span>
+                  <span className="w-[45px] text-center text-[10px] font-semibold text-purple-400">
+                    S:{" "}
+                    <span className="text-zinc-300 font-medium">
+                      {key.sugar}g
+                    </span>
+                  </span>
+                </>
+              ) : null}
+              <div className="flex flex-col">
+                <span className="text-zinc-500 font-bold self-end text-[9px] sm:text-[10px] pr-1">
+                  {key.amount}g
+                </span>
+                <span className="bg-primary-500/10 text-primary-400 px-2 py-0.5 rounded-md font-extrabold text-[10px] sm:text-[11px] tracking-wide border border-primary-500/10 shadow-sm">
+                  {key.calories} kcal
+                </span>
+              </div>
               <Button
                 size="sm"
                 onPress={() => removeFromSavedFood(key.id, props.timeFrame)}
