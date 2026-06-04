@@ -62,47 +62,49 @@ export const TimeFrameSmallCard = (props: props) => {
               </div>
 
               <div className="flex-1 min-w-0 flex flex-col justify-center">
-                <p className="font-bold text-xs sm:text-sm text-zinc-200 capitalize ">
+                <p className="font-bold text-xs sm:text-sm text-zinc-200 capitalize whitespace-nowrap overflow-hidden text-ellipsis w-16">
                   {key.name}
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2.5 flex-shrink-0 pl-1">
-              <span className="w-[40px] text-center text-[10px] font-semibold text-success-400">
-                P:{" "}
-                <span className="text-zinc-300 font-medium">
-                  {key.protein || 0}g
+            <div className="flex items-center gap-2.5 flex-shrink-0 pl-1 ">
+              <div className="md:visible hidden">
+                <span className="w-[40px] text-center text-[10px] font-semibold text-success-400">
+                  P:{" "}
+                  <span className="text-zinc-300 font-medium">
+                    {key.protein || 0}g
+                  </span>
                 </span>
-              </span>
-              <span className="text-zinc-800 font-normal text-[10px]">|</span>
-              <span className="w-[40px] text-center text-[10px] font-semibold text-warning-400">
-                C:{" "}
-                <span className="text-zinc-300 font-medium">
-                  {key.carbohydrates || 0}g
+                <span className="text-zinc-800 font-normal text-[10px]">|</span>
+                <span className="w-[40px] text-center text-[10px] font-semibold text-warning-400">
+                  C:{" "}
+                  <span className="text-zinc-300 font-medium">
+                    {key.carbohydrates || 0}g
+                  </span>
                 </span>
-              </span>
-              <span className="text-zinc-800 font-normal text-[10px]">|</span>
-              <span className="w-[45px] text-center text-[10px] font-semibold text-pink-400">
-                F:{" "}
-                <span className="text-zinc-300 font-medium">
-                  {key.fat || 0}g
+                <span className="text-zinc-800 font-normal text-[10px]">|</span>
+                <span className="w-[45px] text-center text-[10px] font-semibold text-pink-400">
+                  F:{" "}
+                  <span className="text-zinc-300 font-medium">
+                    {key.fat || 0}g
+                  </span>
                 </span>
-              </span>
 
-              {key.sugar ? (
-                <>
-                  <span className="text-zinc-800 font-normal text-[10px]">
-                    |
-                  </span>
-                  <span className="w-[45px] text-center text-[10px] font-semibold text-purple-400">
-                    S:{" "}
-                    <span className="text-zinc-300 font-medium">
-                      {key.sugar}g
+                {key.sugar ? (
+                  <>
+                    <span className="text-zinc-800 font-normal text-[10px]">
+                      |
                     </span>
-                  </span>
-                </>
-              ) : null}
+                    <span className="w-[45px] text-center text-[10px] font-semibold text-purple-400">
+                      S:{" "}
+                      <span className="text-zinc-300 font-medium">
+                        {key.sugar}g
+                      </span>
+                    </span>
+                  </>
+                ) : null}
+              </div>
               <div className="flex flex-col">
                 <span className="text-zinc-500 font-bold self-end text-[9px] sm:text-[10px] pr-1">
                   {key.amount}g

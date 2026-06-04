@@ -1,6 +1,15 @@
 "use client";
 
-import { Button, ButtonGroup } from "@nextui-org/react";
+import {
+  Button,
+  ButtonGroup,
+  Card,
+  CardBody,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from "@nextui-org/react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -18,6 +27,8 @@ import {
 } from "chart.js";
 import { Dispatch, SetStateAction } from "react";
 import { Chart as ReactChart } from "react-chartjs-2";
+import { useIsSm } from "../constants/FunctionsHelper";
+import { ChevronDownIcon } from "@heroicons/react/24/solid";
 
 ChartJS.register(
   CategoryScale,
@@ -50,6 +61,43 @@ const getUnit = (macro: string) => {
   return "g";
 };
 
+const tableData = (
+  displayDataValues: number[],
+  avg: number,
+  peak: number,
+  daysOver: number,
+  recommendedValue: number,
+  unit: string,
+  emptyDays: number,
+) => {
+  return [
+    {
+      label: `${displayDataValues.length}-day average`,
+      value: `${avg} ${unit}`,
+      sub: `Goal: ${recommendedValue} ${unit}`,
+      subColor: "text-default-400",
+    },
+    {
+      label: "Weekly peak",
+      value: `${peak} ${unit}`,
+      sub: peak > recommendedValue ? "Above limit" : "Within limit",
+      subColor: peak > recommendedValue ? "text-danger" : "text-success",
+    },
+    {
+      label: "Days over limit",
+      value: `${daysOver} / ${displayDataValues.length}`,
+      sub: daysOver === 0 ? "All within goal" : "Days exceeded",
+      subColor: daysOver > 0 ? "text-danger" : "text-success",
+    },
+    {
+      label: "Days not logged",
+      value: emptyDays,
+      sub: emptyDays <= 0 ? "All days logged" : "Days missing",
+      subColor: emptyDays > 0 ? "text-danger" : "text-success",
+    },
+  ];
+};
+
 type ChartProps = {
   labels: string[];
   dataValues: number[];
@@ -63,6 +111,7 @@ type ChartProps = {
     carbohydrates: number[];
     fiber: number[];
   };
+  messageForSelectedMacro: string;
   setSelectedMacro: Dispatch<
     SetStateAction<
       "calories" | "protein" | "fat" | "sugar" | "carbohydrates" | "fiber"
@@ -79,49 +128,55 @@ const Chart = ({
   macroDatasets,
   setSelectedMacro,
   emptyDays,
+  messageForSelectedMacro,
 }: ChartProps) => {
   const capitalizedMacro = capitalizeFirstLetter(selectedMacro);
   const theme = getMacroColor(selectedMacro);
   const unit = getUnit(selectedMacro);
 
-  const hasValues = dataValues && dataValues.length > 0;
+  const isSmallScreen = useIsSm();
+
+  const displayLabels = isSmallScreen
+    ? labels
+    : labels.map((label) => label.slice(-3));
+  const displayDataValues = dataValues;
+
+  const hasValues = displayDataValues && displayDataValues.length > 0;
   const avg = hasValues
     ? Number(
         Math.round(
-          dataValues.reduce((a, b) => a + b, 0) / dataValues.length,
+          displayDataValues.reduce((a, b) => a + b, 0) /
+            displayDataValues.length,
         ).toFixed(2),
       )
     : 0;
-  const peak = hasValues ? Number(Math.max(...dataValues).toFixed(2)) : 0;
+  const peak = hasValues
+    ? Number(Math.max(...displayDataValues).toFixed(2))
+    : 0;
   const daysOver = hasValues
-    ? dataValues.filter((v) => v > recommendedValue).length
+    ? displayDataValues.filter((v) => v > recommendedValue).length
     : 0;
 
   const data: ChartData<"bar" | "line", number[], string> = {
-    labels,
+    labels: displayLabels, // Use the responsive filtered labels
     datasets: [
       {
         type: "line" as const,
         label: `${capitalizedMacro} intake`,
-        data: dataValues,
-        backgroundColor: dataValues.map((v) =>
+        data: displayDataValues, // Use the responsive filtered data
+        backgroundColor: displayDataValues.map((v) =>
           v > recommendedValue ? theme.over + "b3" : theme.bar + "b3",
         ),
-        hoverBackgroundColor: dataValues.map((v) =>
+        hoverBackgroundColor: displayDataValues.map((v) =>
           v > recommendedValue ? theme.over : theme.bar,
         ),
         borderColor: theme.bar,
-
         fill: true,
-        //borderRadius: 6,
-        //borderSkipped: false,
-        //barPercentage: 0.55,
-        //categoryPercentage: 0.7,
       },
       {
         type: "line" as const,
         label: "Recommended limit",
-        data: labels.map(() => recommendedValue),
+        data: displayLabels.map(() => recommendedValue),
         borderColor: "#64748b",
         borderWidth: 1.5,
         pointRadius: 0,
@@ -176,84 +231,138 @@ const Chart = ({
   };
 
   return (
-    <div className="w-full bg-content1 rounded-2xl border border-divider shadow-md p-5 space-y-4 text-foreground">
-      <div className="grid grid-cols-4 gap-3">
-        {[
-          {
-            label: `${dataValues.length}-day average`,
-            value: `${avg} ${unit}`,
-            sub: `Goal: ${recommendedValue} ${unit}`,
-            subColor: "text-default-400",
-          },
-          {
-            label: "Weekly peak",
-            value: `${peak} ${unit}`,
-            sub: peak > recommendedValue ? "Above limit" : "Within limit",
-            subColor: peak > recommendedValue ? "text-danger" : "text-success",
-          },
-          {
-            label: "Days over limit",
-            value: `${daysOver} / ${dataValues.length}`,
-            sub: daysOver === 0 ? "All within goal" : "Days exceeded",
-            subColor: daysOver > 0 ? "text-danger" : "text-success",
-          },
-          {
-            label: "Days not logged",
-            value: emptyDays,
-            sub: emptyDays > 0 ? "All days logged" : "Days missing",
-            subColor: emptyDays > 0 ? "text-danger" : "text-success",
-          },
-        ].map(({ label, value, sub, subColor }) => (
-          <div
-            key={label}
-            className="bg-content2 border border-divider rounded-xl p-3"
-          >
-            <p className="text-xs text-default-400 mb-1">{label}</p>
-            <p className="text-base font-semibold text-default-800">{value}</p>
-            <p className={`text-xs mt-0.5 ${subColor}`}>{sub}</p>
+    <div className=" flex flex-col gap-3">
+      <Card className="">
+        <CardBody>
+          <h1 className="pl-1 py-1  text-sm font-semibold ">
+            {capitalizedMacro} intake day {displayDataValues.length} day
+            {displayDataValues.length > 1 ? "s" : ""}{" "}
+          </h1>
+          <div className="flex gap-4">
+            <div className="flex flex-row py-2 flex-1 min-w-0">
+              <ReactChart data={data} options={options} type="bar" />
+            </div>
+
+            <div className="sm:grid grid-cols-2 gap-1 flex-shrink-0 sm:visible hidden">
+              {tableData(
+                displayDataValues,
+                avg,
+                peak,
+                daysOver,
+                recommendedValue,
+                unit,
+                emptyDays,
+              ).map(({ label, value, sub, subColor }) => (
+                <div
+                  key={label}
+                  className="bg-content2 border border-divider rounded-xl p-2 "
+                >
+                  <p className="text-[10px] sm:text-xs text-default-400 mb-1 truncate">
+                    {label}
+                  </p>
+                  <p className="text-sm sm:text-base font-semibold text-default-800">
+                    {value}
+                  </p>
+                  <p className={`text-[10px] sm:text-xs ${subColor} truncate`}>
+                    {sub}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
-        ))}
-      </div>
-      <div className="flex items-center gap-4 text-xs text-default-400 pt-1">
-        <span className="flex items-center gap-1.5">
-          <span
-            className="w-2.5 h-2.5 rounded-sm"
-            style={{ background: theme.bar }}
-          />
-          {capitalizedMacro} intake
-        </span>
-        <span className="flex items-center gap-1.5">
-          <span className="w-2.5 h-2.5 rounded-sm bg-danger" />
-          Over limit
-        </span>
-        <span className="flex items-center gap-1.5">
-          <span className="w-4 border-t border-dashed border-default-400" />
-          Recommended limit
-        </span>
-      </div>
-      <div className="relative h-64 w-full">
-        <ReactChart data={data} options={options} type="bar" />
-      </div>
-      <ButtonGroup className="flex flex-wrap justify-center gap-2 w-full max-w-3xl">
-        {Object.keys(macroDatasets).map((macro) => (
-          <div
-            key={macro}
-            className="flex-1 sm:flex-none sm:basis-1/3 md:basis-1/4"
-          >
-            <Button
-              color={macro === selectedMacro ? "primary" : "default"}
-              onPress={() =>
-                setSelectedMacro(macro as keyof typeof macroDatasets)
-              }
-              radius="md"
-              className="w-full"
-              variant="bordered"
-            >
-              {capitalizeFirstLetter(macro)}
-            </Button>
+          <div className="flex sm:flex-wrap flex-col  sm:items-center sm:items-left gap-4 text-xs text-default-400 py-2">
+            <span className="flex items-center gap-1.5">
+              <span className="w-4 border-t border-dashed border-default-400 flex-shrink-0" />
+              Recommended limit
+            </span>
           </div>
-        ))}
-      </ButtonGroup>
+
+          <ButtonGroup className="sm:grid grid-cols-2 sm:grid-cols-3 justify-center gap-2 w-full max-w-3xl sm:visible hidden">
+            {Object.keys(macroDatasets).map((macro) => (
+              <div key={macro} className="flex-1 ">
+                <Button
+                  color={macro === selectedMacro ? "primary" : "default"}
+                  onPress={() =>
+                    setSelectedMacro(macro as keyof typeof macroDatasets)
+                  }
+                  radius="md"
+                  size="sm"
+                  className="w-full text-xs"
+                  variant="bordered"
+                >
+                  {capitalizeFirstLetter(macro)}
+                </Button>
+              </div>
+            ))}
+          </ButtonGroup>
+          <div className="sm:hidden flex flex-col gap-2">
+            <Dropdown placement="bottom-start">
+              <DropdownTrigger>
+                <Button
+                  variant="bordered"
+                  className="w-full justify-between text-sm"
+                  endContent={<ChevronDownIcon className="w-4 h-4" />}
+                >
+                  <span className="font-semibold">
+                    {capitalizeFirstLetter(selectedMacro)}
+                  </span>
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                disallowEmptySelection
+                aria-label="Macro selection"
+                className="w-48"
+                selectedKeys={selectedMacro}
+                selectionMode="single"
+                onSelectionChange={(key) => {
+                  setSelectedMacro(key.anchorKey as keyof typeof macroDatasets);
+                }}
+              >
+                {Object.keys(macroDatasets).map((macro) => (
+                  <DropdownItem key={macro} className="capitalize">
+                    {capitalizeFirstLetter(macro)}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+          <div className="text-xs mt-2 ">
+            <p className=" ">{messageForSelectedMacro}</p>
+          </div>
+        </CardBody>
+      </Card>
+      <Card className="block sm:hidden">
+        <CardBody>
+          <div className="grid grid-cols-2">
+            {tableData(
+              displayDataValues,
+              avg,
+              peak,
+              daysOver,
+              recommendedValue,
+              unit,
+              emptyDays,
+            ).map(({ label, value, sub, subColor }) => (
+              <div
+                key={label}
+                className="bg-content2 border border-divider rounded-xl p-2 sm:p-3"
+              >
+                <p className="text-[10px] sm:text-xs text-default-400 mb-1 truncate">
+                  {label}
+                </p>
+                <p className="text-sm sm:text-base font-semibold text-default-800">
+                  {value}
+                </p>
+                <p
+                  className={`text-[10px] sm:text-xs mt-0.5 ${subColor} truncate`}
+                >
+                  {sub}
+                </p>
+              </div>
+            ))}
+          </div>
+        </CardBody>
+      </Card>
     </div>
   );
 };

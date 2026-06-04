@@ -29,13 +29,13 @@ export const DashboardContent = () => {
     setNewDateAndGetFood(date);
   };
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 items-center max-w-2xl">
       {/* <h2 className="text-xl font-bold text-foreground mb-2">Daily Progress</h2> */}
       <DateSwitcher
         currentDate={currentDate}
         setNewDateAndFetchFood={setNewDateAndFetchFood}
       ></DateSwitcher>
-      <div className="flex flex-row gap-3">
+      <div className="flex sm:flex-row flex-col gap-3 ">
         <CalorieCard intakeToday={savedFood}></CalorieCard>
         <TodayMacros savedFood={savedFood}></TodayMacros>
       </div>

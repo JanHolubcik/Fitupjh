@@ -14,7 +14,7 @@ export const DateSwitcher = ({
   const disabledButton =
     format(currentDate, "yyyy-MM-dd") === format(new Date(), "yyyy-MM-dd");
   return (
-    <Card className="w-52 mt-3">
+    <Card className="sm:w-56  mt-3 w-80 ">
       <CardBody className="flex flex-row items-center justify-between gap-1 py-2">
         <Button
           size="sm"

@@ -1,5 +1,6 @@
 import React from "react";
 import { Progress } from "@nextui-org/progress";
+import { useIsSm } from "@/app/constants/FunctionsHelper";
 
 type props = {
   label: string;
@@ -24,14 +25,14 @@ export const MacroProgressBar = ({
 }: props) => {
   const percentage = target > 0 ? Math.min((current / target) * 100, 100) : 0;
   const isOverTarget = current > target && target > 0;
-
+  const isSm = useIsSm();
   return (
     <div className="w-full p-1 ">
       <Progress
         label={label}
         value={percentage}
         color={isOverTarget ? "danger" : colorName}
-        size="md"
+        size={isSm ? "md" : "sm"}
         radius="full"
         showValueLabel={true}
         valueLabel={

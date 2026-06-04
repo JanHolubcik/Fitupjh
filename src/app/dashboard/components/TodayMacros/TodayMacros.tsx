@@ -1,4 +1,7 @@
-import { calculateRecommendedMacros } from "@/app/constants/FunctionsHelper";
+import {
+  calculateRecommendedMacros,
+  useIsSm,
+} from "@/app/constants/FunctionsHelper";
 import {
   Food,
   FoodType,
@@ -36,7 +39,7 @@ const macroConfig = [
 
 export const TodayMacros = ({ savedFood }: props) => {
   const { data } = useSession();
-
+  const isSm = useIsSm();
   const recommendedMacros = useMemo(
     () =>
       data?.user
@@ -112,8 +115,8 @@ export const TodayMacros = ({ savedFood }: props) => {
   }, [data?.user?.weight, data?.user?.height, savedFood]);
 
   return (
-    <Card className="w-full max-w-4xl mx-auto flex flex-col gap-4">
-      <CardBody className="grid  grid-cols-2 gap-2">
+    <Card className="w-full sm:max-w-4xl mx-auto flex flex-col gap-4 max-w-80">
+      <CardBody className="grid  sm:grid-cols-2 grid-cols-1  gap-2">
         {macroConfig.map((macro) => (
           <MacroProgressBar
             key={macro.key}

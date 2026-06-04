@@ -36,7 +36,7 @@ export const AccordionTimeFrame = ({ savedFood }: props) => {
       onSelectionChange={setSelectedKeys}
       showDivider={false}
       itemClasses={itemClasses}
-      className="p-2 flex flex-col gap-1 w-full bg-content1 rounded-2xl border border-default-100 shadow-md"
+      className="p-2 flex flex-col gap-1 sm:w-full w-80 bg-content1 rounded-2xl border border-default-100 shadow-md"
     >
       {timeOfDay.map((key) => {
         const active = isKeyActive(key);

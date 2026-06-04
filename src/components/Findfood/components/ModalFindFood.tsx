@@ -49,7 +49,6 @@ export const ModalFindFood = (props: props) => {
   const [calculatedCalories, setCalculatedCalories] = useState<number[]>([]);
 
   const [loading, setLoading] = useState<boolean>(false);
-  const [showYesNoToggle, setShowYesNoToggle] = useState<boolean>(false);
 
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 500, setLoading);

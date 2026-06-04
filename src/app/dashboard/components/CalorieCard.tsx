@@ -11,7 +11,7 @@ export const CalorieCard = (props: props) => {
 
   const color = caloriesSum > recommendedCaloriesValue ? "warning" : "danger";
   return (
-    <Card className="flex items-center justify-center bg-content1 shadow-lg w-72">
+    <Card className="flex items-center justify-center bg-content1 shadow-lg w-80 max-w-80">
       <CardBody className="flex justify-center items-center p-4">
         <CircularProgress
           classNames={{
@@ -25,7 +25,7 @@ export const CalorieCard = (props: props) => {
           size="lg"
           value={caloriesSum}
           color={color}
-          label={`${recommendedCaloriesValue - caloriesSum} Kcal remaining`}
+          label={`${(recommendedCaloriesValue - caloriesSum).toFixed(0)} Kcal remaining`}
           maxValue={recommendedCaloriesValue}
           showValueLabel={true}
         />

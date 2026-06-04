@@ -100,7 +100,7 @@ const NavbarComponent = () => {
       <NavbarContent justify="start" className="flex-grow-0">
         <NavbarMenuToggle className="sm:hidden text-white mr-2" />
         <NavbarBrand className="gap-5">
-          <Link href="/" className="gap-2">
+          <Link href="/" className="gap-2 hidden sm:flex">
             <p className="font-black text-xl text-white tracking-wider bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">
               FitUp
             </p>
@@ -148,6 +148,11 @@ const NavbarComponent = () => {
       </NavbarContent>
 
       <NavbarMenu className="bg-zinc-950/95 pt-6 gap-4">
+        <NavbarMenuItem>
+          <p className="font-black text-xl text-white tracking-wider bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">
+            FitUp
+          </p>
+        </NavbarMenuItem>
         {navigationProperties.map((item) => (
           <NavbarMenuItem key={item.id}>
             <Link

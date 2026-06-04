@@ -79,3 +79,21 @@ export const useDebounce = <T>(
 
   return debouncedValue;
 };
+
+export const useIsSm = () => {
+  const [isSm, setIsSm] = useState(false);
+
+  useEffect(() => {
+    // 640px is Tailwind's standard 'sm' breakpoint
+    const media = window.matchMedia("(min-width: 640px)");
+
+    setIsSm(media.matches);
+
+    const listener = (e: any) => setIsSm(e.matches);
+    media.addEventListener("change", listener);
+
+    return () => media.removeEventListener("change", listener);
+  }, []);
+
+  return isSm;
+};

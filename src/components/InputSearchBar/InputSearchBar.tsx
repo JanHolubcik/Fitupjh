@@ -87,7 +87,7 @@ export const InputSearchBar = () => {
   return (
     <div
       ref={containerRef}
-      className="relative flex items-center w-full max-w-full sm:max-w-[50rem]"
+      className="relative flex items-center w-full max-w-full min-w-72 sm:max-w-[50rem]"
     >
       <div className="flex-1">
         <Input
@@ -151,7 +151,7 @@ export const InputSearchBar = () => {
                 onOpen();
                 setIsOpen(false);
               }}
-              className="flex flex-row items-center first:rounded-t-xl last:rounded-b-xl justify-between gap-3 p-2 bg-zinc-900 border border-white/[0.02] hover:bg-white/[0.03] hover:border-white/5  transition-all duration-200 group hover:cursor-pointer"
+              className="flex flex-row items-center shadow-md first:rounded-t-xl last:rounded-b-xl justify-between gap-3 p-2 bg-zinc-900 border border-white/[0.02] hover:bg-white/[0.03] hover:border-white/5  transition-all duration-200 group hover:cursor-pointer"
             >
               <div className="flex items-center gap-3 flex-1 min-w-0">
                 <div className="aspect-square flex items-center justify-center bg-zinc-950/40 p-1 rounded-xl border border-white/5 shadow-inner group-hover:scale-102 transition-transform">
