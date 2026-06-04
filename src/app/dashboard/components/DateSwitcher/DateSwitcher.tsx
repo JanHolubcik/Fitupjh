@@ -1,21 +1,23 @@
+import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 import { Button, Card, CardBody } from "@nextui-org/react";
-import { format } from "date-fns";
+import { add, format } from "date-fns";
 import { FaArrowLeft, FaArrowRight, FaCalendarAlt } from "react-icons/fa";
 
-type props = {
-  currentDate: string;
-  setNewDateAndFetchFood: (n: number) => void;
-};
+export const DateSwitcher = () => {
+  const { currentDate, setNewDateAndGetFood } = useYourIntakeOperations();
 
-export const DateSwitcher = ({
-  currentDate,
-  setNewDateAndFetchFood,
-}: props) => {
+  const setNewDateAndFetchFood = (numberOfDays: number) => {
+    const date = add(currentDate, {
+      days: numberOfDays,
+    });
+
+    setNewDateAndGetFood(date);
+  };
   const disabledButton =
     format(currentDate, "yyyy-MM-dd") === format(new Date(), "yyyy-MM-dd");
   return (
-    <Card className="sm:w-56  mt-3 w-80 ">
-      <CardBody className="flex flex-row items-center justify-between gap-1 py-2">
+    <Card className="sm:w-56 w-80 ">
+      <CardBody className=" flex flex-row items-center justify-between gap-1 py-2">
         <Button
           size="sm"
           isIconOnly

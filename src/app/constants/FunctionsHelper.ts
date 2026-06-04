@@ -1,4 +1,4 @@
-import { foodType, timeOfDay } from "@/types/Types";
+import { FoodType, timeOfDay } from "@/types/Types";
 import { macros } from "@/types/Types";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 //readonly[("breakfast", "lunch", "dinner")];
@@ -6,7 +6,7 @@ export const capitalizeFirstLetter = (string: string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
-export const calculateCaloriesSum = (savedFood: foodType): number => {
+export const calculateCaloriesSum = (savedFood: FoodType): number => {
   let calorieSum = 0;
 
   timeOfDay.forEach((value) => {
@@ -96,4 +96,22 @@ export const useIsSm = () => {
   }, []);
 
   return isSm;
+};
+
+export const useIsMd = () => {
+  const [isMd, setIsMd] = useState(false);
+
+  useEffect(() => {
+    // 640px is Tailwind's standard 'sm' breakpoint
+    const media = window.matchMedia("(min-width: 768px)");
+
+    setIsMd(media.matches);
+
+    const listener = (e: any) => setIsMd(e.matches);
+    media.addEventListener("change", listener);
+
+    return () => media.removeEventListener("change", listener);
+  }, []);
+
+  return isMd;
 };

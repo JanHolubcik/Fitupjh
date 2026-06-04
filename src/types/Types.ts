@@ -1,25 +1,5 @@
 import { FoodClass } from "@/models/Food";
 
-export type foodType = {
-  breakfast: food;
-  lunch: food;
-  dinner: food;
-};
-
-export type food = {
-  id: number;
-  name: string;
-  calories: number;
-  amount: string;
-  fat: number;
-  protein: number;
-  sugar: number;
-  carbohydrates: number;
-  fiber: number;
-  salt: number;
-  imgUrl?: string;
-}[];
-
 export type ReturnTypeFood = FoodClass[] | undefined;
 
 export type macros = {
@@ -30,6 +10,16 @@ export type macros = {
   carbohydrates: number;
   fiber: number;
   salt: number;
+};
+
+export type macrosCapital = {
+  CALORIES: number;
+  FAT: number;
+  PROTEIN: number;
+  SUGAR: number;
+  CARBOHYDRATES: number;
+  FIBER: number;
+  SALT: number;
 };
 
 export type Food = {

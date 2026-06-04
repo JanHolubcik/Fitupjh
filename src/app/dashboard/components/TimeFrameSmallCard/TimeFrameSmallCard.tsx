@@ -9,6 +9,7 @@ import ImageFromURL from "@/components/ImageFromURL/ImageFromURL";
 import { useState } from "react";
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 import { EditFoodModal } from "@/components/EditFoodModal/EditFoodModal";
+import { getMacroInfo, type MacroType } from "@/app/constants/MacrosHelper";
 
 type props = {
   timeFrame: "breakfast" | "dinner" | "lunch";
@@ -52,7 +53,7 @@ export const TimeFrameSmallCard = (props: props) => {
             key={key.id}
           >
             <div className="flex items-center gap-3 flex-1 min-w-0">
-              <div className="aspect-square flex items-center justify-center bg-zinc-950/40 p-1 rounded-xl border border-white/5 shadow-inner group-hover:scale-102 transition-transform">
+              <div className="aspect-square flex flex-col items-center justify-center bg-zinc-950/40 p-1 rounded-xl border border-white/5 shadow-inner group-hover:scale-102 transition-transform">
                 <ImageFromURL
                   width={35}
                   height={35}
@@ -62,55 +63,50 @@ export const TimeFrameSmallCard = (props: props) => {
               </div>
 
               <div className="flex-1 min-w-0 flex flex-col justify-center">
-                <p className="font-bold text-xs sm:text-sm text-zinc-200 capitalize whitespace-nowrap overflow-hidden text-ellipsis w-16">
+                <p className="font-semibold text-xs sm:text-sm text-zinc-200 capitalize whitespace-nowrap overflow-hidden text-ellipsis w-16 sm:w-36">
                   {key.name}
                 </p>
+                <div className="sm:grid grid-cols-5 gap-1 self-start hidden ">
+                  {[
+                    { macro: "protein" as MacroType, value: key.protein },
+                    {
+                      macro: "carbohydrates" as MacroType,
+                      value: key.carbohydrates,
+                    },
+                    { macro: "fat" as MacroType, value: key.fat },
+                    { macro: "sugar" as MacroType, value: key.sugar },
+                    { macro: "fiber" as MacroType, value: key.fiber },
+                  ].map((item) => {
+                    const macroInfo = getMacroInfo(item.macro, item.value);
+                    return (
+                      <div
+                        className="w-[40px] text-center text-[8px]"
+                        key={item.macro}
+                      >
+                        <span
+                          className={`${macroInfo.text} ${macroInfo.bg} border-1 ${macroInfo.border} px-[1px] rounded-sm inline-block w-full`}
+                        >
+                          {macroInfo.label}:{" "}
+                          <span
+                            className={`${macroInfo.text} text-zinc-300 font-medium`}
+                          >
+                            {item.value.toFixed(1) || 0}g
+                          </span>
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-2.5 flex-shrink-0 pl-1 ">
-              <div className="md:visible hidden">
-                <span className="w-[40px] text-center text-[10px] font-semibold text-success-400">
-                  P:{" "}
-                  <span className="text-zinc-300 font-medium">
-                    {key.protein || 0}g
-                  </span>
-                </span>
-                <span className="text-zinc-800 font-normal text-[10px]">|</span>
-                <span className="w-[40px] text-center text-[10px] font-semibold text-warning-400">
-                  C:{" "}
-                  <span className="text-zinc-300 font-medium">
-                    {key.carbohydrates || 0}g
-                  </span>
-                </span>
-                <span className="text-zinc-800 font-normal text-[10px]">|</span>
-                <span className="w-[45px] text-center text-[10px] font-semibold text-pink-400">
-                  F:{" "}
-                  <span className="text-zinc-300 font-medium">
-                    {key.fat || 0}g
-                  </span>
-                </span>
-
-                {key.sugar ? (
-                  <>
-                    <span className="text-zinc-800 font-normal text-[10px]">
-                      |
-                    </span>
-                    <span className="w-[45px] text-center text-[10px] font-semibold text-purple-400">
-                      S:{" "}
-                      <span className="text-zinc-300 font-medium">
-                        {key.sugar}g
-                      </span>
-                    </span>
-                  </>
-                ) : null}
-              </div>
+            <div className="flex items-center gap-2.5 flex-shrink-0 pl-1 py-0.5 ">
               <div className="flex flex-col">
                 <span className="text-zinc-500 font-bold self-end text-[9px] sm:text-[10px] pr-1">
                   {key.amount}g
                 </span>
-                <span className="bg-primary-500/10 text-primary-400 px-2 py-0.5 rounded-md font-extrabold text-[10px] sm:text-[11px] tracking-wide border border-primary-500/10 shadow-sm">
-                  {key.calories} kcal
+                <span className="w-[75px] text-right bg-primary-500/10 text-primary-400 px-2 py-0.5 rounded-md font-extrabold text-[10px] sm:text-[11px] tracking-wide border border-primary-500/10 shadow-sm">
+                  {key.calories.toFixed(0)} kcal
                 </span>
               </div>
               <Button

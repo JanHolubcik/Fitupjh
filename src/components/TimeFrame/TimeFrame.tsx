@@ -7,6 +7,7 @@ import ImageFromURL from "../ImageFromURL/ImageFromURL";
 import { EditFoodModal, Food } from "../EditFoodModal/EditFoodModal";
 import { useState } from "react";
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
+import { getMacroInfo, type MacroType } from "@/app/constants/MacrosHelper";
 
 type Props = {
   timeOfDay: "breakfast" | "lunch" | "dinner";
@@ -44,7 +45,7 @@ const FindFood = (props: Props) => {
 
       <CardBody className="flex flex-col gap-1.5 p-2 sm:p-3 bg-zinc-950/10">
         {savedFood[props.timeOfDay].length !== 0 ? (
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-0.5">
             {savedFood[props.timeOfDay].map((key) => (
               <div
                 onClick={() => {
@@ -65,37 +66,33 @@ const FindFood = (props: Props) => {
                     </p>
 
                     <div className="flex flex-row items-center gap-2 text-[10px] sm:text-[11px] font-semibold mt-1.5 text-zinc-400">
-                      <span className="text-success-400">
-                        P:{" "}
-                        <span className="text-zinc-300 font-medium">
-                          {key.protein || 0}g
-                        </span>
-                      </span>
-                      <span className="text-zinc-800 font-normal">|</span>
-                      <span className="text-warning-400">
-                        C:{" "}
-                        <span className="text-zinc-300 font-medium">
-                          {key.carbohydrates || 0}g
-                        </span>
-                      </span>
-                      <span className="text-zinc-800 font-normal">|</span>
-                      <span className="text-pink-400">
-                        F:{" "}
-                        <span className="text-zinc-300 font-medium">
-                          {key.fat || 0}g
-                        </span>
-                      </span>
-                      {key.sugar ? (
-                        <>
-                          <span className="text-zinc-800 font-normal">|</span>
-                          <span className="text-purple-400">
-                            S:{" "}
-                            <span className="text-zinc-300 font-medium">
-                              {key.sugar}g
+                      {[
+                        { macro: "PROTEIN" as MacroType, value: key.protein },
+                        {
+                          macro: "CARBOHYDRATES" as MacroType,
+                          value: key.carbohydrates,
+                        },
+                        { macro: "FAT" as MacroType, value: key.fat },
+                        { macro: "SUGAR" as MacroType, value: key.sugar },
+                        { macro: "FIBER" as MacroType, value: key.fiber },
+                      ].map((item, idx, arr) => {
+                        const macroInfo = getMacroInfo(item.macro, item.value);
+                        return (
+                          <span key={item.macro}>
+                            <span className={macroInfo.text}>
+                              {macroInfo.label}:{" "}
+                              <span className="text-zinc-300 font-medium">
+                                {item.value.toFixed(2) || 0}g
+                              </span>
                             </span>
+                            {idx < arr.length - 1 && (
+                              <span className="text-zinc-800 font-normal">
+                                |
+                              </span>
+                            )}
                           </span>
-                        </>
-                      ) : null}
+                        );
+                      })}
                     </div>
                   </div>
                 </div>

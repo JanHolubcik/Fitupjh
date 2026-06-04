@@ -26,8 +26,8 @@ const ImageFromURL = ({
       }
       // This forces NextUI to scale the structural image element properly inside its wrapper frame
       classNames={{
-        img: "object-contain w-full h-full",
-        wrapper: "bg-zinc-800/20", // Optional: gives a nice subtle backdrop if images have transparency
+        img: "object-contain ",
+        wrapper: "bg-zinc-800/20",
       }}
     />
   );
