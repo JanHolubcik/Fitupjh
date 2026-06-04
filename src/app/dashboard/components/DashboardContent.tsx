@@ -11,6 +11,13 @@ import { TodayMacros } from "./TodayMacros/TodayMacros";
 import MyGraph from "@/app/myprogress/MyGraph";
 import { DateSwitcher } from "./DateSwitcher/DateSwitcher";
 import { add } from "date-fns";
+import {
+  DateSwitcherSkeleton,
+  CalorieCardSkeleton,
+  TodayMacrosSkeleton,
+  AccordionTimeFrameSkeleton,
+  MyGraphSkeleton,
+} from "./Skeletons";
 
 export const DashboardContent = () => {
   const { data } = useSession();
@@ -28,8 +35,24 @@ export const DashboardContent = () => {
 
     setNewDateAndGetFood(date);
   };
+  if (!isFetched)
+    return (
+      <div className="flex flex-col gap-3 mt-3 items-center max-w-2xl w-full">
+        <DateSwitcherSkeleton />
+
+        <div className="flex sm:flex-row flex-col gap-3 w-full">
+          <CalorieCardSkeleton />
+          <TodayMacrosSkeleton />
+        </div>
+
+        <AccordionTimeFrameSkeleton />
+
+        <MyGraphSkeleton />
+      </div>
+    );
+
   return (
-    <div className="flex flex-col gap-3  mt-3  items-center max-w-2xl">
+    <div className="flex flex-col gap-3  mt-3  items-center max-w-2xl w-full">
       {/* <h2 className="text-xl font-bold text-foreground mb-2">Daily Progress</h2> */}
 
       <DateSwitcher></DateSwitcher>

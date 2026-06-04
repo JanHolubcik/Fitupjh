@@ -1,5 +1,6 @@
 import { capitalizeFirstLetter, useIsSm } from "../constants/FunctionsHelper";
 import { ChartOptions, ChartData } from "chart.js";
+
 type props = {
   labels: string[];
   dataValues: number[];
@@ -7,13 +8,16 @@ type props = {
   selectedMacro: string;
 };
 
-const getMacroColor = (macro: string) => {
+export const getMacroColor = (macro: string) => {
   const lower = macro.toLowerCase();
   if (lower.includes("calor")) return { bar: "#f97316", over: "#f43f5e" };
-  if (lower.includes("protein")) return { bar: "#10b981", over: "#f43f5e" };
-  if (lower.includes("carb")) return { bar: "#c084fc", over: "#f43f5e" };
-  if (lower.includes("fat")) return { bar: "#fb7185", over: "#e11d48" };
-  return { bar: "#60a5fa", over: "#f43f5e" };
+  if (lower.includes("protein")) return { bar: "#3b82f6", over: "#f43f5e" };
+  if (lower.includes("carb")) return { bar: "#f59e0b", over: "#f43f5e" };
+  if (lower.includes("fat")) return { bar: "#8b5cf6", over: "#f43f5e" };
+  if (lower.includes("sugar")) return { bar: "#ec4899", over: "#f43f5e" };
+  if (lower.includes("fiber")) return { bar: "#10b981", over: "#f43f5e" };
+
+  return { bar: "#ec4899", over: "#f43f5e" };
 };
 
 const getUnit = (macro: string) => {
@@ -54,20 +58,78 @@ export const useChartsHooks = ({
     : 0;
 
   const data: ChartData<"bar" | "line", number[], string> = {
-    labels: displayLabels, // Use the responsive filtered labels
+    labels: displayLabels,
     datasets: [
       {
         type: "line" as const,
         label: `${capitalizedMacro} intake`,
-        data: displayDataValues, // Use the responsive filtered data
-        backgroundColor: displayDataValues.map((v) =>
-          v > recommendedValue ? theme.over + "b3" : theme.bar + "b3",
-        ),
-        hoverBackgroundColor: displayDataValues.map((v) =>
+        data: displayDataValues,
+
+        // 1. Dynamic Fill Color (Red above limit, Macro color below)
+        backgroundColor: (context: any) => {
+          const chart = context.chart;
+          const { ctx, chartArea, scales } = chart;
+          if (!chartArea) return theme.bar + "80"; // Fallback before render
+
+          const yLimit = scales.y.getPixelForValue(recommendedValue);
+          const gradient = ctx.createLinearGradient(
+            0,
+            chartArea.top,
+            0,
+            chartArea.bottom,
+          );
+
+          const height = chartArea.bottom - chartArea.top;
+          let limitStop = (yLimit - chartArea.top) / height;
+          limitStop = Math.max(0, Math.min(1, limitStop)); // Keep between 0 and 1
+
+          // Above the limit (Red)
+          gradient.addColorStop(0, theme.over + "80");
+          gradient.addColorStop(limitStop, theme.over + "80");
+
+          // Below the limit (Macro Color)
+          gradient.addColorStop(limitStop, theme.bar + "80");
+          gradient.addColorStop(1, theme.bar + "1A"); // Fades out nicely at the bottom
+
+          return gradient;
+        },
+
+        // 2. Dynamic Line Color (Matches the fill logic)
+        borderColor: (context: any) => {
+          const chart = context.chart;
+          const { ctx, chartArea, scales } = chart;
+          if (!chartArea) return theme.bar;
+
+          const yLimit = scales.y.getPixelForValue(recommendedValue);
+          const gradient = ctx.createLinearGradient(
+            0,
+            chartArea.top,
+            0,
+            chartArea.bottom,
+          );
+
+          const height = chartArea.bottom - chartArea.top;
+          let limitStop = (yLimit - chartArea.top) / height;
+          limitStop = Math.max(0, Math.min(1, limitStop));
+
+          gradient.addColorStop(0, theme.over);
+          gradient.addColorStop(limitStop, theme.over);
+          gradient.addColorStop(limitStop, theme.bar);
+          gradient.addColorStop(1, theme.bar);
+
+          return gradient;
+        },
+
+        // 3. Keep the dots colored appropriately based on their value
+        pointBackgroundColor: displayDataValues.map((v) =>
           v > recommendedValue ? theme.over : theme.bar,
         ),
-        borderColor: theme.bar,
+        pointBorderColor: displayDataValues.map((v) =>
+          v > recommendedValue ? theme.over : theme.bar,
+        ),
+
         fill: true,
+        tension: 0.1, // Optional: slightly smooths the line
       },
       {
         type: "line" as const,
@@ -77,7 +139,7 @@ export const useChartsHooks = ({
         borderWidth: 1.5,
         pointRadius: 0,
         pointHoverRadius: 0,
-        borderDash: [5, 5],
+        borderDash: [10, 10],
         tension: 0,
       },
     ],

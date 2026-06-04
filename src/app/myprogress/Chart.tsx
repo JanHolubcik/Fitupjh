@@ -15,6 +15,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Spinner,
   useDisclosure,
 } from "@nextui-org/react";
 import {
@@ -41,6 +42,7 @@ import { RootState } from "@/store/store";
 import { GenerativeAIOptions } from "@/lib/queriesOptions/GenerativeAIOptions";
 import { useChartsHooks } from "./useChartHooks";
 import { capitalizeFirstLetter } from "../constants/FunctionsHelper";
+import { MACRO_TAILWIND_THEME } from "../constants/MacrosHelper";
 
 ChartJS.register(
   CategoryScale,
@@ -122,7 +124,6 @@ const Chart = ({
   macroDatasets,
   setSelectedMacro,
   emptyDays,
-  messageForSelectedMacro,
 }: ChartProps) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const {
@@ -154,28 +155,40 @@ const Chart = ({
     <div className=" flex flex-col gap-3">
       <Card className="">
         <CardBody>
-          <div className="flex flex-row w-full items-baseline justify-between">
-            <h1 className="pl-1 py-1  text-sm font-semibold ">
-              {capitalizedMacro} intake day {displayDataValues.length} day
-              {displayDataValues.length > 1 ? "s" : ""}{" "}
-            </h1>
-            <div className="flex items-center gap-1.5">
-              <p className="text-xs text-default-400 ">
-                Ask gemini about your intake
+          <div className="flex flex-row w-full items-center justify-between gap-4">
+            <div className="flex-1">
+              <h1
+                className={`text-base sm:text-lg font-bold bg-gradient-to-r bg-clip-text text-transparent ${
+                  MACRO_TAILWIND_THEME[
+                    selectedMacro as keyof typeof MACRO_TAILWIND_THEME
+                  ].color
+                }`}
+              >
+                {capitalizedMacro} Intake
+              </h1>
+              <p className="text-xs text-zinc-400 mt-1">
+                {displayDataValues.length} day
+                {displayDataValues.length > 1 ? "s" : ""} tracked
               </p>
+            </div>
+            <div className="flex items-center gap-3  rounded-lg p-2.5">
+              <div className="hidden sm:flex flex-col items-end">
+                <p className="text-xs font-medium text-white">Get insights</p>
+                <p className="text-[10px] text-zinc-400">powered by Gemini</p>
+              </div>
               <Button
                 isIconOnly
-                variant="flat"
-                className="w-15 h-10 my-2"
+                variant="light"
+                className="w-10 h-10 min-w-10 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 rounded-lg transition-all duration-200"
                 onPress={() => {
                   onOpen();
                   mutateAsync();
                 }}
               >
                 <Image
-                  onClick={() => {}}
-                  className="w-10 h-10 m-2 rounded-none"
+                  className="w-6 h-6 rounded-none"
                   src={"/gemini.svg"}
+                  alt="Gemini"
                 />
               </Button>
             </div>
@@ -313,7 +326,7 @@ const Chart = ({
         classNames={{
           base: "bg-zinc-900/95 border border-white/5",
           header:
-            "border-b border-white/5 bg-gradient-to-r from-emerald-500/10 to-transparent py-4",
+            "border-b border-white/5 bg-gradient-to-r from-blue-500/10 to-transparent py-4",
           body: "py-6",
           closeButton: "text-zinc-400 hover:text-white hover:bg-white/5",
         }}
@@ -322,18 +335,19 @@ const Chart = ({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                <div className="flex items-center gap-2">
-                  <span className="text-emerald-400">✨</span>
-                  <span className="text-lg font-bold text-white">
-                    Insights from Gemini
-                  </span>
+                <div className="flex items-center justify-between gap-2">
+                  <Image
+                    className="w-15 h-6 rounded-none"
+                    src={"/gemini.svg"}
+                    alt="Gemini"
+                  />
                 </div>
               </ModalHeader>
               <ModalBody className="max-h-[60vh] overflow-y-auto">
                 {isPending ? (
                   <div className="flex items-center justify-center py-8">
                     <div className="flex flex-col items-center gap-3">
-                      <div className="w-8 h-8 border-2 border-emerald-400/30 border-t-emerald-400 rounded-full animate-spin"></div>
+                      <Spinner color="primary" />
                       <p className="text-sm text-zinc-400">
                         Generating insights...
                       </p>
@@ -343,7 +357,7 @@ const Chart = ({
                   <Markdown
                     components={{
                       strong: ({ children }) => (
-                        <strong className="text-emerald-400 font-bold">
+                        <strong className="text-blue-400 font-extrabold">
                           {children}
                         </strong>
                       ),
@@ -353,12 +367,12 @@ const Chart = ({
                         </p>
                       ),
                       li: ({ children }) => (
-                        <li className="mb-2 text-sm leading-relaxed text-zinc-200 ml-5">
+                        <li className="mb-2 text-sm leading-relaxed text-zinc-200 ml-5 m-2 list-disc">
                           {children}
                         </li>
                       ),
                       ul: ({ children }) => (
-                        <ul className="mb-3 list-disc">{children}</ul>
+                        <ul className="mb-3 list-decimal ">{children}</ul>
                       ),
                       h1: ({ children }) => (
                         <h1 className="text-lg font-bold text-white mb-3 mt-2">
