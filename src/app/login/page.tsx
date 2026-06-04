@@ -2,19 +2,36 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Link, Input, Spinner } from "@nextui-org/react";
+import {
+  Link,
+  Input,
+  Spinner,
+  Card,
+  CardHeader,
+  CardBody,
+} from "@nextui-org/react";
 import { signIn } from "next-auth/react";
 import PulsingButton from "@/components/PulsingButton/PulsingButton";
 
+const customInputStyles = {
+  inputWrapper:
+    "bg-zinc-800/50 border-transparent transition-all duration-200 ring-1 ring-transparent focus-within:ring-[#00FFAA] focus-within:ring-2 shadow-md focus-within:shadow-[#00FFAA]/20 hover:bg-zinc-800",
+  input: "text-white",
+  label: "text-zinc-400 group-focus-within:text-[#00FFAA] transition-colors",
+};
+
 export default function Login() {
   const [error, setError] = useState("");
-  const router = useRouter(); // after succesfull login we will route to yourintake
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setError("");
 
     const formData = new FormData(event.currentTarget);
-    //next auth logging to session
+
+    // next auth logging to session
     setLoading(true);
     const res = await signIn("credentials", {
       email: formData.get("email"),
@@ -22,6 +39,7 @@ export default function Login() {
       redirect: false,
     });
     setLoading(false);
+
     if (res?.error) {
       setError(res.error as string);
     }
@@ -31,67 +49,72 @@ export default function Login() {
     }
   };
 
-  if (loading) {
-    return (
-      <section className="w-full h-screen flex flex-col items-center justify-center">
-        <div className="bg-zinc-900 rounded-2xl   p-10 flex flex-col ">
-          <p className="m-1 ">Please wait while we log you in...</p>
-          <Spinner className="m-3 self-center" color="current"></Spinner>
-        </div>
-      </section>
-    );
-  }
-
   return (
-    <section className="dark mt-20 flex flex-col items-center justify-start sm:p-10 p-6">
-      <form
-        className="p-6 w-full max-w-[400px] flex flex-col justify-between items-center gap-2 
-        bg-zinc-900 rounded-2xl"
-        onSubmit={handleSubmit}
-      >
-        <h1 className="mb-5 w-full text-2xl font-bold">Sign In</h1>
-        <label className="w-full text-sm ml-3 pb-1">Email</label>
-        <Input
-          type="email"
-          placeholder="Email"
-          classNames={{
-            inputWrapper:
-              "transition-all duration-200 ring-1 ring-transparent focus-within:ring-[#00FFAA] focus-within:ring-2 shadow-md focus-within:shadow-[#00FFAA]/50",
-            input: "text-white ",
-            label: "text-white",
-          }}
-          name="email"
-        />
-        <label className="w-full text-sm ml-3 pt-1 pb-1">Password</label>
+    <main className="dark flex flex-col items-center justify-center min-h-screen sm:p-10 p-6">
+      <Card className="w-full max-w-[450px] p-4 bg-zinc-900/80 backdrop-blur-md border border-zinc-800 shadow-2xl">
+        <CardHeader className="flex flex-col items-center justify-center pt-6 pb-2">
+          <h1 className="text-3xl font-extrabold tracking-tight text-white">
+            Welcome Back
+          </h1>
+          <p className="text-sm text-zinc-400 mt-2">Sign in to your account.</p>
+        </CardHeader>
 
-        <Input
-          type="password"
-          placeholder="Password"
-          classNames={{
-            inputWrapper:
-              "transition-all duration-200 ring-1 ring-transparent focus-within:ring-[#00FFAA] focus-within:ring-2 shadow-md focus-within:shadow-[#00FFAA]/50",
-            input: "text-white",
-            label: "text-white",
-          }}
-          name="password"
-        />
-        {error && <div className="text-red-600">{error}</div>}
+        <CardBody className="flex flex-col gap-4">
+          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+            <Input
+              type="email"
+              label="Email Address"
+              name="email"
+              classNames={customInputStyles}
+              isDisabled={loading}
+              required
+            />
 
-        <PulsingButton
-          className="self-center w-32 mt-5"
-          type="submit"
-          isIconOnly
-          noPulsing
-        >
-          Sign In
-        </PulsingButton>
-        <Link
-          href="/signup"
-          className="text-sm text-[#888] transition duration-150 ease hover:text-white hover:scale-110"
-        >
-          Do not have an account?
-        </Link>
-      </form>
-    </section>
+            <Input
+              type="password"
+              label="Password"
+              name="password"
+              classNames={customInputStyles}
+              isDisabled={loading}
+              required
+            />
+
+            {error && (
+              <div className="bg-red-500/10 border border-red-500/50 text-red-400 text-sm font-medium rounded-lg p-3 text-center">
+                {error}
+              </div>
+            )}
+
+            <PulsingButton
+              className="w-full mt-4 font-bold text-lg h-12"
+              type="submit"
+              disabled={loading}
+              noPulsing
+            >
+              {loading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <Spinner size="sm" color="current" />
+                  <span>Signing in...</span>
+                </div>
+              ) : (
+                "Sign In"
+              )}
+            </PulsingButton>
+
+            <div className="text-center mt-4">
+              <span className="text-sm text-zinc-400">
+                Don't have an account?{" "}
+              </span>
+              <Link
+                href="/signup"
+                className="text-sm font-semibold text-[#00FFAA] hover:text-[#00FFAA]/80 transition-colors"
+              >
+                Sign up
+              </Link>
+            </div>
+          </form>
+        </CardBody>
+      </Card>
+    </main>
   );
 }

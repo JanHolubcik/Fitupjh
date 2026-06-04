@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+
 import {
   Image,
   Card,
@@ -9,223 +10,220 @@ import {
   CardHeader,
   Input,
   Link,
-  Spinner,
   Tooltip,
+  Spinner,
 } from "@nextui-org/react";
 import { FaInfoCircle } from "react-icons/fa";
 import PulsingButton from "@/components/PulsingButton/PulsingButton";
+import { signupSchema } from "@/lib/validationShemas/signupValidationSchema";
+
+const customInputStyles = {
+  inputWrapper:
+    "bg-zinc-800/50 border-transparent transition-all duration-200 ring-1 ring-transparent focus-within:ring-[#00FFAA] focus-within:ring-2 shadow-md focus-within:shadow-[#00FFAA]/20 hover:bg-zinc-800",
+  input: "text-white",
+  label: "text-zinc-400 group-focus-within:text-[#00FFAA] transition-colors",
+};
+
+const InfoTooltip = () => (
+  <Tooltip
+    showArrow
+    placement="top-end"
+    content={
+      <div className="p-2 max-w-64">
+        <div className="flex justify-center mb-2">
+          <Image
+            className="object-contain"
+            alt="Info"
+            src="eplaining_owl.png"
+            width={70}
+            height={70}
+          />
+        </div>
+        <h1 className="text-center font-bold mb-1 text-sm">
+          Why do we need this?
+        </h1>
+        <p className="text-center text-xs text-zinc-300">
+          Knowing your weight, height, and goal helps us accurately calculate
+          your daily macros.
+        </p>
+      </div>
+    }
+  >
+    <button type="button" className="focus:outline-none" tabIndex={-1}>
+      <FaInfoCircle className="text-zinc-500 hover:text-white transition-colors" />
+    </button>
+  </Tooltip>
+);
 
 export default function Signup() {
-  const [username, setUsername] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [weight, setWeight] = useState("");
-  const [height, setHeight] = useState("");
-  const [error, setError] = useState("");
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
+  const [formData, setFormData] = useState({
+    username: "",
+    userEmail: "",
+    password: "",
+    height: "",
+    weight: "",
+  });
 
-    const res = await fetch("/api/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username,
-        userEmail,
-        password,
-        weight,
-        height,
-      }),
-    });
-    setLoading(true);
-    const data = await res.json();
-
-    if (res.ok) {
-      setError("");
-      router.push("/login"); // Redirect to login page after successful signup
-      setLoading(false);
-    } else {
-      setError(data.error);
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (fieldErrors[e.target.name]) {
+      setFieldErrors({ ...fieldErrors, [e.target.name]: [] });
     }
   };
 
-  if (loading) {
-    return (
-      <section className="w-full h-screen flex flex-col items-center justify-center">
-        <div className="bg-zinc-900 rounded-2xl   p-10 flex flex-col ">
-          <p className="m-1 ">Please wait...</p>
-          <Spinner className="m-3 self-center" color="current"></Spinner>
-        </div>
-      </section>
-    );
-  }
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setFieldErrors({});
+
+    const validationResult = signupSchema.safeParse(formData);
+
+    if (!validationResult.success) {
+      const mappedErrors = validationResult.error.flatten().fieldErrors;
+      setFieldErrors(mappedErrors as Record<string, string[]>);
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(validationResult.data),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        router.push("/login");
+      } else {
+        setError(data.error || "Something went wrong during signup.");
+        setLoading(false);
+      }
+    } catch (err) {
+      setError("Network error. Please try again.");
+      setLoading(false);
+    }
+  };
 
   return (
-    <main className="dark flex flex-col items-center justify-start sm:p-10 p-6">
-      <Card className="max-w-[500px] min-w-[400px] p-2 mt-5">
-        <CardHeader className="flex flex-col items-center bg-zinc-900">
-          <h1 className="text-left mt-2 w-full text-2xl font-bold">Sign up!</h1>
+    <main className="dark flex flex-col items-center justify-center min-h-screen sm:p-10 p-6">
+      <Card className="w-full max-w-[450px] p-4 bg-zinc-900/80 backdrop-blur-md border border-zinc-800 shadow-2xl">
+        <CardHeader className="flex flex-col items-center justify-center pt-6 pb-2">
+          <h1 className="text-3xl font-extrabold tracking-tight text-white">
+            Create Account
+          </h1>
+          <p className="text-sm text-zinc-400 mt-2">
+            Start tracking your macros today.
+          </p>
         </CardHeader>
-        <CardBody className="bg-zinc-900 flex flex-col">
-          <form className="flex flex-col" onSubmit={handleSubmit}>
-            <p className="m-1 ml-2 mt-4">User name </p>
+
+        <CardBody className="flex flex-col gap-4">
+          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <Input
-              classNames={{
-                inputWrapper:
-                  "transition-all duration-200 ring-1 ring-transparent focus-within:ring-[#00FFAA] focus-within:ring-2 shadow-md focus-within:shadow-[#00FFAA]/50",
-                input: "text-white ",
-                label: "text-white",
-              }}
+              name="username"
+              label="Username"
+              classNames={customInputStyles}
               type="text"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-            <p className="m-1 ml-2 mt-4">User email </p>
-            <Input
-              classNames={{
-                inputWrapper:
-                  "transition-all duration-200 ring-1 ring-transparent focus-within:ring-[#00FFAA] focus-within:ring-2 shadow-md focus-within:shadow-[#00FFAA]/50",
-                input: "text-white ",
-                label: "text-white",
-              }}
-              type="email"
-              placeholder="Email"
-              value={userEmail}
-              onChange={(e) => setUserEmail(e.target.value)}
-              required
-            />
-            <p className="m-1 ml-2 mt-4">User password </p>
-            <Input
-              classNames={{
-                inputWrapper:
-                  "transition-all duration-200 ring-1 ring-transparent focus-within:ring-[#00FFAA] focus-within:ring-2 shadow-md focus-within:shadow-[#00FFAA]/50",
-                input: "text-white ",
-                label: "text-white",
-              }}
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <div className="flex flex-row">
-              <span className="m-1 ml-2 mt-4">Height</span>{" "}
-              <Tooltip
-                showArrow
-                content={
-                  <div className="p-1 m-1 max-w-64">
-                    <div className="flex justify-center">
-                      <Image
-                        className="object-contain"
-                        alt="Info"
-                        src="eplaining_owl.png"
-                        width={90}
-                        height={90}
-                      />
-                    </div>
-                    <h1 className="bold text-center font-bold  mb-1 text-b">
-                      Why do we need this information?
-                    </h1>
-                    <div className="m-1 self-center ">
-                      <span className="ml-0 ">
-                        Knowing your weight, height and goal helps us determine
-                        your macros for the day.
-                      </span>
-                    </div>
-                  </div>
-                }
-              >
-                <div className="m-0 gap-0 p-0  bg-transparent cursor-default">
-                  <FaInfoCircle className=" mt-5 "></FaInfoCircle>
-                </div>
-              </Tooltip>
-            </div>
-            <Input
-              classNames={{
-                inputWrapper:
-                  "transition-all duration-200 ring-1 ring-transparent focus-within:ring-[#00FFAA] focus-within:ring-2 shadow-md focus-within:shadow-[#00FFAA]/50",
-                input: "text-white ",
-                label: "text-white",
-              }}
-              type="number"
-              min={0}
-              max={250}
-              placeholder="Height"
-              value={height}
-              onChange={(e) => setHeight(e.target.value)}
-              required
-            />
-            <div className="flex flex-row">
-              <span className="m-1 ml-2 mt-4">Weight</span>{" "}
-              <Tooltip
-                showArrow
-                content={
-                  <div className="p-1 m-1 max-w-64">
-                    <div className="flex justify-center">
-                      <Image
-                        className="object-contain"
-                        alt="Info"
-                        src="eplaining_owl.png"
-                        width={90}
-                        height={90}
-                      />
-                    </div>
-                    <h1 className="bold text-center font-bold  mb-1 text-b">
-                      Why do we need this information?
-                    </h1>
-                    <div className="m-1 self-center ">
-                      <span className="ml-0 ">
-                        Knowing your weight, height and goal helps us determine
-                        your macros for the day.
-                      </span>
-                    </div>
-                  </div>
-                }
-              >
-                <div className="m-0 gap-0 p-0  bg-transparent cursor-default">
-                  <FaInfoCircle className=" mt-5 "></FaInfoCircle>
-                </div>
-              </Tooltip>
-            </div>
-            <Input
-              classNames={{
-                inputWrapper:
-                  "transition-all duration-200 ring-1 ring-transparent focus-within:ring-[#00FFAA] focus-within:ring-2 shadow-md focus-within:shadow-[#00FFAA]/50",
-                input: "text-white ",
-                label: "text-white",
-              }}
-              type="number"
-              placeholder="Weight"
-              min={0}
-              max={400}
-              value={weight}
-              onChange={(e) => setWeight(e.target.value)}
-              required
+              value={formData.username}
+              onChange={handleChange}
+              isInvalid={!!fieldErrors.username}
+              errorMessage={fieldErrors.username?.[0]}
+              isDisabled={loading}
             />
 
+            <Input
+              name="userEmail"
+              label="Email Address"
+              classNames={customInputStyles}
+              type="email"
+              value={formData.userEmail}
+              onChange={handleChange}
+              isInvalid={!!fieldErrors.userEmail}
+              errorMessage={fieldErrors.userEmail?.[0]}
+              isDisabled={loading}
+            />
+
+            <Input
+              name="password"
+              label="Password"
+              classNames={customInputStyles}
+              type="password"
+              value={formData.password}
+              onChange={handleChange}
+              isInvalid={!!fieldErrors.password}
+              errorMessage={fieldErrors.password?.[0]}
+              isDisabled={loading}
+            />
+
+            {/* Grouped Height and Weight in a row */}
+            <div className="flex flex-row gap-4">
+              <Input
+                name="height"
+                label="Height (cm)"
+                classNames={customInputStyles}
+                type="number"
+                value={formData.height}
+                onChange={handleChange}
+                isInvalid={!!fieldErrors.height}
+                errorMessage={fieldErrors.height?.[0]}
+                endContent={<InfoTooltip />}
+                isDisabled={loading}
+              />
+
+              <Input
+                name="weight"
+                label="Weight (kg)"
+                classNames={customInputStyles}
+                type="number"
+                value={formData.weight}
+                onChange={handleChange}
+                isInvalid={!!fieldErrors.weight}
+                errorMessage={fieldErrors.weight?.[0]}
+                endContent={<InfoTooltip />}
+                isDisabled={loading}
+              />
+            </div>
+
+            {error && (
+              <div className="bg-red-500/10 border border-red-500/50 text-red-400 text-sm font-medium rounded-lg p-3 text-center">
+                {error}
+              </div>
+            )}
+
             <PulsingButton
-              className="self-center w-32 mt-5"
+              className="w-full mt-4 font-bold text-lg h-12"
               type="submit"
-              isIconOnly
+              disabled={loading}
             >
-              <p>Sign up!</p>
+              {loading ? (
+                <div className="flex items-center gap-2">
+                  <Spinner size="sm" color="current" />
+                  <span>Creating account...</span>
+                </div>
+              ) : (
+                "Sign Up"
+              )}
             </PulsingButton>
-            <Link
-              href="/login"
-              className="text-sm self-center mt-2 text-[#888] transition duration-150 ease hover:text-white hover:scale-110"
-            >
-              Already have an account?
-            </Link>
+
+            <div className="text-center mt-4">
+              <span className="text-sm text-zinc-400">
+                Already have an account?{" "}
+              </span>
+              <Link
+                href="/login"
+                className="text-sm font-semibold text-[#00FFAA] hover:text-[#00FFAA]/80 transition-colors"
+              >
+                Log in
+              </Link>
+            </div>
           </form>
-          {error && (
-            <div className="text-red-600 text-center pt-5">{error}</div>
-          )}
         </CardBody>
       </Card>
     </main>

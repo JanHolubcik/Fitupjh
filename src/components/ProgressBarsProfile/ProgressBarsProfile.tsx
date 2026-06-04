@@ -2,7 +2,7 @@
 
 import { calculateRecommendedMacros } from "@/app/constants/FunctionsHelper";
 import { GET_FOOD } from "@/app/graphql/queries";
-import { FoodType, foodType } from "@/types/Types";
+import { FoodType } from "@/types/Types";
 import { useQuery } from "@apollo/client/react";
 import { Progress } from "@nextui-org/react";
 import { format } from "date-fns";
@@ -126,16 +126,38 @@ const ProgressBarsProfile = (props: Value) => {
   }, [user?.weight, user?.height, savedFood, formattedDate]);
 
   return (
-    <div className="flex flex-col min-w-96">
-      <div className="flex flex-row  min-w-96">
+    <div className="flex flex-col w-full gap-6">
+      <div className="w-full bg-default-50 rounded-2xl p-4">
         <Progress
-          label="Protein"
+          label="Calories"
           showValueLabel
           valueLabel={
-            calculatedMacros?.protein +
-            "/" +
-            recommendedDailyMacros?.protein +
-            " g"
+            <span className="font-semibold text-foreground">
+              {calculatedMacros?.calories} <span className="text-default-400 font-normal text-small">/ {recommendedDailyMacros?.calories} Kcal</span>
+            </span>
+          }
+          size="md"
+          value={calculatedMacros?.calories}
+          maxValue={recommendedDailyMacros?.calories}
+          color={
+            calculatedMacros &&
+            recommendedDailyMacros &&
+            calculatedMacros?.calories > recommendedDailyMacros?.calories
+              ? "danger"
+              : "primary"
+          }
+          className="w-full"
+        />
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6 w-full">
+        <Progress
+          label={<span className="font-medium text-default-600">Protein</span>}
+          showValueLabel
+          valueLabel={
+            <span className="text-small">
+              <span className="font-semibold">{calculatedMacros?.protein}</span> <span className="text-default-400">/ {recommendedDailyMacros?.protein} g</span>
+            </span>
           }
           color={
             calculatedMacros &&
@@ -147,14 +169,16 @@ const ProgressBarsProfile = (props: Value) => {
           size="sm"
           value={calculatedMacros?.protein}
           maxValue={recommendedDailyMacros?.protein}
-          className="max-w-md m-2 text-xs"
+          className="w-full"
         />
         <Progress
-          label="Fat"
+          label={<span className="font-medium text-default-600">Fat</span>}
           showValueLabel
           value={calculatedMacros?.fat}
           valueLabel={
-            calculatedMacros?.fat + "/" + recommendedDailyMacros?.fat + " g"
+            <span className="text-small">
+              <span className="font-semibold">{calculatedMacros?.fat}</span> <span className="text-default-400">/ {recommendedDailyMacros?.fat} g</span>
+            </span>
           }
           maxValue={recommendedDailyMacros?.fat}
           color={
@@ -165,17 +189,17 @@ const ProgressBarsProfile = (props: Value) => {
               : "primary"
           }
           size="sm"
-          className="max-w-md m-2"
+          className="w-full"
         />
-      </div>
-      <div className="flex flex-row">
         <Progress
-          label="Sugar"
+          label={<span className="font-medium text-default-600">Sugar</span>}
           showValueLabel
           value={calculatedMacros?.sugar}
           maxValue={recommendedDailyMacros?.sugar}
           valueLabel={
-            calculatedMacros?.sugar + "/" + recommendedDailyMacros?.sugar + " g"
+            <span className="text-small">
+              <span className="font-semibold">{calculatedMacros?.sugar}</span> <span className="text-default-400">/ {recommendedDailyMacros?.sugar} g</span>
+            </span>
           }
           size="sm"
           color={
@@ -185,16 +209,15 @@ const ProgressBarsProfile = (props: Value) => {
               ? "danger"
               : "primary"
           }
-          className="max-w-md m-2"
+          className="w-full"
         />
         <Progress
-          label="Carbohy..."
+          label={<span className="font-medium text-default-600">Carbs</span>}
           showValueLabel
           valueLabel={
-            calculatedMacros?.carbohydrates +
-            "/" +
-            recommendedDailyMacros?.carbohydrates +
-            " g"
+            <span className="text-small">
+              <span className="font-semibold">{calculatedMacros?.carbohydrates}</span> <span className="text-default-400">/ {recommendedDailyMacros?.carbohydrates} g</span>
+            </span>
           }
           size="sm"
           color={
@@ -207,16 +230,16 @@ const ProgressBarsProfile = (props: Value) => {
           }
           value={calculatedMacros?.carbohydrates ?? 0}
           maxValue={recommendedDailyMacros?.carbohydrates}
-          className="max-w-md m-2"
+          className="w-full"
         />
-      </div>
-      <div className="flex flex-row">
         <Progress
-          label="Fiber"
+          label={<span className="font-medium text-default-600">Fiber</span>}
           showValueLabel
           value={calculatedMacros?.fiber}
           valueLabel={
-            calculatedMacros?.fiber + "/" + recommendedDailyMacros?.fiber + " g"
+            <span className="text-small">
+              <span className="font-semibold">{calculatedMacros?.fiber}</span> <span className="text-default-400">/ {recommendedDailyMacros?.fiber} g</span>
+            </span>
           }
           size="sm"
           maxValue={recommendedDailyMacros?.fiber}
@@ -227,13 +250,15 @@ const ProgressBarsProfile = (props: Value) => {
               ? "danger"
               : "primary"
           }
-          className="max-w-md m-2"
+          className="w-full"
         />
         <Progress
-          label="Salt"
+          label={<span className="font-medium text-default-600">Salt</span>}
           showValueLabel
           valueLabel={
-            calculatedMacros?.salt + "/" + recommendedDailyMacros?.salt + " g"
+            <span className="text-small">
+              <span className="font-semibold">{calculatedMacros?.salt}</span> <span className="text-default-400">/ {recommendedDailyMacros?.salt} g</span>
+            </span>
           }
           size="sm"
           value={calculatedMacros?.salt}
@@ -245,30 +270,9 @@ const ProgressBarsProfile = (props: Value) => {
               ? "danger"
               : "primary"
           }
-          className="max-w-md m-2"
+          className="w-full"
         />
       </div>
-      <Progress
-        label="Calories"
-        showValueLabel
-        valueLabel={
-          calculatedMacros?.calories +
-          "/" +
-          recommendedDailyMacros?.calories +
-          " Kcal"
-        }
-        size="sm"
-        value={calculatedMacros?.calories}
-        maxValue={recommendedDailyMacros?.calories}
-        color={
-          calculatedMacros &&
-          recommendedDailyMacros &&
-          calculatedMacros?.calories > recommendedDailyMacros?.calories
-            ? "danger"
-            : "primary"
-        }
-        className="max-w-80 m-2 self-center"
-      />
     </div>
   );
 };

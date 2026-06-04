@@ -3,69 +3,69 @@ import connectDB from "@/lib/connect-db";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { User } from "@/models/users";
-import { withAuth } from "../functions";
 
 const validateEmail = (email: string) => {
   return email.match(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/);
 };
 
 export async function POST(request: NextRequest) {
-  return withAuth(request, async (request) => {
-    const { username, userEmail, password, weight, height } =
-      await request.json();
+  //Don't be dummy like me, we need to create user so withAuth is wrongly used here
+  //return withAuth(request, async (request) => {
+  const { username, userEmail, password, weight, height } =
+    await request.json();
 
-    if (!username || !userEmail || !password || !weight || !height) {
-      return NextResponse.json(
-        { error: "Missing required fields." },
-        { status: 400 },
-      );
-    }
+  if (!username || !userEmail || !password || !weight || !height) {
+    return NextResponse.json(
+      { error: "Missing required fields." },
+      { status: 400 },
+    );
+  }
 
-    if (username.length < 2) {
-      return NextResponse.json(
-        { error: "User name is too short." },
-        { status: 400 },
-      );
-    }
+  if (username.length < 2) {
+    return NextResponse.json(
+      { error: "User name is too short." },
+      { status: 400 },
+    );
+  }
 
-    if (weight < 0 || height < 0) {
-      return NextResponse.json(
-        { error: "Height or weight can't be negative." },
-        { status: 400 },
-      );
-    }
+  if (weight < 0 || height < 0) {
+    return NextResponse.json(
+      { error: "Height or weight can't be negative." },
+      { status: 400 },
+    );
+  }
 
-    if (!validateEmail(userEmail)) {
-      return NextResponse.json(
-        { error: "Wrong format of email." },
-        { status: 400 },
-      );
-    }
+  if (!validateEmail(userEmail)) {
+    return NextResponse.json(
+      { error: "Wrong format of email." },
+      { status: 400 },
+    );
+  }
 
-    try {
-      await connectDB();
+  try {
+    await connectDB();
 
-      const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-      const result = await User.insertMany({
-        userName: username,
-        userPassword: hashedPassword,
-        userEmail: userEmail,
-        image: "pfps/1.png",
-        weight: weight,
-        height: height,
-        goal: "lose weight",
-      });
+    const result = await User.insertMany({
+      userName: username,
+      userPassword: hashedPassword,
+      userEmail: userEmail,
+      image: "pfps/1.png",
+      weight: weight,
+      height: height,
+      goal: "lose weight",
+    });
 
-      return NextResponse.json(
-        { message: "User created successfully", result },
-        { status: 201 },
-      );
-    } catch (error) {
-      return NextResponse.json(
-        { error: "Error creating user: " + error },
-        { status: 500 },
-      );
-    }
-  });
+    return NextResponse.json(
+      { message: "User created successfully", result },
+      { status: 201 },
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Error creating user: " + error },
+      { status: 500 },
+    );
+  }
+  // });
 }

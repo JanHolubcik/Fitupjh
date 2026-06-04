@@ -1,13 +1,13 @@
 import { getSavedFood } from "@/lib/YourIntake/search-db";
 import { NextRequest, NextResponse } from "next/server";
 import { saveFoodInDay } from "@/lib/food-db";
-import { foodType } from "@/types/Types";
+import { FoodType } from "@/types/Types";
 import { isValid, parse, parseISO } from "date-fns";
 import { withAuth } from "../functions";
 
 type SaveFoodRequest = {
   date: string;
-  savedFood: foodType;
+  savedFood: FoodType;
   userID: string;
 };
 

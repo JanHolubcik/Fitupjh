@@ -2,7 +2,7 @@ import { Card, CardBody, Skeleton } from "@nextui-org/react";
 
 export const MyGraphSkeleton = () => {
   return (
-    <Card className="w-full">
+    <Card className="w-full shadow-md bg-zinc-900/80 backdrop-blur-md border border-zinc-800">
       <CardBody className="flex flex-col gap-4">
         <Skeleton className="h-72 w-full rounded-lg" />
         <div className="flex flex-col gap-2">

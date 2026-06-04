@@ -17,7 +17,7 @@ const NavbarComponent = (props: Food) => {
       isPressable={true}
       isHoverable={true}
       onPress={() => setIsExpanded(!isExpanded)}
-      className="max-w-[400px] p-2 mt-5"
+      className="max-w-[400px] p-2 mt-5 shadow-md bg-zinc-900/80 backdrop-blur-md border border-zinc-800"
     >
       <CardHeader>
         <h1>{props.name}</h1>

@@ -152,7 +152,7 @@ const Chart = ({
   } = useMutation(GenerativeAIOptions(reduxSavedFood));
 
   return (
-    <div className=" flex flex-col gap-3">
+    <div className=" flex flex-col gap-3 shadow-md bg-zinc-900/80 backdrop-blur-md border border-zinc-800">
       <Card className="">
         <CardBody>
           <div className="flex flex-row w-full items-center justify-between gap-4">

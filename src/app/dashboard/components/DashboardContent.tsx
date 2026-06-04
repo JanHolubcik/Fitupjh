@@ -37,16 +37,13 @@ export const DashboardContent = () => {
   };
   if (!isFetched)
     return (
-      <div className="flex flex-col gap-3 mt-3 items-center max-w-2xl w-full">
+      <div className="flex flex-col gap-3 mt-3 items-center max-w-2xl w-full ">
         <DateSwitcherSkeleton />
-
         <div className="flex sm:flex-row flex-col gap-3 w-full">
           <CalorieCardSkeleton />
           <TodayMacrosSkeleton />
         </div>
-
         <AccordionTimeFrameSkeleton />
-
         <MyGraphSkeleton />
       </div>
     );

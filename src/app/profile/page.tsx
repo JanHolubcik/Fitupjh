@@ -19,8 +19,8 @@ export default async function Profile() {
   const images = await getProfileServerImages();
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-24 pt-0">
-      <ProfileMainComponent images={images}></ProfileMainComponent>
+    <main className="min-h-screen px-4 py-8 md:px-8 bg-default-50/50">
+      <ProfileMainComponent images={images} />
     </main>
   );
 }
