@@ -18,6 +18,7 @@ import {
   AccordionTimeFrameSkeleton,
   MyGraphSkeleton,
 } from "./Skeletons";
+import { ModalTakePicture } from "./ModalTakePicture/ModalTakePicture";
 
 export const DashboardContent = () => {
   const { data } = useSession();
@@ -51,7 +52,7 @@ export const DashboardContent = () => {
   return (
     <div className="flex flex-col gap-3  mt-3  items-center max-w-2xl w-full">
       {/* <h2 className="text-xl font-bold text-foreground mb-2">Daily Progress</h2> */}
-
+      <ModalTakePicture />
       <DateSwitcher></DateSwitcher>
 
       <div className="flex sm:flex-row flex-col gap-3 ">
