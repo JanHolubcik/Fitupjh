@@ -11,19 +11,37 @@ import {
 
 import { WebCamera } from "@shivantra/react-web-camera";
 
+/**
+ * Converts a File object to a Base64 string
+ * @param {File} file - The file object from an input element
+ * @returns {Promise<string>} - A promise that resolves with the Base64 string
+ */
+const fileToBase64 = (file: any) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    // Read the file as a Data URL (Base64 string)
+    reader.readAsDataURL(file);
+
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+};
+
 export const ModalTakePicture = () => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const cameraRef = useRef<any>(null);
-  
-  const [image, setImage] = useState<string | null>(null);
+
+  const [image, setImage] = useState<any | null>(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
 
   const handleCaptureAndAnalyze = async () => {
     if (cameraRef.current) {
-      const photoBase64 = cameraRef.current.capture();
+      const file = await cameraRef.current.capture();
+      const photoBase64 = await fileToBase64(file);
       if (!photoBase64) return;
-      
+
       setImage(photoBase64);
       setLoading(true);
       setResult(null);
@@ -89,8 +107,17 @@ export const ModalTakePicture = () => {
                   <>
                     <WebCamera
                       ref={cameraRef}
-                      style={{ width: "100%", maxWidth: 320, height: 'auto', padding: 10 }}
-                      videoStyle={{ borderRadius: 5, width: "100%", height: "auto" }}
+                      style={{
+                        width: "100%",
+                        maxWidth: 320,
+                        height: "auto",
+                        padding: 10,
+                      }}
+                      videoStyle={{
+                        borderRadius: 5,
+                        width: "100%",
+                        height: "auto",
+                      }}
                       className="camera-container flex justify-center w-full"
                       videoClassName="camera-video"
                       captureMode="back"
@@ -109,8 +136,12 @@ export const ModalTakePicture = () => {
                 ) : (
                   <div className="flex flex-col items-center gap-4 w-full">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={image} alt="Captured" className="rounded-md max-w-[320px] w-full" />
-                    
+                    <img
+                      src={image}
+                      alt="Captured"
+                      className="rounded-md max-w-[320px] w-full"
+                    />
+
                     {loading && (
                       <div className="flex flex-col items-center gap-2">
                         <Spinner size="lg" />
@@ -120,19 +151,42 @@ export const ModalTakePicture = () => {
 
                     {result && (
                       <div className="bg-default-100 p-4 rounded-md w-full max-w-[320px]">
-                        <h3 className="font-bold text-lg mb-2">{result.name || "Analysis Result"}</h3>
+                        <h3 className="font-bold text-lg mb-2">
+                          {result.name || "Analysis Result"}
+                        </h3>
                         <ul className="text-sm space-y-1">
-                          <li><span className="font-semibold">Calories:</span> {result.calories_per_100g} kcal</li>
-                          <li><span className="font-semibold">Protein:</span> {result.protein} g</li>
-                          <li><span className="font-semibold">Carbs:</span> {result.carbohydrates} g</li>
-                          <li><span className="font-semibold">Fat:</span> {result.fat} g</li>
-                          <li><span className="font-semibold">Sugar:</span> {result.sugar} g</li>
-                          <li><span className="font-semibold">Fiber:</span> {result.fiber} g</li>
-                          <li><span className="font-semibold">Salt:</span> {result.salt} g</li>
+                          <li>
+                            <span className="font-semibold">Calories:</span>{" "}
+                            {result.calories_per_100g} kcal
+                          </li>
+                          <li>
+                            <span className="font-semibold">Protein:</span>{" "}
+                            {result.protein} g
+                          </li>
+                          <li>
+                            <span className="font-semibold">Carbs:</span>{" "}
+                            {result.carbohydrates} g
+                          </li>
+                          <li>
+                            <span className="font-semibold">Fat:</span>{" "}
+                            {result.fat} g
+                          </li>
+                          <li>
+                            <span className="font-semibold">Sugar:</span>{" "}
+                            {result.sugar} g
+                          </li>
+                          <li>
+                            <span className="font-semibold">Fiber:</span>{" "}
+                            {result.fiber} g
+                          </li>
+                          <li>
+                            <span className="font-semibold">Salt:</span>{" "}
+                            {result.salt} g
+                          </li>
                         </ul>
                       </div>
                     )}
-                    
+
                     <div className="flex gap-2 mt-4">
                       <Button color="primary" onPress={handleReset}>
                         Take Another
