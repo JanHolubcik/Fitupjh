@@ -1,4 +1,4 @@
-import type { foodType } from "@/types/Types";
+import type { FoodType } from "@/types/Types";
 import {
   ModelOptions,
   Severity,
@@ -25,7 +25,7 @@ class SavedFoodClass {
   @prop({ required: true })
   day: Date;
   @prop({ required: false }) // can be empty or not defined
-  savedFood: foodType;
+  savedFood: FoodType;
   @prop({ required: true }) //false for now, when i figure out how to make users
   user_id: mongoose.Types.ObjectId;
 }

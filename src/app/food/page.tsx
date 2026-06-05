@@ -35,9 +35,9 @@ const foods = [
   },
 ];
 
-type foodType = typeof foods;
+type FoodType = typeof foods;
 
-const findInFood = (props: foodType, searchValue: string) => {
+const findInFood = (props: FoodType, searchValue: string) => {
   return props.filter((food) => {
     if (food.name.toLowerCase().includes(searchValue.toLowerCase())) {
       return food;
@@ -47,7 +47,7 @@ const findInFood = (props: foodType, searchValue: string) => {
 
 export default function Food() {
   //until i have data from database we will use state with food array
-  const [food, setfood] = useState<foodType>(foods);
+  const [food, setfood] = useState<FoodType>(foods);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-12">
