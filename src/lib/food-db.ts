@@ -1,4 +1,4 @@
-import { foodType } from "@/types/Types";
+import { FoodType } from "@/types/Types";
 import connectDB from "./connect-db";
 import { Food, FoodClass } from "@/models/Food";
 import { SavedFood } from "@/models/savedFood";
@@ -108,7 +108,7 @@ export async function getFoodByQR(qrCode: string) {
  */
 export async function saveFoodInDay(
   date: string,
-  food: foodType,
+  food: FoodType,
   _id: mongoose.Types.ObjectId | string,
 ) {
   try {
