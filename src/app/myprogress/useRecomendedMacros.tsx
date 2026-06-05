@@ -11,7 +11,7 @@ import {
 import strings from "../../app/constants/CalorieMacrosDescription.json";
 
 import { SavedFoodClass } from "@/models/savedFood";
-import { FoodType, SavedFoodMonth } from "@/types/Types";
+import { Food, FoodType, SavedFoodMonth } from "@/types/Types";
 
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
@@ -100,7 +100,7 @@ const useMacros = () => {
           salt: 0,
         };
         meals.forEach((meal) => {
-          item.savedFood[meal]?.forEach((food) => {
+          item.savedFood[meal]?.forEach((food: Food) => {
             total.calories += food.calories;
             total.fat += food.fat;
             total.protein += food.protein;

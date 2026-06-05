@@ -58,7 +58,7 @@ type GetFoodData = {
 
 type MacroTotals = Record<MacroKey, number>;
 
-export function calculateConsumedMacros(fetchedData: foodType): MacroTotals {
+export function calculateConsumedMacros(fetchedData: FoodType): MacroTotals {
   const totals: MacroTotals = {
     calories: 0,
     carbohydrates: 0,
@@ -133,7 +133,10 @@ const ProgressBarsProfile = (props: Value) => {
           showValueLabel
           valueLabel={
             <span className="font-semibold text-foreground">
-              {calculatedMacros?.calories} <span className="text-default-400 font-normal text-small">/ {recommendedDailyMacros?.calories} Kcal</span>
+              {calculatedMacros?.calories}{" "}
+              <span className="text-default-400 font-normal text-small">
+                / {recommendedDailyMacros?.calories} Kcal
+              </span>
             </span>
           }
           size="md"
@@ -156,7 +159,10 @@ const ProgressBarsProfile = (props: Value) => {
           showValueLabel
           valueLabel={
             <span className="text-small">
-              <span className="font-semibold">{calculatedMacros?.protein}</span> <span className="text-default-400">/ {recommendedDailyMacros?.protein} g</span>
+              <span className="font-semibold">{calculatedMacros?.protein}</span>{" "}
+              <span className="text-default-400">
+                / {recommendedDailyMacros?.protein} g
+              </span>
             </span>
           }
           color={
@@ -177,7 +183,10 @@ const ProgressBarsProfile = (props: Value) => {
           value={calculatedMacros?.fat}
           valueLabel={
             <span className="text-small">
-              <span className="font-semibold">{calculatedMacros?.fat}</span> <span className="text-default-400">/ {recommendedDailyMacros?.fat} g</span>
+              <span className="font-semibold">{calculatedMacros?.fat}</span>{" "}
+              <span className="text-default-400">
+                / {recommendedDailyMacros?.fat} g
+              </span>
             </span>
           }
           maxValue={recommendedDailyMacros?.fat}
@@ -198,7 +207,10 @@ const ProgressBarsProfile = (props: Value) => {
           maxValue={recommendedDailyMacros?.sugar}
           valueLabel={
             <span className="text-small">
-              <span className="font-semibold">{calculatedMacros?.sugar}</span> <span className="text-default-400">/ {recommendedDailyMacros?.sugar} g</span>
+              <span className="font-semibold">{calculatedMacros?.sugar}</span>{" "}
+              <span className="text-default-400">
+                / {recommendedDailyMacros?.sugar} g
+              </span>
             </span>
           }
           size="sm"
@@ -216,7 +228,12 @@ const ProgressBarsProfile = (props: Value) => {
           showValueLabel
           valueLabel={
             <span className="text-small">
-              <span className="font-semibold">{calculatedMacros?.carbohydrates}</span> <span className="text-default-400">/ {recommendedDailyMacros?.carbohydrates} g</span>
+              <span className="font-semibold">
+                {calculatedMacros?.carbohydrates}
+              </span>{" "}
+              <span className="text-default-400">
+                / {recommendedDailyMacros?.carbohydrates} g
+              </span>
             </span>
           }
           size="sm"
@@ -238,7 +255,10 @@ const ProgressBarsProfile = (props: Value) => {
           value={calculatedMacros?.fiber}
           valueLabel={
             <span className="text-small">
-              <span className="font-semibold">{calculatedMacros?.fiber}</span> <span className="text-default-400">/ {recommendedDailyMacros?.fiber} g</span>
+              <span className="font-semibold">{calculatedMacros?.fiber}</span>{" "}
+              <span className="text-default-400">
+                / {recommendedDailyMacros?.fiber} g
+              </span>
             </span>
           }
           size="sm"
@@ -257,7 +277,10 @@ const ProgressBarsProfile = (props: Value) => {
           showValueLabel
           valueLabel={
             <span className="text-small">
-              <span className="font-semibold">{calculatedMacros?.salt}</span> <span className="text-default-400">/ {recommendedDailyMacros?.salt} g</span>
+              <span className="font-semibold">{calculatedMacros?.salt}</span>{" "}
+              <span className="text-default-400">
+                / {recommendedDailyMacros?.salt} g
+              </span>
             </span>
           }
           size="sm"
