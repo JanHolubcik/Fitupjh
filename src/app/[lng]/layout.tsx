@@ -3,12 +3,20 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import "reflect-metadata";
 import React from "react";
+import {
+  getT,
+  getResources,
+  initServerI18next,
+  generateI18nStaticParams,
+} from "next-i18next/server";
+import { I18nProvider } from "next-i18next/client";
 
 import NavbarComponent from "@/components/Navbar/NavbarComponent";
 import { authOptions } from "@/lib/auth";
 import Providers from "./providers";
 import { getServerSession } from "next-auth";
 import Script from "next/script";
+import i18nConfig from "@/i18n.config";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,12 +25,24 @@ export const metadata: Metadata = {
   description: "Calculate your calories",
 };
 
+initServerI18next(i18nConfig);
+
+export async function generateStaticParams() {
+  return generateI18nStaticParams();
+}
+
 export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: Promise<{ lng: string }>;
 }>) {
+  const { lng } = await params;
+  const { i18n } = await getT();
+  const resources = getResources(i18n);
   const session = await getServerSession(authOptions);
+  initServerI18next;
   return (
     <html lang="en" className="dark" style={{ backgroundColor: "#000" }}>
       <head>
@@ -51,9 +71,11 @@ export default async function RootLayout({
       </head>
       <body className={inter.className}>
         <Providers session={session}>
-          <NavbarComponent />
+          <I18nProvider language={lng} resources={resources}>
+            <NavbarComponent />
 
-          {children}
+            {children}
+          </I18nProvider>
         </Providers>
       </body>
     </html>

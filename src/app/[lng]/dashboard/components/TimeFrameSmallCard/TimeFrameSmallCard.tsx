@@ -9,7 +9,10 @@ import ImageFromURL from "@/components/ImageFromURL/ImageFromURL";
 import { useState } from "react";
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 import { EditFoodModal } from "@/components/EditFoodModal/EditFoodModal";
-import { getMacroInfo, type MacroType } from "@/app/constants/MacrosHelper";
+import {
+  getMacroInfo,
+  type MacroType,
+} from "@/app/[lng]/constants/MacrosHelper";
 
 type props = {
   timeFrame: "breakfast" | "dinner" | "lunch";

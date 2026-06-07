@@ -2,7 +2,7 @@ import {
   calculateRecommendedMacros,
   capitalizeFirstLetter,
   useIsSm,
-} from "@/app/constants/FunctionsHelper";
+} from "@/app/[lng]/constants/FunctionsHelper";
 import {
   Food,
   FoodType,
@@ -14,7 +14,10 @@ import { useSession } from "next-auth/react";
 import { useMemo } from "react";
 import { MacroProgressBar } from "../MacrosProgressBarDashboard/MacrosProgressBarDashboard";
 import { Card, CardBody } from "@nextui-org/react";
-import { MACRO_TAILWIND_THEME, MacroArray } from "@/app/constants/MacrosHelper";
+import {
+  MACRO_TAILWIND_THEME,
+  MacroArray,
+} from "@/app/[lng]/constants/MacrosHelper";
 
 type props = {
   savedFood: FoodType;

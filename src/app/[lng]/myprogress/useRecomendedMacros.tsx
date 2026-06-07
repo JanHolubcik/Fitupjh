@@ -4,11 +4,7 @@ import { LastMonthFoodOptions } from "@/lib/queriesOptions/LastMonthFoodOptions"
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 
-import {
-  calculateRecommendedMacros,
-  capitalizeFirstLetter,
-} from "../constants/FunctionsHelper";
-import strings from "../../app/constants/CalorieMacrosDescription.json";
+import { calculateRecommendedMacros } from "../constants/FunctionsHelper";
 
 import { SavedFoodClass } from "@/models/savedFood";
 import { Food, FoodType, SavedFoodMonth } from "@/types/Types";
@@ -24,9 +20,6 @@ const calculateAverage = (array: number[]) => {
 
   return total / array.length;
 };
-
-const DEFICIT_THRESHOLD = 0.75;
-const SURPLUS_THRESHOLD = 1.25;
 
 export type SavedFoodEntry = {
   day: string;
@@ -140,28 +133,7 @@ const useMacros = () => {
     fiber: dataFiber,
   };
 
-  const getMacroMessage = (macro: keyof typeof CurrentDailyIntake) => {
-    const current = CurrentDailyIntake[macro];
-    const recommended = RecommendedMacros[macro];
-
-    let keySuffix: "Optional" | "Deficit" | "Surplus";
-
-    if (current < recommended * DEFICIT_THRESHOLD) keySuffix = "Deficit";
-    else if (current > recommended * SURPLUS_THRESHOLD) keySuffix = "Surplus";
-    else keySuffix = "Optional";
-
-    const jsonKey = `${capitalizeFirstLetter(
-      macro,
-    )}${keySuffix}` as keyof typeof strings;
-    const template = strings[jsonKey];
-
-    return template
-      .replace("{X}", current.toFixed(1))
-      .replace("{Y}", recommended.toFixed(1));
-  };
-
   return {
-    getMacroMessage,
     macroDatasets,
     CurrentDailyIntake,
     dataMacros: isEmpty ? [] : dataMacros,

@@ -1,9 +1,13 @@
+"use client";
 import { FaSearch } from "react-icons/fa";
 import { Button, Input, Spinner, useDisclosure } from "@nextui-org/react";
 import { useEffect, useRef, useState } from "react";
 import { Food, ReturnTypeFood } from "@/types/Types";
 import React from "react";
-import { getTimeOfDay, useDebounce } from "@/app/constants/FunctionsHelper";
+import {
+  getTimeOfDay,
+  useDebounce,
+} from "@/app/[lng]/constants/FunctionsHelper";
 import { useMutation } from "@tanstack/react-query";
 import { getSearchedFoodOptions } from "@/lib/queriesOptions/GetSearchedFoodOptions";
 
@@ -11,9 +15,11 @@ import ImageFromURL from "../ImageFromURL/ImageFromURL";
 import { NewFoodRecordModal } from "../NewFoodRecordModal/NewFoodRecordModal";
 import { ModalBarcodeScan } from "../Findfood/components/ModalBarcodeScan";
 import { ModalCreateFood } from "../Findfood/components/ModalCreateFood";
+import { useT } from "next-i18next/client";
 
 export const InputSearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const { t } = useT();
   const [food, setFood] = useState<ReturnTypeFood>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -98,7 +104,7 @@ export const InputSearchBar = () => {
             inputWrapper:
               "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20 rounded-r-none",
           }}
-          placeholder="Type to search..."
+          placeholder={t("searchPlaceholder")}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onClear={() => {
@@ -124,7 +130,12 @@ export const InputSearchBar = () => {
         color="primary"
         className="rounded-l-none min-w-10 h-8 self-center"
       >
-        <img height={25} width={25} src="barcodeIcon.svg" alt="Barcode scan" />
+        <img
+          height={25}
+          width={25}
+          src="../barcodeIcon.svg"
+          alt="Barcode scan"
+        />
       </Button>
 
       <ul

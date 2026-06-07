@@ -1,0 +1,43 @@
+{
+  "searchPlaceholder": "Search food...",
+  "calorieCard": {
+    "kcalRemaining": "Kcal remaining"
+  },
+  "todayMacros": {
+    "kcal": "kcal",
+    "g": "g"
+  },
+  "accordion": {
+    "item": "item",
+    "items": "items",
+    "loggedToday": "logged today"
+  },
+  "dateSwitcher": {
+    "previousDay": "Previous day",
+    "nextDay": "Next day"
+  },
+  "takePictureModal": {
+    "photo": "Photo",
+    "takePictureTitle": "Take a Picture of Food",
+    "captureAndAnalyze": "Capture & Analyze",
+    "cancel": "Cancel",
+    "analyzing": "Analyzing with Gemini...",
+    "analysisResult": "Analysis Result",
+    "takeAnother": "Take Another",
+    "close": "Close",
+    "macros": {
+      "calories": "Calories:",
+      "protein": "Protein:",
+      "carbs": "Carbs:",
+      "fat": "Fat:",
+      "sugar": "Sugar:",
+      "fiber": "Fiber:",
+      "salt": "Salt:"
+    }
+  },
+  "timeOfDay": {
+    "breakfast": "breakfast",
+    "lunch": "lunch",
+    "dinner": "dinner"
+  }
+}

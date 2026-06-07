@@ -15,7 +15,7 @@ import { FaSearch } from "react-icons/fa";
 import { ModalCreateFood } from "./ModalCreateFood";
 import { ReturnTypeFood } from "@/types/Types";
 import AddFoodComponent from "./AddFoodComponent";
-import { getTimeOfDay } from "@/app/constants/FunctionsHelper";
+import { getTimeOfDay } from "@/app/[lng]/constants/FunctionsHelper";
 import { ModalBarcodeScan } from "./ModalBarcodeScan";
 import { useMutation } from "@tanstack/react-query";
 import { getSearchedFoodOptions } from "@/lib/queriesOptions/GetSearchedFoodOptions";

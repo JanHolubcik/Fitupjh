@@ -7,7 +7,10 @@ import ImageFromURL from "../ImageFromURL/ImageFromURL";
 import { EditFoodModal, Food } from "../EditFoodModal/EditFoodModal";
 import { useState } from "react";
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
-import { getMacroInfo, type MacroType } from "@/app/constants/MacrosHelper";
+import {
+  getMacroInfo,
+  type MacroType,
+} from "@/app/[lng]/constants/MacrosHelper";
 
 type Props = {
   timeOfDay: "breakfast" | "lunch" | "dinner";

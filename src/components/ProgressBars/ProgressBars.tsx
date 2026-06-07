@@ -1,5 +1,5 @@
 "use client";
-import { calculateRecommendedMacros } from "@/app/constants/FunctionsHelper";
+import { calculateRecommendedMacros } from "@/app/[lng]/constants/FunctionsHelper";
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 import { macros } from "@/types/Types";
 

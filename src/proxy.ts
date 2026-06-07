@@ -1,26 +1,10 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { getToken } from "next-auth/jwt";
+import { createProxy } from "next-i18next/proxy";
+import i18nConfig from "./i18n.config";
 
-export async function proxy(req: NextRequest) {
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-
-  const loggedInRoutes = ["/yourintake", "/profile", "/myprogress"];
-
-  const loggedOutRoutes = ["/login", "/register"];
-
-  if (loggedInRoutes.includes(req.nextUrl.pathname)) {
-    if (!token) {
-      return NextResponse.redirect(new URL("/", req.url));
-    }
-  }
-
-  if (loggedOutRoutes.includes(req.nextUrl.pathname) && token) {
-    return NextResponse.redirect(new URL("/", req.url));
-  }
-  return NextResponse.next();
-}
+export const proxy = createProxy(i18nConfig);
 
 export const config = {
-  matcher: ["/dashboard", "/profile", "/login", "/register"],
+  matcher: [
+    "/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js|site.webmanifest).*)",
+  ],
 };

@@ -1,0 +1,44 @@
+{
+  "searchPlaceholder": "Hľadať jedlo...",
+  "kcalRemaining": "Kcal zostáva",
+  "calorieCard": {
+    "kcalRemaining": "Kcal zostáva"
+  },
+  "todayMacros": {
+    "kcal": "kcal",
+    "g": "g"
+  },
+  "accordion": {
+    "item": "položka",
+    "items": "položiek",
+    "loggedToday": "zapísaných dnes"
+  },
+  "dateSwitcher": {
+    "previousDay": "Predchádzajúci deň",
+    "nextDay": "Nasledujúci deň"
+  },
+  "takePictureModal": {
+    "photo": "Odfotiť",
+    "takePictureTitle": "Odfotiť jedlo",
+    "captureAndAnalyze": "Odfotiť a analyzovať",
+    "cancel": "Zrušiť",
+    "analyzing": "Analyzuje sa pomocou Gemini...",
+    "analysisResult": "Výsledok analýzy",
+    "takeAnother": "Odfotiť znova",
+    "close": "Zavrieť",
+    "macros": {
+      "calories": "Kalórie:",
+      "protein": "Bielkoviny:",
+      "carbs": "Sacharidy:",
+      "fat": "Tuky:",
+      "sugar": "Cukry:",
+      "fiber": "Vláknina:",
+      "salt": "Soľ:"
+    }
+  },
+  "timeOfDay": {
+    "breakfast": "raňajky",
+    "lunch": "obed",
+    "dinner": "večera"
+  }
+}

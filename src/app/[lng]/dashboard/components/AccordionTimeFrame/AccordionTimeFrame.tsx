@@ -70,7 +70,7 @@ export const AccordionTimeFrame = ({ savedFood }: props) => {
               >
                 <Image
                   alt={`${key} icon`}
-                  src="cloche.svg"
+                  src="../cloche.svg"
                   width={20}
                   height={20}
                   className={`object-contain transition-transform ${active ? "rotate-[6deg]" : ""}`}

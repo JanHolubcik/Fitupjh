@@ -1,7 +1,7 @@
 "use client";
 
-import { calculateRecommendedMacros } from "@/app/constants/FunctionsHelper";
-import { GET_FOOD } from "@/app/graphql/queries";
+import { calculateRecommendedMacros } from "@/app/[lng]/constants/FunctionsHelper";
+import { GET_FOOD } from "@/app/[lng]/graphql/queries";
 import { FoodType } from "@/types/Types";
 import { useQuery } from "@apollo/client/react";
 import { Progress } from "@nextui-org/react";

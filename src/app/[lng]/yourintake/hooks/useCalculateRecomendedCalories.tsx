@@ -1,4 +1,4 @@
-import { calculateCaloriesSum } from "@/app/constants/FunctionsHelper";
+import { calculateCaloriesSum } from "@/app/[lng]/constants/FunctionsHelper";
 import { FoodType } from "@/types/Types";
 import { useSession } from "next-auth/react";
 import { useMemo } from "react";

@@ -1,6 +1,6 @@
 import React from "react";
 import { Progress } from "@nextui-org/progress";
-import { useIsMd } from "@/app/constants/FunctionsHelper";
+import { useIsMd } from "@/app/[lng]/constants/FunctionsHelper";
 
 type props = {
   label: string;

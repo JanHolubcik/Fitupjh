@@ -1,4 +1,4 @@
-import { getTimeOfDay } from "@/app/constants/FunctionsHelper";
+import { getTimeOfDay } from "@/app/[lng]/constants/FunctionsHelper";
 import { setNewFoodBarCode } from "@/features/savedFoodslice/yourIntakeSlice";
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 import { RootState } from "@/store/store";

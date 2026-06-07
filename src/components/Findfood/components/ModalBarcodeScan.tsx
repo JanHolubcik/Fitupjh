@@ -23,7 +23,7 @@ import { useScanProduct } from "./useScanProduct";
 import { FoodClass } from "@/models/Food";
 import { useDispatch } from "react-redux";
 import { setNewFoodBarCode } from "@/features/savedFoodslice/yourIntakeSlice";
-import { getTimeOfDay } from "@/app/constants/FunctionsHelper";
+import { getTimeOfDay } from "@/app/[lng]/constants/FunctionsHelper";
 
 type props = {
   onOpenChange: () => void;

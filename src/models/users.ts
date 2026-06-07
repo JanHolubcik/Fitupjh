@@ -41,6 +41,6 @@ class UsersClass {
   height: number; //in cm
 }
 
-const User = mongoose.models.User ?? getModelForClass(UsersClass);
+const User = getModelForClass(UsersClass);
 
 export { User, UsersClass };

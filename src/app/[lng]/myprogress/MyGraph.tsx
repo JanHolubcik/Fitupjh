@@ -1,24 +1,14 @@
 "use client";
 
 import Chart from "./Chart";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import useMacros from "./useRecomendedMacros";
 import { Spinner } from "@nextui-org/react";
 
 const MyGraph = () => {
-  const {
-    labels,
-    isLoading,
-    macroDatasets,
-    RecommendedMacros,
-    getMacroMessage,
-  } = useMacros();
+  const { labels, isLoading, macroDatasets, RecommendedMacros } = useMacros();
   const [selectedMacro, setSelectedMacro] =
     useState<keyof typeof macroDatasets>("protein");
-
-  const messageForSelectedMacro = useMemo(() => {
-    return getMacroMessage(selectedMacro);
-  }, [getMacroMessage, selectedMacro]);
 
   if (isLoading) {
     return (
@@ -37,7 +27,7 @@ const MyGraph = () => {
 
   return (
     <div className="flex flex-col sm:w-full w-80">
-      {messageForSelectedMacro.length === 0 ? (
+      {isLoading ? (
         <Spinner />
       ) : (
         <>
@@ -51,7 +41,7 @@ const MyGraph = () => {
                 macroDatasets={macroDatasets}
                 setSelectedMacro={setSelectedMacro}
                 emptyDays={emptyDays}
-                messageForSelectedMacro={messageForSelectedMacro}
+                messageForSelectedMacro={""}
               />
             </div>
           </div>

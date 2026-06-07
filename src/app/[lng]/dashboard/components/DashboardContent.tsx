@@ -8,7 +8,7 @@ import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 
 import { AccordionTimeFrame } from "./AccordionTimeFrame/AccordionTimeFrame";
 import { TodayMacros } from "./TodayMacros/TodayMacros";
-import MyGraph from "@/app/myprogress/MyGraph";
+import MyGraph from "@/app/[lng]/myprogress/MyGraph";
 import { DateSwitcher } from "./DateSwitcher/DateSwitcher";
 import { add } from "date-fns";
 import {
