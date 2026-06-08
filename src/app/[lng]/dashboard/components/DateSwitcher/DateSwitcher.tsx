@@ -2,9 +2,11 @@ import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 import { Button, Card, CardBody } from "@nextui-org/react";
 import { add, format } from "date-fns";
 import { FaArrowLeft, FaArrowRight, FaCalendarAlt } from "react-icons/fa";
+import { useT } from "next-i18next/client";
 
 export const DateSwitcher = () => {
   const { currentDate, setNewDateAndGetFood } = useYourIntakeOperations();
+  const { t } = useT("dashboard");
 
   const setNewDateAndFetchFood = (numberOfDays: number) => {
     const date = add(currentDate, {
@@ -22,7 +24,7 @@ export const DateSwitcher = () => {
           size="sm"
           isIconOnly
           onPress={() => setNewDateAndFetchFood(-1)}
-          aria-label="Previous day"
+          aria-label={t("dateSwitcher.previousDay")}
           className="w-7 h-7 min-w-7"
         >
           <FaArrowLeft size={10} />
@@ -37,7 +39,7 @@ export const DateSwitcher = () => {
           isIconOnly
           isDisabled={disabledButton}
           onPress={() => setNewDateAndFetchFood(1)}
-          aria-label="Next day"
+          aria-label={t("dateSwitcher.nextDay")}
           className="w-7 h-7 min-w-7"
         >
           <FaArrowRight size={10} />
@@ -46,3 +48,4 @@ export const DateSwitcher = () => {
     </Card>
   );
 };
+

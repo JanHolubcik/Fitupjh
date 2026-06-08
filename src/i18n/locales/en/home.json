@@ -1,0 +1,16 @@
+{
+  "imageAlt": "Greeting Owl",
+  "subtitle": "Your Calorie Tracker",
+  "welcomeGreeting": "Hey there!",
+  "welcomeText": "Welcome to FitUp—your personal companion for tracking calories and eating smarter.",
+  "quickLogging": {
+    "title": "Quick Logging",
+    "description": "No complicated steps, just straightforward tracking that fits perfectly into your day."
+  },
+  "deepInsights": {
+    "title": "Deep Insights",
+    "description": "Understand your carbs, proteins, and fats so you can make better health choices."
+  },
+  "start": "Start your journey today!",
+  "button": "Start Tracking Now"
+}

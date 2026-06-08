@@ -1,0 +1,17 @@
+{
+  "imageAlt": "Uvítacia sova",
+  "subtitle": "Nástroj na počítanie kalórií",
+  "welcomeGreeting": "Ahoj!",
+  "welcomeText": "Vitaj vo FitUp – tvojom osobnom spoločníkovi na sledovanie kalórií a rozumnejšie stravovanie.",
+  "quickLogging": {
+    "title": "Rýchle pridávanie",
+    "description": "Žiadne zložité kroky, len priamočiare sledovanie, ktoré dokonale zapadne do tvojho dňa."
+  },
+  "deepInsights": {
+    "title": "Detailné prehľady",
+    "description": "Pochop svoje sacharidy, bielkoviny a tuky, aby si mohol robiť zdravšie rozhodnutia."
+  },
+
+  "start": "Začni svoju cestu ešte dnes!",
+  "button": "Začni sledovať hneď"
+}

@@ -3,15 +3,16 @@ import type { Selection } from "@nextui-org/react";
 import { FoodType, timeOfDay } from "@/types/Types";
 import { TimeFrameSmallCard } from "../TimeFrameSmallCard/TimeFrameSmallCard";
 import { useState } from "react";
+import { useT } from "next-i18next/client";
 
 type props = {
   savedFood: FoodType;
 };
 
 export const AccordionTimeFrame = ({ savedFood }: props) => {
-  const [selectedKeys, setSelectedKeys] = useState<Selection>(
-    new Set(["breakfast"]),
-  );
+  const [selectedKeys, setSelectedKeys] = useState<Selection>("all");
+
+  const { t } = useT("dashboard");
 
   const isKeyActive = (key: string) => {
     if (selectedKeys === "all") return true;
@@ -32,6 +33,7 @@ export const AccordionTimeFrame = ({ savedFood }: props) => {
   return (
     <Accordion
       variant="shadow"
+      selectionMode="multiple"
       selectedKeys={selectedKeys}
       onSelectionChange={setSelectedKeys}
       showDivider={false}
@@ -52,12 +54,14 @@ export const AccordionTimeFrame = ({ savedFood }: props) => {
                   active ? "text-primary font-bold transition-colors" : ""
                 }
               >
-                {key}
+                {t(`timeOfDay.${key}`)}
               </span>
             }
             subtitle={
               <span className="text-default-400 font-normal">
-                {itemCount} {itemCount === 1 ? "item" : "items"} logged today
+                {itemCount}{" "}
+                {itemCount === 1 ? t("accordion.item") : t("accordion.items")}{" "}
+                {t("accordion.loggedToday")}
               </span>
             }
             startContent={

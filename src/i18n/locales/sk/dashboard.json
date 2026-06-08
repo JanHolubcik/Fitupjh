@@ -11,7 +11,7 @@
   "accordion": {
     "item": "položka",
     "items": "položiek",
-    "loggedToday": "zapísaných dnes"
+    "loggedToday": "zapísaných"
   },
   "dateSwitcher": {
     "previousDay": "Predchádzajúci deň",
@@ -40,5 +40,60 @@
     "breakfast": "raňajky",
     "lunch": "obed",
     "dinner": "večera"
+  },
+  "macros": {
+    "calories": "Kalórie",
+    "protein": "Bielkoviny",
+    "carbohydrates": "Sacharidy",
+    "fat": "Tuky",
+    "sugar": "Cukry",
+    "fiber": "Vláknina",
+    "salt": "Soľ"
+  },
+  "chart": {
+    "dayAverage": "denný priemer",
+    "goal": "Cieľ",
+    "weeklyPeak": "Maximum",
+    "aboveLimit": "Nad limitom",
+    "withinLimit": "V limite",
+    "daysOverLimit": "Dni nad limitom",
+    "allWithinGoal": "Žiadny",
+    "daysExceeded": "Prekročené dni",
+    "daysNotLogged": "Chýbajúce dni",
+    "allDaysLogged": "Žiadne",
+    "dayMissing": "Chýbajúci",
+    "day234Missing": "Chýbajúce",
+    "daysMissing": "Chýbajúcich",
+    "intake": "príjem",
+    "dayTracked": "deň zaznamenaný",
+    "daysTracked": "dni zaznamenané",
+    "getInsights": "Získať prehľad",
+    "poweredByGemini": "chatbot Gemini",
+    "recommendedLimit": "Odporúčaný limit",
+    "generatingInsights": "Generujú sa prehľady...",
+    "close": "Zavrieť",
+    "macroSelection": "Výber makra"
+  },
+  "newFoodModal": {
+    "title": "Pridanie {{name}} do denného príjmu",
+    "subtitle": "Upravte celkovú hmotnosť pre prepočet živín",
+    "amountLabel": "Množstvo (gramy)",
+    "calories": "Kalórie",
+    "proteinShort": "Bielkoviny",
+    "carbsShort": "Sacharidy",
+    "fatShort": "Tuky",
+    "fiberShort": "Vláknina",
+    "sugarShort": "Cukor",
+    "cancel": "Zrušiť",
+    "saveChanges": "Uložiť zmeny"
+  },
+  "addFood": {
+    "base": "Základ",
+    "proteinShort": "Biel",
+    "carbsShort": "Sach",
+    "fatShort": "Tuk",
+    "sugarShort": "Cuk",
+    "portion": "Porcia (g)",
+    "energy": "Energia"
   }
 }

@@ -10,6 +10,7 @@ import {
 } from "@nextui-org/react";
 
 import { WebCamera } from "@shivantra/react-web-camera";
+import { useT } from "next-i18next/client";
 
 /**
  * Converts a File object to a Base64 string
@@ -31,6 +32,7 @@ const fileToBase64 = (file: any) => {
 export const ModalTakePicture = () => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const cameraRef = useRef<any>(null);
+  const { t } = useT("dashboard");
 
   const [image, setImage] = useState<any | null>(null);
   const [loading, setLoading] = useState(false);
@@ -76,7 +78,7 @@ export const ModalTakePicture = () => {
 
   return (
     <div>
-      <Button onPress={onOpen}>Photo</Button>
+      <Button onPress={onOpen}>{t("takePictureModal.photo")}</Button>
       <Modal
         placement="top"
         hideCloseButton
@@ -100,7 +102,7 @@ export const ModalTakePicture = () => {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Take a Picture of Food
+                {t("takePictureModal.takePictureTitle")}
               </ModalHeader>
               <ModalBody className="flex flex-col items-center gap-4 pb-6">
                 {!image ? (
@@ -126,10 +128,10 @@ export const ModalTakePicture = () => {
                     />
                     <div className="flex gap-2">
                       <Button color="primary" onPress={handleCaptureAndAnalyze}>
-                        Capture & Analyze
+                        {t("takePictureModal.captureAndAnalyze")}
                       </Button>
                       <Button color="danger" variant="light" onPress={onClose}>
-                        Cancel
+                        {t("takePictureModal.cancel")}
                       </Button>
                     </div>
                   </>
@@ -145,42 +147,42 @@ export const ModalTakePicture = () => {
                     {loading && (
                       <div className="flex flex-col items-center gap-2">
                         <Spinner size="lg" />
-                        <p>Analyzing with Gemini...</p>
+                        <p>{t("takePictureModal.analyzing")}</p>
                       </div>
                     )}
 
                     {result && (
                       <div className="bg-default-100 p-4 rounded-md w-full max-w-[320px]">
                         <h3 className="font-bold text-lg mb-2">
-                          {result.name || "Analysis Result"}
+                          {result.name || t("takePictureModal.analysisResult")}
                         </h3>
                         <ul className="text-sm space-y-1">
                           <li>
-                            <span className="font-semibold">Calories:</span>{" "}
+                            <span className="font-semibold">{t("takePictureModal.macros.calories")}</span>{" "}
                             {result.calories_per_100g} kcal
                           </li>
                           <li>
-                            <span className="font-semibold">Protein:</span>{" "}
+                            <span className="font-semibold">{t("takePictureModal.macros.protein")}</span>{" "}
                             {result.protein} g
                           </li>
                           <li>
-                            <span className="font-semibold">Carbs:</span>{" "}
+                            <span className="font-semibold">{t("takePictureModal.macros.carbs")}</span>{" "}
                             {result.carbohydrates} g
                           </li>
                           <li>
-                            <span className="font-semibold">Fat:</span>{" "}
+                            <span className="font-semibold">{t("takePictureModal.macros.fat")}</span>{" "}
                             {result.fat} g
                           </li>
                           <li>
-                            <span className="font-semibold">Sugar:</span>{" "}
+                            <span className="font-semibold">{t("takePictureModal.macros.sugar")}</span>{" "}
                             {result.sugar} g
                           </li>
                           <li>
-                            <span className="font-semibold">Fiber:</span>{" "}
+                            <span className="font-semibold">{t("takePictureModal.macros.fiber")}</span>{" "}
                             {result.fiber} g
                           </li>
                           <li>
-                            <span className="font-semibold">Salt:</span>{" "}
+                            <span className="font-semibold">{t("takePictureModal.macros.salt")}</span>{" "}
                             {result.salt} g
                           </li>
                         </ul>
@@ -189,10 +191,10 @@ export const ModalTakePicture = () => {
 
                     <div className="flex gap-2 mt-4">
                       <Button color="primary" onPress={handleReset}>
-                        Take Another
+                        {t("takePictureModal.takeAnother")}
                       </Button>
                       <Button color="danger" variant="light" onPress={onClose}>
-                        Close
+                        {t("takePictureModal.close")}
                       </Button>
                     </div>
                   </div>
@@ -205,3 +207,4 @@ export const ModalTakePicture = () => {
     </div>
   );
 };
+

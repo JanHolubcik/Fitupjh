@@ -10,6 +10,7 @@ import {
 } from "@nextui-org/react";
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 import { Food } from "@/types/Types";
+import { useT } from "next-i18next/client";
 
 type props = {
   isOpen: boolean;
@@ -26,7 +27,7 @@ export const NewFoodRecordModal = ({
 }: props) => {
   const [grams, setGrams] = useState<number>(100);
   const { addToFoodObject } = useYourIntakeOperations();
-
+  const { t } = useT("dashboard");
   useEffect(() => {
     if (food) {
       const initialGrams = parseFloat(food.amount) || 100;
@@ -71,17 +72,17 @@ export const NewFoodRecordModal = ({
           <>
             <ModalHeader className="flex flex-col gap-1">
               <h3 className="text-lg font-bold capitalize text-zinc-200">
-                Adding {food.name} to daily intake
+                {t("newFoodModal.title", { name: food.name })}
               </h3>
               <p className="text-xs font-normal text-zinc-400">
-                Adjust total weight to scale macros
+                {t("newFoodModal.subtitle")}
               </p>
             </ModalHeader>
 
             <ModalBody className="py-4 gap-4">
               <Input
                 type="number"
-                label="Amount (grams)"
+                label={t("newFoodModal.amountLabel")}
                 placeholder="0"
                 value={grams === 0 ? "" : grams.toString()}
                 onChange={(e) =>
@@ -99,7 +100,9 @@ export const NewFoodRecordModal = ({
 
               <div className="bg-zinc-950/50 p-3 rounded-xl border border-white/5 space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-zinc-400">Calories</span>
+                  <span className="text-zinc-400">
+                    {t("newFoodModal.calories")}
+                  </span>
                   <span className="font-bold text-zinc-200">
                     {Math.round(food.calories * ratio)} kcal
                   </span>
@@ -107,33 +110,38 @@ export const NewFoodRecordModal = ({
 
                 <hr className="border-zinc-800" />
 
-                <div className="grid grid-cols-2 gap-2 text-xs font-semibold">
+                <div className="grid grid-cols-2 gap-2  text-xs font-semibold">
                   <div className="text-success-400">
-                    P:{" "}
+                    {t("newFoodModal.proteinShort")}:{" "}
                     <span className="text-zinc-300 font-medium">
                       {(food.protein * ratio).toFixed(1)}g
                     </span>
                   </div>
                   <div className="text-warning-400">
-                    C:{" "}
+                    {t("newFoodModal.carbsShort")}:{" "}
                     <span className="text-zinc-300 font-medium">
                       {(food.carbohydrates * ratio).toFixed(1)}g
                     </span>
                   </div>
                   <div className="text-pink-400">
-                    F:{" "}
+                    {t("newFoodModal.fatShort")}:{" "}
                     <span className="text-zinc-300 font-medium">
                       {(food.fat * ratio).toFixed(1)}g
                     </span>
                   </div>
-                  {food.sugar ? (
-                    <div className="text-purple-400">
-                      S:{" "}
-                      <span className="text-zinc-300 font-medium">
-                        {(food.sugar * ratio).toFixed(1)}g
-                      </span>
-                    </div>
-                  ) : null}
+
+                  <div className="text-purple-400">
+                    {t("newFoodModal.sugarShort")}:{" "}
+                    <span className="text-zinc-300 font-medium">
+                      {(food.sugar * ratio).toFixed(1)}g
+                    </span>
+                  </div>
+                  <div className="text-violet-400">
+                    {t("newFoodModal.sugarShort")}:{" "}
+                    <span className="text-zinc-300 font-medium">
+                      {(food.fiber * ratio).toFixed(1)}g
+                    </span>
+                  </div>
                 </div>
               </div>
             </ModalBody>
@@ -145,7 +153,7 @@ export const NewFoodRecordModal = ({
                 className="bg-zinc-800 text-zinc-300 hover:bg-zinc-700"
                 onPress={onClose}
               >
-                Cancel
+                {t("newFoodModal.cancel")}
               </Button>
               <Button
                 size="sm"
@@ -153,7 +161,7 @@ export const NewFoodRecordModal = ({
                 className="bg-blue-600 text-white font-medium"
                 onPress={() => handleSave(onClose)}
               >
-                Save Changes
+                {t("newFoodModal.saveChanges")}
               </Button>
             </ModalFooter>
           </>

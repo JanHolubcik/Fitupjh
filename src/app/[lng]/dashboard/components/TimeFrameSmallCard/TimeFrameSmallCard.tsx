@@ -13,6 +13,8 @@ import {
   getMacroInfo,
   type MacroType,
 } from "@/app/[lng]/constants/MacrosHelper";
+import { useT } from "next-i18next/client";
+import { capitalizeFirstLetter } from "@/app/[lng]/constants/FunctionsHelper";
 
 type props = {
   timeFrame: "breakfast" | "dinner" | "lunch";
@@ -20,9 +22,10 @@ type props = {
 };
 
 export const TimeFrameSmallCard = (props: props) => {
-  const { timeFrame, foodItems } = props;
+  const { foodItems } = props;
   const { removeFromSavedFood } = useYourIntakeOperations();
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const { t } = useT("dashboard");
   const {
     isOpen: isOpenNewFood,
     onOpen: onOpenNewFood,
@@ -30,7 +33,6 @@ export const TimeFrameSmallCard = (props: props) => {
   } = useDisclosure();
   const {
     isOpen: QRisOpen,
-    onOpen: QRonOpen,
     onOpenChange: QRonOpenChange,
     onClose: QRonClose,
   } = useDisclosure();
@@ -81,17 +83,22 @@ export const TimeFrameSmallCard = (props: props) => {
                     { macro: "fiber" as MacroType, value: key.fiber },
                   ].map((item) => {
                     const macroInfo = getMacroInfo(item.macro, item.value);
+                    const translatedLabel = t(`macros.${item.macro}`, {
+                      defaultValue: capitalizeFirstLetter(item.macro),
+                    });
+                    const shortLabel = translatedLabel.charAt(0).toUpperCase();
+
                     return (
                       <div
-                        className="w-[40px] text-center text-[8px]"
+                        className="w-12 text-center text-[8px]"
                         key={item.macro}
                       >
                         <span
                           className={`${macroInfo.text} ${macroInfo.bg} border-1 ${macroInfo.border} px-[1px] rounded-sm inline-block w-full`}
                         >
-                          {macroInfo.label}:{" "}
+                          {shortLabel}:{" "}
                           <span
-                            className={`${macroInfo.text} text-zinc-300 font-medium`}
+                            className={`${macroInfo.text}  ${macroInfo.border} font-medium `}
                           >
                             {item.value.toFixed(1) || 0}g
                           </span>

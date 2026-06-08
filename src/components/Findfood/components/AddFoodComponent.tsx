@@ -3,6 +3,7 @@ import { Button, Input } from "@nextui-org/react";
 import { useState } from "react";
 import { FaPlusCircle } from "react-icons/fa";
 import React from "react";
+import { useT } from "next-i18next/client";
 
 type macrosLocal = {
   name: string;
@@ -32,6 +33,7 @@ type props = {
 
 const AddFoodComponent = (props: props) => {
   const [Grams, setGrams] = useState(100);
+  const { t } = useT("dashboard");
 
   return (
     <div
@@ -51,7 +53,7 @@ const AddFoodComponent = (props: props) => {
             {props.macros.name}
           </p>
           <span className="text-[10px] text-zinc-500 font-medium mt-0.5 whitespace-nowrap">
-            Base: {props.macros.calories_per_100g} kcal / 100g
+            {props.macros.calories_per_100g} kcal / 100g
           </span>
         </div>
       </div>
@@ -59,7 +61,7 @@ const AddFoodComponent = (props: props) => {
       <div className="grid grid-cols-4 gap-1.5 md:flex md:flex-row md:items-center md:gap-4 px-1 md:px-4 md:border-x border-white/5 py-1">
         <div className="flex flex-col md:items-center bg-zinc-900/40 md:bg-transparent p-2 md:p-0 rounded-lg border border-white/[0.02] md:border-none">
           <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider md:mb-0.5">
-            Prot
+            {t("addFood.proteinShort")}
           </span>
           <span className="text-success font-bold text-xs md:text-sm">
             {((props.macros.protein / 100) * Grams).toFixed(1)}g
@@ -68,7 +70,7 @@ const AddFoodComponent = (props: props) => {
 
         <div className="flex flex-col md:items-center bg-zinc-900/40 md:bg-transparent p-2 md:p-0 rounded-lg border border-white/[0.02] md:border-none">
           <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider md:mb-0.5">
-            Carb
+            {t("addFood.carbsShort")}
           </span>
           <span className="text-warning font-bold text-xs md:text-sm">
             {((props.macros.carbohydrates / 100) * Grams).toFixed(1)}g
@@ -77,7 +79,7 @@ const AddFoodComponent = (props: props) => {
 
         <div className="flex flex-col md:items-center bg-zinc-900/40 md:bg-transparent p-2 md:p-0 rounded-lg border border-white/[0.02] md:border-none">
           <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider md:mb-0.5">
-            Fat
+            {t("addFood.fatShort")}
           </span>
           <span className="text-pink-500 font-bold text-xs md:text-sm">
             {((props.macros.fat / 100) * Grams).toFixed(1)}g
@@ -86,7 +88,7 @@ const AddFoodComponent = (props: props) => {
 
         <div className="flex flex-col md:items-center bg-zinc-900/40 md:bg-transparent p-2 md:p-0 rounded-lg border border-white/[0.02] md:border-none">
           <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider md:mb-0.5">
-            Sug
+            {t("addFood.sugarShort")}
           </span>
           <span className="text-purple-400 font-bold text-xs md:text-sm">
             {(((props.macros.sugar || 0) / 100) * Grams).toFixed(1)}g
@@ -97,7 +99,7 @@ const AddFoodComponent = (props: props) => {
       <div className="flex items-center justify-between md:justify-end gap-3 shrink-0 pt-2 md:pt-0 border-t border-white/5 md:border-none">
         <div className="w-[85px] md:w-20">
           <Input
-            label="Portion (g)"
+            label={t("addFood.portion")}
             labelPlacement="outside"
             placeholder="100"
             size="sm"
@@ -131,7 +133,7 @@ const AddFoodComponent = (props: props) => {
         <div className="w-[85px] md:w-20">
           <Input
             isReadOnly
-            label="Energy"
+            label={t("addFood.energy")}
             labelPlacement="outside"
             size="sm"
             variant="flat"

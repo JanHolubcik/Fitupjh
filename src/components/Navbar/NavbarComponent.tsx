@@ -15,6 +15,7 @@ import {
   DropdownMenu,
   DropdownItem,
   Button,
+  Image,
 } from "@nextui-org/react";
 
 import imagepfp3 from "../../../public/pfps/3.png";
@@ -23,11 +24,19 @@ import { signOut, useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 import { InputSearchBar } from "../InputSearchBar/InputSearchBar";
 
+const supportedLngs = ["en", "sk"];
+
 const NavbarComponent = () => {
+  const switchLocale = (locale: string) => {
+    const segments = pathname.split("/");
+    segments[1] = locale;
+    router.push(segments.join("/"));
+  };
+
   const pathname = usePathname();
+  const currentLocale = pathname.split("/")[1];
   const { status, data } = useSession();
   const router = useRouter();
-
   const navigationProperties = [
     ...(status === "authenticated"
       ? [
@@ -58,6 +67,32 @@ const NavbarComponent = () => {
           </DropdownTrigger>
 
           <DropdownMenu variant="faded" aria-label="User menu actions">
+            <DropdownItem key="langs">
+              <div className="flex flex-row gap-2">
+                {supportedLngs.map((lng) => {
+                  const isActive = lng === currentLocale;
+
+                  return (
+                    <Button
+                      className={`m-0 p-0 min-w-10 max-h-7 transition-opacity ${
+                        isActive ? "opacity-100" : "opacity-50 hover:opacity-80"
+                      }`}
+                      key={lng}
+                      onPress={() => switchLocale(lng)}
+                      aria-label={`Switch to ${lng}`}
+                    >
+                      <Image
+                        className="rounded-none object-cover"
+                        width={50}
+                        height={35}
+                        alt={`${lng} flag`}
+                        src={`../flags/${lng}.svg`}
+                      />
+                    </Button>
+                  );
+                })}
+              </div>
+            </DropdownItem>
             <DropdownItem key="profile" href="/profile">
               Profile
             </DropdownItem>

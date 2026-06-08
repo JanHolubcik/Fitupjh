@@ -1,6 +1,7 @@
 import { useCalculateRecommendedCalories } from "@/app/[lng]/yourintake/hooks/useCalculateRecomendedCalories";
 import { FoodType } from "@/types/Types";
 import { Card, CardBody, CircularProgress } from "@nextui-org/react";
+import { useT } from "next-i18next/client";
 
 type props = {
   intakeToday: FoodType | null;
@@ -8,6 +9,7 @@ type props = {
 export const CalorieCard = (props: props) => {
   const { recommendedCaloriesValue, caloriesSum } =
     useCalculateRecommendedCalories(props.intakeToday);
+  const { t } = useT("dashboard");
 
   const color = caloriesSum > recommendedCaloriesValue ? "warning" : "danger";
   return (
@@ -25,7 +27,7 @@ export const CalorieCard = (props: props) => {
           size="lg"
           value={caloriesSum}
           color={color}
-          label={`${(recommendedCaloriesValue - caloriesSum).toFixed(0)} Kcal remaining`}
+          label={`${(recommendedCaloriesValue - caloriesSum).toFixed(0)} ${t("calorieCard.kcalRemaining")}`}
           maxValue={recommendedCaloriesValue}
           showValueLabel={true}
         />

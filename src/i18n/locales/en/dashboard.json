@@ -39,5 +39,60 @@
     "breakfast": "breakfast",
     "lunch": "lunch",
     "dinner": "dinner"
+  },
+  "macros": {
+    "calories": "Calories",
+    "protein": "Protein",
+    "carbohydrates": "Carbs",
+    "fat": "Fat",
+    "sugar": "Sugar",
+    "fiber": "Fiber",
+    "salt": "Salt"
+  },
+  "chart": {
+    "dayAverage": "day average",
+    "goal": "Goal",
+    "weeklyPeak": "Weekly peak",
+    "aboveLimit": "Above limit",
+    "withinLimit": "Within limit",
+    "daysOverLimit": "Days over limit",
+    "allWithinGoal": "All within goal",
+    "daysExceeded": "Days exceeded",
+    "daysNotLogged": "Days not logged",
+    "allDaysLogged": "All days logged",
+    "dayMissing": "Day missing",
+    "day234Missing": "Days missing",
+    "daysMissing": "Days missing",
+    "intake": "intake",
+    "dayTracked": "day tracked",
+    "daysTracked": "days tracked",
+    "getInsights": "Get insights",
+    "poweredByGemini": "powered by Gemini",
+    "recommendedLimit": "Recommended limit",
+    "generatingInsights": "Generating insights...",
+    "close": "Close",
+    "macroSelection": "Macro selection"
+  },
+  "newFoodModal": {
+    "title": "Adding {{name}} to daily intake",
+    "subtitle": "Adjust total weight to scale macros",
+    "amountLabel": "Amount (grams)",
+    "calories": "Calories",
+    "proteinShort": "Protein",
+    "carbsShort": "Carbohydrates",
+    "fatShort": "Fat",
+    "sugarShort": "Sugar",
+    "fiberShort": "Fiber",
+    "cancel": "Cancel",
+    "saveChanges": "Save Changes"
+  },
+  "addFood": {
+    "base": "Base",
+    "proteinShort": "Prot",
+    "carbsShort": "Carb",
+    "fatShort": "Fat",
+    "sugarShort": "Sug",
+    "portion": "Portion (g)",
+    "energy": "Energy"
   }
 }

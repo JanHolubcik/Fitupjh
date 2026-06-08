@@ -19,7 +19,8 @@ import { useT } from "next-i18next/client";
 
 export const InputSearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const { t } = useT();
+  const { t } = useT("dashboard");
+
   const [food, setFood] = useState<ReturnTypeFood>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -93,7 +94,7 @@ export const InputSearchBar = () => {
   return (
     <div
       ref={containerRef}
-      className="relative flex items-center w-full max-w-full min-w-72 sm:max-w-[50rem]"
+      className="relative flex items-center w-full max-w-full min-w-52 sm:max-w-[50rem]"
     >
       <div className="flex-1">
         <Input
@@ -141,7 +142,7 @@ export const InputSearchBar = () => {
       <ul
         className="
     absolute top-[calc(100%+4px)] left-0 z-50
-    w-72  
+    sm:w-72 w-56  
     bg-white dark:bg-zinc-900 rounded-xl shadow-xl
   "
       >

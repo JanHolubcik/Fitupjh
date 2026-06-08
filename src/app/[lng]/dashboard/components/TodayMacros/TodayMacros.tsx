@@ -18,6 +18,7 @@ import {
   MACRO_TAILWIND_THEME,
   MacroArray,
 } from "@/app/[lng]/constants/MacrosHelper";
+import { useT } from "next-i18next/client";
 
 type props = {
   savedFood: FoodType;
@@ -26,6 +27,7 @@ type props = {
 export const TodayMacros = ({ savedFood }: props) => {
   const { data } = useSession();
   const isSm = useIsSm();
+  const { t } = useT("dashboard");
   const recommendedMacros = useMemo(
     () =>
       data?.user
@@ -106,10 +108,10 @@ export const TodayMacros = ({ savedFood }: props) => {
         {MacroArray.map((macro) => (
           <MacroProgressBar
             key={macro}
-            label={capitalizeFirstLetter(macro)}
+            label={t(`macros.${macro}`, { defaultValue: capitalizeFirstLetter(macro) })}
             current={calculatedMacros[macro as keyof typeof calculatedMacros]}
             target={recommendedMacros[macro as keyof typeof recommendedMacros]}
-            unit={macro === "calories" ? "kcal" : "g"}
+            unit={macro === "calories" ? t("todayMacros.kcal") : t("todayMacros.g")}
             colorName={
               MACRO_TAILWIND_THEME[macro as keyof typeof MACRO_TAILWIND_THEME]
                 .color
@@ -120,3 +122,4 @@ export const TodayMacros = ({ savedFood }: props) => {
     </Card>
   );
 };
+

@@ -43,6 +43,8 @@ import { GenerativeAIOptions } from "@/lib/queriesOptions/GenerativeAIOptions";
 import { useChartsHooks } from "./useChartHooks";
 import { capitalizeFirstLetter } from "../constants/FunctionsHelper";
 import { MACRO_TAILWIND_THEME } from "../constants/MacrosHelper";
+import { useT } from "next-i18next/client";
+import { TFunction } from "i18next";
 
 ChartJS.register(
   CategoryScale,
@@ -65,33 +67,57 @@ const tableData = (
   recommendedValue: number,
   unit: string,
   emptyDays: number,
+  t: TFunction<"dashboard", undefined>,
 ) => {
   return [
     {
-      label: `${displayDataValues.length}-day average`,
+      label: `${displayDataValues.length}-${t("chart.dayAverage")}`,
       value: `${avg} ${unit}`,
-      sub: `Goal: ${recommendedValue} ${unit}`,
+      sub: `${t("chart.goal")}: ${recommendedValue} ${unit}`,
       subColor: "text-default-400",
     },
     {
-      label: "Weekly peak",
+      label: t("chart.weeklyPeak"),
       value: `${peak} ${unit}`,
-      sub: peak > recommendedValue ? "Above limit" : "Within limit",
+      sub:
+        peak > recommendedValue
+          ? t("chart.aboveLimit")
+          : t("chart.withinLimit"),
       subColor: peak > recommendedValue ? "text-danger" : "text-success",
     },
     {
-      label: "Days over limit",
+      label: t("chart.daysOverLimit"),
       value: `${daysOver} / ${displayDataValues.length}`,
-      sub: daysOver === 0 ? "All within goal" : "Days exceeded",
+      sub: daysOver === 0 ? t("chart.allWithinGoal") : t("chart.daysExceeded"),
       subColor: daysOver > 0 ? "text-danger" : "text-success",
     },
     {
-      label: "Days not logged",
+      label: t("chart.daysNotLogged"),
       value: emptyDays,
-      sub: emptyDays <= 0 ? "All days logged" : "Days missing",
+      sub: getStringForMissingDay(emptyDays, t),
       subColor: emptyDays > 0 ? "text-danger" : "text-success",
     },
   ];
+};
+
+const getStringForMissingDay = (
+  emptyDays: number,
+  t: TFunction<"dashboard", undefined>,
+) => {
+  if (emptyDays <= 0) {
+    return t("chart.allDaysLogged");
+  }
+
+  switch (emptyDays) {
+    case 1:
+      return t("chart.dayMissing");
+    case 2:
+    case 3:
+    case 4:
+      return t("chart.day234Missing");
+    default:
+      return t("chart.daysMissing");
+  }
 };
 
 type ChartProps = {
@@ -126,6 +152,7 @@ const Chart = ({
   emptyDays,
 }: ChartProps) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { t } = useT("dashboard");
   const {
     capitalizedMacro,
     displayDataValues,
@@ -152,7 +179,7 @@ const Chart = ({
   } = useMutation(GenerativeAIOptions(reduxSavedFood));
 
   return (
-    <div className=" flex flex-col gap-3 shadow-md bg-zinc-900/80 backdrop-blur-md border border-zinc-800">
+    <div className=" flex flex-col gap-3 shadow-md bg-transparent backdrop-blur-md">
       <Card className="">
         <CardBody>
           <div className="flex flex-row w-full items-center justify-between gap-4">
@@ -164,17 +191,26 @@ const Chart = ({
                   ].color
                 }`}
               >
-                {capitalizedMacro} Intake
+                {t(`macros.${selectedMacro}`, {
+                  defaultValue: capitalizedMacro,
+                })}{" "}
+                {t("chart.intake")}
               </h1>
               <p className="text-xs text-zinc-400 mt-1">
-                {displayDataValues.length} day
-                {displayDataValues.length > 1 ? "s" : ""} tracked
+                {displayDataValues.length}{" "}
+                {displayDataValues.length > 1
+                  ? t("chart.daysTracked")
+                  : t("chart.dayTracked")}
               </p>
             </div>
             <div className="flex items-center gap-3  rounded-lg p-2.5">
               <div className="hidden sm:flex flex-col items-end">
-                <p className="text-xs font-medium text-white">Get insights</p>
-                <p className="text-[10px] text-zinc-400">powered by Gemini</p>
+                <p className="text-xs font-medium text-white">
+                  {t("chart.getInsights")}
+                </p>
+                <p className="text-[10px] text-zinc-400">
+                  {t("chart.poweredByGemini")}
+                </p>
               </div>
               <Button
                 isIconOnly
@@ -208,6 +244,7 @@ const Chart = ({
                 recommendedValue,
                 unit,
                 emptyDays,
+                t,
               ).map(({ label, value, sub, subColor }) => (
                 <div
                   key={label}
@@ -229,7 +266,7 @@ const Chart = ({
           <div className="flex sm:flex-wrap flex-col  sm:items-center sm:items-left gap-4 text-xs text-default-400 py-2">
             <span className="flex items-center gap-1.5">
               <span className="w-4 border-t border-dashed border-default-400 flex-shrink-0" />
-              Recommended limit
+              {t("chart.recommendedLimit")}
             </span>
           </div>
 
@@ -246,7 +283,9 @@ const Chart = ({
                   className="w-full text-xs"
                   variant="bordered"
                 >
-                  {capitalizeFirstLetter(macro)}
+                  {t(`macros.${macro}`, {
+                    defaultValue: capitalizeFirstLetter(macro),
+                  })}
                 </Button>
               </div>
             ))}
@@ -260,13 +299,15 @@ const Chart = ({
                   endContent={<ChevronDownIcon className="w-4 h-4" />}
                 >
                   <span className="font-semibold">
-                    {capitalizeFirstLetter(selectedMacro)}
+                    {t(`macros.${selectedMacro}`, {
+                      defaultValue: capitalizeFirstLetter(selectedMacro),
+                    })}
                   </span>
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
                 disallowEmptySelection
-                aria-label="Macro selection"
+                aria-label={t("chart.macroSelection")}
                 className="w-48"
                 selectedKeys={selectedMacro}
                 selectionMode="single"
@@ -276,7 +317,9 @@ const Chart = ({
               >
                 {Object.keys(macroDatasets).map((macro) => (
                   <DropdownItem key={macro} className="capitalize">
-                    {capitalizeFirstLetter(macro)}
+                    {t(`macros.${macro}`, {
+                      defaultValue: capitalizeFirstLetter(macro),
+                    })}
                   </DropdownItem>
                 ))}
               </DropdownMenu>
@@ -295,6 +338,7 @@ const Chart = ({
               recommendedValue,
               unit,
               emptyDays,
+              t,
             ).map(({ label, value, sub, subColor }) => (
               <div
                 key={label}
@@ -349,7 +393,7 @@ const Chart = ({
                     <div className="flex flex-col items-center gap-3">
                       <Spinner color="primary" />
                       <p className="text-sm text-zinc-400">
-                        Generating insights...
+                        {t("chart.generatingInsights")}
                       </p>
                     </div>
                   </div>
@@ -397,7 +441,7 @@ const Chart = ({
                   onPress={onClose}
                   className="text-zinc-400 hover:text-white hover:bg-white/5"
                 >
-                  Close
+                  {t("chart.close")}
                 </Button>
               </ModalFooter>
             </>
