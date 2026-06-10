@@ -1,7 +1,9 @@
 {
   "searchPlaceholder": "Search food...",
   "calorieCard": {
-    "kcalRemaining": "Kcal remaining"
+    "kcalRemaining": "{{diff}} Kcal remaining",
+    "noRecords": "No records yet",
+    "kcalOver": "{{diff}} Kcal over limit"
   },
   "todayMacros": {
     "kcal": "kcal",
@@ -10,7 +12,11 @@
   "accordion": {
     "item": "item",
     "items": "items",
-    "loggedToday": "logged today"
+    "loggedToday": "logged today",
+    "itemsLogged0": "0 items logged",
+    "itemsLogged1": "1 item logged",
+    "itemsLogged234": "{{count}} items logged",
+    "itemsLogged5plus": "{{count}} items logged"
   },
   "dateSwitcher": {
     "previousDay": "Previous day",
@@ -64,8 +70,10 @@
     "day234Missing": "Days missing",
     "daysMissing": "Days missing",
     "intake": "intake",
-    "dayTracked": "day tracked",
-    "daysTracked": "days tracked",
+    "daysTracked0": "0 days tracked",
+    "daysTracked1": "1 day tracked",
+    "daysTracked234": "{{count}} days tracked",
+    "daysTracked5plus": "{{count}} days tracked",
     "getInsights": "Get insights",
     "poweredByGemini": "powered by Gemini",
     "recommendedLimit": "Recommended limit",

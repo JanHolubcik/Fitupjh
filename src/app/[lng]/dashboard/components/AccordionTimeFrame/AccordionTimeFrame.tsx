@@ -59,9 +59,13 @@ export const AccordionTimeFrame = ({ savedFood }: props) => {
             }
             subtitle={
               <span className="text-default-400 font-normal">
-                {itemCount}{" "}
-                {itemCount === 1 ? t("accordion.item") : t("accordion.items")}{" "}
-                {t("accordion.loggedToday")}
+                {itemCount === 0
+                  ? t("accordion.itemsLogged0")
+                  : itemCount === 1
+                    ? t("accordion.itemsLogged1")
+                    : itemCount >= 2 && itemCount <= 4
+                      ? t("accordion.itemsLogged234", { count: itemCount })
+                      : t("accordion.itemsLogged5plus", { count: itemCount })}
               </span>
             }
             startContent={

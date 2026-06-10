@@ -1,8 +1,10 @@
 {
   "searchPlaceholder": "Hľadať jedlo...",
-  "kcalRemaining": "Kcal zostáva",
+  "kcalRemaining": "{{amount}} Kcal zostáva",
   "calorieCard": {
-    "kcalRemaining": "Kcal zostáva"
+    "kcalRemaining": "{{amount}} Kcal zostáva",
+    "noRecords": "Žiadne záznamy",
+    "kcalOver": "{{amount}} Kcal navyše"
   },
   "todayMacros": {
     "kcal": "kcal",
@@ -11,7 +13,11 @@
   "accordion": {
     "item": "položka",
     "items": "položiek",
-    "loggedToday": "zapísaných"
+    "loggedToday": "zapísaných",
+    "itemsLogged0": "0 položiek zapísaných",
+    "itemsLogged1": "1 položka zapísaná",
+    "itemsLogged234": "{{count}} položky zapísané",
+    "itemsLogged5plus": "{{count}} položiek zapísaných"
   },
   "dateSwitcher": {
     "previousDay": "Predchádzajúci deň",
@@ -32,7 +38,7 @@
       "carbs": "Sacharidy:",
       "fat": "Tuky:",
       "sugar": "Cukry:",
-      "fiber": "Vláknina:",
+      "fiber": "Vlákniny:",
       "salt": "Soľ:"
     }
   },
@@ -65,8 +71,10 @@
     "day234Missing": "Chýbajúce",
     "daysMissing": "Chýbajúcich",
     "intake": "príjem",
-    "dayTracked": "deň zaznamenaný",
-    "daysTracked": "dni zaznamenané",
+    "daysTracked0": "0 dní zaznamenaných",
+    "daysTracked1": "1 deň zaznamenaný",
+    "daysTracked234": "{{count}} dni zaznamenané",
+    "daysTracked5plus": "{{count}} dní zaznamenaných",
     "getInsights": "Získať prehľad",
     "poweredByGemini": "chatbot Gemini",
     "recommendedLimit": "Odporúčaný limit",
@@ -82,8 +90,8 @@
     "proteinShort": "Bielkoviny",
     "carbsShort": "Sacharidy",
     "fatShort": "Tuky",
-    "fiberShort": "Vláknina",
-    "sugarShort": "Cukor",
+    "fiberShort": "vlákniny",
+    "sugarShort": "Cukry",
     "cancel": "Zrušiť",
     "saveChanges": "Uložiť zmeny"
   },

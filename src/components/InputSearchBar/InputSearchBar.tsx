@@ -94,7 +94,7 @@ export const InputSearchBar = () => {
   return (
     <div
       ref={containerRef}
-      className="relative flex items-center w-full max-w-full min-w-52 sm:max-w-[50rem]"
+      className="relative flex items-center w-full max-w-full min-w-60 sm:min-w-56 sm:w-full"
     >
       <div className="flex-1">
         <Input

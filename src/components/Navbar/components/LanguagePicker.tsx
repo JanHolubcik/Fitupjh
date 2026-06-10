@@ -53,9 +53,7 @@ export const LanguagePicker = () => {
             />
           }
           endContent={<FaCaretDown />}
-        >
-          <p className="sm:block hidden">{selectedLanguage.name}</p>
-        </Button>
+        ></Button>
       </DropdownTrigger>
       <DropdownMenu
         aria-label="Language selection"

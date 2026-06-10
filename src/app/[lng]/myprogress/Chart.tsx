@@ -197,10 +197,18 @@ const Chart = ({
                 {t("chart.intake")}
               </h1>
               <p className="text-xs text-zinc-400 mt-1">
-                {displayDataValues.length}{" "}
-                {displayDataValues.length > 1
-                  ? t("chart.daysTracked")
-                  : t("chart.dayTracked")}
+                {displayDataValues.length === 0
+                  ? t("chart.daysTracked0")
+                  : displayDataValues.length === 1
+                    ? t("chart.daysTracked1")
+                    : displayDataValues.length >= 2 &&
+                        displayDataValues.length <= 4
+                      ? t("chart.daysTracked234", {
+                          count: displayDataValues.length,
+                        })
+                      : t("chart.daysTracked5plus", {
+                          count: displayDataValues.length,
+                        })}
               </p>
             </div>
             <div className="flex items-center gap-3  rounded-lg p-2.5">
