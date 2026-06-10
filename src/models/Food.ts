@@ -29,6 +29,8 @@ import {
 class FoodClass {
   @prop({ required: true, unique: true })
   name: string;
+  @prop({ required: false, type: () => String, default: new Map() })
+  localizedNames: Map<string, string>;
   @prop({ required: true })
   calories_per_100g: number;
   @prop({ required: true })

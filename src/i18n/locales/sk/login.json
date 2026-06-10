@@ -1,0 +1,10 @@
+{
+  "title": "Vitajte späť",
+  "subtitle": "Prihláste sa do svojho účtu.",
+  "emailLabel": "E-mailová adresa",
+  "passwordLabel": "Heslo",
+  "signingIn": "Prihlasovanie...",
+  "signInButton": "Prihlásiť sa",
+  "noAccountText": "Nemáte ešte účet? ",
+  "signUpLink": "Zaregistrovať sa"
+}

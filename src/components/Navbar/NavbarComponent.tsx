@@ -15,33 +15,30 @@ import {
   DropdownMenu,
   DropdownItem,
   Button,
-  Image,
 } from "@nextui-org/react";
 
 import imagepfp3 from "../../../public/pfps/3.png";
 
 import { signOut, useSession } from "next-auth/react";
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { InputSearchBar } from "../InputSearchBar/InputSearchBar";
-
-const supportedLngs = ["en", "sk"];
+import { LanguagePicker } from "./components/LanguagePicker";
+import { useT } from "next-i18next/client";
 
 const NavbarComponent = () => {
-  const switchLocale = (locale: string) => {
-    const segments = pathname.split("/");
-    segments[1] = locale;
-    router.push(segments.join("/"));
-  };
-
   const pathname = usePathname();
-  const currentLocale = pathname.split("/")[1];
+  const { t } = useT("navbar");
   const { status, data } = useSession();
   const router = useRouter();
+
+  const params = useParams();
+  const lng = params?.lng || "en";
+
   const navigationProperties = [
     ...(status === "authenticated"
       ? [
-          { id: 1, href: "/dashboard", description: "Dashboard" },
-          { id: 2, href: "/profile", description: "Profile" },
+          { id: 1, href: `/${lng}/dashboard`, description: t("dashboard") },
+          { id: 2, href: `/${lng}/profile`, description: t("profile") },
         ]
       : []),
   ];
@@ -67,34 +64,8 @@ const NavbarComponent = () => {
           </DropdownTrigger>
 
           <DropdownMenu variant="faded" aria-label="User menu actions">
-            <DropdownItem key="langs">
-              <div className="flex flex-row gap-2">
-                {supportedLngs.map((lng) => {
-                  const isActive = lng === currentLocale;
-
-                  return (
-                    <Button
-                      className={`m-0 p-0 min-w-10 max-h-7 transition-opacity ${
-                        isActive ? "opacity-100" : "opacity-50 hover:opacity-80"
-                      }`}
-                      key={lng}
-                      onPress={() => switchLocale(lng)}
-                      aria-label={`Switch to ${lng}`}
-                    >
-                      <Image
-                        className="rounded-none object-cover"
-                        width={50}
-                        height={35}
-                        alt={`${lng} flag`}
-                        src={`../flags/${lng}.svg`}
-                      />
-                    </Button>
-                  );
-                })}
-              </div>
-            </DropdownItem>
             <DropdownItem key="profile" href="/profile">
-              Profile
+              {t("profile")}
             </DropdownItem>
 
             <DropdownItem
@@ -105,7 +76,7 @@ const NavbarComponent = () => {
                 signOut({ redirect: false }).then(() => router.push("/"))
               }
             >
-              Logout
+              {t("logout")}
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
@@ -120,7 +91,7 @@ const NavbarComponent = () => {
         size="sm"
         className="border-white/20 text-white hover:bg-white/10"
       >
-        Sign In
+        {t("signIn")}
       </Button>
     );
   };
@@ -131,7 +102,6 @@ const NavbarComponent = () => {
       className="bg-zinc-950/70 border-white/5 backdrop-blur-md"
       maxWidth="xl"
     >
-      {/* Left side: Brand Logo & Mobile Toggle */}
       <NavbarContent justify="start" className="flex-grow-0">
         <NavbarMenuToggle className="sm:hidden text-white mr-2" />
         <NavbarBrand className="gap-5">
@@ -164,8 +134,10 @@ const NavbarComponent = () => {
           <InputSearchBar />
         </NavbarContent>
       )}
+
       <NavbarContent justify="end" className="flex-1 gap-4">
         <div className="flex items-center gap-2">
+          {LanguagePicker()}
           {showSession()}
 
           {status !== "authenticated" && (
@@ -176,7 +148,7 @@ const NavbarComponent = () => {
               size="sm"
               className="font-medium"
             >
-              Sign up
+              {t("signUp")}
             </Button>
           )}
         </div>

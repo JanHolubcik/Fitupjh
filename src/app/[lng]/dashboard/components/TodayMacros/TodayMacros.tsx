@@ -103,15 +103,19 @@ export const TodayMacros = ({ savedFood }: props) => {
   }, [data?.user?.weight, data?.user?.height, savedFood]);
 
   return (
-    <Card className="w-full sm:max-w-4xl mx-auto flex flex-col gap-4 max-w-80">
+    <Card className="w-full sm:max-w-4xl mx-auto flex flex-col gap-4 ">
       <CardBody className="grid  md:grid-cols-2 grid-cols-1  gap-2">
         {MacroArray.map((macro) => (
           <MacroProgressBar
             key={macro}
-            label={t(`macros.${macro}`, { defaultValue: capitalizeFirstLetter(macro) })}
+            label={t(`macros.${macro}`, {
+              defaultValue: capitalizeFirstLetter(macro),
+            })}
             current={calculatedMacros[macro as keyof typeof calculatedMacros]}
             target={recommendedMacros[macro as keyof typeof recommendedMacros]}
-            unit={macro === "calories" ? t("todayMacros.kcal") : t("todayMacros.g")}
+            unit={
+              macro === "calories" ? t("todayMacros.kcal") : t("todayMacros.g")
+            }
             colorName={
               MACRO_TAILWIND_THEME[macro as keyof typeof MACRO_TAILWIND_THEME]
                 .color
@@ -122,4 +126,3 @@ export const TodayMacros = ({ savedFood }: props) => {
     </Card>
   );
 };
-

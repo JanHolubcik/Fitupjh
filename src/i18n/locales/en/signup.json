@@ -1,0 +1,15 @@
+{
+  "infoTooltipTitle": "Why do we need this?",
+  "infoTooltipText": "Knowing your weight, height, and goal helps us accurately calculate your daily macros.",
+  "title": "Create Account",
+  "subtitle": "Start tracking your macros today.",
+  "usernameLabel": "Username",
+  "emailLabel": "Email Address",
+  "passwordLabel": "Password",
+  "heightLabel": "Height (cm)",
+  "weightLabel": "Weight (kg)",
+  "creatingAccount": "Creating account...",
+  "signUpButton": "Sign Up",
+  "hasAccountText": "Already have an account? ",
+  "logInLink": "Log in"
+}

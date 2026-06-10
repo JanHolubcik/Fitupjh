@@ -3,10 +3,13 @@
 import { Image, Link, Button } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 import { useT } from "next-i18next/client";
+import { useParams } from "next/navigation";
 
 export default function Home() {
   const { data } = useSession();
   const { t } = useT("home");
+  const params = useParams();
+  const lng = params?.lng || "en";
   return (
     <main className="dark min-h-screen flex flex-col items-center justify-center sm:p-10 p-6 relative overflow-hidden">
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#00FFAA]/10 rounded-full blur-[100px] -z-10 pointer-events-none" />
@@ -62,7 +65,7 @@ export default function Home() {
             </h2>
             <Button
               as={Link}
-              href={data?.user?.id ? "/dashboard" : "/signup"}
+              href={data?.user?.id ? `/${lng}/dashboard` : `/${lng}/signup`}
               className="w-full sm:w-auto bg-[#00FFAA] text-black font-bold px-10 py-6 text-lg rounded-2xl shadow-[0_0_15px_rgba(0,255,170,0.2)] hover:shadow-[0_0_30px_rgba(0,255,170,0.5)] transition-all hover:-translate-y-1"
             >
               {t("button")}

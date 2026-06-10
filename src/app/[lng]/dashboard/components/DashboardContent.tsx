@@ -55,7 +55,7 @@ export const DashboardContent = () => {
       <ModalTakePicture />
       <DateSwitcher></DateSwitcher>
 
-      <div className="flex sm:flex-row flex-col gap-3 ">
+      <div className="flex sm:flex-row flex-col gap-3 sm:w-full ">
         <CalorieCard intakeToday={savedFood}></CalorieCard>
 
         <TodayMacros savedFood={savedFood}></TodayMacros>

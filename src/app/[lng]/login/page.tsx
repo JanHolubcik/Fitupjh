@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import {
   Link,
   Input,
@@ -12,6 +12,7 @@ import {
 } from "@nextui-org/react";
 import { signIn } from "next-auth/react";
 import PulsingButton from "@/components/PulsingButton/PulsingButton";
+import { useT } from "next-i18next/client";
 
 const customInputStyles = {
   inputWrapper:
@@ -23,7 +24,10 @@ const customInputStyles = {
 export default function Login() {
   const [error, setError] = useState("");
   const router = useRouter();
+  const params = useParams();
+  const lng = params?.lng || "en";
   const [loading, setLoading] = useState(false);
+  const { t } = useT("login");
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -45,7 +49,7 @@ export default function Login() {
     }
 
     if (res?.ok) {
-      return router.push("/dashboard");
+      return router.push(`/${lng}/dashboard`);
     }
   };
 
@@ -54,16 +58,16 @@ export default function Login() {
       <Card className="w-full max-w-[450px] p-4 bg-zinc-900/80 backdrop-blur-md border border-zinc-800 shadow-2xl">
         <CardHeader className="flex flex-col items-center justify-center pt-6 pb-2">
           <h1 className="text-3xl font-extrabold tracking-tight text-white">
-            Welcome Back
+            {t("title")}
           </h1>
-          <p className="text-sm text-zinc-400 mt-2">Sign in to your account.</p>
+          <p className="text-sm text-zinc-400 mt-2">{t("subtitle")}</p>
         </CardHeader>
 
         <CardBody className="flex flex-col gap-4">
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <Input
               type="email"
-              label="Email Address"
+              label={t("emailLabel")}
               name="email"
               classNames={customInputStyles}
               isDisabled={loading}
@@ -72,7 +76,7 @@ export default function Login() {
 
             <Input
               type="password"
-              label="Password"
+              label={t("passwordLabel")}
               name="password"
               classNames={customInputStyles}
               isDisabled={loading}
@@ -94,22 +98,22 @@ export default function Login() {
               {loading ? (
                 <div className="flex items-center justify-center gap-2">
                   <Spinner size="sm" color="current" />
-                  <span>Signing in...</span>
+                  <span>{t("signingIn")}</span>
                 </div>
               ) : (
-                "Sign In"
+                t("signInButton")
               )}
             </PulsingButton>
 
             <div className="text-center mt-4">
               <span className="text-sm text-zinc-400">
-                Don't have an account?{" "}
+                {t("noAccountText")}
               </span>
               <Link
-                href="/signup"
+                href={`/${lng}/signup`}
                 className="text-sm font-semibold text-[#00FFAA] hover:text-[#00FFAA]/80 transition-colors"
               >
-                Sign up
+                {t("signUpLink")}
               </Link>
             </div>
           </form>

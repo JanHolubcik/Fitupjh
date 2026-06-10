@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   return withAuth(req, async (req) => {
-    const { searchParams } = req.nextUrl;
+    const { searchParams, locale } = req.nextUrl;
     const searchTerm = searchParams.get("searchTerm") || "";
 
     try {

@@ -1,7 +1,7 @@
 "use client";
 
 import { ChangeEvent, FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 
 import {
   Image,
@@ -16,6 +16,7 @@ import {
 import { FaInfoCircle } from "react-icons/fa";
 import PulsingButton from "@/components/PulsingButton/PulsingButton";
 import { signupSchema } from "@/lib/validationShemas/signupValidationSchema";
+import { useT } from "next-i18next/client";
 
 const customInputStyles = {
   inputWrapper:
@@ -24,42 +25,44 @@ const customInputStyles = {
   label: "text-zinc-400 group-focus-within:text-[#00FFAA] transition-colors",
 };
 
-const InfoTooltip = () => (
-  <Tooltip
-    showArrow
-    placement="top-end"
-    content={
-      <div className="p-2 max-w-64">
-        <div className="flex justify-center mb-2">
-          <Image
-            className="object-contain"
-            alt="Info"
-            src="eplaining_owl.png"
-            width={70}
-            height={70}
-          />
-        </div>
-        <h1 className="text-center font-bold mb-1 text-sm">
-          Why do we need this?
-        </h1>
-        <p className="text-center text-xs text-zinc-300">
-          Knowing your weight, height, and goal helps us accurately calculate
-          your daily macros.
-        </p>
-      </div>
-    }
-  >
-    <button type="button" className="focus:outline-none" tabIndex={-1}>
-      <FaInfoCircle className="text-zinc-500 hover:text-white transition-colors" />
-    </button>
-  </Tooltip>
-);
-
 export default function Signup() {
   const router = useRouter();
+  const params = useParams();
+  const lng = params?.lng || "en";
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
+  const { t } = useT("signup");
+
+  const InfoTooltip = () => (
+    <Tooltip
+      showArrow
+      placement="top-end"
+      content={
+        <div className="p-2 max-w-64">
+          <div className="flex justify-center mb-2">
+            <Image
+              className="object-contain"
+              alt="Info"
+              src="eplaining_owl.png"
+              width={70}
+              height={70}
+            />
+          </div>
+          <h1 className="text-center font-bold mb-1 text-sm">
+            {t("infoTooltipTitle")}
+          </h1>
+          <p className="text-center text-xs text-zinc-300">
+            {t("infoTooltipText")}
+          </p>
+        </div>
+      }
+    >
+      <button type="button" className="focus:outline-none" tabIndex={-1}>
+        <FaInfoCircle className="text-zinc-500 hover:text-white transition-colors" />
+      </button>
+    </Tooltip>
+  );
 
   const [formData, setFormData] = useState({
     username: "",
@@ -101,7 +104,7 @@ export default function Signup() {
       const data = await res.json();
 
       if (res.ok) {
-        router.push("/login");
+        router.push(`/${lng}/login`);
       } else {
         setError(data.error || "Something went wrong during signup.");
         setLoading(false);
@@ -117,10 +120,10 @@ export default function Signup() {
       <Card className="w-full max-w-[450px] p-4 bg-zinc-900/80 backdrop-blur-md border border-zinc-800 shadow-2xl">
         <CardHeader className="flex flex-col items-center justify-center pt-6 pb-2">
           <h1 className="text-3xl font-extrabold tracking-tight text-white">
-            Create Account
+            {t("title")}
           </h1>
           <p className="text-sm text-zinc-400 mt-2">
-            Start tracking your macros today.
+            {t("subtitle")}
           </p>
         </CardHeader>
 
@@ -128,7 +131,7 @@ export default function Signup() {
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <Input
               name="username"
-              label="Username"
+              label={t("usernameLabel")}
               classNames={customInputStyles}
               type="text"
               value={formData.username}
@@ -140,7 +143,7 @@ export default function Signup() {
 
             <Input
               name="userEmail"
-              label="Email Address"
+              label={t("emailLabel")}
               classNames={customInputStyles}
               type="email"
               value={formData.userEmail}
@@ -152,7 +155,7 @@ export default function Signup() {
 
             <Input
               name="password"
-              label="Password"
+              label={t("passwordLabel")}
               classNames={customInputStyles}
               type="password"
               value={formData.password}
@@ -166,7 +169,7 @@ export default function Signup() {
             <div className="flex flex-row gap-4">
               <Input
                 name="height"
-                label="Height (cm)"
+                label={t("heightLabel")}
                 classNames={customInputStyles}
                 type="number"
                 value={formData.height}
@@ -179,7 +182,7 @@ export default function Signup() {
 
               <Input
                 name="weight"
-                label="Weight (kg)"
+                label={t("weightLabel")}
                 classNames={customInputStyles}
                 type="number"
                 value={formData.weight}
@@ -205,22 +208,22 @@ export default function Signup() {
               {loading ? (
                 <div className="flex items-center gap-2">
                   <Spinner size="sm" color="current" />
-                  <span>Creating account...</span>
+                  <span>{t("creatingAccount")}</span>
                 </div>
               ) : (
-                "Sign Up"
+                t("signUpButton")
               )}
             </PulsingButton>
 
             <div className="text-center mt-4">
               <span className="text-sm text-zinc-400">
-                Already have an account?{" "}
+                {t("hasAccountText")}
               </span>
               <Link
-                href="/login"
+                href={`/${lng}/login`}
                 className="text-sm font-semibold text-[#00FFAA] hover:text-[#00FFAA]/80 transition-colors"
               >
-                Log in
+                {t("logInLink")}
               </Link>
             </div>
           </form>

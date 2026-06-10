@@ -49,6 +49,7 @@ export async function getFood(substring: string) {
             imgUrl: value.imgUrl,
             ProductWeight: value.ProductWeight,
             qrCode: value.QRcode,
+            localizedNames: value.localizedNames,
           };
         }),
       };

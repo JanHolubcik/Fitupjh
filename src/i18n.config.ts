@@ -4,7 +4,7 @@ const i18nConfig: I18nConfig = {
   supportedLngs: ["en", "sk"],
   fallbackLng: "en",
   defaultNS: "common",
-  ns: ["common", "dashboard", "profile", "home"],
+  ns: ["common", "dashboard", "profile", "home", "login", "signup", "navbar"],
   // Recommended: works on all platforms including Vercel/serverless
   resourceLoader: (language, namespace) =>
     import(`./i18n/locales/${language}/${namespace}.json`),

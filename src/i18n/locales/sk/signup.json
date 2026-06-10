@@ -1,0 +1,15 @@
+{
+  "infoTooltipTitle": "Prečo to potrebujeme?",
+  "infoTooltipText": "Znalosť vašej hmotnosti, výšky a cieľa nám pomáha presne vypočítať vaše denné makroživiny.",
+  "title": "Vytvoriť účet",
+  "subtitle": "Začnite sledovať svoje makrá ešte dnes.",
+  "usernameLabel": "Používateľské meno",
+  "emailLabel": "E-mailová adresa",
+  "passwordLabel": "Heslo",
+  "heightLabel": "Výška (cm)",
+  "weightLabel": "Hmotnosť (kg)",
+  "creatingAccount": "Vytvára sa účet...",
+  "signUpButton": "Zaregistrovať sa",
+  "hasAccountText": "Už máte účet? ",
+  "logInLink": "Prihlásiť sa"
+}
