@@ -219,7 +219,7 @@ export const ModalCreateFood = (props: props) => {
                     className="font-bold flex-1"
                     type="submit"
                   >
-                    {t("submitBtn")}
+                    {t("modalCreateFood.submitBtn")}
                   </Button>
                   <Button
                     onPress={() => {
@@ -229,7 +229,7 @@ export const ModalCreateFood = (props: props) => {
                     color="danger"
                     className="font-bold flex-1"
                   >
-                    {t("cancelBtn")}
+                    {t("modalCreateFood.cancelBtn")}
                   </Button>
                 </div>
               </form>
