@@ -96,7 +96,7 @@ const AddFoodComponent = (props: props) => {
         </div>
       </div>
 
-      <div className="flex items-center justify-between md:justify-end shrink-0 pt-1 md:pt-0 border-t border-white/5 md:border-none">
+      <div className="flex items-center justify-between md:justify-end shrink-0 gap-1 pt-1 md:pt-0 border-t border-white/5 md:border-none">
         <div className="w-[85px] md:w-20">
           <Input
             label={t("addFood.portion")}
@@ -160,7 +160,7 @@ const AddFoodComponent = (props: props) => {
           isIconOnly
           radius="full"
           variant="light"
-          className="w-7 h-7 min-w-7 md:w-9 md:h-9 md:min-w-9 ml-1 text-[#00FFAA] hover:bg-[#00FFAA]/10 hover:scale-105 transition-all duration-200 self-end md:self-center mt-3 md:mt-0"
+          className="w-7 h-7 min-w-7 md:w-9 md:h-9 md:min-w-9 ml-1 text-[#00FFAA] hover:bg-[#00FFAA]/10 hover:scale-105 transition-all duration-200 self-end md:mt-0"
         >
           <FaPlusCircle size={18} />
         </Button>

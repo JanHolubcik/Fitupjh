@@ -62,6 +62,7 @@ export const NewFoodRecordModal = ({
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       hideCloseButton
+      placement="center"
       backdrop="blur"
       classNames={{
         base: "bg-zinc-900 border border-zinc-800 text-zinc-100 max-w-md",
