@@ -52,7 +52,7 @@ export const ModalScanMacros = () => {
         const worker = await createWorker(["eng", "slk"]);
         workerRef.current = worker;
         setIsWorkerReady(true);
-        startLiveScanning(); // Start scanning once ready
+        startLiveScanning();
       };
       initTesseract();
     } else {
@@ -80,10 +80,9 @@ export const ModalScanMacros = () => {
       ) as HTMLVideoElement;
       if (!videoElement) return;
 
-      isProcessingRef.current = true; // Lock process
+      isProcessingRef.current = true;
 
       try {
-        // Draw video frame to hidden canvas
         const canvas = document.createElement("canvas");
         canvas.width = videoElement.videoWidth;
         canvas.height = videoElement.videoHeight;
@@ -102,7 +101,7 @@ export const ModalScanMacros = () => {
         // Parse extracted text
         const extractedData = parseMacros(text);
 
-        // If we found Calories, assume we got a good read!
+        // If we found Calories, assume we got a good read
         if (extractedData.calories_per_100g > 0) {
           setResult(extractedData);
           stopLiveScanning();
