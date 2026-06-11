@@ -158,31 +158,45 @@ export const ModalTakePicture = () => {
                         </h3>
                         <ul className="text-sm space-y-1">
                           <li>
-                            <span className="font-semibold">{t("takePictureModal.macros.calories")}</span>{" "}
+                            <span className="font-semibold">
+                              {t("takePictureModal.macros.calories")}
+                            </span>{" "}
                             {result.calories_per_100g} kcal
                           </li>
                           <li>
-                            <span className="font-semibold">{t("takePictureModal.macros.protein")}</span>{" "}
+                            <span className="font-semibold">
+                              {t("takePictureModal.macros.protein")}
+                            </span>{" "}
                             {result.protein} g
                           </li>
                           <li>
-                            <span className="font-semibold">{t("takePictureModal.macros.carbs")}</span>{" "}
+                            <span className="font-semibold">
+                              {t("takePictureModal.macros.carbs")}
+                            </span>{" "}
                             {result.carbohydrates} g
                           </li>
                           <li>
-                            <span className="font-semibold">{t("takePictureModal.macros.fat")}</span>{" "}
+                            <span className="font-semibold">
+                              {t("takePictureModal.macros.fat")}
+                            </span>{" "}
                             {result.fat} g
                           </li>
                           <li>
-                            <span className="font-semibold">{t("takePictureModal.macros.sugar")}</span>{" "}
+                            <span className="font-semibold">
+                              {t("takePictureModal.macros.sugar")}
+                            </span>{" "}
                             {result.sugar} g
                           </li>
                           <li>
-                            <span className="font-semibold">{t("takePictureModal.macros.fiber")}</span>{" "}
+                            <span className="font-semibold">
+                              {t("takePictureModal.macros.fiber")}
+                            </span>{" "}
                             {result.fiber} g
                           </li>
                           <li>
-                            <span className="font-semibold">{t("takePictureModal.macros.salt")}</span>{" "}
+                            <span className="font-semibold">
+                              {t("takePictureModal.macros.salt")}
+                            </span>{" "}
                             {result.salt} g
                           </li>
                         </ul>
@@ -194,7 +208,7 @@ export const ModalTakePicture = () => {
                         {t("takePictureModal.takeAnother")}
                       </Button>
                       <Button color="danger" variant="light" onPress={onClose}>
-                        {t("takePictureModal.close")}
+                        {t("close")}
                       </Button>
                     </div>
                   </div>
@@ -207,4 +221,3 @@ export const ModalTakePicture = () => {
     </div>
   );
 };
-

@@ -199,7 +199,7 @@ export const InputSearchBar = () => {
         {debouncedSearchTerm.length > 0 && food?.length === 0 && (
           <div className="flex flex-col items-center gap-2 p-4">
             <p className="ml-5 text-sm text-center self-center">
-              No results found, you can add food manually or scan a barcode.
+              {t("recordNotFound")}
             </p>
             <Button
               size={"sm"}
@@ -208,7 +208,7 @@ export const InputSearchBar = () => {
               variant={"faded"}
               onPress={onOpen}
             >
-              Add manually
+              {t("addManually")}
             </Button>
           </div>
         )}

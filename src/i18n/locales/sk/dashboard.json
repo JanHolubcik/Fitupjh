@@ -1,6 +1,9 @@
 {
   "searchPlaceholder": "Hľadať jedlo...",
   "kcalRemaining": "{{amount}} Kcal zostáva",
+  "recordNotFound": "Ak si svoje jedlo nenašiel vyskúšaj jedlo naskanovať alebo pridať manuálne.",
+  "addManually": "Pridať manuálne",
+  "close": "Zavrieť",
   "calorieCard": {
     "kcalRemaining": "{{amount}} Kcal zostáva",
     "noRecords": "Žiadne záznamy",
@@ -31,7 +34,6 @@
     "analyzing": "Analyzuje sa pomocou Gemini...",
     "analysisResult": "Výsledok analýzy",
     "takeAnother": "Odfotiť znova",
-    "close": "Zavrieť",
     "macros": {
       "calories": "Kalórie:",
       "protein": "Bielkoviny:",
@@ -79,7 +81,6 @@
     "poweredByGemini": "chatbot Gemini",
     "recommendedLimit": "Odporúčaný limit",
     "generatingInsights": "Generujú sa prehľady...",
-    "close": "Zavrieť",
     "macroSelection": "Výber makra"
   },
   "newFoodModal": {

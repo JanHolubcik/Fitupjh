@@ -449,7 +449,7 @@ const Chart = ({
                   onPress={onClose}
                   className="text-zinc-400 hover:text-white hover:bg-white/5"
                 >
-                  {t("chart.close")}
+                  {t("close")}
                 </Button>
               </ModalFooter>
             </>

@@ -7,6 +7,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Skeleton,
   Spinner,
   useDisclosure,
 } from "@nextui-org/react";
@@ -20,6 +21,8 @@ import { ModalBarcodeScan } from "./ModalBarcodeScan";
 import { useMutation } from "@tanstack/react-query";
 import { getSearchedFoodOptions } from "@/lib/queriesOptions/GetSearchedFoodOptions";
 import { NewFoodRecordModal } from "@/components/NewFoodRecordModal/NewFoodRecordModal";
+import { useT } from "next-i18next/client";
+import { AddFoodSkeleton } from "@/app/[lng]/dashboard/components/Skeletons";
 
 type props = {
   onOpenChange: () => void;
@@ -44,9 +47,7 @@ function useDebounce<T>(
 }
 
 export const ModalFindFood = (props: props) => {
-  const { addToFood } = useYourIntakeOperations();
-  const isSubmittingRef = useRef(false);
-
+  const { t } = useT("dashboard");
   // 1. Create a ref for the input
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -151,7 +152,7 @@ export const ModalFindFood = (props: props) => {
                     inputWrapper:
                       "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20 rounded-r-none data-[focus=true]:ring-0 data-[focus=true]:ring-offset-0 data-[focus=true]:border-transparent outline-none",
                   }}
-                  placeholder="Type to search..."
+                  placeholder={t("searchPlaceholder")}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   onClear={() => {
@@ -175,7 +176,9 @@ export const ModalFindFood = (props: props) => {
               <ModalBody className="max-h-96 min-h-32">
                 <div className="overflow-visible">
                   {loading ? (
-                    <Spinner className=" m-2 self-center" size="lg" />
+                    <div className="flex flex-col items-center mt-8">
+                      <Spinner />
+                    </div>
                   ) : (
                     <>
                       {food?.map((key, id) => (
@@ -214,8 +217,7 @@ export const ModalFindFood = (props: props) => {
                           ></ModalCreateFood>
 
                           <p className="ml-5 text-sm text-center self-center">
-                            If you didn't find your food, you can add it here or
-                            scan a barcode.
+                            {t("recordNotFound")}
                           </p>
                           <Button
                             size={"sm"}
@@ -224,7 +226,7 @@ export const ModalFindFood = (props: props) => {
                             variant={"faded"}
                             onPress={onOpen}
                           >
-                            Add manually
+                            {t("addManually")}
                           </Button>
                         </div>
                       )}
@@ -248,7 +250,7 @@ export const ModalFindFood = (props: props) => {
                   className="bg-red-600 text-white font-medium"
                   onPress={onClose}
                 >
-                  Close
+                  {t("close")}
                 </Button>
               </ModalFooter>
             </>
