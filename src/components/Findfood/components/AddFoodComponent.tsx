@@ -37,10 +37,10 @@ const AddFoodComponent = (props: props) => {
 
   return (
     <div
-      className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 rounded-xl my-2 bg-zinc-900/20 border border-white/5 backdrop-blur-sm hover:bg-zinc-800/20 hover:border-white/10 transition-all duration-200"
+      className="flex flex-col md:flex-row md:items-center justify-between gap-1 p-3  rounded-xl my-2 bg-zinc-900/20 border border-white/5 backdrop-blur-sm hover:bg-zinc-800/20 hover:border-white/10 transition-all duration-200"
       key={props.macros.name}
     >
-      <div className="flex items-center gap-3.5 flex-1 min-w-0 w-full">
+      <div className="flex items-center gap-4 flex-1 min-w-0 w-full">
         <div className="flex-shrink-0 bg-zinc-950/40 p-1.5 rounded-xl border border-white/5 shadow-inner">
           <ImageFromURL
             url={props.macros.imgUrl}
@@ -77,7 +77,7 @@ const AddFoodComponent = (props: props) => {
           </span>
         </div>
 
-        <div className="flex flex-col md:items-center bg-zinc-900/40 md:bg-transparent p-2 md:p-0 rounded-lg border border-white/[0.02] md:border-none">
+        <div className="flex flex-col md:items-center bg-zinc-900/40 md:bg-transparent px-2 pt-2 md:p-0 rounded-lg border border-white/[0.02] md:border-none">
           <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider md:mb-0.5">
             {t("addFood.fatShort")}
           </span>
@@ -96,7 +96,7 @@ const AddFoodComponent = (props: props) => {
         </div>
       </div>
 
-      <div className="flex items-center justify-between md:justify-end gap-3 shrink-0 pt-2 md:pt-0 border-t border-white/5 md:border-none">
+      <div className="flex items-center justify-between md:justify-end shrink-0 pt-2 md:pt-0 border-t border-white/5 md:border-none">
         <div className="w-[85px] md:w-20">
           <Input
             label={t("addFood.portion")}

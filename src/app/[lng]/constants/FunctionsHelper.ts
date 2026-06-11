@@ -102,7 +102,7 @@ export const useIsMd = () => {
   const [isMd, setIsMd] = useState(false);
 
   useEffect(() => {
-    // 640px is Tailwind's standard 'sm' breakpoint
+    // 768px is Tailwind's standard 'md' breakpoint
     const media = window.matchMedia("(min-width: 768px)");
 
     setIsMd(media.matches);
