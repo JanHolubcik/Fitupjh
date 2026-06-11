@@ -1,6 +1,6 @@
 import { authOptions } from "@/lib/auth";
 import { getUser, updateUser } from "@/lib/user-db";
-import { UsersClass } from "@/models/users";
+
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { withAuth } from "../functions";
@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (email) {
-      const user: UsersClass | null = await getUser(email);
+      const user = await getUser(email);
       if (!user) {
         return new NextResponse("User not found", { status: 404 });
       }
@@ -48,7 +48,17 @@ export async function PATCH(req: NextRequest) {
       return new NextResponse("Email was not specified", { status: 400 });
     }
 
-    const user: UsersClass | null = await getUser(currentUserEmail);
+    const result = await getUser(currentUserEmail);
+    if (result && typeof result === "object" && "error" in result) {
+      return new NextResponse("Internal Server Error", { status: 500 });
+    }
+
+    if (!result) {
+      return new NextResponse("User not found", { status: 404 });
+    }
+
+    const user = result;
+
     if (!user) {
       return new NextResponse("User not found", { status: 404 });
     }

@@ -28,6 +28,7 @@ export const NewFoodRecordModal = ({
   const [grams, setGrams] = useState<number>(100);
   const { addToFoodObject } = useYourIntakeOperations();
   const { t } = useT("dashboard");
+
   useEffect(() => {
     if (food) {
       const initialGrams = parseFloat(food.amount) || 100;
@@ -110,7 +111,7 @@ export const NewFoodRecordModal = ({
 
                 <hr className="border-zinc-800" />
 
-                <div className="grid grid-cols-2 gap-2  text-xs font-semibold">
+                <div className="grid grid-cols-2 gap-2 text-xs font-semibold">
                   <div className="text-success-400">
                     {t("newFoodModal.proteinShort")}:{" "}
                     <span className="text-zinc-300 font-medium">
@@ -151,7 +152,8 @@ export const NewFoodRecordModal = ({
                 size="sm"
                 variant="flat"
                 className="bg-zinc-800 text-zinc-300 hover:bg-zinc-700"
-                onPress={onClose}
+                // FIX 1: Defer the close event to prevent click fall-through
+                onPress={() => setTimeout(() => onClose(), 10)}
               >
                 {t("newFoodModal.cancel")}
               </Button>

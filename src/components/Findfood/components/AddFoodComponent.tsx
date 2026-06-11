@@ -1,6 +1,5 @@
 import ImageFromURL from "@/components/ImageFromURL/ImageFromURL";
 import { Button, Input } from "@nextui-org/react";
-import { useState } from "react";
 import { FaPlusCircle } from "react-icons/fa";
 import React from "react";
 import { useT } from "next-i18next/client";
@@ -21,7 +20,9 @@ type props = {
   id: number;
   macros: macrosLocal;
   calculatedCalories: number[];
+  grams: number;
   setCalculatedCalories: React.Dispatch<React.SetStateAction<number[]>>;
+  setGrams: React.Dispatch<React.SetStateAction<number>>;
   AddFood: (
     id: number,
     key: macrosLocal,
@@ -32,7 +33,6 @@ type props = {
 };
 
 const AddFoodComponent = (props: props) => {
-  const [Grams, setGrams] = useState(100);
   const { t } = useT("dashboard");
 
   return (
@@ -64,7 +64,7 @@ const AddFoodComponent = (props: props) => {
             {t("addFood.proteinShort")}
           </span>
           <span className="text-success font-bold text-xs md:text-sm">
-            {((props.macros.protein / 100) * Grams).toFixed(1)}g
+            {((props.macros.protein / 100) * props.grams).toFixed(1)}g
           </span>
         </div>
 
@@ -73,7 +73,7 @@ const AddFoodComponent = (props: props) => {
             {t("addFood.carbsShort")}
           </span>
           <span className="text-warning font-bold text-xs md:text-sm">
-            {((props.macros.carbohydrates / 100) * Grams).toFixed(1)}g
+            {((props.macros.carbohydrates / 100) * props.grams).toFixed(1)}g
           </span>
         </div>
 
@@ -82,7 +82,7 @@ const AddFoodComponent = (props: props) => {
             {t("addFood.fatShort")}
           </span>
           <span className="text-pink-500 font-bold text-xs md:text-sm">
-            {((props.macros.fat / 100) * Grams).toFixed(1)}g
+            {((props.macros.fat / 100) * props.grams).toFixed(1)}g
           </span>
         </div>
 
@@ -91,7 +91,7 @@ const AddFoodComponent = (props: props) => {
             {t("addFood.sugarShort")}
           </span>
           <span className="text-purple-400 font-bold text-xs md:text-sm">
-            {(((props.macros.sugar || 0) / 100) * Grams).toFixed(1)}g
+            {(((props.macros.sugar || 0) / 100) * props.grams).toFixed(1)}g
           </span>
         </div>
       </div>
@@ -117,7 +117,7 @@ const AddFoodComponent = (props: props) => {
             }}
             onChange={(event) => {
               const grams = Number(event.target.value);
-              setGrams(grams);
+              props.setGrams(grams);
               props.setCalculatedCalories((prevState) => {
                 const newState = [...prevState];
                 if (event.target.value !== "") {
@@ -153,7 +153,7 @@ const AddFoodComponent = (props: props) => {
             props.AddFood(
               props.id,
               props.macros,
-              Grams.toString(),
+              props.grams.toString(),
               props.onClose,
             )
           }

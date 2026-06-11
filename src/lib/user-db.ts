@@ -7,7 +7,7 @@ export async function getUser(email: string) {
     await connectDB();
     const user = await User.findOne({
       userEmail: email,
-    });
+    }).lean();
     return user;
   } catch (error) {
     return { error };
@@ -34,7 +34,7 @@ export async function updateUser(
   goal?: string,
   image?: string,
   email?: string,
-  name?: string
+  name?: string,
 ) {
   try {
     await connectDB();

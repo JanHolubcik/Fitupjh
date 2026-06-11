@@ -12,6 +12,7 @@ import {
   DropdownMenu,
   DropdownItem,
   Button,
+  useDisclosure,
 } from "@nextui-org/react";
 
 import imagepfp3 from "../../../public/pfps/3.png";
@@ -28,9 +29,12 @@ import {
   FaHome,
   FaSignInAlt,
   FaUserPlus,
+  FaPlus,
 } from "react-icons/fa";
+import { ModalFindFood } from "../Findfood/components/ModalFindFood";
 
 const NavbarComponent = () => {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const pathname = usePathname();
   const { t } = useT("navbar");
   const { status, data } = useSession();
@@ -105,7 +109,7 @@ const NavbarComponent = () => {
     <>
       <Navbar
         isBordered
-        className="bg-default-50/50 border-white/10 sm:bg-zinc-950/70 sm:border-white/5 backdrop-blur-md"
+        className=" sm:flex hidden bg-default-50/50 border-white/10 sm:bg-zinc-950/70 sm:border-white/5 backdrop-blur-md"
         maxWidth="xl"
       >
         <NavbarContent
@@ -146,8 +150,8 @@ const NavbarComponent = () => {
         </NavbarContent>
 
         <NavbarContent className="sm:hidden" justify="start"></NavbarContent>
-        {status === "authenticated" && (
-          <NavbarContent justify="end" className="h-20">
+        {status === "authenticated" && pathname === `/${lng}/dashboard` && (
+          <NavbarContent justify="end" className="h-20 sm:flex hidden">
             <InputSearchBar />
           </NavbarContent>
         )}
@@ -173,7 +177,19 @@ const NavbarComponent = () => {
       </Navbar>
       {status === "authenticated" && (
         <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-zinc-950/70 backdrop-blur-lg border-t border-white/10 pb-[env(safe-area-inset-bottom)]">
-          <div className="grid grid-cols-3 items-center h-16">
+          <div className="flex flex-row  items-center h-16">
+            {pathname === `/${lng}/dashboard` && (
+              <Link
+                className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${"text-zinc-400 hover:text-zinc-200"} cursor-pointer`}
+                onPress={onOpen}
+              >
+                <FaPlus className="text-lg" />
+                <span className="text-[10px] font-medium tracking-wide">
+                  {t("add")}
+                </span>
+              </Link>
+            )}
+
             <Link
               href={`/${lng}/dashboard`}
               className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
@@ -219,7 +235,7 @@ const NavbarComponent = () => {
 
       {status === "unauthenticated" && (
         <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-zinc-950/70 backdrop-blur-lg border-t border-white/10 pb-[env(safe-area-inset-bottom)]">
-          <div className="grid grid-cols-3 items-center h-16">
+          <div className="flex flex-row items-center h-16">
             <Link
               href="/"
               className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
@@ -264,6 +280,7 @@ const NavbarComponent = () => {
           </div>
         </div>
       )}
+      <ModalFindFood isOpen={isOpen} onOpenChange={onOpenChange} />
     </>
   );
 };
