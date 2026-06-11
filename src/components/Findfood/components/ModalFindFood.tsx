@@ -111,7 +111,7 @@ export const ModalFindFood = (props: props) => {
         placement={sm ? "top" : "center"}
         hideCloseButton
         size="3xl"
-        className="max-h-[375px]"
+        className="max-h-[335px]"
         scrollBehavior="inside"
         isOpen={props.isOpen}
         onOpenChange={(isOpen) => {
@@ -138,7 +138,7 @@ export const ModalFindFood = (props: props) => {
             <>
               <ModalHeader className="flex flex-row pb-0">
                 <Input
-                  ref={inputRef} // 3. Attach the ref here (removed autoFocus)
+                  ref={inputRef}
                   classNames={{
                     base: "max-w-full sm:max-w-[50rem] h-10",
                     mainWrapper: "h-full",
