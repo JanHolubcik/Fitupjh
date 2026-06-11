@@ -14,6 +14,8 @@ import {
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { useT } from "next-i18next/client";
+
 type props = {
   onOpenChange: () => void;
   isOpen: boolean | undefined;
@@ -26,6 +28,10 @@ export const ModalCreateFood = (props: props) => {
   const newFoodBarCode = useSelector(
     (state: RootState) => state.savedFood.newFoodBarCode,
   );
+
+  // 1. Initialize translation hook with a dedicated namespace
+  const { t } = useT("dashboard");
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -58,9 +64,9 @@ export const ModalCreateFood = (props: props) => {
     toast.promise(
       res,
       {
-        pending: "Sending request...",
-        success: "New food was saved successfully!",
-        error: "There was an error while trying to save new food.",
+        pending: t("modalCreateFood.toastPending"),
+        success: t("modalCreateFood.toastSuccess"),
+        error: t("modalCreateFood.toastError"),
       },
       {
         position: "bottom-left",
@@ -93,7 +99,9 @@ export const ModalCreateFood = (props: props) => {
             <ModalBody>
               <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                 <div>
-                  <p className="m-1 ml-2">Barcode</p>
+                  <p className="m-1 ml-2">
+                    {t("modalCreateFood.barcodeLabel")}
+                  </p>
                   <Input
                     name="barcode"
                     classNames={{
@@ -103,12 +111,14 @@ export const ModalCreateFood = (props: props) => {
                       label: "text-white",
                     }}
                     type="text"
-                    placeholder="Barcode number"
+                    placeholder={t("modalCreateFood.barcodePlaceholder")}
                     value={newFoodBarCode}
                   />
                 </div>
                 <div>
-                  <p className="m-1 ml-2">Food name</p>
+                  <p className="m-1 ml-2">
+                    {t("modalCreateFood.foodNameLabel")}
+                  </p>
                   <Input
                     name="name"
                     classNames={{
@@ -118,12 +128,14 @@ export const ModalCreateFood = (props: props) => {
                       label: "text-white",
                     }}
                     type="text"
-                    placeholder="Enter food name"
+                    placeholder={t("modalCreateFood.foodNamePlaceholder")}
                     required
                   />
                 </div>
                 <div>
-                  <p className="m-1 ml-2">Calories per 100g</p>
+                  <p className="m-1 ml-2">
+                    {t("modalCreateFood.caloriesLabel")}
+                  </p>
                   <Input
                     name="calories_per_100g"
                     classNames={{
@@ -133,62 +145,70 @@ export const ModalCreateFood = (props: props) => {
                       label: "text-white",
                     }}
                     type="number"
-                    placeholder="Enter number of calories per 100g"
+                    placeholder={t("modalCreateFood.caloriesPlaceholder")}
                     required
                   />
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   <div>
-                    <p className="m-1 ml-2">Protein in g</p>
+                    <p className="m-1 ml-2">
+                      {t("modalCreateFood.proteinLabel")}
+                    </p>
                     <Input
                       name="protein"
                       type="number"
-                      placeholder="Protein"
+                      placeholder={t("modalCreateFood.proteinPlaceholder")}
                       required
                     />
                   </div>
                   <div>
-                    <p className="m-1 ml-2">Sugar in g</p>
+                    <p className="m-1 ml-2">
+                      {t("modalCreateFood.sugarLabel")}
+                    </p>
                     <Input
                       name="sugar"
                       type="number"
-                      placeholder="Sugar"
+                      placeholder={t("modalCreateFood.sugarPlaceholder")}
                       required
                     />
                   </div>
                   <div>
-                    <p className="m-1 ml-2">Fiber in g</p>
+                    <p className="m-1 ml-2">
+                      {t("modalCreateFood.fiberLabel")}
+                    </p>
                     <Input
                       name="fiber"
                       type="number"
-                      placeholder="Fiber"
+                      placeholder={t("modalCreateFood.fiberPlaceholder")}
                       required
                     />
                   </div>
                   <div>
-                    <p className="m-1 ml-2">Fat in g</p>
+                    <p className="m-1 ml-2">{t("modalCreateFood.fatLabel")}</p>
                     <Input
                       name="fat"
                       type="number"
-                      placeholder="Fat"
+                      placeholder={t("modalCreateFood.fatPlaceholder")}
                       required
                     />
                   </div>
                   <div>
-                    <p className="m-1 ml-2">Carbohydrates in g</p>
+                    <p className="m-1 ml-2">
+                      {t("modalCreateFood.carbsLabel")}
+                    </p>
                     <Input
                       name="carbohydrates"
                       type="number"
-                      placeholder="Carbs"
+                      placeholder={t("modalCreateFood.carbsPlaceholder")}
                       required
                     />
                   </div>
                   <div>
-                    <p className="m-1 ml-2">Salt in g</p>
+                    <p className="m-1 ml-2">{t("modalCreateFood.saltLabel")}</p>
                     <Input
                       name="salt"
                       type="number"
-                      placeholder="Salt"
+                      placeholder={t("modalCreateFood.saltPlaceholder")}
                       required
                     />
                   </div>
@@ -199,7 +219,7 @@ export const ModalCreateFood = (props: props) => {
                     className="font-bold flex-1"
                     type="submit"
                   >
-                    Submit
+                    {t("submitBtn")}
                   </Button>
                   <Button
                     onPress={() => {
@@ -209,7 +229,7 @@ export const ModalCreateFood = (props: props) => {
                     color="danger"
                     className="font-bold flex-1"
                   >
-                    Cancel
+                    {t("cancelBtn")}
                   </Button>
                 </div>
               </form>

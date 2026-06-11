@@ -104,5 +104,30 @@
     "sugarShort": "Cuk",
     "portion": "Porcia (g)",
     "energy": "Energia"
+  },
+  "modalCreateFood": {
+    "toastPending": "Odosielanie požiadavky...",
+    "toastSuccess": "Nové jedlo bolo úspešne uložené!",
+    "toastError": "Pri ukladaní nového jedla sa vyskytla chyba.",
+    "barcodeLabel": "Čiarový kód",
+    "barcodePlaceholder": "Číslo čiarového kódu",
+    "foodNameLabel": "Názov jedla",
+    "foodNamePlaceholder": "Zadajte názov jedla",
+    "caloriesLabel": "Kalórie na 100g",
+    "caloriesPlaceholder": "Zadajte počet kalórií na 100g",
+    "proteinLabel": "Bielkoviny (g)",
+    "proteinPlaceholder": "Bielkoviny",
+    "sugarLabel": "Cukor (g)",
+    "sugarPlaceholder": "Cukor",
+    "fiberLabel": "Vláknina (g)",
+    "fiberPlaceholder": "Vláknina",
+    "fatLabel": "Tuky (g)",
+    "fatPlaceholder": "Tuky",
+    "carbsLabel": "Sacharidy (g)",
+    "carbsPlaceholder": "Sacharidy",
+    "saltLabel": "Soľ (g)",
+    "saltPlaceholder": "Soľ",
+    "submitBtn": "Odoslať",
+    "cancelBtn": "Zrušiť"
   }
 }

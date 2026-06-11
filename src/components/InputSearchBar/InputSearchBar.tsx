@@ -211,7 +211,7 @@ export const InputSearchBar = () => {
               color={"default"}
               className={"text-white font-medium"}
               variant={"faded"}
-              onPress={onOpen}
+              onPress={onOpenNewFood}
             >
               {t("addManually")}
             </Button>

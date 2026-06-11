@@ -104,5 +104,30 @@
     "sugarShort": "Sug",
     "portion": "Portion (g)",
     "energy": "Energy"
+  },
+  "modalCreateFood": {
+    "toastPending": "Sending request...",
+    "toastSuccess": "New food was saved successfully!",
+    "toastError": "There was an error while trying to save new food.",
+    "barcodeLabel": "Barcode",
+    "barcodePlaceholder": "Barcode number",
+    "foodNameLabel": "Food name",
+    "foodNamePlaceholder": "Enter food name",
+    "caloriesLabel": "Calories per 100g",
+    "caloriesPlaceholder": "Enter number of calories per 100g",
+    "proteinLabel": "Protein in g",
+    "proteinPlaceholder": "Protein",
+    "sugarLabel": "Sugar in g",
+    "sugarPlaceholder": "Sugar",
+    "fiberLabel": "Fiber in g",
+    "fiberPlaceholder": "Fiber",
+    "fatLabel": "Fat in g",
+    "fatPlaceholder": "Fat",
+    "carbsLabel": "Carbs in g",
+    "carbsPlaceholder": "Carbs",
+    "saltLabel": "Salt in g",
+    "saltPlaceholder": "Salt",
+    "submitBtn": "Submit",
+    "cancelBtn": "Cancel"
   }
 }
