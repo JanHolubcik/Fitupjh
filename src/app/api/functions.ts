@@ -19,9 +19,9 @@ export const validateToken = async (req: NextRequest) => {
           process.env.NEXTAUTH_SECRET || "",
         );
         const verified = await jwtVerify(tokenString, secret);
-        token = verified.payload as any;
+        token = verified.payload as JWT;
       } catch (error) {
-        throw new Error("Invalid or expired token");
+        throw new Error("Invalid or expired token" + error);
       }
     }
   }

@@ -13,7 +13,7 @@ import {
 } from "@nextui-org/react";
 import { useT } from "next-i18next/client";
 
-export default function ProfileMainComponent({ images }: { images: string[] }) {
+export default function ProfileMainComponent() {
   const { t } = useT();
 
   return (
@@ -22,7 +22,9 @@ export default function ProfileMainComponent({ images }: { images: string[] }) {
         {/* 1. BIOMETRICS & GOALS */}
         <Card className="shadow-md bg-zinc-900/80 backdrop-blur-md border border-zinc-800">
           <CardHeader className="pb-2 pt-6 px-6">
-            <h3 className="text-lg font-bold text-white">{t("biometricsAndGoals", { ns: "profile" })}</h3>
+            <h3 className="text-lg font-bold text-white">
+              {t("biometricsAndGoals", { ns: "profile" })}
+            </h3>
           </CardHeader>
           <Divider className="bg-zinc-800" />
           <CardBody className="px-6 py-6 flex flex-col gap-4">
@@ -88,7 +90,9 @@ export default function ProfileMainComponent({ images }: { images: string[] }) {
         {/* 2. MACRO TARGETS */}
         <Card className="shadow-md bg-zinc-900/80 backdrop-blur-md border border-zinc-800">
           <CardHeader className="flex justify-between items-center pb-2 pt-6 px-6">
-            <h3 className="text-lg font-bold text-white">{t("macroTargets", { ns: "profile" })}</h3>
+            <h3 className="text-lg font-bold text-white">
+              {t("macroTargets", { ns: "profile" })}
+            </h3>
             <Switch size="sm" color="success">
               {t("manualOverride", { ns: "profile" })}
             </Switch>
@@ -137,12 +141,16 @@ export default function ProfileMainComponent({ images }: { images: string[] }) {
         {/* 3. DANGER ZONE */}
         <Card className="shadow-md bg-zinc-900/80 backdrop-blur-md border border-red-500/30">
           <CardHeader className="pb-2 pt-6 px-6">
-            <h3 className="text-lg font-bold text-red-500">{t("dangerZone", { ns: "profile" })}</h3>
+            <h3 className="text-lg font-bold text-red-500">
+              {t("dangerZone", { ns: "profile" })}
+            </h3>
           </CardHeader>
           <Divider className="bg-red-500/20" />
           <CardBody className="px-6 py-6 flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4">
             <div>
-              <p className="text-sm font-bold text-white">{t("deleteAccount", { ns: "profile" })}</p>
+              <p className="text-sm font-bold text-white">
+                {t("deleteAccount", { ns: "profile" })}
+              </p>
               <p className="text-xs text-zinc-400 mt-1">
                 {t("deleteAccountNotice", { ns: "profile" })}
               </p>
@@ -156,4 +164,3 @@ export default function ProfileMainComponent({ images }: { images: string[] }) {
     </div>
   );
 }
-

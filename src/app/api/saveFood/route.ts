@@ -86,13 +86,11 @@ export async function POST(req: NextRequest) {
     }
     const isoDate = utcDate.toISOString();
     const formattedDate = isoDate.replace("Z", "+00:00");
-    const res = await saveFoodInDay(formattedDate, savedFood, userID).catch(
-      () => {
-        return new NextResponse("There was an error while sending data to db", {
-          status: 500,
-        });
-      },
-    );
+    await saveFoodInDay(formattedDate, savedFood, userID).catch(() => {
+      return new NextResponse("There was an error while sending data to db", {
+        status: 500,
+      });
+    });
     return new NextResponse("Successfully saved to db", { status: 201 });
   });
 }

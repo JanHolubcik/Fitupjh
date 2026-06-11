@@ -30,7 +30,7 @@ const fileToBase64 = (file: any) => {
 };
 
 export const ModalTakePicture = () => {
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const cameraRef = useRef<any>(null);
   const { t } = useT("dashboard");
 

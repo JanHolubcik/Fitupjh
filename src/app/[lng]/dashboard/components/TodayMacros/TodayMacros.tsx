@@ -1,7 +1,6 @@
 import {
   calculateRecommendedMacros,
   capitalizeFirstLetter,
-  useIsSm,
 } from "@/app/[lng]/constants/FunctionsHelper";
 import {
   Food,
@@ -26,7 +25,7 @@ type props = {
 
 export const TodayMacros = ({ savedFood }: props) => {
   const { data } = useSession();
-  const isSm = useIsSm();
+
   const { t } = useT("dashboard");
   const recommendedMacros = useMemo(
     () =>

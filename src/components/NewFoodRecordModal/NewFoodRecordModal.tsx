@@ -61,11 +61,12 @@ export const NewFoodRecordModal = ({
     <Modal
       isOpen={isOpen}
       onOpenChange={onOpenChange}
+      hideCloseButton
       backdrop="blur"
       classNames={{
-        base: "bg-zinc-900 border border-zinc-800 text-zinc-100 max-w-md mx-4",
-        header: "border-b border-zinc-800 pb-3",
-        footer: "border-t border-zinc-800 pt-3",
+        base: "bg-zinc-900 border border-zinc-800 text-zinc-100 max-w-md",
+        header: "border-b border-zinc-800 pb-2",
+        footer: "border-t border-zinc-800 pt-2",
       }}
     >
       <ModalContent>
@@ -80,7 +81,7 @@ export const NewFoodRecordModal = ({
               </p>
             </ModalHeader>
 
-            <ModalBody className="py-4 gap-4">
+            <ModalBody className="py-3 gap-2">
               <Input
                 type="number"
                 label={t("newFoodModal.amountLabel")}
@@ -147,12 +148,11 @@ export const NewFoodRecordModal = ({
               </div>
             </ModalBody>
 
-            <ModalFooter>
+            <ModalFooter className="p-2 ">
               <Button
                 size="sm"
                 variant="flat"
                 className="bg-zinc-800 text-zinc-300 hover:bg-zinc-700"
-                // FIX 1: Defer the close event to prevent click fall-through
                 onPress={() => setTimeout(() => onClose(), 10)}
               >
                 {t("newFoodModal.cancel")}

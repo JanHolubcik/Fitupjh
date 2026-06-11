@@ -1,6 +1,12 @@
 "use client";
 import { FaSearch } from "react-icons/fa";
-import { Button, Input, Spinner, useDisclosure } from "@nextui-org/react";
+import {
+  Button,
+  Input,
+  Spinner,
+  useDisclosure,
+  Image,
+} from "@nextui-org/react";
 import { useEffect, useRef, useState } from "react";
 import { Food, ReturnTypeFood } from "@/types/Types";
 import React from "react";
@@ -63,8 +69,6 @@ export const InputSearchBar = () => {
           setFood([]);
           setIsOpen(false);
         }
-      } catch (error) {
-        setIsOpen(false);
       } finally {
         setLoading(false);
       }
@@ -131,7 +135,8 @@ export const InputSearchBar = () => {
         color="primary"
         className="rounded-l-none min-w-10 h-8 self-center"
       >
-        <img
+        <Image
+          className="rounded-none"
           height={25}
           width={25}
           src="../barcodeIcon.svg"

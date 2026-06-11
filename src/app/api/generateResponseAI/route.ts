@@ -12,7 +12,7 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
 export async function POST(req: NextRequest) {
-  return withAuth(req, async (req, token) => {
+  return withAuth(req, async (req) => {
     const { message, savedFood } = (await req.json()) as AIRequest;
 
     if (message.length === 0) {

@@ -110,7 +110,7 @@ export default function Signup() {
         setLoading(false);
       }
     } catch (err) {
-      setError("Network error. Please try again.");
+      setError("Network error. Please try again. " + err);
       setLoading(false);
     }
   };
@@ -122,9 +122,7 @@ export default function Signup() {
           <h1 className="text-3xl font-extrabold tracking-tight text-white">
             {t("title")}
           </h1>
-          <p className="text-sm text-zinc-400 mt-2">
-            {t("subtitle")}
-          </p>
+          <p className="text-sm text-zinc-400 mt-2">{t("subtitle")}</p>
         </CardHeader>
 
         <CardBody className="flex flex-col gap-4">

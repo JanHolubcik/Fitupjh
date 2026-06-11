@@ -10,7 +10,7 @@ import { AccordionTimeFrame } from "./AccordionTimeFrame/AccordionTimeFrame";
 import { TodayMacros } from "./TodayMacros/TodayMacros";
 import MyGraph from "@/app/[lng]/myprogress/MyGraph";
 import { DateSwitcher } from "./DateSwitcher/DateSwitcher";
-import { add } from "date-fns";
+
 import {
   DateSwitcherSkeleton,
   CalorieCardSkeleton,
@@ -26,16 +26,8 @@ export const DashboardContent = () => {
     userId: data?.user?.id,
     daysAgo: 10,
   });
-  const { savedFood, currentDate, setNewDateAndGetFood } =
-    useYourIntakeOperations();
+  const { savedFood } = useYourIntakeOperations();
 
-  const setNewDateAndFetchFood = (numberOfDays: number) => {
-    const date = add(currentDate, {
-      days: numberOfDays,
-    });
-
-    setNewDateAndGetFood(date);
-  };
   if (!isFetched)
     return (
       <div className="flex flex-col gap-3 mt-3 items-center max-w-2xl w-full ">

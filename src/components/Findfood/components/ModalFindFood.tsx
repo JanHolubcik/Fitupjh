@@ -1,4 +1,3 @@
-import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 import {
   Button,
   Input,
@@ -7,22 +6,21 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  Skeleton,
   Spinner,
   useDisclosure,
+  Image,
 } from "@nextui-org/react";
 import React, { Dispatch, useEffect, useRef, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { ModalCreateFood } from "./ModalCreateFood";
 import { Food, ReturnTypeFood } from "@/types/Types";
 import AddFoodComponent from "./AddFoodComponent";
-import { getTimeOfDay } from "@/app/[lng]/constants/FunctionsHelper";
+import { getTimeOfDay, useIsSm } from "@/app/[lng]/constants/FunctionsHelper";
 import { ModalBarcodeScan } from "./ModalBarcodeScan";
 import { useMutation } from "@tanstack/react-query";
 import { getSearchedFoodOptions } from "@/lib/queriesOptions/GetSearchedFoodOptions";
 import { NewFoodRecordModal } from "@/components/NewFoodRecordModal/NewFoodRecordModal";
 import { useT } from "next-i18next/client";
-import { AddFoodSkeleton } from "@/app/[lng]/dashboard/components/Skeletons";
 
 type props = {
   onOpenChange: () => void;
@@ -48,7 +46,7 @@ function useDebounce<T>(
 
 export const ModalFindFood = (props: props) => {
   const { t } = useT("dashboard");
-  // 1. Create a ref for the input
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [food, setFood] = useState<ReturnTypeFood>([]);
@@ -59,7 +57,6 @@ export const ModalFindFood = (props: props) => {
     isOpen: isOpenNew,
     onOpen: onOpenNew,
     onOpenChange: onOpenChangeNew,
-    onClose: onCloseNew,
   } = useDisclosure();
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -71,7 +68,7 @@ export const ModalFindFood = (props: props) => {
     getSearchedFoodOptions(debouncedSearchTerm),
   );
 
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const {
     isOpen: isOpenBarScan,
     onOpen: onOpenBarScan,
@@ -81,25 +78,21 @@ export const ModalFindFood = (props: props) => {
 
   useEffect(() => {
     const fetchFood = async () => {
-      setLoading(true);
-      const result = await searchFoodMutation.mutateAsync();
+      if (props.isOpen) {
+        setLoading(true);
+        const result = await searchFoodMutation.mutateAsync();
 
-      setFood(result || []);
-      if (result) {
-        setCalculatedCalories(result.map((key) => key.calories_per_100g));
+        setFood(result || []);
+        if (result) {
+          setCalculatedCalories(result.map((key) => key.calories_per_100g));
+        }
+        setLoading(false);
       }
-      setLoading(false);
     };
-
     fetchFood();
     return;
-  }, [debouncedSearchTerm]);
+  }, [debouncedSearchTerm, props.isOpen]);
 
-  useEffect(() => {
-    setSearchTerm("");
-  }, []);
-
-  // 2. Add useEffect to programmatically focus the input when modal opens
   useEffect(() => {
     if (props.isOpen) {
       // Small 100ms timeout ensures the modal finishes its open animation
@@ -111,10 +104,11 @@ export const ModalFindFood = (props: props) => {
     }
   }, [props.isOpen]);
 
+  const sm = useIsSm();
   return (
     <>
       <Modal
-        placement="top"
+        placement={sm ? "top" : "center"}
         hideCloseButton
         size="3xl"
         className="max-h-[415px]"
@@ -169,7 +163,12 @@ export const ModalFindFood = (props: props) => {
                     color="primary"
                     className="rounded-l-none min-w-14"
                   >
-                    <img height={30} width={30} src="../barcodeIcon.svg" />
+                    <Image
+                      className="rounded-none"
+                      height={30}
+                      width={30}
+                      src="../barcodeIcon.svg"
+                    />
                   </Button>
                 </div>
               </ModalHeader>
