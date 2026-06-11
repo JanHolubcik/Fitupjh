@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Button,
   Modal,
@@ -8,30 +8,16 @@ import {
   useDisclosure,
   Spinner,
 } from "@nextui-org/react";
-// 1. Corrected the Tesseract import
-import { createWorker } from "tesseract.js";
+import { createWorker, Worker as TesseractWorker } from "tesseract.js";
 import { WebCamera } from "@shivantra/react-web-camera";
 import { useT } from "next-i18next/client";
 
-const fileToBase64 = (file: any) => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
-};
-
-// 2. Added a parsing function using Regex to find numbers near keywords
 const parseMacros = (text: string) => {
-  // Helper to extract the first number found after a regex match
   const extractNumber = (pattern: RegExp) => {
     const match = text.match(pattern);
-    return match ? parseFloat(match[1]) : 0;
+    return match ? parseFloat(match[1].replace(",", ".")) : 0;
   };
 
-  // The regex looks for the word, ignores spaces/colons, and captures the numbers.
-  // Includes English and Slovak (sk) variations since you requested both!
   return {
     calories_per_100g: extractNumber(
       /(?:calories|kcal|energie|energy)[^\d]*(\d+[.,]?\d*)/i,
@@ -49,58 +35,104 @@ const parseMacros = (text: string) => {
 
 export const ModalScanMacros = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const cameraRef = useRef<any>(null);
   const { t } = useT("dashboard");
+  const cameraRef = useRef<any>(null);
 
-  const [image, setImage] = useState<any | null>(null);
-  const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
+  const [isWorkerReady, setIsWorkerReady] = useState(false);
 
-  const handleCaptureAndAnalyze = async () => {
-    if (cameraRef.current) {
-      const file = await cameraRef.current.capture();
-      const photoBase64 = await fileToBase64(file);
-      if (!photoBase64) return;
+  const workerRef = useRef<TesseractWorker | null>(null);
+  const scanIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const isProcessingRef = useRef(false);
 
-      setImage(photoBase64);
-      setLoading(true);
+  useEffect(() => {
+    if (isOpen) {
+      const initTesseract = async () => {
+        setIsWorkerReady(false);
+        const worker = await createWorker(["eng", "slk"]);
+        workerRef.current = worker;
+        setIsWorkerReady(true);
+        startLiveScanning(); // Start scanning once ready
+      };
+      initTesseract();
+    } else {
+      // Cleanup when modal closes
+      stopLiveScanning();
+      if (workerRef.current) {
+        workerRef.current.terminate();
+        workerRef.current = null;
+      }
       setResult(null);
+    }
+
+    return () => {
+      stopLiveScanning();
+      if (workerRef.current) workerRef.current.terminate();
+    };
+  }, [isOpen]);
+
+  const startLiveScanning = () => {
+    scanIntervalRef.current = setInterval(async () => {
+      if (isProcessingRef.current || !workerRef.current) return;
+
+      const videoElement = document.querySelector(
+        ".camera-video",
+      ) as HTMLVideoElement;
+      if (!videoElement) return;
+
+      isProcessingRef.current = true; // Lock process
 
       try {
-        // 3. Initialize worker dynamically to prevent build issues
-        const worker = await createWorker(["eng", "slk"]);
+        // Draw video frame to hidden canvas
+        const canvas = document.createElement("canvas");
+        canvas.width = videoElement.videoWidth;
+        canvas.height = videoElement.videoHeight;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
 
-        // 4. Pass the actual captured image base64, not the hardcoded URL
+        ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+        const frameBase64 = canvas.toDataURL("image/jpeg", 0.8);
+
+        // Run OCR on the frame
         const {
           data: { text },
-        } = await worker.recognize(photoBase64 as string);
+        } = await workerRef.current.recognize(frameBase64);
+        console.log("Live Scan Text:", text);
 
-        // Terminate worker to free up memory
-        await worker.terminate();
-
-        console.log("Raw text from camera:", text); // Helpful for debugging!
-
-        // 5. Parse the raw text into structured data
+        // Parse extracted text
         const extractedData = parseMacros(text);
 
-        // 6. Set the result so your UI renders it
-        setResult(extractedData);
+        // If we found Calories, assume we got a good read!
+        if (extractedData.calories_per_100g > 0) {
+          setResult(extractedData);
+          stopLiveScanning();
+        }
       } catch (error) {
-        console.error("Error recognizing text:", error);
+        console.error("Live scan error:", error);
       } finally {
-        setLoading(false);
+        isProcessingRef.current = false; // Unlock process
       }
+    }, 1500);
+  };
+
+  const stopLiveScanning = () => {
+    if (scanIntervalRef.current) {
+      clearInterval(scanIntervalRef.current);
+      scanIntervalRef.current = null;
     }
   };
 
   const handleReset = () => {
-    setImage(null);
     setResult(null);
+    startLiveScanning(); // Restart loop
   };
 
   return (
     <div>
-      <Button onPress={onOpen}>{t("takePictureModal.photo")}</Button>
+      <Button onPress={onOpen} color="primary">
+        {t("takePictureModal.photo") || "Scan Label"}
+      </Button>
+
       <Modal
         placement="top"
         hideCloseButton
@@ -112,116 +144,102 @@ export const ModalScanMacros = () => {
       >
         <ModalContent>
           {(onClose) => (
-            /* ... Keep your exact UI code here (ModalHeader, ModalBody, etc) ... */
-            /* The existing UI code you provided is perfectly fine and will just work now */
             <>
               <ModalHeader className="flex flex-col gap-1">
-                {t("takePictureModal.takePictureTitle")}
+                {t("takePictureModal.takePictureTitle") ||
+                  "Scanning Nutrition Label..."}
               </ModalHeader>
+
               <ModalBody className="flex flex-col items-center gap-4 pb-6">
-                {!image ? (
-                  <>
+                {!result && (
+                  <div className="relative w-full max-w-[320px] flex flex-col items-center">
                     <WebCamera
                       ref={cameraRef}
-                      style={{
-                        width: "100%",
-                        maxWidth: 320,
-                        height: "auto",
-                        padding: 10,
-                      }}
+                      style={{ width: "100%", height: "auto" }}
                       videoStyle={{
-                        borderRadius: 5,
+                        borderRadius: 8,
                         width: "100%",
                         height: "auto",
                       }}
-                      className="camera-container flex justify-center w-full"
+                      className="camera-container w-full"
                       videoClassName="camera-video"
                       captureMode="back"
-                      getFileName={() => `next-photo-${Date.now()}.jpeg`}
-                      onError={(err) => console.error(err)}
                     />
-                    <div className="flex gap-2">
-                      <Button color="primary" onPress={handleCaptureAndAnalyze}>
-                        {t("takePictureModal.captureAndAnalyze")}
-                      </Button>
-                      <Button color="danger" variant="light" onPress={onClose}>
-                        {t("takePictureModal.cancel")}
-                      </Button>
+
+                    <div className="mt-4 flex flex-col items-center gap-2">
+                      {!isWorkerReady ? (
+                        <>
+                          <Spinner size="sm" />
+                          <p className="text-sm text-default-500">
+                            Loading AI Engine...
+                          </p>
+                        </>
+                      ) : (
+                        <>
+                          <Spinner size="sm" color="success" />
+                          <p className="text-sm text-default-500">
+                            Scanning in real-time... point at label.
+                          </p>
+                        </>
+                      )}
                     </div>
-                  </>
-                ) : (
+
+                    <Button
+                      color="danger"
+                      variant="light"
+                      onPress={onClose}
+                      className="mt-4"
+                    >
+                      {t("takePictureModal.cancel") || "Cancel"}
+                    </Button>
+                  </div>
+                )}
+
+                {result && (
                   <div className="flex flex-col items-center gap-4 w-full">
-                    <img
-                      src={image}
-                      alt="Captured"
-                      className="rounded-md max-w-[320px] w-full"
-                    />
+                    <div className="bg-success-50 border border-success-200 p-4 rounded-md w-full max-w-[320px]">
+                      <h3 className="font-bold text-lg text-success-700 mb-2">
+                        {t("takePictureModal.analysisResult") ||
+                          "Macros Extracted!"}
+                      </h3>
+                      <ul className="text-sm space-y-2">
+                        <li className="flex justify-between">
+                          <span className="font-semibold">Calories:</span>{" "}
+                          <span>{result.calories_per_100g} kcal</span>
+                        </li>
+                        <li className="flex justify-between">
+                          <span className="font-semibold">Protein:</span>{" "}
+                          <span>{result.protein} g</span>
+                        </li>
+                        <li className="flex justify-between">
+                          <span className="font-semibold">Carbs:</span>{" "}
+                          <span>{result.carbohydrates} g</span>
+                        </li>
+                        <li className="flex justify-between">
+                          <span className="font-semibold">Fat:</span>{" "}
+                          <span>{result.fat} g</span>
+                        </li>
+                        <li className="flex justify-between">
+                          <span className="font-semibold">Sugar:</span>{" "}
+                          <span>{result.sugar} g</span>
+                        </li>
+                        <li className="flex justify-between">
+                          <span className="font-semibold">Fiber:</span>{" "}
+                          <span>{result.fiber} g</span>
+                        </li>
+                        <li className="flex justify-between">
+                          <span className="font-semibold">Salt:</span>{" "}
+                          <span>{result.salt} g</span>
+                        </li>
+                      </ul>
+                    </div>
 
-                    {loading && (
-                      <div className="flex flex-col items-center gap-2">
-                        <Spinner size="lg" />
-                        <p>{t("takePictureModal.analyzing")}</p>
-                      </div>
-                    )}
-
-                    {result && (
-                      <div className="bg-default-100 p-4 rounded-md w-full max-w-[320px]">
-                        <h3 className="font-bold text-lg mb-2">
-                          {result.name || t("takePictureModal.analysisResult")}
-                        </h3>
-                        <ul className="text-sm space-y-1">
-                          <li>
-                            <span className="font-semibold">
-                              {t("takePictureModal.macros.calories")}
-                            </span>{" "}
-                            {result.calories_per_100g} kcal
-                          </li>
-                          <li>
-                            <span className="font-semibold">
-                              {t("takePictureModal.macros.protein")}
-                            </span>{" "}
-                            {result.protein} g
-                          </li>
-                          <li>
-                            <span className="font-semibold">
-                              {t("takePictureModal.macros.carbs")}
-                            </span>{" "}
-                            {result.carbohydrates} g
-                          </li>
-                          <li>
-                            <span className="font-semibold">
-                              {t("takePictureModal.macros.fat")}
-                            </span>{" "}
-                            {result.fat} g
-                          </li>
-                          <li>
-                            <span className="font-semibold">
-                              {t("takePictureModal.macros.sugar")}
-                            </span>{" "}
-                            {result.sugar} g
-                          </li>
-                          <li>
-                            <span className="font-semibold">
-                              {t("takePictureModal.macros.fiber")}
-                            </span>{" "}
-                            {result.fiber} g
-                          </li>
-                          <li>
-                            <span className="font-semibold">
-                              {t("takePictureModal.macros.salt")}
-                            </span>{" "}
-                            {result.salt} g
-                          </li>
-                        </ul>
-                      </div>
-                    )}
-
-                    <div className="flex gap-2 mt-4">
+                    <div className="flex gap-2 mt-2">
                       <Button color="primary" onPress={handleReset}>
-                        {t("takePictureModal.takeAnother")}
+                        {t("takePictureModal.takeAnother") || "Rescan"}
                       </Button>
-                      <Button color="danger" variant="light" onPress={onClose}>
-                        {t("close")}
+                      <Button color="success" onPress={onClose}>
+                        Confirm & Save
                       </Button>
                     </div>
                   </div>
