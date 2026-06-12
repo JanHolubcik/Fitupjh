@@ -12,9 +12,9 @@ const PulsingButton: React.FC<CustomButtonProps> = ({
   noPulsing,
   ...props
 }) => {
-  const defaultStyle = `mt-6 px-4 py-2 rounded-xl font-bold text-black bg-[#00FFAA] hover:scale-105 transition-transform ${
+  const defaultStyle = `mt-6 px-4 py-2 rounded-xl font-bold text-black bg-primary-400 hover:scale-105 transition-transform ${
     noPulsing ? "" : "animate-pulse"
-  }  hover:opacity-100 hover:bg-[#00FFAA]`;
+  }  hover:opacity-100 hover:bg-primary-600`;
 
   return (
     <Button className={`${defaultStyle} ${className}`} {...props}>

@@ -1,16 +1,16 @@
 "use client";
 
-import { FormEvent, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Link, Input, Spinner, CardHeader, CardBody } from "@nextui-org/react";
 import { signIn } from "next-auth/react";
 import PulsingButton from "@/components/PulsingButton/PulsingButton";
 import { useT } from "next-i18next/client";
 import { CardUniversal } from "@/components/common";
+import { useFormik } from "formik";
 
 const customInputStyles = {
   inputWrapper:
-    "bg-zinc-800/50 border-transparent transition-all duration-200 ring-1 ring-transparent focus-within:ring-[#00FFAA] focus-within:ring-2 shadow-md focus-within:shadow-[#00FFAA]/20 hover:bg-zinc-800",
+    "dark:bg-zinc-800/50 border-transparent transition-all duration-200 ring-1 ring-transparent focus-within:ring-[#00FFAA] focus-within:ring-2 shadow-md focus-within:shadow-[#00FFAA]/20 hover:bg-zinc-800",
   input: "text-white",
   label: "text-zinc-400 group-focus-within:text-[#00FFAA] transition-colors",
 };
@@ -21,55 +21,53 @@ export default function Login() {
   const lng = params?.lng || "en";
   const { t } = useT("login");
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    onSubmit: async (values, { setStatus, setSubmitting }) => {
+      setStatus(null);
 
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+      const res = await signIn("credentials", {
+        email: values.email,
+        password: values.password,
+        redirect: false,
+      });
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setError("");
-    setLoading(true);
+      if (res?.error) {
+        setStatus("Invalid email or password.");
+        setSubmitting(false);
+        return;
+      }
 
-    const res = await signIn("credentials", {
-      email: email,
-      password: password,
-      redirect: false,
-    });
-
-    setLoading(false);
-
-    if (res?.error) {
-      setError("Invalid email or password.");
-      return;
-    }
-
-    if (res?.ok) {
-      return router.push(`/${lng}/dashboard`);
-    }
-  };
+      if (res?.ok) {
+        return router.push(`/${lng}/dashboard`);
+      }
+    },
+  });
 
   return (
-    <main className="dark flex flex-col items-center justify-center min-h-screen sm:p-10 p-6">
-      <CardUniversal className="w-full max-w-[450px] p-4 bg-zinc-900/80 backdrop-blur-md border border-zinc-800 shadow-2xl">
+    <main className=" flex flex-col items-center justify-center min-h-screen sm:p-10 p-6">
+      <CardUniversal className="w-full max-w-[450px] p-4 font-semibold ">
         <CardHeader className="flex flex-col items-center justify-center pt-6 pb-2">
-          <h1 className="text-3xl font-extrabold tracking-tight text-white">
+          <h1 className="text-3xl font-extrabold tracking-tight ">
             {t("title")}
           </h1>
-          <p className="text-sm text-zinc-400 mt-2">{t("subtitle")}</p>
+          <p className="text-sm dark:text-zinc-400 mt-2">{t("subtitle")}</p>
         </CardHeader>
 
         <CardBody className="flex flex-col gap-4">
-          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+          <form className="flex flex-col gap-4" onSubmit={formik.handleSubmit}>
             <Input
               type="email"
               label={t("emailLabel")}
               name="email"
-              value={email} // 4. Bind the value to state
-              onValueChange={setEmail} // 5. Update state on typing (NextUI uses onValueChange)
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               classNames={customInputStyles}
-              isDisabled={loading}
+              isDisabled={formik.isSubmitting}
               required
             />
 
@@ -77,26 +75,27 @@ export default function Login() {
               type="password"
               label={t("passwordLabel")}
               name="password"
-              value={password} // 4. Bind the value to state
-              onValueChange={setPassword} // 5. Update state on typing
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               classNames={customInputStyles}
-              isDisabled={loading}
+              isDisabled={formik.isSubmitting}
               required
             />
 
-            {error && (
+            {formik.status && (
               <div className="bg-red-500/10 border border-red-500/50 text-red-400 text-sm font-medium rounded-lg p-3 text-center">
-                {error}
+                {formik.status}
               </div>
             )}
 
             <PulsingButton
-              className="w-full mt-4 font-bold text-lg h-12"
+              className="w-full mt-4 font-bold text-lg h-12 dark:text-white"
               type="submit"
-              disabled={loading}
+              disabled={formik.isSubmitting}
               noPulsing
             >
-              {loading ? (
+              {formik.isSubmitting ? (
                 <div className="flex items-center justify-center gap-2">
                   <Spinner size="sm" color="current" />
                   <span>{t("signingIn")}</span>
@@ -107,12 +106,12 @@ export default function Login() {
             </PulsingButton>
 
             <div className="text-center mt-4">
-              <span className="text-sm text-zinc-400">
+              <span className="text-sm font-semibold dark:text-zinc-400">
                 {t("noAccountText")}
               </span>
               <Link
                 href={`/${lng}/signup`}
-                className="text-sm font-semibold text-[#00FFAA] hover:text-[#00FFAA]/80 transition-colors"
+                className="text-sm font-bold text-primary hover:text-primary/80 transition-colors"
               >
                 {t("signUpLink")}
               </Link>

@@ -1,143 +1,102 @@
 "use client";
 
-import { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-
-import {
-  Image,
-  Card,
-  CardBody,
-  CardHeader,
-  Input,
-  Link,
-  Tooltip,
-  Spinner,
-} from "@nextui-org/react";
-import { FaInfoCircle } from "react-icons/fa";
+import { CardBody, CardHeader, Input, Link, Spinner } from "@nextui-org/react";
 import PulsingButton from "@/components/PulsingButton/PulsingButton";
 import { signupSchema } from "@/lib/validationShemas/signupValidationSchema";
 import { useT } from "next-i18next/client";
 import { CardUniversal } from "@/components/common";
+import { useFormik } from "formik";
 
 const customInputStyles = {
   inputWrapper:
-    "bg-zinc-800/50 border-transparent transition-all duration-200 ring-1 ring-transparent focus-within:ring-[#00FFAA] focus-within:ring-2 shadow-md focus-within:shadow-[#00FFAA]/20 hover:bg-zinc-800",
+    "dark:bg-zinc-800/50 border-transparent transition-all duration-200 ring-1 ring-transparent focus-within:ring-[#00FFAA] focus-within:ring-2 shadow-md focus-within:shadow-[#00FFAA]/20 hover:bg-zinc-800",
   input: "text-white",
-  label: "text-zinc-400 group-focus-within:text-[#00FFAA] transition-colors",
+  label:
+    "dark:text-zinc-400 group-focus-within:text-[#00FFAA] transition-colors",
 };
 
 export default function Signup() {
   const router = useRouter();
   const params = useParams();
   const lng = params?.lng || "en";
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
   const { t } = useT("signup");
 
-  const InfoTooltip = () => (
-    <Tooltip
-      showArrow
-      placement="top-end"
-      content={
-        <div className="p-2 max-w-64">
-          <div className="flex justify-center mb-2">
-            <Image
-              className="object-contain"
-              alt="Info"
-              src="eplaining_owl.png"
-              width={70}
-              height={70}
-            />
-          </div>
-          <h1 className="text-center font-bold mb-1 text-sm">
-            {t("infoTooltipTitle")}
-          </h1>
-          <p className="text-center text-xs text-zinc-300">
-            {t("infoTooltipText")}
-          </p>
-        </div>
-      }
-    >
-      <button type="button" className="focus:outline-none" tabIndex={-1}>
-        <FaInfoCircle className="text-zinc-500 hover:text-white transition-colors" />
-      </button>
-    </Tooltip>
-  );
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      userEmail: "",
+      password: "",
+      height: "",
+      weight: "",
+    },
 
-  const [formData, setFormData] = useState({
-    username: "",
-    userEmail: "",
-    password: "",
-    height: "",
-    weight: "",
+    validate: (values) => {
+      const validationResult = signupSchema.safeParse(values);
+
+      if (validationResult.success) return {}; // No errors
+
+      const errors: Record<string, string> = {};
+      const fieldErrors = validationResult.error.flatten().fieldErrors;
+
+      for (const key in fieldErrors) {
+        if (fieldErrors[key]) {
+          errors[key] = fieldErrors[key]![0];
+        }
+      }
+      return errors;
+    },
+    // 2. Form Submission
+    onSubmit: async (values, { setStatus, setSubmitting }) => {
+      setStatus(null); // Clear previous API errors
+
+      try {
+        const res = await fetch("/api/signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          // Notice we pass 'values' directly, as Zod already validated them
+          body: JSON.stringify(values),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          router.push(`/${lng}/login`);
+        } else {
+          setStatus(data.error || "Something went wrong during signup.");
+          setSubmitting(false);
+        }
+      } catch (err) {
+        setStatus("Network error. Please try again.");
+        setSubmitting(false);
+      }
+    },
   });
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    if (fieldErrors[e.target.name]) {
-      setFieldErrors({ ...fieldErrors, [e.target.name]: [] });
-    }
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setFieldErrors({});
-
-    const validationResult = signupSchema.safeParse(formData);
-
-    if (!validationResult.success) {
-      const mappedErrors = validationResult.error.flatten().fieldErrors;
-      setFieldErrors(mappedErrors as Record<string, string[]>);
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const res = await fetch("/api/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(validationResult.data),
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        router.push(`/${lng}/login`);
-      } else {
-        setError(data.error || "Something went wrong during signup.");
-        setLoading(false);
-      }
-    } catch (err) {
-      setError("Network error. Please try again. " + err);
-      setLoading(false);
-    }
-  };
-
   return (
-    <main className="dark flex flex-col items-center justify-center min-h-screen sm:p-10 p-6">
-      <CardUniversal className="w-full max-w-[450px] p-4 bg-zinc-900/80 backdrop-blur-md border border-zinc-800 shadow-2xl">
+    <main className="flex flex-col items-center justify-center min-h-screen sm:p-10 p-6">
+      <CardUniversal className="w-full max-w-[450px] p-4  backdrop-blur-md border font-semibold">
         <CardHeader className="flex flex-col items-center justify-center pt-6 pb-2">
-          <h1 className="text-3xl font-extrabold tracking-tight text-white">
+          <h1 className="text-3xl font-extrabold tracking-tight ">
             {t("title")}
           </h1>
-          <p className="text-sm text-zinc-400 mt-2">{t("subtitle")}</p>
+          <p className="text-sm dark:text-zinc-400 mt-2">{t("subtitle")}</p>
         </CardHeader>
 
         <CardBody className="flex flex-col gap-4">
-          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+          <form className="flex flex-col gap-4" onSubmit={formik.handleSubmit}>
             <Input
               name="username"
               label={t("usernameLabel")}
               classNames={customInputStyles}
               type="text"
-              value={formData.username}
-              onChange={handleChange}
-              isInvalid={!!fieldErrors.username}
-              errorMessage={fieldErrors.username?.[0]}
-              isDisabled={loading}
+              value={formik.values.username}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur} // Important: Tracks if the user visited the field
+              // Only show error if the user has touched the field AND it has an error
+              isInvalid={formik.touched.username && !!formik.errors.username}
+              errorMessage={formik.touched.username && formik.errors.username}
+              isDisabled={formik.isSubmitting}
             />
 
             <Input
@@ -145,11 +104,12 @@ export default function Signup() {
               label={t("emailLabel")}
               classNames={customInputStyles}
               type="email"
-              value={formData.userEmail}
-              onChange={handleChange}
-              isInvalid={!!fieldErrors.userEmail}
-              errorMessage={fieldErrors.userEmail?.[0]}
-              isDisabled={loading}
+              value={formik.values.userEmail}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              isInvalid={formik.touched.userEmail && !!formik.errors.userEmail}
+              errorMessage={formik.touched.userEmail && formik.errors.userEmail}
+              isDisabled={formik.isSubmitting}
             />
 
             <Input
@@ -157,26 +117,26 @@ export default function Signup() {
               label={t("passwordLabel")}
               classNames={customInputStyles}
               type="password"
-              value={formData.password}
-              onChange={handleChange}
-              isInvalid={!!fieldErrors.password}
-              errorMessage={fieldErrors.password?.[0]}
-              isDisabled={loading}
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              isInvalid={formik.touched.password && !!formik.errors.password}
+              errorMessage={formik.touched.password && formik.errors.password}
+              isDisabled={formik.isSubmitting}
             />
 
-            {/* Grouped Height and Weight in a row */}
             <div className="flex flex-row gap-4">
               <Input
                 name="height"
                 label={t("heightLabel")}
                 classNames={customInputStyles}
                 type="number"
-                value={formData.height}
-                onChange={handleChange}
-                isInvalid={!!fieldErrors.height}
-                errorMessage={fieldErrors.height?.[0]}
-                endContent={<InfoTooltip />}
-                isDisabled={loading}
+                value={formik.values.height}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                isInvalid={formik.touched.height && !!formik.errors.height}
+                errorMessage={formik.touched.height && formik.errors.height}
+                isDisabled={formik.isSubmitting}
               />
 
               <Input
@@ -184,27 +144,28 @@ export default function Signup() {
                 label={t("weightLabel")}
                 classNames={customInputStyles}
                 type="number"
-                value={formData.weight}
-                onChange={handleChange}
-                isInvalid={!!fieldErrors.weight}
-                errorMessage={fieldErrors.weight?.[0]}
-                endContent={<InfoTooltip />}
-                isDisabled={loading}
+                value={formik.values.weight}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                isInvalid={formik.touched.weight && !!formik.errors.weight}
+                errorMessage={formik.touched.weight && formik.errors.weight}
+                isDisabled={formik.isSubmitting}
               />
             </div>
 
-            {error && (
+            {formik.status && (
               <div className="bg-red-500/10 border border-red-500/50 text-red-400 text-sm font-medium rounded-lg p-3 text-center">
-                {error}
+                {formik.status}
               </div>
             )}
 
             <PulsingButton
               className="w-full mt-4 font-bold text-lg h-12"
               type="submit"
-              disabled={loading}
+              disabled={formik.isSubmitting}
+              noPulsing
             >
-              {loading ? (
+              {formik.isSubmitting ? (
                 <div className="flex items-center gap-2">
                   <Spinner size="sm" color="current" />
                   <span>{t("creatingAccount")}</span>
@@ -215,12 +176,12 @@ export default function Signup() {
             </PulsingButton>
 
             <div className="text-center mt-4">
-              <span className="text-sm text-zinc-400">
+              <span className="text-sm dark:text-zinc-400">
                 {t("hasAccountText")}
               </span>
               <Link
                 href={`/${lng}/login`}
-                className="text-sm font-semibold text-[#00FFAA] hover:text-[#00FFAA]/80 transition-colors"
+                className="text-sm font-semibold text-primary hover:text-primary/80 transition-colors"
               >
                 {t("logInLink")}
               </Link>
