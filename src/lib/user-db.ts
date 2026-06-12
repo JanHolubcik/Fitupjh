@@ -46,7 +46,7 @@ export async function updateUser(
     if (
       goal === "lose weight" ||
       goal === "gain weight" ||
-      goal === "remain same"
+      goal === "maintain weight"
     ) {
       updateFields.goal = goal;
     }
