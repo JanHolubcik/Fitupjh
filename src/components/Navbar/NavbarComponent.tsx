@@ -21,6 +21,7 @@ import { signOut, useSession } from "next-auth/react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { InputSearchBar } from "../InputSearchBar/InputSearchBar";
 import { LanguagePicker } from "./components/LanguagePicker";
+import { ThemeSwitcher } from "./components/ThemeSwitcher";
 import { useT } from "next-i18next/client";
 import {
   FaChartArea,
@@ -60,7 +61,7 @@ const NavbarComponent = () => {
             <Button
               variant="light"
               size="md"
-              className="text-zinc-200 font-medium min-w-min px-0 sm:px-2"
+              className="text-zinc-800 dark:text-zinc-200 font-medium min-w-min px-0 sm:px-2"
             >
               <Avatar
                 isBordered
@@ -98,7 +99,7 @@ const NavbarComponent = () => {
         href="/login"
         variant="bordered"
         size="sm"
-        className="hidden sm:flex border-white/20 text-white hover:bg-white/10"
+        className="hidden sm:flex border-black/20 dark:border-white/20 text-black dark:text-white hover:bg-black/5 dark:hover:bg-white/10"
       >
         {t("signIn")}
       </Button>
@@ -109,7 +110,7 @@ const NavbarComponent = () => {
     <>
       <Navbar
         isBordered
-        className=" sm:flex hidden bg-default-50/50 border-white/10 sm:bg-zinc-950/70 sm:border-white/5 backdrop-blur-md"
+        className=" sm:flex hidden shadow-lg bg-default-50/50 border-black/10 dark:border-white/10 sm:bg-white/70 sm:dark:bg-zinc-950/70 sm:border-black/5 sm:dark:border-white/5 backdrop-blur-md"
         maxWidth="xl"
       >
         <NavbarContent
@@ -122,7 +123,7 @@ const NavbarComponent = () => {
         >
           <NavbarBrand className="gap-5">
             <Link href="/" className="gap-2 flex">
-              <p className="font-black text-xl text-white tracking-wider bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">
+              <p className="font-black text-xl text-black dark:text-white tracking-wider bg-gradient-to-r from-black dark:from-white to-zinc-600 dark:to-zinc-400 bg-clip-text text-transparent">
                 FitUp
               </p>
             </Link>
@@ -135,10 +136,10 @@ const NavbarComponent = () => {
                 >
                   <Link
                     href={item.href}
-                    className={`text-sm font-medium transition-colors ${
+                    className={`text-[15px] font-extrabold dark:font-bold transition-colors ${
                       pathname === item.href
                         ? "text-primary"
-                        : "text-zinc-400 hover:text-white"
+                        : "text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white"
                     }`}
                   >
                     {item.description}
@@ -158,7 +159,8 @@ const NavbarComponent = () => {
 
         <NavbarContent justify="end" className="flex-grow-0 gap-2 sm:gap-4">
           <div className="flex items-center gap-2">
-            {LanguagePicker()}
+            <LanguagePicker />
+            <ThemeSwitcher />
             {showSession()}
 
             {status !== "authenticated" && (
@@ -176,11 +178,11 @@ const NavbarComponent = () => {
         </NavbarContent>
       </Navbar>
       {status === "authenticated" && (
-        <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-zinc-950/70 backdrop-blur-lg border-t border-white/10 pb-[env(safe-area-inset-bottom)]">
+        <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/70 dark:bg-zinc-950/70 backdrop-blur-lg border-t border-black/10 dark:border-white/10 pb-[env(safe-area-inset-bottom)]">
           <div className="flex flex-row  items-center h-16">
             {pathname === `/${lng}/dashboard` && (
               <Link
-                className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${"text-zinc-400 hover:text-zinc-200"} cursor-pointer`}
+                className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${"text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-zinc-200"} cursor-pointer`}
                 onPress={onOpen}
               >
                 <FaPlus className="text-lg" />
@@ -195,7 +197,7 @@ const NavbarComponent = () => {
               className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
                 pathname === `/${lng}/dashboard`
                   ? "text-primary"
-                  : "text-zinc-400 hover:text-zinc-200"
+                  : "text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-zinc-200"
               }`}
             >
               <FaChartArea className="text-lg" />
@@ -209,7 +211,7 @@ const NavbarComponent = () => {
               className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
                 pathname === `/${lng}/profile`
                   ? "text-primary"
-                  : "text-zinc-400 hover:text-zinc-200"
+                  : "text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-zinc-200"
               }`}
             >
               <FaUserAlt className="text-lg" />
@@ -219,7 +221,7 @@ const NavbarComponent = () => {
             </Link>
 
             <Link
-              className="flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors cursor-pointer text-red-400 hover:text-red-500"
+              className="flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors cursor-pointer text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-500"
               onPress={() =>
                 signOut({ redirect: false }).then(() => router.push("/"))
               }
@@ -234,14 +236,14 @@ const NavbarComponent = () => {
       )}
 
       {status === "unauthenticated" && (
-        <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-zinc-950/70 backdrop-blur-lg border-t border-white/10 pb-[env(safe-area-inset-bottom)]">
+        <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/70 dark:bg-zinc-950/70 backdrop-blur-lg border-t border-black/10 dark:border-white/10 pb-[env(safe-area-inset-bottom)]">
           <div className="flex flex-row items-center h-16">
             <Link
               href="/"
               className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
                 pathname === "/"
                   ? "text-primary"
-                  : "text-zinc-400 hover:text-zinc-200"
+                  : "text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-zinc-200"
               }`}
             >
               <FaHome className="text-lg" />
@@ -255,7 +257,7 @@ const NavbarComponent = () => {
               className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
                 pathname === "/login"
                   ? "text-primary"
-                  : "text-zinc-400 hover:text-zinc-200"
+                  : "text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-zinc-200"
               }`}
             >
               <FaSignInAlt className="text-lg" />
@@ -269,7 +271,7 @@ const NavbarComponent = () => {
               className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
                 pathname === "/signup"
                   ? "text-primary"
-                  : "text-zinc-400 hover:text-zinc-200"
+                  : "text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-zinc-200"
               }`}
             >
               <FaUserPlus className="text-lg" />

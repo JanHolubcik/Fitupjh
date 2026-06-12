@@ -2,6 +2,7 @@
 
 import { SessionProvider } from "next-auth/react";
 import { NextUIProvider } from "@nextui-org/react";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Session } from "next-auth";
@@ -23,28 +24,30 @@ export default function Providers({
 
   return (
     <NextUIProvider>
-      <StoreProvider>
-        <ApolloWrapper>
-          <QueryClientProvider client={queryClient}>
-            <SpeedInsights />
-            <SessionProvider session={session}>
-              {children}
-              <ToastContainer
-                position="bottom-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="colored"
-              />
-            </SessionProvider>
-          </QueryClientProvider>
-        </ApolloWrapper>
-      </StoreProvider>
+      <NextThemesProvider attribute="class" defaultTheme="dark">
+        <StoreProvider>
+          <ApolloWrapper>
+            <QueryClientProvider client={queryClient}>
+              <SpeedInsights />
+              <SessionProvider session={session}>
+                {children}
+                <ToastContainer
+                  position="bottom-right"
+                  autoClose={5000}
+                  hideProgressBar={false}
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                  theme="colored"
+                />
+              </SessionProvider>
+            </QueryClientProvider>
+          </ApolloWrapper>
+        </StoreProvider>
+      </NextThemesProvider>
     </NextUIProvider>
   );
 }

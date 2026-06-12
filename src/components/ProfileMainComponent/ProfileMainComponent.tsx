@@ -11,6 +11,7 @@ import {
   SelectItem,
   Switch,
 } from "@nextui-org/react";
+
 import { useT } from "next-i18next/client";
 
 export default function ProfileMainComponent() {

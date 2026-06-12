@@ -44,7 +44,7 @@ export default async function RootLayout({
   const session = await getServerSession(authOptions);
   initServerI18next;
   return (
-    <html lang="en" className="dark" style={{ backgroundColor: "#000" }}>
+    <html lang={lng} suppressHydrationWarning>
       <head>
         <meta name="color-scheme" content="dark" />
         <Script

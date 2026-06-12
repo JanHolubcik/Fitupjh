@@ -98,14 +98,14 @@ export const InputSearchBar = () => {
   return (
     <div
       ref={containerRef}
-      className="relative flex items-center w-full max-w-full min-w-60 sm:min-w-56 sm:w-full"
+      className="relative  flex items-center w-full max-w-full min-w-60 sm:min-w-56 sm:w-full border-1 rounded-xl  "
     >
-      <div className="flex-1">
+      <div className="flex-1  ">
         <Input
           classNames={{
-            base: "h-8 w-full",
-            mainWrapper: "h-full",
-            input: "text-small",
+            base: "h-8 w-full ",
+            mainWrapper: "h-full ",
+            input: "text-small ",
             inputWrapper:
               "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20 rounded-r-none",
           }}
@@ -137,8 +137,8 @@ export const InputSearchBar = () => {
       >
         <Image
           className="rounded-none"
-          height={25}
-          width={25}
+          height={20}
+          width={20}
           src="../barcodeIcon.svg"
           alt="Barcode scan"
         />
