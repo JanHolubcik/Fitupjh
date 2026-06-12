@@ -2,17 +2,11 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import {
-  Link,
-  Input,
-  Spinner,
-  Card,
-  CardHeader,
-  CardBody,
-} from "@nextui-org/react";
+import { Link, Input, Spinner, CardHeader, CardBody } from "@nextui-org/react";
 import { signIn } from "next-auth/react";
 import PulsingButton from "@/components/PulsingButton/PulsingButton";
 import { useT } from "next-i18next/client";
+import { CardUniversal } from "@/components/common";
 
 const customInputStyles = {
   inputWrapper:
@@ -22,30 +16,33 @@ const customInputStyles = {
 };
 
 export default function Login() {
-  const [error, setError] = useState("");
   const router = useRouter();
   const params = useParams();
   const lng = params?.lng || "en";
-  const [loading, setLoading] = useState(false);
   const { t } = useT("login");
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
-
-    const formData = new FormData(event.currentTarget);
-
-    // next auth logging to session
     setLoading(true);
+
     const res = await signIn("credentials", {
-      email: formData.get("email"),
-      password: formData.get("password"),
+      email: email,
+      password: password,
       redirect: false,
     });
+
     setLoading(false);
 
     if (res?.error) {
-      setError(res.error as string);
+      setError("Invalid email or password.");
+      return;
     }
 
     if (res?.ok) {
@@ -55,7 +52,7 @@ export default function Login() {
 
   return (
     <main className="dark flex flex-col items-center justify-center min-h-screen sm:p-10 p-6">
-      <Card className="w-full max-w-[450px] p-4 bg-zinc-900/80 backdrop-blur-md border border-zinc-800 shadow-2xl">
+      <CardUniversal className="w-full max-w-[450px] p-4 bg-zinc-900/80 backdrop-blur-md border border-zinc-800 shadow-2xl">
         <CardHeader className="flex flex-col items-center justify-center pt-6 pb-2">
           <h1 className="text-3xl font-extrabold tracking-tight text-white">
             {t("title")}
@@ -69,6 +66,8 @@ export default function Login() {
               type="email"
               label={t("emailLabel")}
               name="email"
+              value={email} // 4. Bind the value to state
+              onValueChange={setEmail} // 5. Update state on typing (NextUI uses onValueChange)
               classNames={customInputStyles}
               isDisabled={loading}
               required
@@ -78,6 +77,8 @@ export default function Login() {
               type="password"
               label={t("passwordLabel")}
               name="password"
+              value={password} // 4. Bind the value to state
+              onValueChange={setPassword} // 5. Update state on typing
               classNames={customInputStyles}
               isDisabled={loading}
               required
@@ -118,7 +119,7 @@ export default function Login() {
             </div>
           </form>
         </CardBody>
-      </Card>
+      </CardUniversal>
     </main>
   );
 }

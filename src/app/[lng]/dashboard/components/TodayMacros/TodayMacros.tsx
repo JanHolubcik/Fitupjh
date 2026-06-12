@@ -18,6 +18,7 @@ import {
   MacroArray,
 } from "@/app/[lng]/constants/MacrosHelper";
 import { useT } from "next-i18next/client";
+import { CardUniversal } from "@/components/common";
 
 type props = {
   savedFood: FoodType;
@@ -102,7 +103,7 @@ export const TodayMacros = ({ savedFood }: props) => {
   }, [data?.user?.weight, data?.user?.height, savedFood]);
 
   return (
-    <Card className="w-full sm:max-w-4xl mx-auto flex flex-col gap-4 ">
+    <CardUniversal className="w-full h-full sm:max-w-4xl  flex flex-col gap-4 ">
       <CardBody className="grid  md:grid-cols-2 grid-cols-1  gap-2">
         {MacroArray.map((macro) => (
           <MacroProgressBar
@@ -122,6 +123,6 @@ export const TodayMacros = ({ savedFood }: props) => {
           />
         ))}
       </CardBody>
-    </Card>
+    </CardUniversal>
   );
 };

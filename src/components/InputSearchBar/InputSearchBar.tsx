@@ -98,7 +98,7 @@ export const InputSearchBar = () => {
   return (
     <div
       ref={containerRef}
-      className="relative  flex items-center w-full max-w-full min-w-60 sm:min-w-56 sm:w-full border-1 rounded-xl  "
+      className="relative  flex items-center w-full max-w-full min-w-60 sm:min-w-56 sm:w-full rounded-xl  "
     >
       <div className="flex-1  ">
         <Input
@@ -132,8 +132,7 @@ export const InputSearchBar = () => {
 
       <Button
         onPress={() => QRonOpen()}
-        color="primary"
-        className="rounded-l-none min-w-10 h-8 self-center"
+        className="rounded-l-none min-w-10 h-8 self-center bg-primary-200 dark:bg-primary-400"
       >
         <Image
           className="rounded-none"

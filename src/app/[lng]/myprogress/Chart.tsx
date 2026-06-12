@@ -45,6 +45,7 @@ import { capitalizeFirstLetter } from "../constants/FunctionsHelper";
 import { MACRO_TAILWIND_THEME } from "../constants/MacrosHelper";
 import { useT } from "next-i18next/client";
 import { TFunction } from "i18next";
+import { CardUniversal } from "@/components/common";
 
 ChartJS.register(
   CategoryScale,
@@ -179,8 +180,8 @@ const Chart = ({
   } = useMutation(GenerativeAIOptions(reduxSavedFood));
 
   return (
-    <div className=" flex flex-col gap-3 shadow-md bg-transparent backdrop-blur-md">
-      <Card className="">
+    <div className="flex flex-col gap-3 shadow-md bg-transparent backdrop-blur-md self-center">
+      <CardUniversal>
         <CardBody>
           <div className="flex flex-row w-full items-center justify-between gap-4">
             <div className="flex-1">
@@ -334,8 +335,8 @@ const Chart = ({
             </Dropdown>
           </div>
         </CardBody>
-      </Card>
-      <Card className="block sm:hidden">
+      </CardUniversal>
+      <CardUniversal className="block sm:hidden">
         <CardBody>
           <div className="grid grid-cols-2">
             {tableData(
@@ -367,7 +368,7 @@ const Chart = ({
             ))}
           </div>
         </CardBody>
-      </Card>
+      </CardUniversal>
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}

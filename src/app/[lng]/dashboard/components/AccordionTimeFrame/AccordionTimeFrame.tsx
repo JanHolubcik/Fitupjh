@@ -1,9 +1,10 @@
-import { Image, Accordion, AccordionItem } from "@nextui-org/react";
+import { Image, Accordion, AccordionItem, CardBody } from "@nextui-org/react";
 import type { Selection } from "@nextui-org/react";
 import { FoodType, timeOfDay } from "@/types/Types";
 import { TimeFrameSmallCard } from "../TimeFrameSmallCard/TimeFrameSmallCard";
 import { useState } from "react";
 import { useT } from "next-i18next/client";
+import { CardUniversal } from "@/components/common";
 
 type props = {
   savedFood: FoodType;
@@ -27,72 +28,79 @@ export const AccordionTimeFrame = ({ savedFood }: props) => {
       "px-3 py-0 data-[hover=true]:bg-default-100 rounded-xl h-16 flex items-center transition-all duration-200",
     indicator:
       "text-medium text-default-400 data-[open=true]:text-primary transition-transform duration-200",
-    content: "text-small px-3 pb-3 pt-1",
+    content: "text-small font-bold px-3 pb-3 pt-1",
   };
 
   return (
-    <Accordion
-      variant="shadow"
-      selectionMode="multiple"
-      selectedKeys={selectedKeys}
-      onSelectionChange={setSelectedKeys}
-      showDivider={false}
-      itemClasses={itemClasses}
-      className="p-2 flex flex-col gap-1 sm:w-full w-80 bg-content1 rounded-2xl border border-default-100 shadow-md"
-    >
-      {timeOfDay.map((key) => {
-        const active = isKeyActive(key);
-        const itemCount = savedFood[key as keyof FoodType]?.length || 0;
+    <CardUniversal className="w-80 sm:w-full self-center">
+      <CardBody className="max-w-2xl ">
+        <Accordion
+          variant="light"
+          selectionMode="multiple"
+          selectedKeys={selectedKeys}
+          onSelectionChange={setSelectedKeys}
+          showDivider={false}
+          itemClasses={itemClasses}
+        >
+          {timeOfDay.map((key) => {
+            const active = isKeyActive(key);
+            const itemCount = savedFood[key as keyof FoodType]?.length || 0;
 
-        return (
-          <AccordionItem
-            key={key}
-            aria-label={key}
-            title={
-              <span
-                className={
-                  active ? "text-primary font-bold transition-colors" : ""
+            return (
+              <AccordionItem
+                key={key}
+                aria-label={key}
+                title={
+                  <span
+                    className={
+                      active
+                        ? "text-primary font-bold transition-colors"
+                        : "font-bold"
+                    }
+                  >
+                    {t(`timeOfDay.${key}`)}
+                  </span>
+                }
+                subtitle={
+                  <span className="text-default-400 font-bold">
+                    {itemCount === 0
+                      ? t("accordion.itemsLogged0")
+                      : itemCount === 1
+                        ? t("accordion.itemsLogged1")
+                        : itemCount >= 2 && itemCount <= 4
+                          ? t("accordion.itemsLogged234", { count: itemCount })
+                          : t("accordion.itemsLogged5plus", {
+                              count: itemCount,
+                            })}
+                  </span>
+                }
+                startContent={
+                  <div
+                    className={`flex items-center justify-center w-9 h-9 rounded-xl transition-all duration-300 ${
+                      active
+                        ? "bg-primary-400 dark:bg-primary/10 text-primary shadow-sm scale-105"
+                        : "bg-primary-100 dark:bg-default-100 text-default-500"
+                    }`}
+                  >
+                    <Image
+                      alt={`${key} icon`}
+                      src="../cloche.svg"
+                      width={20}
+                      height={20}
+                      className={`object-contain transition-transform ${active ? "rotate-[6deg]" : ""}`}
+                    />
+                  </div>
                 }
               >
-                {t(`timeOfDay.${key}`)}
-              </span>
-            }
-            subtitle={
-              <span className="text-default-400 font-normal">
-                {itemCount === 0
-                  ? t("accordion.itemsLogged0")
-                  : itemCount === 1
-                    ? t("accordion.itemsLogged1")
-                    : itemCount >= 2 && itemCount <= 4
-                      ? t("accordion.itemsLogged234", { count: itemCount })
-                      : t("accordion.itemsLogged5plus", { count: itemCount })}
-              </span>
-            }
-            startContent={
-              <div
-                className={`flex items-center justify-center w-9 h-9 rounded-xl transition-all duration-300 ${
-                  active
-                    ? "bg-primary/10 text-primary shadow-sm scale-105"
-                    : "bg-default-100 text-default-500"
-                }`}
-              >
-                <Image
-                  alt={`${key} icon`}
-                  src="../cloche.svg"
-                  width={20}
-                  height={20}
-                  className={`object-contain transition-transform ${active ? "rotate-[6deg]" : ""}`}
+                <TimeFrameSmallCard
+                  timeFrame={key}
+                  foodItems={savedFood[key as keyof FoodType]}
                 />
-              </div>
-            }
-          >
-            <TimeFrameSmallCard
-              timeFrame={key}
-              foodItems={savedFood[key as keyof FoodType]}
-            />
-          </AccordionItem>
-        );
-      })}
-    </Accordion>
+              </AccordionItem>
+            );
+          })}
+        </Accordion>
+      </CardBody>
+    </CardUniversal>
   );
 };

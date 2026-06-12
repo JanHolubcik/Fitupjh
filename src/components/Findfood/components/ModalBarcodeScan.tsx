@@ -144,7 +144,7 @@ export const ModalBarcodeScan = (props: props) => {
           {(onClose) => (
             <>
               <ModalBody className="gap-6 py-6 px-6">
-                <div className="relative w-full aspect-square max-w-[340px] mx-auto overflow-hidden rounded-2xl dark:border-zinc-800 bg-slate-950 shadow-inner flex items-center justify-center">
+                <div className="relative w-full aspect-square max-w-[340px] overflow-hidden rounded-2xl dark:border-zinc-800 bg-slate-950 shadow-inner flex items-center justify-center">
                   <Scanner
                     onScan={handleScan}
                     components={{
@@ -212,7 +212,7 @@ export const ModalBarcodeScan = (props: props) => {
                   variant="solid"
                   color="danger"
                   onPress={onClose}
-                  className="w-full max-w-[340px] mx-auto font-medium"
+                  className="w-full max-w-[340px]  font-medium"
                 >
                   Cancel Scanning
                 </Button>

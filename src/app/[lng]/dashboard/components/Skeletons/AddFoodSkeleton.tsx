@@ -1,8 +1,9 @@
+import { CardUniversal } from "@/components/common";
 import { Card, Skeleton } from "@nextui-org/react";
 
 export const AddFoodSkeleton = () => {
   return (
-    <Card className="w-full shadow-md border border-zinc-800">
+    <CardUniversal className="w-full shadow-md border border-zinc-800">
       <div className="flex flex-col gap-2 p-3">
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3 p-3 rounded-lg">
@@ -32,6 +33,6 @@ export const AddFoodSkeleton = () => {
           </div>
         </div>
       </div>
-    </Card>
+    </CardUniversal>
   );
 };

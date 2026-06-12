@@ -46,7 +46,7 @@ export const TimeFrameSmallCard = (props: props) => {
 
   const [selectedFood, setSelectedFood] = useState<Food | null>(null);
   return (
-    <div className="flex flex-col p-2 bg-zinc-950 rounded-xl">
+    <div className="flex flex-col p-2 bg-zinc-300 dark:bg-zinc-950 rounded-xl">
       <div className="flex flex-col rounded-xl">
         {foodItems.map((key) => (
           <div
@@ -54,11 +54,11 @@ export const TimeFrameSmallCard = (props: props) => {
               setSelectedFood(key);
               onEditOpenChange();
             }}
-            className="flex flex-row items-center first:rounded-t-xl last:rounded-b-xl justify-between gap-3 p-2 bg-zinc-900 border border-white/[0.02] hover:bg-white/[0.03] hover:border-white/5  transition-all duration-200 group hover:cursor-pointer"
+            className="flex flex-row items-center first:rounded-t-xl last:rounded-b-xl justify-between gap-3 p-2 bg-zinc-200 dark:bg-zinc-900 border border-white/[0.02] hover:bg-white/[0.03] hover:border-white/5  transition-all duration-200 group hover:cursor-pointer"
             key={key.id}
           >
             <div className="flex items-center gap-3 flex-1 min-w-0">
-              <div className="aspect-square flex flex-col items-center justify-center bg-zinc-950/40 p-1 rounded-xl border border-white/5 shadow-inner group-hover:scale-102 transition-transform">
+              <div className="aspect-square flex flex-col items-center justify-center bg-zinc-500 dark:bg-zinc-950/40 p-1 rounded-xl border border-white/5 shadow-inner group-hover:scale-102 transition-transform">
                 <ImageFromURL
                   width={35}
                   height={35}
@@ -68,10 +68,10 @@ export const TimeFrameSmallCard = (props: props) => {
               </div>
 
               <div className="flex-1 min-w-0 flex flex-col justify-center">
-                <p className="font-semibold text-xs sm:text-sm text-zinc-200 capitalize whitespace-nowrap overflow-hidden text-ellipsis w-16 sm:w-36">
+                <p className="font-bold text-xs sm:text-sm dark:text-zinc-200 capitalize whitespace-nowrap overflow-hidden text-ellipsis w-16 sm:w-36">
                   {key.name}
                 </p>
-                <div className="sm:grid grid-cols-5 gap-1 self-start hidden ">
+                <div className="sm:grid  grid-cols-5 gap-1 self-start hidden ">
                   {[
                     { macro: "protein" as MacroType, value: key.protein },
                     {
@@ -90,11 +90,11 @@ export const TimeFrameSmallCard = (props: props) => {
 
                     return (
                       <div
-                        className="w-12 text-center text-[8px]"
+                        className="w-12 text-center text-[8px] "
                         key={item.macro}
                       >
                         <span
-                          className={`${macroInfo.text} ${macroInfo.bg} border-1 ${macroInfo.border} px-[1px] rounded-sm inline-block w-full`}
+                          className={`${macroInfo.text} ${macroInfo.bg} border-1 ${macroInfo.border} px-[1px]  rounded-sm inline-block w-full`}
                         >
                           {shortLabel}:{" "}
                           <span
@@ -161,7 +161,7 @@ export const TimeFrameSmallCard = (props: props) => {
         onPress={onOpen}
         isIconOnly
         variant="flat"
-        className="w-8 h-8 min-w-8 self-center my-2 bg-white/[0.03] border border-white/5 text-[#00FFAA] hover:bg-[#00FFAA]/10 hover:border-[#00FFAA]/20  transition-all duration-200"
+        className="w-8 h-8 min-w-8 self-center my-2 text-primary-300 light:bg-slate-300"
       >
         <FaPlusCircle size={16} />
       </Button>

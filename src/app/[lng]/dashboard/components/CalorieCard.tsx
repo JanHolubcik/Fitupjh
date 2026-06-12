@@ -1,4 +1,5 @@
 import { useCalculateRecommendedCalories } from "@/app/[lng]/yourintake/hooks/useCalculateRecomendedCalories";
+import { CardUniversal } from "@/components/common";
 import { FoodType } from "@/types/Types";
 import { Card, CardBody, CircularProgress } from "@nextui-org/react";
 import { useT } from "next-i18next/client";
@@ -23,13 +24,13 @@ export const CalorieCard = (props: props) => {
   }
 
   return (
-    <Card className="flex items-center justify-center bg-content1 shadow-lg w-80 max-w-80">
-      <CardBody className="flex justify-center items-center p-4">
+    <CardUniversal className="flex  items-center justify-center w-80 max-w-80 ">
+      <CardBody className="flex justify-center items-center p-4 ">
         <CircularProgress
           classNames={{
             svg: "w-36 h-36 drop-shadow-md",
-            value: "text-md font-bold text-white",
-            label: "text-md text-white  text-center ",
+            value: "text-md font-bold ",
+            label: "text-md   text-center ",
           }}
           size="lg"
           value={caloriesSum}
@@ -39,6 +40,6 @@ export const CalorieCard = (props: props) => {
           showValueLabel={true}
         />
       </CardBody>
-    </Card>
+    </CardUniversal>
   );
 };

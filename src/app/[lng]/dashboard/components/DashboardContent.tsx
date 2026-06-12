@@ -42,7 +42,7 @@ export const DashboardContent = () => {
     );
 
   return (
-    <div className="flex flex-col gap-3  mt-3  items-center max-w-2xl w-full">
+    <div className="flex flex-col gap-3  mt-3  items-center max-w-2xl w-full font-bold">
       {/* <h2 className="text-xl font-bold text-foreground mb-2">Daily Progress</h2> */}
       <ModalTakePicture />
       <DateSwitcher></DateSwitcher>

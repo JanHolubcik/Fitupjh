@@ -26,7 +26,7 @@ const MyGraph = () => {
   const emptyDays = macroDatasets["calories"].filter((v) => v === 0).length;
 
   return (
-    <div className="flex flex-col sm:w-full w-80">
+    <div className="flex flex-col sm:w-full w-80 shadow-xl ">
       {isLoading ? (
         <Spinner />
       ) : (

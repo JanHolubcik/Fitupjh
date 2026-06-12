@@ -37,11 +37,11 @@ const AddFoodComponent = (props: props) => {
 
   return (
     <div
-      className="flex flex-col md:flex-row md:items-center justify-between gap-2 p-2 md:p-3 first:mt-0 rounded-xl my-1 md:my-2 bg-zinc-900/20 border border-white/5 backdrop-blur-sm hover:bg-zinc-800/20 hover:border-white/10 transition-all duration-200"
+      className="flex flex-col  md:flex-row md:items-center justify-between gap-2 p-2 md:p-3 first:mt-0 rounded-xl my-1 md:my-2 dark:bg-zinc-900/20 border dark:border-white/5 backdrop-blur-sm hover:bg-zinc-800/20 hover:border-white/10 transition-all duration-200"
       key={props.macros.name}
     >
       <div className="flex items-center gap-2 md:gap-4 flex-1 min-w-0 w-full">
-        <div className="flex-shrink-0 bg-zinc-950/40 p-1 md:p-1.5 rounded-xl border border-white/5 shadow-inner">
+        <div className="flex-shrink-0 dark:bg-zinc-950/40 p-1 md:p-1.5 rounded-xl border border-white/5 shadow-inner">
           <ImageFromURL
             url={props.macros.imgUrl}
             macroName={props.macros.name}
@@ -49,10 +49,10 @@ const AddFoodComponent = (props: props) => {
         </div>
 
         <div className="flex flex-col min-w-0 flex-1">
-          <p className="font-bold text-xs md:text-base text-zinc-100 capitalize leading-tight truncate">
+          <p className="font-bold text-xs md:text-base dark:text-zinc-100 capitalize leading-tight truncate">
             {props.macros.name}
           </p>
-          <span className="text-[9px] md:text-[10px] text-zinc-500 font-medium mt-0 md:mt-0.5 whitespace-nowrap">
+          <span className="text-[9px] md:text-[10px] dark:text-zinc-500 font-semibold mt-0 md:mt-0.5 whitespace-nowrap">
             {props.macros.calories_per_100g} kcal / 100g
           </span>
         </div>
@@ -86,7 +86,7 @@ const AddFoodComponent = (props: props) => {
           </span>
         </div>
 
-        <div className="flex flex-col md:items-center bg-zinc-900/40 md:bg-transparent p-1 md:p-0 rounded-lg border border-white/[0.02] md:border-none">
+        <div className="flex flex-col md:items-center bg-zinc-900/40 md:bg-transparent p-1 md:p-0 rounded-lg border border-white/[0.02] md:border-none ">
           <span className="text-[9px] md:text-[9px] text-zinc-500 font-bold uppercase tracking-wider md:mb-0.5">
             {t("addFood.sugarShort")}
           </span>
@@ -110,10 +110,10 @@ const AddFoodComponent = (props: props) => {
             max={999}
             classNames={{
               label:
-                "text-[9px] md:text-[10px] text-zinc-400 font-semibold tracking-wide uppercase pb-0 md:pb-1",
+                "text-[9px] md:text-[10px] dark:text-zinc-400 font-semibold tracking-wide uppercase pb-0 md:pb-1",
               inputWrapper:
-                "h-7 min-h-7 md:h-9 md:min-h-9 border-white/10 group-data-[focus=true]:border-primary transition-colors bg-zinc-950/30",
-              input: "text-center font-bold text-zinc-200 text-xs",
+                "h-7 min-h-7 md:h-9 md:min-h-9 dark:border-white/10 group-data-[focus=true]:border-primary transition-colors dark:bg-zinc-950/30",
+              input: "text-center font-bold dark:text-zinc-200 text-xs",
             }}
             onChange={(event) => {
               const grams = Number(event.target.value);
@@ -160,7 +160,7 @@ const AddFoodComponent = (props: props) => {
           isIconOnly
           radius="full"
           variant="light"
-          className="w-7 h-7 min-w-7 md:w-9 md:h-9 md:min-w-9 ml-1 text-[#00FFAA] hover:bg-[#00FFAA]/10 hover:scale-105 transition-all duration-200 self-end md:mt-0"
+          className="w-7 h-7 min-w-7 md:w-9 md:h-9 md:min-w-9 ml-1 text-primary hover:bg-[#00FFAA]/10 hover:scale-105 transition-all duration-200 self-end md:mt-0"
         >
           <FaPlusCircle size={18} />
         </Button>

@@ -3,6 +3,7 @@ import { Button, Card, CardBody } from "@nextui-org/react";
 import { add, format } from "date-fns";
 import { FaArrowLeft, FaArrowRight, FaCalendarAlt } from "react-icons/fa";
 import { useT } from "next-i18next/client";
+import { CardUniversal } from "@/components/common";
 
 export const DateSwitcher = () => {
   const { currentDate, setNewDateAndGetFood } = useYourIntakeOperations();
@@ -18,7 +19,7 @@ export const DateSwitcher = () => {
   const disabledButton =
     format(currentDate, "yyyy-MM-dd") === format(new Date(), "yyyy-MM-dd");
   return (
-    <Card className="sm:w-56 w-80 ">
+    <CardUniversal className="sm:w-56 w-80 ">
       <CardBody className=" flex flex-row items-center justify-between gap-1 py-2">
         <Button
           size="sm"
@@ -45,7 +46,6 @@ export const DateSwitcher = () => {
           <FaArrowRight size={10} />
         </Button>
       </CardBody>
-    </Card>
+    </CardUniversal>
   );
 };
-

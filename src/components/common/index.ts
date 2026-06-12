@@ -1,0 +1,1 @@
+export { CardUniversal } from "./CardUniversal";

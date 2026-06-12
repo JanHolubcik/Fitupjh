@@ -17,6 +17,7 @@ import { FaInfoCircle } from "react-icons/fa";
 import PulsingButton from "@/components/PulsingButton/PulsingButton";
 import { signupSchema } from "@/lib/validationShemas/signupValidationSchema";
 import { useT } from "next-i18next/client";
+import { CardUniversal } from "@/components/common";
 
 const customInputStyles = {
   inputWrapper:
@@ -117,7 +118,7 @@ export default function Signup() {
 
   return (
     <main className="dark flex flex-col items-center justify-center min-h-screen sm:p-10 p-6">
-      <Card className="w-full max-w-[450px] p-4 bg-zinc-900/80 backdrop-blur-md border border-zinc-800 shadow-2xl">
+      <CardUniversal className="w-full max-w-[450px] p-4 bg-zinc-900/80 backdrop-blur-md border border-zinc-800 shadow-2xl">
         <CardHeader className="flex flex-col items-center justify-center pt-6 pb-2">
           <h1 className="text-3xl font-extrabold tracking-tight text-white">
             {t("title")}
@@ -226,7 +227,7 @@ export default function Signup() {
             </div>
           </form>
         </CardBody>
-      </Card>
+      </CardUniversal>
     </main>
   );
 }

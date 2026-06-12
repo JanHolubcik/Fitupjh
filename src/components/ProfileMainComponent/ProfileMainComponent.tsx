@@ -13,6 +13,7 @@ import {
 } from "@nextui-org/react";
 
 import { useT } from "next-i18next/client";
+import { CardUniversal } from "../common";
 
 export default function ProfileMainComponent() {
   const { t } = useT();
@@ -21,7 +22,7 @@ export default function ProfileMainComponent() {
     <div className="w-full max-w-lg mx-auto flex flex-col ">
       <div className="md:col-span-8 flex flex-col gap-6">
         {/* 1. BIOMETRICS & GOALS */}
-        <Card className="shadow-md bg-zinc-900/80 backdrop-blur-md border border-zinc-800">
+        <CardUniversal className="shadow-md bg-zinc-900/80 backdrop-blur-md border border-zinc-800">
           <CardHeader className="pb-2 pt-6 px-6">
             <h3 className="text-lg font-bold text-white">
               {t("biometricsAndGoals", { ns: "profile" })}
@@ -86,10 +87,10 @@ export default function ProfileMainComponent() {
               {t("updateBiometrics", { ns: "profile" })}
             </Button>
           </CardBody>
-        </Card>
+        </CardUniversal>
 
         {/* 2. MACRO TARGETS */}
-        <Card className="shadow-md bg-zinc-900/80 backdrop-blur-md border border-zinc-800">
+        <CardUniversal className="shadow-md bg-zinc-900/80 backdrop-blur-md border border-zinc-800">
           <CardHeader className="flex justify-between items-center pb-2 pt-6 px-6">
             <h3 className="text-lg font-bold text-white">
               {t("macroTargets", { ns: "profile" })}
@@ -137,10 +138,10 @@ export default function ProfileMainComponent() {
               {t("saveTargets", { ns: "profile" })}
             </Button>
           </CardBody>
-        </Card>
+        </CardUniversal>
 
         {/* 3. DANGER ZONE */}
-        <Card className="shadow-md bg-zinc-900/80 backdrop-blur-md border border-red-500/30">
+        <CardUniversal className="shadow-md bg-zinc-900/80 backdrop-blur-md border border-red-500/30">
           <CardHeader className="pb-2 pt-6 px-6">
             <h3 className="text-lg font-bold text-red-500">
               {t("dangerZone", { ns: "profile" })}
@@ -160,7 +161,7 @@ export default function ProfileMainComponent() {
               {t("deleteAccount", { ns: "profile" })}
             </Button>
           </CardBody>
-        </Card>
+        </CardUniversal>
       </div>
     </div>
   );
