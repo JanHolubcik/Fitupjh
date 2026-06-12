@@ -74,7 +74,7 @@ export default async function RootLayout({
           <I18nProvider language={lng} resources={resources}>
             <NavbarComponent />
 
-            {children}
+            <main className="pb-10 sm:pb-0">{children}</main>
           </I18nProvider>
         </Providers>
       </body>

@@ -1,4 +1,9 @@
 {
+  "languageAndTheme": "Language and theme ",
+  "appearance": "Theme",
+  "appearanceDesc": "Choose between dark and light theme",
+  "language": "Language",
+  "languageDesc": "Choose your preferred language",
   "biometricsAndGoals": "Biometrics & Goals",
   "currentWeight": "Current Weight (kg)",
   "goalWeight": "Goal Weight (kg)",

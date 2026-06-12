@@ -1,4 +1,9 @@
 {
+  "languageAndTheme": "Jazyk a téma",
+  "appearance": "Téma",
+  "appearanceDesc": "Zvoľ si medzi tmavou a svetlou témou",
+  "language": "Jazyk",
+  "languageDesc": "Zvoľ si svoj preferovaný jazyk",
   "biometricsAndGoals": "Biometria a ciele",
   "currentWeight": "Aktuálna hmotnosť (kg)",
   "goalWeight": "Cieľová hmotnosť (kg)",
