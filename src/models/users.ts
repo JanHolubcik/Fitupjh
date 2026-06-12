@@ -8,6 +8,14 @@ import {
 
 import mongoose from "mongoose";
 
+export type activityLevel =
+  | "sedatory"
+  | "lightlyActive"
+  | "mediumActive"
+  | "highlyActive";
+
+export type goal = "loseWeight" | "gainWeight" | "maintainWeight";
+
 @index({ title: 1 })
 @ModelOptions({
   schemaOptions: {
@@ -34,7 +42,7 @@ class UsersClass {
   @prop({ required: false })
   image: string;
   @prop({ required: false })
-  goal: "lose weight" | "gain weight" | "maintain weight";
+  goal: goal;
   @prop({ required: false })
   weight: number; //kilos
   @prop({ required: false })
@@ -42,11 +50,7 @@ class UsersClass {
   @prop({ required: false })
   height: number; //in cm
   @prop({ required: false })
-  activityLevel:
-    | "sedatory"
-    | "lightly active"
-    | "medium active"
-    | "highly active";
+  activityLevel: activityLevel;
   @prop({ required: false })
   targetCalories: number;
   @prop({ required: false })
@@ -55,6 +59,10 @@ class UsersClass {
   targetCarbs: number;
   @prop({ required: false })
   targetFat: number;
+  @prop({ required: false })
+  targetSugar: number;
+  @prop({ required: false })
+  manualOverride: boolean;
 }
 
 const User = getModelForClass(UsersClass);

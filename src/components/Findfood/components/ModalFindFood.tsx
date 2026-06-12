@@ -259,7 +259,7 @@ export const ModalFindFood = (props: props) => {
         isOpen={isOpenNew}
         onOpenChange={onOpenChangeNew}
         food={selectedFood}
-        timeOfDay={getTimeOfDay()}
+        timeOfDay={props.timeOfDay ?? getTimeOfDay()}
       />
     </>
   );

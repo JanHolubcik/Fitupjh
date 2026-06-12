@@ -1,4 +1,5 @@
 import { FoodClass } from "@/models/Food";
+import { activityLevel } from "@/models/users";
 
 export type ReturnTypeFood = FoodClass[] | undefined;
 
@@ -40,6 +41,19 @@ export type FoodType = {
   breakfast: Food[];
   lunch: Food[];
   dinner: Food[];
+};
+
+export const ACTIVITY_MULTIPLIERS: Record<activityLevel, number> = {
+  sedatory: 1.2,
+  lightlyActive: 1.375,
+  mediumActive: 1.55,
+  highlyActive: 1.725,
+};
+
+export const GOAL_MULTIPLIERS: Record<string, number> = {
+  loseWeight: 0.85,
+  gainWeight: 1.0,
+  maintainWeight: 1.15,
 };
 
 export type SavedFoodMonth = Record<string, FoodType>;

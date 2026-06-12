@@ -24,8 +24,8 @@ export const CalorieCard = (props: props) => {
   }
 
   return (
-    <CardUniversal className="flex  items-center justify-center w-80 max-w-80 ">
-      <CardBody className="flex justify-center items-center p-4 ">
+    <CardUniversal className="flex h-auto items-center justify-center w-80 max-w-80 ">
+      <CardBody className="flex justify-center items-center ">
         <CircularProgress
           classNames={{
             svg: "w-36 h-36 drop-shadow-md",

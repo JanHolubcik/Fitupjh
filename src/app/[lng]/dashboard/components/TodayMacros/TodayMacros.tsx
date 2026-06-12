@@ -3,13 +3,14 @@ import {
   capitalizeFirstLetter,
 } from "@/app/[lng]/constants/FunctionsHelper";
 import {
+  ACTIVITY_MULTIPLIERS,
+  GOAL_MULTIPLIERS,
   Food,
   FoodType,
   macros,
   timeOfDay,
   timeOfDayNumber,
 } from "@/types/Types";
-import { useSession } from "next-auth/react";
 import { useMemo } from "react";
 import { MacroProgressBar } from "../MacrosProgressBarDashboard/MacrosProgressBarDashboard";
 import { CardBody } from "@nextui-org/react";
@@ -19,19 +20,26 @@ import {
 } from "@/app/[lng]/constants/MacrosHelper";
 import { useT } from "next-i18next/client";
 import { CardUniversal } from "@/components/common";
+import { UserInfoOptions } from "@/lib/queriesOptions/UserInfoOptions";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 type props = {
   savedFood: FoodType;
 };
 
 export const TodayMacros = ({ savedFood }: props) => {
-  const { data } = useSession();
+  const { data: user } = useSuspenseQuery(UserInfoOptions());
 
   const { t } = useT("dashboard");
   const recommendedMacros = useMemo(
     () =>
-      data?.user
-        ? calculateRecommendedMacros(data?.user?.weight, data?.user?.height)
+      user
+        ? calculateRecommendedMacros(
+            user?.weight,
+            user?.height,
+            ACTIVITY_MULTIPLIERS[user.activityLevel],
+            GOAL_MULTIPLIERS[user.goal],
+          )
         : {
             calories: 0,
             fat: 0,
@@ -41,7 +49,7 @@ export const TodayMacros = ({ savedFood }: props) => {
             fiber: 0,
             salt: 0,
           },
-    [data?.user?.weight, data?.user?.height],
+    [user?.weight, user?.height],
   );
   const calculatedMacros = useMemo(() => {
     if (savedFood) {
@@ -100,7 +108,7 @@ export const TodayMacros = ({ savedFood }: props) => {
 
       sugar: 0,
     };
-  }, [data?.user?.weight, data?.user?.height, savedFood]);
+  }, [user?.weight, user?.height, savedFood]);
 
   return (
     <CardUniversal className="w-full h-full sm:max-w-4xl  flex flex-col gap-4 ">

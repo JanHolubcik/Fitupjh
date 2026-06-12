@@ -1,8 +1,13 @@
+import { UsersClass } from "@/models/users";
 import { queryOptions } from "@tanstack/react-query";
 
-export const UserInfoOptions = (id: string) =>
+export type ClientUser = Omit<UsersClass, "_id"> & {
+  _id: string;
+};
+
+export const UserInfoOptions = () =>
   queryOptions({
-    queryKey: ["userInfo", id],
+    queryKey: ["userInfo"],
     queryFn: async () => {
       const isServer = typeof window === "undefined";
       const baseUrl = isServer
@@ -17,7 +22,7 @@ export const UserInfoOptions = (id: string) =>
 
       if (!res.ok) throw new Error("Failed to fetch user");
 
-      return res.json();
+      return res.json() as Promise<ClientUser>;
     },
     staleTime: 30_000,
     retry: 1,

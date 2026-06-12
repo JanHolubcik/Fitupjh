@@ -1,6 +1,6 @@
+import "server-only";
 import { User, UsersClass } from "@/models/users";
 import connectDB from "./connect-db";
-import mongoose from "mongoose";
 
 export async function getUser(email: string) {
   try {
@@ -8,7 +8,10 @@ export async function getUser(email: string) {
     const user = await User.findOne({
       userEmail: email,
     }).lean();
-    return user;
+    return {
+      ...user,
+      _id: user?._id.toString(),
+    };
   } catch (error) {
     return { error };
   }
@@ -27,38 +30,10 @@ export async function getUser(email: string) {
 //   }
 // }
 
-export async function updateUser(
-  userID: mongoose.Types.ObjectId,
-  height?: number,
-  weight?: number,
-  goal?: string,
-  image?: string,
-  email?: string,
-  name?: string,
-) {
+export async function updateUser(values: Partial<UsersClass>) {
   try {
     await connectDB();
-
-    const updateFields: Partial<UsersClass> = {};
-
-    if (height !== undefined && height !== null) updateFields.height = height;
-    if (weight !== undefined && weight !== null) updateFields.weight = weight;
-    if (
-      goal === "lose weight" ||
-      goal === "gain weight" ||
-      goal === "maintain weight"
-    ) {
-      updateFields.goal = goal;
-    }
-    if (image) updateFields.image = image;
-    if (email) updateFields.userEmail = email;
-    if (name) updateFields.userName = name;
-
-    if (Object.keys(updateFields).length === 0) {
-      return { message: "No fields to update" };
-    }
-
-    const user = await User.updateOne({ _id: userID }, { $set: updateFields });
+    const user = await User.updateOne({ _id: values._id }, { $set: values });
     return user;
   } catch (error) {
     return { error };

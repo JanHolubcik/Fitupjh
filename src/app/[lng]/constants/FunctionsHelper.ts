@@ -41,9 +41,12 @@ export const getTimeOfDay = () => {
 export const calculateRecommendedMacros = (
   weight: number = 70,
   height: number = 60,
+  coeficientLifestyle: number = 1.2,
+  coeficientGoal: number = 1,
 ): macros => {
-  const calories = (10 * weight + 6.25 * height - 5 * 25 + 5) * 1.2; // BMR × sedentary activity
-
+  const caloriesBeforeGoal =
+    (10 * weight + 6.25 * height - 5 * 25 + 5) * coeficientLifestyle; // BMR × sedentary activity
+  const calories = Math.round(caloriesBeforeGoal * coeficientGoal);
   const macros = {
     calories: Math.round(calories),
     fat: calories * 0.2,
