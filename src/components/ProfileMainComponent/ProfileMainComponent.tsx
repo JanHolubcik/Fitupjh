@@ -8,7 +8,6 @@ import {
   Input,
   Select,
   SelectItem,
-  Switch,
   Spinner,
 } from "@nextui-org/react";
 
@@ -230,7 +229,7 @@ export default function ProfileMainComponent() {
         </CardUniversal>
 
         {/* === MACRO TARGETS FORM === */}
-        <CardUniversal className="shadow-md bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-zinc-200 dark:border-zinc-800">
+        {/* <CardUniversal className="shadow-md bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-zinc-200 dark:border-zinc-800">
           <Formik
             initialValues={{
               manualOverride: user?.manualOverride || false,
@@ -276,7 +275,7 @@ export default function ProfileMainComponent() {
                     {t("automaticNotice")}
                   </p>
 
-                  {/* Notice how all inputs are disabled if manualOverride is false! */}
+   
                   <Input
                     name="targetCalories"
                     label={t("dailyCalories")}
@@ -345,7 +344,7 @@ export default function ProfileMainComponent() {
               </Form>
             )}
           </Formik>
-        </CardUniversal>
+        </CardUniversal> */}
 
         <CardUniversal className="shadow-md bg-red-50 dark:bg-zinc-900/80 backdrop-blur-md border border-red-200 dark:border-red-500/30">
           <CardHeader className="pb-2 pt-6 px-6">
@@ -363,8 +362,8 @@ export default function ProfileMainComponent() {
                 {t("deleteAccountNotice")}
               </p>
             </div>
-            <Button color="danger" variant="flat" className="font-bold">
-              {t("deleteAccount")}
+            <Button color="danger" variant="flat" className="font-semibold ">
+              <p className="p-2">{t("deleteAccount")}</p>
             </Button>
           </CardBody>
         </CardUniversal>
