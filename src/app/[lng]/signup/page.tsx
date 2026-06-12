@@ -34,27 +34,28 @@ export default function Signup() {
     validate: (values) => {
       const validationResult = signupSchema.safeParse(values);
 
-      if (validationResult.success) return {}; // No errors
+      if (validationResult.success) return {};
 
       const errors: Record<string, string> = {};
       const fieldErrors = validationResult.error.flatten().fieldErrors;
 
-      for (const key in fieldErrors) {
-        if (fieldErrors[key]) {
-          errors[key] = fieldErrors[key]![0];
+      Object.entries(fieldErrors).forEach(([key, messages]) => {
+        // 'messages' are automatically typed as string[] | undefined
+        if (messages && messages.length > 0) {
+          errors[key] = messages[0];
         }
-      }
+      });
+
       return errors;
     },
-    // 2. Form Submission
+
     onSubmit: async (values, { setStatus, setSubmitting }) => {
-      setStatus(null); // Clear previous API errors
+      setStatus(null);
 
       try {
         const res = await fetch("/api/signup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          // Notice we pass 'values' directly, as Zod already validated them
           body: JSON.stringify(values),
         });
 
