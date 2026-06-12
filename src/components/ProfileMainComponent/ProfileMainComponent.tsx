@@ -2,7 +2,6 @@
 
 import {
   Button,
-  Card,
   CardBody,
   CardHeader,
   Divider,
@@ -19,16 +18,15 @@ export default function ProfileMainComponent() {
   const { t } = useT();
 
   return (
-    <div className="w-full max-w-lg mx-auto flex flex-col ">
+    <div className="w-full max-w-lg mx-auto flex flex-col">
       <div className="md:col-span-8 flex flex-col gap-6">
-        {/* 1. BIOMETRICS & GOALS */}
-        <CardUniversal className="shadow-md bg-zinc-900/80 backdrop-blur-md border border-zinc-800">
+        <CardUniversal className="shadow-md bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-zinc-200 dark:border-zinc-800">
           <CardHeader className="pb-2 pt-6 px-6">
-            <h3 className="text-lg font-bold text-white">
+            <h3 className="text-lg font-bold text-zinc-900 dark:text-white">
               {t("biometricsAndGoals", { ns: "profile" })}
             </h3>
           </CardHeader>
-          <Divider className="bg-zinc-800" />
+          <Divider className="bg-zinc-200 dark:bg-zinc-800" />
           <CardBody className="px-6 py-6 flex flex-col gap-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input
@@ -89,19 +87,18 @@ export default function ProfileMainComponent() {
           </CardBody>
         </CardUniversal>
 
-        {/* 2. MACRO TARGETS */}
-        <CardUniversal className="shadow-md bg-zinc-900/80 backdrop-blur-md border border-zinc-800">
+        <CardUniversal className="shadow-md bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-zinc-200 dark:border-zinc-800">
           <CardHeader className="flex justify-between items-center pb-2 pt-6 px-6">
-            <h3 className="text-lg font-bold text-white">
+            <h3 className="text-lg font-bold text-zinc-900 dark:text-white">
               {t("macroTargets", { ns: "profile" })}
             </h3>
             <Switch size="sm" color="success">
               {t("manualOverride", { ns: "profile" })}
             </Switch>
           </CardHeader>
-          <Divider className="bg-zinc-800" />
+          <Divider className="bg-zinc-200 dark:bg-zinc-800" />
           <CardBody className="px-6 py-6 flex flex-col gap-4">
-            <p className="text-sm text-zinc-400 mb-2">
+            <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-2">
               {t("automaticNotice", { ns: "profile" })}
             </p>
             <Input
@@ -140,20 +137,19 @@ export default function ProfileMainComponent() {
           </CardBody>
         </CardUniversal>
 
-        {/* 3. DANGER ZONE */}
-        <CardUniversal className="shadow-md bg-zinc-900/80 backdrop-blur-md border border-red-500/30">
+        <CardUniversal className="shadow-md bg-red-50 dark:bg-zinc-900/80 backdrop-blur-md border border-red-200 dark:border-red-500/30">
           <CardHeader className="pb-2 pt-6 px-6">
-            <h3 className="text-lg font-bold text-red-500">
+            <h3 className="text-lg font-bold text-red-600 dark:text-red-500">
               {t("dangerZone", { ns: "profile" })}
             </h3>
           </CardHeader>
-          <Divider className="bg-red-500/20" />
+          <Divider className="bg-red-200 dark:bg-red-500/20" />
           <CardBody className="px-6 py-6 flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4">
             <div>
-              <p className="text-sm font-bold text-white">
+              <p className="text-sm font-bold text-zinc-900 dark:text-white">
                 {t("deleteAccount", { ns: "profile" })}
               </p>
-              <p className="text-xs text-zinc-400 mt-1">
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
                 {t("deleteAccountNotice", { ns: "profile" })}
               </p>
             </div>

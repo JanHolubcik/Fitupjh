@@ -160,8 +160,7 @@ export const ModalFindFood = (props: props) => {
                 <div className="">
                   <Button
                     onPress={onOpenBarScan}
-                    color="primary"
-                    className="rounded-l-none min-w-14"
+                    className="rounded-l-none min-w-14 bg-primary-300 dark:bg-primary-500"
                   >
                     <Image
                       className="rounded-none"

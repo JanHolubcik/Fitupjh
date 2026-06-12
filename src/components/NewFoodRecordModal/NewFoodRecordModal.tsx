@@ -11,6 +11,10 @@ import {
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 import { Food } from "@/types/Types";
 import { useT } from "next-i18next/client";
+import {
+  MACRO_TAILWIND_THEME,
+  MacroArray,
+} from "@/app/[lng]/constants/MacrosHelper";
 
 type props = {
   isOpen: boolean;
@@ -65,24 +69,26 @@ export const NewFoodRecordModal = ({
       placement="center"
       backdrop="blur"
       classNames={{
-        base: "bg-zinc-900 border border-zinc-800 text-zinc-100 max-w-md",
-        header: "border-b border-zinc-800 pb-2",
-        footer: "border-t border-zinc-800 pt-2",
+        base: "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 max-w-md font-semibold",
+        header:
+          "border-b border-zinc-200 dark:border-zinc-800 pb-2 font-semibold",
+        footer:
+          "border-t border-zinc-200 dark:border-zinc-800 pt-2 font-semibold",
       }}
     >
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">
-              <h3 className="text-lg font-bold capitalize text-zinc-200">
+            <ModalHeader className="flex flex-col gap-1 font-semibold">
+              <h3 className="text-lg font-bold capitalize text-zinc-900 dark:text-zinc-200">
                 {t("newFoodModal.title", { name: food.name })}
               </h3>
-              <p className="text-xs font-normal text-zinc-400">
+              <p className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
                 {t("newFoodModal.subtitle")}
               </p>
             </ModalHeader>
 
-            <ModalBody className="py-3 gap-2">
+            <ModalBody className="py-3 gap-2 font-semibold">
               <Input
                 type="number"
                 label={t("newFoodModal.amountLabel")}
@@ -96,64 +102,58 @@ export const NewFoodRecordModal = ({
                 autoFocus
                 classNames={{
                   inputWrapper:
-                    "border-zinc-700 hover:border-zinc-500 focus-within:!border-zinc-400",
-                  label: "text-zinc-400",
+                    "font-semibold border-zinc-300 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500 focus-within:!border-zinc-500 dark:focus-within:!border-zinc-400",
+                  label: "text-zinc-500 dark:text-zinc-400",
                 }}
               />
 
-              <div className="bg-zinc-950/50 p-3 rounded-xl border border-white/5 space-y-2">
+              <div className="bg-zinc-100 dark:bg-zinc-950/50 p-3 rounded-xl border border-zinc-200 dark:border-white/5 space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-zinc-400">
+                  <span className="text-zinc-600 dark:text-zinc-400">
                     {t("newFoodModal.calories")}
                   </span>
-                  <span className="font-bold text-zinc-200">
+                  <span className="font-bold text-zinc-900 dark:text-zinc-200">
                     {Math.round(food.calories * ratio)} kcal
                   </span>
                 </div>
 
-                <hr className="border-zinc-800" />
+                <hr className="border-zinc-300 dark:border-zinc-800" />
 
                 <div className="grid grid-cols-2 gap-2 text-xs font-semibold">
-                  <div className="text-success-400">
-                    {t("newFoodModal.proteinShort")}:{" "}
-                    <span className="text-zinc-300 font-medium">
-                      {(food.protein * ratio).toFixed(1)}g
-                    </span>
-                  </div>
-                  <div className="text-warning-400">
-                    {t("newFoodModal.carbsShort")}:{" "}
-                    <span className="text-zinc-300 font-medium">
-                      {(food.carbohydrates * ratio).toFixed(1)}g
-                    </span>
-                  </div>
-                  <div className="text-pink-400">
-                    {t("newFoodModal.fatShort")}:{" "}
-                    <span className="text-zinc-300 font-medium">
-                      {(food.fat * ratio).toFixed(1)}g
-                    </span>
-                  </div>
+                  {/* Map over the macros, skipping calories */}
+                  {MacroArray.filter((macro) => macro !== "calories").map(
+                    (macro) => {
+                      // Because key is "carbohydrates" but translation is "carbsShort"
+                      const translationKey =
+                        macro === "carbohydrates"
+                          ? "carbsShort"
+                          : `${macro}Short`;
 
-                  <div className="text-purple-400">
-                    {t("newFoodModal.sugarShort")}:{" "}
-                    <span className="text-zinc-300 font-medium">
-                      {(food.sugar * ratio).toFixed(1)}g
-                    </span>
-                  </div>
-                  <div className="text-violet-400">
-                    {t("newFoodModal.sugarShort")}:{" "}
-                    <span className="text-zinc-300 font-medium">
-                      {(food.fiber * ratio).toFixed(1)}g
-                    </span>
-                  </div>
+                      const rawValue = food[macro as keyof Food] as number;
+                      const calculatedValue = (rawValue * ratio).toFixed(1);
+
+                      return (
+                        <div
+                          key={macro}
+                          className={`${MACRO_TAILWIND_THEME[macro].text} font-extrabold`}
+                        >
+                          {t(`newFoodModal.${translationKey}`)}:{" "}
+                          <span className="text-zinc-600 dark:text-zinc-300 font-bold">
+                            {calculatedValue}g
+                          </span>
+                        </div>
+                      );
+                    },
+                  )}
                 </div>
               </div>
             </ModalBody>
 
-            <ModalFooter className="p-2 ">
+            <ModalFooter className="p-2">
               <Button
                 size="sm"
                 variant="flat"
-                className="bg-zinc-800 text-zinc-300 hover:bg-zinc-700"
+                className="bg-zinc-200 text-zinc-700 hover:bg-zinc-300 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
                 onPress={() => setTimeout(() => onClose(), 10)}
               >
                 {t("newFoodModal.cancel")}

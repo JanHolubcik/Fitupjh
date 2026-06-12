@@ -16,6 +16,7 @@ export const CardUniversal = ({
         className +
         " bg-neutral-100 dark:bg-content1 shadow-xl dark:shadow-lg border-2 dark:border-gray-800"
       }
+      {...props}
     >
       {children}
     </Card>

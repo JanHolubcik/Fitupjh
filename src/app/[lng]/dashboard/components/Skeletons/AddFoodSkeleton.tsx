@@ -1,5 +1,5 @@
 import { CardUniversal } from "@/components/common";
-import { Card, Skeleton } from "@nextui-org/react";
+import { Skeleton } from "@nextui-org/react";
 
 export const AddFoodSkeleton = () => {
   return (

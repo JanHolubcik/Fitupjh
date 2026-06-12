@@ -12,7 +12,7 @@ import {
 import { useSession } from "next-auth/react";
 import { useMemo } from "react";
 import { MacroProgressBar } from "../MacrosProgressBarDashboard/MacrosProgressBarDashboard";
-import { Card, CardBody } from "@nextui-org/react";
+import { CardBody } from "@nextui-org/react";
 import {
   MACRO_TAILWIND_THEME,
   MacroArray,

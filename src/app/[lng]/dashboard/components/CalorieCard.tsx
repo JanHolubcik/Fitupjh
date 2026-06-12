@@ -1,7 +1,7 @@
 import { useCalculateRecommendedCalories } from "@/app/[lng]/yourintake/hooks/useCalculateRecomendedCalories";
 import { CardUniversal } from "@/components/common";
 import { FoodType } from "@/types/Types";
-import { Card, CardBody, CircularProgress } from "@nextui-org/react";
+import { CardBody, CircularProgress } from "@nextui-org/react";
 import { useT } from "next-i18next/client";
 
 type props = {

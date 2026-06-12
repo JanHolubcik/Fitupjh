@@ -1,5 +1,5 @@
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
-import { Button, Card, CardBody } from "@nextui-org/react";
+import { Button, CardBody } from "@nextui-org/react";
 import { add, format } from "date-fns";
 import { FaArrowLeft, FaArrowRight, FaCalendarAlt } from "react-icons/fa";
 import { useT } from "next-i18next/client";

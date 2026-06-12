@@ -1,4 +1,19 @@
-export const MACRO_TAILWIND_THEME = {
+export type MacroType =
+  | "calories"
+  | "protein"
+  | "carbohydrates"
+  | "fat"
+  | "sugar"
+  | "fiber";
+
+type ThemeStyles = {
+  text: string;
+  color: string;
+  bg: string;
+  border: string;
+};
+
+export const MACRO_TAILWIND_THEME: Record<MacroType, ThemeStyles> = {
   calories: {
     text: "text-orange-500",
     color: "bg-orange-500",
@@ -35,9 +50,9 @@ export const MACRO_TAILWIND_THEME = {
     bg: "bg-emerald-500/10",
     border: "border-emerald-600",
   },
-} as const;
+};
 
-export const MacroArray = [
+export const MacroArray: MacroType[] = [
   "calories",
   "protein",
   "carbohydrates",
@@ -45,8 +60,6 @@ export const MacroArray = [
   "sugar",
   "fiber",
 ];
-
-export type MacroType = keyof typeof MACRO_TAILWIND_THEME;
 
 export const getMacroInfo = (
   macroType: MacroType,

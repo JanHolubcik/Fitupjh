@@ -3,7 +3,6 @@
 import {
   Button,
   ButtonGroup,
-  Card,
   CardBody,
   Dropdown,
   DropdownItem,
