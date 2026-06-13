@@ -7,6 +7,8 @@ import {
   prop,
 } from "@typegoose/typegoose";
 
+import mongoose from "mongoose";
+
 /**
  * Food class represents food in name and macros.
  */
@@ -53,6 +55,6 @@ class FoodClass {
   imgUrl: string;
 }
 
-const Food = getModelForClass(FoodClass);
+const Food = mongoose.models.FoodClass || getModelForClass(FoodClass);
 
 export { Food, FoodClass };
