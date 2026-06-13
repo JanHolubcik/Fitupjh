@@ -19,9 +19,10 @@ import { getSearchedFoodOptions } from "@/lib/queriesOptions/GetSearchedFoodOpti
 
 import ImageFromURL from "../ImageFromURL/ImageFromURL";
 import { NewFoodRecordModal } from "../NewFoodRecordModal/NewFoodRecordModal";
-import { ModalBarcodeScan } from "../Findfood/components/ModalBarcodeScan";
+
 import { ModalCreateFood } from "../Findfood/components/ModalCreateFood";
 import { useT } from "next-i18next/client";
+import { ModalScanFood } from "../Findfood/components/ModalScanFood";
 
 export const InputSearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -228,12 +229,9 @@ export const InputSearchBar = () => {
         food={selectedFood}
         timeOfDay={getTimeOfDay()}
       />
-      <ModalBarcodeScan
+      <ModalScanFood
         isOpen={QRisOpen}
         onOpenChange={QRonOpenChange}
-        onClose={QRonClose}
-        onOpenNewFood={onOpenNewFood}
-        onCloseAll={closeAllModals}
         timeOfDay={getTimeOfDay()}
       />
       <ModalCreateFood

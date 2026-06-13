@@ -16,11 +16,12 @@ import { ModalCreateFood } from "./ModalCreateFood";
 import { Food, ReturnTypeFood } from "@/types/Types";
 import AddFoodComponent from "./AddFoodComponent";
 import { getTimeOfDay, useIsSm } from "@/app/[lng]/constants/FunctionsHelper";
-import { ModalBarcodeScan } from "./ModalBarcodeScan";
+
 import { useMutation } from "@tanstack/react-query";
 import { getSearchedFoodOptions } from "@/lib/queriesOptions/GetSearchedFoodOptions";
 import { NewFoodRecordModal } from "@/components/NewFoodRecordModal/NewFoodRecordModal";
 import { useT } from "next-i18next/client";
+import { ModalScanFood } from "./ModalScanFood";
 
 type props = {
   onOpenChange: () => void;
@@ -228,15 +229,11 @@ export const ModalFindFood = (props: props) => {
                           </Button>
                         </div>
                       )}
-                      <ModalBarcodeScan
+                      <ModalScanFood
                         isOpen={isOpenBarScan}
                         onOpenChange={onOpenChangeBarScan}
-                        onOpenNewFood={onOpen}
-                        onCloseAll={() => {
-                          onClose();
-                          onCloseBarScan();
-                        }}
-                      ></ModalBarcodeScan>
+                        timeOfDay={getTimeOfDay()}
+                      />
                     </>
                   )}
                 </div>

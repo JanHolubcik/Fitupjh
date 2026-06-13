@@ -27,6 +27,9 @@
   "takePictureModal": {
     "photo": "Photo",
     "takePictureTitle": "Take a Picture of Food",
+    "takePictureDesc": "Take a clear picture of your food to analyze its macros.",
+    "reviewDesc": "Review the AI-estimated nutritional values below.",
+    "addToIntake": "Add to Daily Intake",
     "captureAndAnalyze": "Capture & Analyze",
     "cancel": "Cancel",
     "analyzing": "Analyzing with Gemini...",
@@ -42,6 +45,32 @@
       "fiber": "Fiber:",
       "salt": "Salt:"
     }
+  },
+  "modalScanFood": {
+    "title": "Camera scanner",
+    "subtitle": "Using phone camera to scan product or analyze with AI",
+    "disclaimerTitle": "Disclaimer:",
+    "disclaimerText": "AI-estimated macros may not be 100% accurate. For precise tracking, weigh your food with a scale and input the details manually.",
+    "scanBarcodeBtn": "Scan Barcode",
+    "useAIBtn": "Use AI"
+  },
+  "modalBarcodeScan": {
+    "title": "Scan Barcode",
+    "subtitle": "Align the barcode within the frame to fetch nutrition macros.",
+    "detectedWait": "We detected a barcode, please wait until your food is loaded.",
+    "autoFetch": "We'll automatically fetch the macros. If the product isn't found, you can add it manually.",
+    "chromeUsers": "For Chrome users:",
+    "chromeBug": "Try pressing the zoom buttons while scanning if you have trouble with detection. Chrome's built-in scanner can be buggy, but zooming usually helps.",
+    "cancelBtn": "Cancel Scanning",
+    "addNewFood": "Add new food",
+    "notFoundPrompt": "The barcode you scanned was not found. Would you like to add it manually?",
+    "cancel": "Cancel",
+    "yes": "Yes",
+    "cameraDenied": "Camera permission was denied.",
+    "noCamera": "No camera was found on this device.",
+    "cameraInUse": "Camera is already in use by another application.",
+    "cameraUnsupported": "This browser does not support camera access.",
+    "cameraError": "An error occurred while accessing the camera: "
   },
   "timeOfDay": {
     "breakfast": "breakfast",

@@ -14,7 +14,11 @@ import {
   type MacroType,
 } from "@/app/[lng]/constants/MacrosHelper";
 import { useT } from "next-i18next/client";
-import { capitalizeFirstLetter } from "@/app/[lng]/constants/FunctionsHelper";
+import {
+  capitalizeFirstLetter,
+  getTimeOfDay,
+} from "@/app/[lng]/constants/FunctionsHelper";
+import { ModalScanFood } from "@/components/Findfood/components/ModalScanFood";
 
 type props = {
   timeFrame: "breakfast" | "dinner" | "lunch";
@@ -22,7 +26,7 @@ type props = {
 };
 
 export const TimeFrameSmallCard = (props: props) => {
-  const { foodItems } = props;
+  const { timeFrame, foodItems } = props;
   const { removeFromSavedFood } = useYourIntakeOperations();
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const { t } = useT("dashboard");
@@ -144,13 +148,10 @@ export const TimeFrameSmallCard = (props: props) => {
         onOpenChange={onOpenChange}
         timeOfDay={props.timeFrame}
       />
-      <ModalBarcodeScan
+      <ModalScanFood
         isOpen={QRisOpen}
         onOpenChange={QRonOpenChange}
-        onClose={QRonClose}
-        onOpenNewFood={onOpenNewFood}
-        onCloseAll={closeAllModals}
-        timeOfDay={props.timeFrame}
+        timeOfDay={props.timeFrame && getTimeOfDay()}
       />
       <ModalCreateFood
         isOpen={isOpenNewFood}

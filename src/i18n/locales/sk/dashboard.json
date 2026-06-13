@@ -29,6 +29,9 @@
   "takePictureModal": {
     "photo": "Odfotiť",
     "takePictureTitle": "Odfotiť jedlo",
+    "takePictureDesc": "Odfotografujte jedlo pre analýzu živín.",
+    "reviewDesc": "Skontrolujte nižšie uvedené odhadované nutričné hodnoty od AI.",
+    "addToIntake": "Pridať do denného príjmu",
     "captureAndAnalyze": "Odfotiť a analyzovať",
     "cancel": "Zrušiť",
     "analyzing": "Analyzuje sa pomocou Gemini...",
@@ -43,6 +46,32 @@
       "fiber": "Vlákniny:",
       "salt": "Soľ:"
     }
+  },
+  "modalScanFood": {
+    "title": "Kamerový skener",
+    "subtitle": "Použite kameru telefónu na skenovanie produktu alebo analýzu pomocou AI",
+    "disclaimerTitle": "Upozornenie:",
+    "disclaimerText": "Makrá odhadnuté AI nemusia byť 100% presné. Pre presné sledovanie odvážte jedlo na váhe a údaje zadajte manuálne.",
+    "scanBarcodeBtn": "Skenovať čiarový kód",
+    "useAIBtn": "Použiť AI"
+  },
+  "modalBarcodeScan": {
+    "title": "Skenovať čiarový kód",
+    "subtitle": "Zarovnajte čiarový kód do rámu pre načítanie nutričných hodnôt.",
+    "detectedWait": "Zistili sme čiarový kód, počkajte kým sa načíta záznam.",
+    "autoFetch": "Automaticky načítame macrá. Ak sa produkt nenájde, môžete ho pridať manuálne.",
+    "chromeUsers": "Pre používateľov prehliadača Chrome:",
+    "chromeBug": "Skúste stlačiť tlačidlá priblíženia, ak máte problémy s detekciou.",
+    "cancelBtn": "Zrušiť skenovanie",
+    "addNewFood": "Pridať nové jedlo",
+    "notFoundPrompt": "Naskenovaný čiarový kód sa nenašiel. Chcete ho pridať manuálne?",
+    "cancel": "Zrušiť",
+    "yes": "Áno",
+    "cameraDenied": "Prístup ku kamere bol odmietnutý.",
+    "noCamera": "Na tomto zariadení sa nenašla žiadna kamera.",
+    "cameraInUse": "Kameru už používa iná aplikácia.",
+    "cameraUnsupported": "Tento prehliadač nepodporuje prístup ku kamere.",
+    "cameraError": "Pri prístupe ku kamere sa vyskytla chyba: "
   },
   "timeOfDay": {
     "breakfast": "raňajky",
@@ -107,7 +136,7 @@
   },
   "modalCreateFood": {
     "toastPending": "Odosielanie požiadavky...",
-    "toastSuccess": "Nové jedlo bolo úspešne uložené!",
+    "toastSuccess": "Nový záznam bolo úspešne uložené!",
     "toastError": "Pri ukladaní nového jedla sa vyskytla chyba.",
     "barcodeLabel": "Čiarový kód",
     "barcodePlaceholder": "Číslo čiarového kódu",
