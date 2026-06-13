@@ -27,13 +27,10 @@ export async function getFood(substring: string) {
   try {
     await connectDB();
 
-    const food = await Food.find({
-      name: { $regex: ".*" + substring + ".*", $options: "i" },
-    })
-      .limit(5)
-      .lean()
-      .exec();
+    const escapedSubstring = substring.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const regexPattern = new RegExp(".*" + escapedSubstring + ".*", "i");
 
+    const food = await Food.find({ name: regexPattern }).limit(5).lean().exec();
     if (food) {
       return {
         food: food.map((value) => {

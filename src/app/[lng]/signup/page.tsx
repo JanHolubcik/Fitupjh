@@ -135,6 +135,8 @@ export default function Signup() {
                 value={formik.values.height}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                min={50}
+                max={250}
                 isInvalid={formik.touched.height && !!formik.errors.height}
                 errorMessage={formik.touched.height && formik.errors.height}
                 isDisabled={formik.isSubmitting}
@@ -145,6 +147,8 @@ export default function Signup() {
                 label={t("weightLabel")}
                 classNames={customInputStyles}
                 type="number"
+                min={50}
+                max={200}
                 value={formik.values.weight}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}

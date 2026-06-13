@@ -6,7 +6,7 @@ import { withAuth } from "../functions";
 export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
-  return withAuth(req, async (req) => {
+  return withAuth(req, async () => {
     const rawData = await req.json();
     const result = FoodSchema.safeParse(rawData);
 
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
-  return withAuth(req, async (req) => {
+  return withAuth(req, async () => {
     const { searchParams } = req.nextUrl;
     const searchTerm = searchParams.get("searchTerm") || "";
 

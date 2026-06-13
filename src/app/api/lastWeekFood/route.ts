@@ -5,7 +5,7 @@ import { isValid, parseISO, subDays } from "date-fns";
 import { withAuth } from "../functions";
 
 export async function GET(req: NextRequest) {
-  return withAuth(req, async (req, token) => {
+  return withAuth(req, async (reqF, token) => {
     const dateTo = req.nextUrl.searchParams.get("dateTo");
     const dateFrom = req.nextUrl.searchParams.get("dateFrom");
     const userID = token.sub;

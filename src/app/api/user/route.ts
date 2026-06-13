@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
-  return withAuth(req, async (req) => {
+  return withAuth(req, async () => {
     const session = await getServerSession(authOptions);
     const res = await req.json();
 

@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { withAuth } from "../functions";
 
 export async function POST(req: NextRequest) {
-  return withAuth(req, async (req) => {
+  return withAuth(req, async () => {
     const QRCode = req.nextUrl.searchParams.get("QRCode");
 
     if (!QRCode) {

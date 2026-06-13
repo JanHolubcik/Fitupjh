@@ -12,7 +12,7 @@ type SaveFoodRequest = {
 };
 
 export async function GET(req: NextRequest) {
-  return withAuth(req, async (req) => {
+  return withAuth(req, async () => {
     const date = req.nextUrl.searchParams.get("date");
     const userID = req.nextUrl.searchParams.get("user_id");
 
@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  return withAuth(req, async (req) => {
+  return withAuth(req, async () => {
     const { date, savedFood, userID } = (await req.json()) as SaveFoodRequest;
 
     if (!date) {
