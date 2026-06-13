@@ -2,7 +2,7 @@ import { Button, useDisclosure } from "@nextui-org/react";
 
 import { ModalFindFood } from "@/components/Findfood/components/ModalFindFood";
 import { ModalCreateFood } from "@/components/Findfood/components/ModalCreateFood";
-import { ModalBarcodeScan } from "@/components/Findfood/components/ModalBarcodeScan";
+
 import { Food } from "@/types/Types";
 import { FaPlusCircle, FaTimes } from "react-icons/fa";
 import ImageFromURL from "@/components/ImageFromURL/ImageFromURL";
@@ -26,7 +26,7 @@ type props = {
 };
 
 export const TimeFrameSmallCard = (props: props) => {
-  const { timeFrame, foodItems } = props;
+  const { foodItems } = props;
   const { removeFromSavedFood } = useYourIntakeOperations();
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const { t } = useT("dashboard");

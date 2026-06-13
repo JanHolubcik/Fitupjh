@@ -3,6 +3,8 @@ import { FoodSchema } from "@/lib/validationShemas/foodValidationSchema";
 import { NextRequest, NextResponse } from "next/server";
 import { withAuth } from "../functions";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: NextRequest) {
   return withAuth(req, async (req) => {
     const rawData = await req.json();

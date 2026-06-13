@@ -6,6 +6,7 @@ import { Food } from "@/types/Types";
 import {
   Modal,
   ModalContent,
+  ModalHeader,
   ModalBody,
   Input,
   Button,
@@ -15,6 +16,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useT } from "next-i18next/client";
+import { Formik, Form } from "formik";
 
 type props = {
   onOpenChange: () => void;
@@ -29,59 +31,7 @@ export const ModalCreateFood = (props: props) => {
     (state: RootState) => state.savedFood.newFoodBarCode,
   );
 
-  // 1. Initialize translation hook with a dedicated namespace
   const { t } = useT("dashboard");
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
-    const parsedFoodData: Food = {
-      id: Date.now(),
-      name: formData.get("name") as string,
-      calories: Number(formData.get("calories_per_100g")),
-      amount: "100g",
-      protein: Number(formData.get("protein")),
-      sugar: Number(formData.get("sugar")),
-      fiber: Number(formData.get("fiber")),
-      fat: Number(formData.get("fat")),
-      carbohydrates: Number(formData.get("carbohydrates")),
-      salt: Number(formData.get("salt")),
-    };
-    const res = fetch("/api/food", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-      credentials: "include",
-    }).finally(() => {
-      dispatch(setNewFoodBarCode(""));
-      addToFoodObject(parsedFoodData, getTimeOfDay());
-    });
-
-    toast.promise(
-      res,
-      {
-        pending: t("modalCreateFood.toastPending"),
-        success: t("modalCreateFood.toastSuccess"),
-        error: t("modalCreateFood.toastError"),
-      },
-      {
-        position: "bottom-left",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      },
-    );
-    props.onOpenChange();
-    props.onCloseAll && props.onCloseAll();
-  };
 
   return (
     <Modal
@@ -89,152 +39,214 @@ export const ModalCreateFood = (props: props) => {
       hideCloseButton
       size="lg"
       isOpen={props.isOpen}
-      onOpenChange={() => {
-        props.onOpenChange();
-      }}
+      onOpenChange={props.onOpenChange}
+      scrollBehavior="inside"
     >
       <ModalContent>
         {(onClose) => (
-          <>
-            <ModalBody>
-              <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-                <div>
-                  <p className="m-1 ml-2">
-                    {t("modalCreateFood.barcodeLabel")}
-                  </p>
-                  <Input
-                    name="barcode"
-                    classNames={{
-                      inputWrapper:
-                        "transition-all duration-200 ring-1 ring-transparent focus-within:ring-[#00FFAA] focus-within:ring-2 shadow-md focus-within:shadow-[#00FFAA]/50",
-                      input: "text-white",
-                      label: "text-white",
-                    }}
-                    type="text"
-                    placeholder={t("modalCreateFood.barcodePlaceholder")}
-                    value={newFoodBarCode}
-                  />
-                </div>
-                <div>
-                  <p className="m-1 ml-2">
-                    {t("modalCreateFood.foodNameLabel")}
-                  </p>
-                  <Input
-                    name="name"
-                    classNames={{
-                      inputWrapper:
-                        "transition-all duration-200 ring-1 ring-transparent focus-within:ring-[#00FFAA] focus-within:ring-2 shadow-md focus-within:shadow-[#00FFAA]/50",
-                      input: "text-white",
-                      label: "text-white",
-                    }}
-                    type="text"
-                    placeholder={t("modalCreateFood.foodNamePlaceholder")}
-                    required
-                  />
-                </div>
-                <div>
-                  <p className="m-1 ml-2">
-                    {t("modalCreateFood.caloriesLabel")}
-                  </p>
-                  <Input
-                    name="calories_per_100g"
-                    classNames={{
-                      inputWrapper:
-                        "transition-all duration-200 ring-1 ring-transparent focus-within:ring-[#00FFAA] focus-within:ring-2 shadow-md focus-within:shadow-[#00FFAA]/50",
-                      input: "text-white",
-                      label: "text-white",
-                    }}
-                    type="number"
-                    placeholder={t("modalCreateFood.caloriesPlaceholder")}
-                    required
-                  />
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  <div>
-                    <p className="m-1 ml-2">
-                      {t("modalCreateFood.proteinLabel")}
-                    </p>
+          <Formik
+            enableReinitialize
+            initialValues={{
+              barcode: newFoodBarCode ?? "",
+              name: "",
+              calories_per_100g: "",
+              protein: "",
+              sugar: "",
+              fiber: "",
+              fat: "",
+              carbohydrates: "",
+              salt: "",
+            }}
+            onSubmit={async (values, { setSubmitting, resetForm }) => {
+              // Parse values safely and use Math.max to guarantee no negative numbers
+              const parsedFoodData: Food = {
+                id: Date.now(),
+                name: values.name,
+                calories: Math.max(0, Number(values.calories_per_100g) || 0),
+                amount: "100",
+                protein: Math.max(0, Number(values.protein) || 0),
+                sugar: Math.max(0, Number(values.sugar) || 0),
+                fiber: Math.max(0, Number(values.fiber) || 0),
+                fat: Math.max(0, Number(values.fat) || 0),
+                carbohydrates: Math.max(0, Number(values.carbohydrates) || 0),
+                salt: Math.max(0, Number(values.salt) || 0),
+              };
+
+              const res = fetch("/api/food", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(values),
+                credentials: "include",
+              }).finally(() => {
+                dispatch(setNewFoodBarCode(""));
+                addToFoodObject(parsedFoodData, getTimeOfDay());
+                setSubmitting(false);
+                resetForm();
+              });
+
+              toast.promise(
+                res,
+                {
+                  pending: t("modalCreateFood.toastPending"),
+                  success: t("modalCreateFood.toastSuccess"),
+                  error: t("modalCreateFood.toastError"),
+                },
+                {
+                  position: "bottom-left",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: false,
+                  pauseOnHover: true,
+                  draggable: true,
+                  theme: "dark",
+                },
+              );
+
+              props.onOpenChange();
+              if (props.onCloseAll) {
+                props.onCloseAll();
+              }
+            }}
+          >
+            {({ values, handleChange, handleBlur, isSubmitting }) => (
+              <Form className="flex flex-col w-full h-full">
+                <ModalHeader className="flex flex-col gap-1">
+                  {t("modalCreateFood.title", "Add Custom Food")}
+                </ModalHeader>
+
+                <ModalBody className="pb-6">
+                  <div className="flex flex-col gap-4">
                     <Input
-                      name="protein"
+                      label={t("modalCreateFood.barcodeLabel")}
+                      name="barcode"
                       type="number"
-                      placeholder={t("modalCreateFood.proteinPlaceholder")}
-                      required
+                      min={0}
+                      placeholder={t("modalCreateFood.barcodePlaceholder")}
+                      value={values.barcode?.toString() ?? ""}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
                     />
-                  </div>
-                  <div>
-                    <p className="m-1 ml-2">
-                      {t("modalCreateFood.sugarLabel")}
-                    </p>
+
                     <Input
-                      name="sugar"
-                      type="number"
-                      placeholder={t("modalCreateFood.sugarPlaceholder")}
+                      label={t("modalCreateFood.foodNameLabel")}
+                      name="name"
+                      type="text"
+                      placeholder={t("modalCreateFood.foodNamePlaceholder")}
                       required
+                      value={values.name ?? ""}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
                     />
-                  </div>
-                  <div>
-                    <p className="m-1 ml-2">
-                      {t("modalCreateFood.fiberLabel")}
-                    </p>
+
                     <Input
-                      name="fiber"
+                      label={t("modalCreateFood.caloriesLabel")}
+                      name="calories_per_100g"
                       type="number"
-                      placeholder={t("modalCreateFood.fiberPlaceholder")}
+                      min={0}
+                      placeholder={t("modalCreateFood.caloriesPlaceholder")}
                       required
+                      value={values.calories_per_100g?.toString() ?? ""}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
                     />
+
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      <Input
+                        label={t("modalCreateFood.proteinLabel")}
+                        name="protein"
+                        type="number"
+                        min={0}
+                        placeholder={t("modalCreateFood.proteinPlaceholder")}
+                        required
+                        value={values.protein?.toString() ?? ""}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                      />
+                      <Input
+                        label={t("modalCreateFood.sugarLabel")}
+                        name="sugar"
+                        type="number"
+                        min={0}
+                        placeholder={t("modalCreateFood.sugarPlaceholder")}
+                        required
+                        value={values.sugar?.toString() ?? ""}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                      />
+                      <Input
+                        label={t("modalCreateFood.fiberLabel")}
+                        name="fiber"
+                        type="number"
+                        min={0}
+                        placeholder={t("modalCreateFood.fiberPlaceholder")}
+                        required
+                        value={values.fiber?.toString() ?? ""}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                      />
+                      <Input
+                        label={t("modalCreateFood.fatLabel")}
+                        name="fat"
+                        type="number"
+                        min={0}
+                        placeholder={t("modalCreateFood.fatPlaceholder")}
+                        required
+                        value={values.fat?.toString() ?? ""}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                      />
+                      <Input
+                        label={t("modalCreateFood.carbsLabel")}
+                        name="carbohydrates"
+                        type="number"
+                        min={0}
+                        placeholder={t("modalCreateFood.carbsPlaceholder")}
+                        required
+                        value={values.carbohydrates?.toString() ?? ""}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                      />
+                      <Input
+                        label={t("modalCreateFood.saltLabel")}
+                        name="salt"
+                        type="number"
+                        min={0}
+                        placeholder={t("modalCreateFood.saltPlaceholder")}
+                        required
+                        value={values.salt?.toString() ?? ""}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                      />
+                    </div>
+
+                    <div className="flex gap-2 mt-4">
+                      <Button
+                        color="success"
+                        className="flex-1"
+                        type="submit"
+                        isLoading={isSubmitting}
+                      >
+                        {t("modalCreateFood.submitBtn")}
+                      </Button>
+                      <Button
+                        onPress={() => {
+                          if (props.onCloseAll) props.onCloseAll();
+                          onClose();
+                        }}
+                        color="danger"
+                        variant="flat"
+                        className="flex-1"
+                      >
+                        {t("modalCreateFood.cancelBtn")}
+                      </Button>
+                    </div>
                   </div>
-                  <div>
-                    <p className="m-1 ml-2">{t("modalCreateFood.fatLabel")}</p>
-                    <Input
-                      name="fat"
-                      type="number"
-                      placeholder={t("modalCreateFood.fatPlaceholder")}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <p className="m-1 ml-2">
-                      {t("modalCreateFood.carbsLabel")}
-                    </p>
-                    <Input
-                      name="carbohydrates"
-                      type="number"
-                      placeholder={t("modalCreateFood.carbsPlaceholder")}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <p className="m-1 ml-2">{t("modalCreateFood.saltLabel")}</p>
-                    <Input
-                      name="salt"
-                      type="number"
-                      placeholder={t("modalCreateFood.saltPlaceholder")}
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="flex gap-2 mt-4">
-                  <Button
-                    color="success"
-                    className="font-bold flex-1"
-                    type="submit"
-                  >
-                    {t("modalCreateFood.submitBtn")}
-                  </Button>
-                  <Button
-                    onPress={() => {
-                      props.onCloseAll && props.onCloseAll();
-                      onClose();
-                    }}
-                    color="danger"
-                    className="font-bold flex-1"
-                  >
-                    {t("modalCreateFood.cancelBtn")}
-                  </Button>
-                </div>
-              </form>
-            </ModalBody>
-          </>
+                </ModalBody>
+              </Form>
+            )}
+          </Formik>
         )}
       </ModalContent>
     </Modal>
