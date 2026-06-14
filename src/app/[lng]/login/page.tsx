@@ -36,7 +36,7 @@ export default function Login() {
       });
 
       if (res?.error) {
-        setStatus("Invalid email or password.");
+        setStatus(t("invalidEmailPassword"));
         setSubmitting(false);
         return;
       }

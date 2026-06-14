@@ -1,14 +1,14 @@
 import { z } from "zod";
 export const signupSchema = z.object({
-  username: z.string().min(3, "Username must be at least 3 characters"),
-  userEmail: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  username: z.string().min(3, "validation.usernameMin"),
+  userEmail: z.string().email("validation.emailInvalid"),
+  password: z.string().min(6, "validation.passwordMin"),
   height: z.coerce
     .number()
-    .min(50, "Minimum height is 50")
-    .max(250, "Maximum height is 250"),
+    .min(50, "validation.heightMin")
+    .max(250, "validation.heightMax"),
   weight: z.coerce
     .number()
-    .min(20, "Minimum weight is 20")
-    .max(400, "Maximum weight is 400"),
+    .min(20, "validation.weightMin")
+    .max(400, "validation.weightMax"),
 });

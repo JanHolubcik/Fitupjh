@@ -28,7 +28,10 @@ export async function POST(req: NextRequest) {
             parts: [
               { inlineData: { data: base64Data, mimeType: "image/jpeg" } },
               {
-                text: 'Analyze this image of food and estimate its macros. Return ONLY a valid JSON object in the following format, with no markdown or extra text: {"name": "Food name", "calories_per_100g": 0, "fat": 0, "protein": 0, "sugar": 0, "carbohydrates": 0, "fiber": 0, "salt": 0}. If it is not food, return an object with zeros.',
+                text:
+                  "Analyze this image of food and estimate its macros." +
+                  'Return ONLY a valid JSON object in the following format, with no markdown or extra text: {"name": "Food name", "calories_per_100g": 0, "fat": 0, "protein": 0, "sugar": 0, "carbohydrates": 0, "fiber": 0, "salt": 0}.' +
+                  "If it is not food, return an object with zeros.",
               },
             ],
           },

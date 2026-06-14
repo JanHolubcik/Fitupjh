@@ -106,7 +106,7 @@ const AddFoodComponent = (props: props) => {
             type="number"
             variant="bordered"
             defaultValue="100"
-            min={0}
+            min={1}
             max={999}
             classNames={{
               label:

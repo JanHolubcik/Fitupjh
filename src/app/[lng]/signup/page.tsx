@@ -42,7 +42,7 @@ export default function Signup() {
       Object.entries(fieldErrors).forEach(([key, messages]) => {
         // 'messages' are automatically typed as string[] | undefined
         if (messages && messages.length > 0) {
-          errors[key] = messages[0];
+          errors[key] = t(messages[0]);
         }
       });
 
@@ -64,11 +64,11 @@ export default function Signup() {
         if (res.ok) {
           router.push(`/${lng}/login`);
         } else {
-          setStatus(data.error || "Something went wrong during signup.");
+          setStatus(data.error ? t(data.error) : t("errors.serverError"));
           setSubmitting(false);
         }
       } catch (err) {
-        setStatus("Network error. Please try again.");
+        setStatus(t("errors.serverError"));
         setSubmitting(false);
       }
     },
@@ -93,8 +93,7 @@ export default function Signup() {
               type="text"
               value={formik.values.username}
               onChange={formik.handleChange}
-              onBlur={formik.handleBlur} // Important: Tracks if the user visited the field
-              // Only show error if the user has touched the field AND it has an error
+              onBlur={formik.handleBlur}
               isInvalid={formik.touched.username && !!formik.errors.username}
               errorMessage={formik.touched.username && formik.errors.username}
               isDisabled={formik.isSubmitting}

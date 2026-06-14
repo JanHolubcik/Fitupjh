@@ -11,5 +11,22 @@
   "creatingAccount": "Vytvára sa účet...",
   "signUpButton": "Zaregistrovať sa",
   "hasAccountText": "Už máte účet? ",
-  "logInLink": "Prihlásiť sa"
+  "logInLink": "Prihlásiť sa",
+  "errors": {
+    "missingFields": "Chýbajú povinné údaje.",
+    "usernameTooShort": "Používateľské meno je príliš krátke.",
+    "negativeDimensions": "Výška alebo hmotnosť nemôžu byť záporné.",
+    "wrongEmailFormat": "Nesprávny formát e-mailu.",
+    "userExists": "Používateľ s týmto e-mailom alebo menom už existuje.",
+    "serverError": "Počas registrácie sa vyskytla chyba."
+  },
+  "validation": {
+    "usernameMin": "Používateľské meno musí mať aspoň 3 znaky",
+    "emailInvalid": "Zadajte platnú e-mailovú adresu",
+    "passwordMin": "Heslo musí mať aspoň 6 znakov",
+    "heightMin": "Minimálna výška je 50",
+    "heightMax": "Maximálna výška je 250",
+    "weightMin": "Minimálna hmotnosť je 20",
+    "weightMax": "Maximálna hmotnosť je 400"
+  }
 }

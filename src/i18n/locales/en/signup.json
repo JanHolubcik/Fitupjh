@@ -11,5 +11,22 @@
   "creatingAccount": "Creating account...",
   "signUpButton": "Sign Up",
   "hasAccountText": "Already have an account? ",
-  "logInLink": "Log in"
+  "logInLink": "Log in",
+  "errors": {
+    "missingFields": "Missing required fields.",
+    "usernameTooShort": "Username is too short.",
+    "negativeDimensions": "Height or weight cannot be negative.",
+    "wrongEmailFormat": "Invalid email format.",
+    "userExists": "User with this email or username already exists.",
+    "serverError": "Something went wrong during signup."
+  },
+  "validation": {
+    "usernameMin": "Username must be at least 3 characters",
+    "emailInvalid": "Please enter a valid email address",
+    "passwordMin": "Password must be at least 6 characters",
+    "heightMin": "Minimum height is 50",
+    "heightMax": "Maximum height is 250",
+    "weightMin": "Minimum weight is 20",
+    "weightMax": "Maximum weight is 400"
+  }
 }

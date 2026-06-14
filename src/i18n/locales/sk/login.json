@@ -6,5 +6,6 @@
   "signingIn": "Prihlasovanie...",
   "signInButton": "Prihlásiť sa",
   "noAccountText": "Nemáte ešte účet? ",
-  "signUpLink": "Zaregistrovať sa"
+  "signUpLink": "Zaregistrovať sa",
+  "invalidEmailPassword": "Email alebo heslo je nesprávne."
 }

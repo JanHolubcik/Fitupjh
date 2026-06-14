@@ -30,10 +30,11 @@ export async function getUser(email: string) {
 //   }
 // }
 
-export async function updateUser(values: Partial<UsersClass>) {
+export async function updateUser(id: string, values: Partial<UsersClass>) {
   try {
     await connectDB();
-    const user = await User.updateOne({ _id: values._id }, { $set: values });
+    delete values._id;
+    const user = await User.updateOne({ _id: id }, { $set: values });
     return user;
   } catch (error) {
     return { error };

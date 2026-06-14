@@ -23,19 +23,68 @@ export async function getFoods() {
   }
 }
 
-export async function getFood(substring: string) {
+export async function getFood(substring: string, language?: string) {
   try {
     await connectDB();
 
     const escapedSubstring = substring.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const regexPattern = new RegExp(".*" + escapedSubstring + ".*", "i");
+    const regexString = ".*" + escapedSubstring + ".*";
+    const regexPattern = new RegExp(regexString, "i");
 
-    const food = await Food.find({ name: regexPattern }).limit(5).lean().exec();
-    if (food) {
+    let pipeline: any[] = [];
+
+    if (language) {
+      const localizedKey = `localizedNames.${language}`;
+
+      pipeline = [
+        {
+          $match: {
+            $or: [{ name: regexPattern }, { [localizedKey]: regexPattern }],
+          },
+        },
+        {
+          $addFields: {
+            isLocalMatch: {
+              $regexMatch: {
+                input: { $ifNull: [`$${localizedKey}`, ""] },
+                regex: regexString,
+                options: "i",
+              },
+            },
+            displayLabel: {
+              $ifNull: [`$${localizedKey}`, "$name"],
+            },
+          },
+        },
+
+        {
+          $sort: {
+            isLocalMatch: -1, // -1 means descending (true/1 comes before false/0)
+            displayLabel: 1, // 1 means ascending (A-Z)
+          },
+        },
+
+        {
+          $limit: 7,
+        },
+      ];
+    } else {
+      pipeline = [
+        { $match: { name: regexPattern } },
+        { $addFields: { displayLabel: "$name" } },
+        { $sort: { displayLabel: 1 } },
+        { $limit: 7 },
+      ];
+    }
+
+    const food = await Food.aggregate(pipeline).exec();
+
+    if (food && food.length > 0) {
       return {
         food: food.map((value) => {
           return {
-            name: value.name,
+            name: value.displayLabel,
+            originalName: value.name,
             calories_per_100g: value.calories_per_100g,
             fat: value.fat,
             protein: value.protein,
@@ -51,7 +100,7 @@ export async function getFood(substring: string) {
         }),
       };
     } else {
-      return {};
+      return { food: [] };
     }
   } catch (error) {
     return { error };

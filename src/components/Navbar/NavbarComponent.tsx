@@ -74,8 +74,12 @@ const NavbarComponent = () => {
           </DropdownTrigger>
 
           <DropdownMenu variant="faded" aria-label="User menu actions">
-            <DropdownItem key="profile" href={`/${lng}/profile`}>
-              {t("profile")}
+            <DropdownItem
+              key="name"
+              isReadOnly
+              className="cursor-default gap-2 border-none data-[hover=true]:bg-transparent  "
+            >
+              <p>{data.user?.name}</p>
             </DropdownItem>
 
             <DropdownItem

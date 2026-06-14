@@ -4,6 +4,7 @@ import { getUser, updateUser } from "@/lib/user-db";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { withAuth } from "../functions";
+import { updateUserSchema } from "@/lib/validationShemas/userValidationSchema";
 
 export async function POST(req: NextRequest) {
   const email = req.nextUrl.searchParams.get("email");
@@ -34,15 +35,22 @@ export async function POST(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
   return withAuth(req, async () => {
     const session = await getServerSession(authOptions);
-    const res = await req.json();
+    const body = await req.json();
 
     if (!session || !session.user?.email) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
+    const validationResult = updateUserSchema.safeParse(body);
+    if (!validationResult.success) {
+      return new NextResponse(`Invalid input: ${validationResult.error}`, {
+        status: 400,
+      });
+    }
+
     const userID = session.user.id;
 
-    const updatedUser = await updateUser({ ...res, _id: userID });
+    const updatedUser = await updateUser(userID, body);
 
     if ("error" in updatedUser) {
       return new NextResponse(
