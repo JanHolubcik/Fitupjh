@@ -7,22 +7,16 @@ import {
   ModalFooter,
   Button,
   Input,
+  Image,
 } from "@nextui-org/react";
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
-
-export type Food = {
-  id: number;
-  name: string;
-  calories: number;
-  amount: string;
-  fat: number;
-  protein: number;
-  sugar: number;
-  carbohydrates: number;
-  fiber: number;
-  salt: number;
-  imgUrl?: string;
-};
+import { Food } from "@/types/Types";
+import { useT } from "next-i18next/client";
+import {
+  MACRO_TAILWIND_THEME,
+  MacroArray,
+} from "@/app/[lng]/constants/MacrosHelper";
+import ImageFromURL from "../ImageFromURL/ImageFromURL";
 
 interface EditFoodModalProps {
   isOpen: boolean;
@@ -39,6 +33,7 @@ export const EditFoodModal = ({
 }: EditFoodModalProps) => {
   const [grams, setGrams] = useState<number>(100);
   const { updateFood } = useYourIntakeOperations();
+  const { t } = useT("dashboard");
 
   useEffect(() => {
     if (food) {
@@ -57,12 +52,12 @@ export const EditFoodModal = ({
       ...food,
       amount: `${grams}`,
       calories: Math.round(food.calories * ratio),
-      protein: Number((food.protein * ratio).toFixed(1)),
-      carbohydrates: Number((food.carbohydrates * ratio).toFixed(1)),
-      fat: Number((food.fat * ratio).toFixed(1)),
-      sugar: Number((food.sugar * ratio).toFixed(1)),
-      fiber: Number((food.fiber * ratio).toFixed(1)),
-      salt: Number((food.salt * ratio).toFixed(1)),
+      protein: Number(food.protein * ratio),
+      carbohydrates: Number(food.carbohydrates * ratio),
+      fat: Number(food.fat * ratio),
+      sugar: Number(food.sugar * ratio),
+      fiber: Number(food.fiber * ratio),
+      salt: Number(food.salt * ratio),
     };
     updateFood(updatedFood, timeOfDay);
     onClose();
@@ -72,29 +67,86 @@ export const EditFoodModal = ({
     <Modal
       isOpen={isOpen}
       onOpenChange={onOpenChange}
+      hideCloseButton
+      placement="center"
       backdrop="blur"
       classNames={{
-        base: "bg-zinc-900 border border-zinc-800 text-zinc-100 max-w-md mx-4",
-        header: "border-b border-zinc-800 pb-3",
-        footer: "border-t border-zinc-800 pt-3",
+        base: "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 max-w-md font-semibold mx-4",
+        header:
+          "border-b border-zinc-200 dark:border-zinc-800 pb-2 font-semibold",
+        footer:
+          "border-t border-zinc-200 dark:border-zinc-800 pt-2 font-semibold",
       }}
     >
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">
-              <h3 className="text-lg font-bold capitalize text-zinc-200">
-                Edit {food.name}
+            <ModalHeader className="flex flex-col gap-1 font-semibold">
+              <h3 className="text-lg font-bold capitalize text-zinc-900 dark:text-zinc-200">
+                {t("editFoodModal.title", { name: food.name })}
               </h3>
-              <p className="text-xs font-normal text-zinc-400">
-                Adjust total weight to scale macros
+              <p className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
+                {t("editFoodModal.subtitle")}
               </p>
             </ModalHeader>
 
-            <ModalBody className="py-4 gap-4">
+            <ModalBody className="py-3 gap-2 font-semibold">
+              <div className="flex justify-center w-full my-2">
+                <div className="bg-zinc-100 w-full dark:bg-zinc-950/50 p-3 rounded-xl border border-zinc-200 dark:border-white/5 space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-zinc-600 dark:text-zinc-400">
+                      {t("editFoodModal.calories")}
+                    </span>
+                    <span className="font-bold text-zinc-900 dark:text-zinc-200">
+                      {Math.round(food.calories * ratio)} kcal
+                    </span>
+                  </div>
+
+                  <hr className="border-zinc-300 dark:border-zinc-800" />
+
+                  <div className="flex flex-row gap-2 items-start w-full">
+                    <div className="shrink-0 w-[120px] h-[120px]">
+                      <ImageFromURL
+                        url={food.imgUrl}
+                        width={120}
+                        height={120}
+                        macroName={food.name}
+                      />
+                    </div>
+
+                    <div className="flex-1 h-[120px] flex flex-col justify-between divide-y divide-zinc-200 dark:divide-zinc-800 overflow-hidden">
+                      {MacroArray.filter((macro) => macro !== "calories").map(
+                        (macro) => {
+                          const translationKey =
+                            macro === "carbohydrates"
+                              ? "carbsShort"
+                              : `${macro}Short`;
+                          const rawValue = food[macro as keyof Food] as number;
+                          if (macro === "sugar" && !rawValue) return null;
+                          const calculatedValue = (rawValue * ratio).toFixed(1);
+
+                          return (
+                            <div
+                              key={macro}
+                              className={`${MACRO_TAILWIND_THEME[macro].text} flex flex-row justify-between items-center flex-1`}
+                            >
+                              <span className="text-xs font-extrabold">
+                                {t(`editFoodModal.${translationKey}`)}
+                              </span>
+                              <span className="text-zinc-600 dark:text-zinc-300 font-bold text-xs">
+                                {calculatedValue}g
+                              </span>
+                            </div>
+                          );
+                        },
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
               <Input
                 type="number"
-                label="Amount (grams)"
+                label={t("editFoodModal.amountLabel")}
                 placeholder="0"
                 value={grams === 0 ? "" : grams.toString()}
                 onChange={(e) =>
@@ -105,60 +157,20 @@ export const EditFoodModal = ({
                 autoFocus
                 classNames={{
                   inputWrapper:
-                    "border-zinc-700 hover:border-zinc-500 focus-within:!border-zinc-400",
-                  label: "text-zinc-400",
+                    "font-semibold border-zinc-300 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500 focus-within:!border-zinc-500 dark:focus-within:!border-zinc-400",
+                  label: "text-zinc-500 dark:text-zinc-400",
                 }}
               />
-
-              <div className="bg-zinc-950/50 p-3 rounded-xl border border-white/5 space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-zinc-400">Calories</span>
-                  <span className="font-bold text-zinc-200">
-                    {Math.round(food.calories * ratio)} kcal
-                  </span>
-                </div>
-
-                <hr className="border-zinc-800" />
-
-                <div className="grid grid-cols-2 gap-2 text-xs font-semibold">
-                  <div className="text-success-400">
-                    P:{" "}
-                    <span className="text-zinc-300 font-medium">
-                      {(food.protein * ratio).toFixed(1)}g
-                    </span>
-                  </div>
-                  <div className="text-warning-400">
-                    C:{" "}
-                    <span className="text-zinc-300 font-medium">
-                      {(food.carbohydrates * ratio).toFixed(1)}g
-                    </span>
-                  </div>
-                  <div className="text-pink-400">
-                    F:{" "}
-                    <span className="text-zinc-300 font-medium">
-                      {(food.fat * ratio).toFixed(1)}g
-                    </span>
-                  </div>
-                  {food.sugar ? (
-                    <div className="text-purple-400">
-                      S:{" "}
-                      <span className="text-zinc-300 font-medium">
-                        {(food.sugar * ratio).toFixed(1)}g
-                      </span>
-                    </div>
-                  ) : null}
-                </div>
-              </div>
             </ModalBody>
 
-            <ModalFooter>
+            <ModalFooter className="p-2">
               <Button
                 size="sm"
                 variant="flat"
-                className="bg-zinc-800 text-zinc-300 hover:bg-zinc-700"
-                onPress={onClose}
+                className="bg-zinc-200 text-zinc-700 hover:bg-zinc-300 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                onPress={() => setTimeout(() => onClose(), 10)}
               >
-                Cancel
+                {t("editFoodModal.cancel")}
               </Button>
               <Button
                 size="sm"
@@ -166,7 +178,7 @@ export const EditFoodModal = ({
                 className="bg-blue-600 text-white font-medium"
                 onPress={() => handleSave(onClose)}
               >
-                Save Changes
+                {t("editFoodModal.saveChanges")}
               </Button>
             </ModalFooter>
           </>

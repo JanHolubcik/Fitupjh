@@ -148,6 +148,8 @@ export default function ProfileMainComponent() {
                       onBlur={handleBlur}
                       variant="faded"
                       isDisabled={isSubmitting}
+                      min={50}
+                      max={300}
                     />
                     <Input
                       name="weightGoal"
@@ -158,6 +160,8 @@ export default function ProfileMainComponent() {
                       onBlur={handleBlur}
                       variant="faded"
                       isDisabled={isSubmitting}
+                      min={50}
+                      max={300}
                     />
                     <Input
                       name="height"
@@ -168,6 +172,8 @@ export default function ProfileMainComponent() {
                       onBlur={handleBlur}
                       variant="faded"
                       isDisabled={isSubmitting}
+                      min={50}
+                      max={300}
                     />
                     <Select
                       name="activityLevel"

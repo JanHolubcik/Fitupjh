@@ -144,7 +144,7 @@ export const ModalCreateFood = (props: props) => {
                       label={t("modalCreateFood.caloriesLabel")}
                       name="calories_per_100g"
                       type="number"
-                      min={0}
+                      min={1}
                       placeholder={t("modalCreateFood.caloriesPlaceholder")}
                       required
                       value={values.calories_per_100g?.toString() ?? ""}

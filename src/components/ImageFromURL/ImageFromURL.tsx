@@ -29,6 +29,7 @@ const ImageFromURL = ({
         img: "object-contain ",
         wrapper: "dark:bg-zinc-800/20",
       }}
+      className="dark:bg-zinc-950/50"
     />
   );
 };

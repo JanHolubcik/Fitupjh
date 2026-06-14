@@ -21,6 +21,7 @@ type props = {
 
 export const ModalScanFood = ({ isOpen, onOpenChange, timeOfDay }: props) => {
   const { t } = useT("dashboard");
+  const { onClose } = useDisclosure();
   const {
     isOpen: isOpenBarCode,
     onOpen: onOpenBarCode,
@@ -43,6 +44,7 @@ export const ModalScanFood = ({ isOpen, onOpenChange, timeOfDay }: props) => {
     onCloseBarCode();
     onOpenChangeAI();
     onCloseNewFood();
+    onClose();
   };
   const isAnyChildOpen = isOpenBarCode || isOpenAI || isOpenNewFood;
   return (
@@ -64,7 +66,7 @@ export const ModalScanFood = ({ isOpen, onOpenChange, timeOfDay }: props) => {
         }}
       >
         <ModalContent>
-          {(onClose) => (
+          {() => (
             <>
               <ModalHeader className="flex flex-col gap-1 font-semibold">
                 <h3 className="text-lg font-bold capitalize text-zinc-900 dark:text-zinc-200">
@@ -77,7 +79,10 @@ export const ModalScanFood = ({ isOpen, onOpenChange, timeOfDay }: props) => {
               <ModalBody className="font-semibold">
                 <div className="w-full p-3 bg-warning-200 dark:bg-warning-900/20 rounded-lg">
                   <p className="text-xs font-semibold leading-relaxed text-warning-800 dark:text-warning-500">
-                    <span className="font-bold">{t("modalScanFood.disclaimerTitle")}</span> {t("modalScanFood.disclaimerText")}
+                    <span className="font-bold">
+                      {t("modalScanFood.disclaimerTitle")}
+                    </span>{" "}
+                    {t("modalScanFood.disclaimerText")}
                   </p>
                 </div>
               </ModalBody>

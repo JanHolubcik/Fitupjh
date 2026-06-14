@@ -15,6 +15,7 @@ import {
   MACRO_TAILWIND_THEME,
   MacroArray,
 } from "@/app/[lng]/constants/MacrosHelper";
+import ImageFromURL from "../ImageFromURL/ImageFromURL";
 
 type props = {
   isOpen: boolean;
@@ -50,12 +51,12 @@ export const NewFoodRecordModal = ({
       ...food,
       amount: `${grams}`,
       calories: Math.round(food.calories * ratio),
-      protein: Number((food.protein * ratio).toFixed(1)),
-      carbohydrates: Number((food.carbohydrates * ratio).toFixed(1)),
-      fat: Number((food.fat * ratio).toFixed(1)),
-      sugar: Number((food.sugar * ratio).toFixed(1)),
-      fiber: Number((food.fiber * ratio).toFixed(1)),
-      salt: Number((food.salt * ratio).toFixed(1)),
+      protein: Number(food.protein * ratio),
+      carbohydrates: Number(food.carbohydrates * ratio),
+      fat: Number(food.fat * ratio),
+      sugar: Number(food.sugar * ratio),
+      fiber: Number(food.fiber * ratio),
+      salt: Number(food.salt * ratio),
     };
     addToFoodObject(updatedFood, timeOfDay);
     onClose();
@@ -69,7 +70,7 @@ export const NewFoodRecordModal = ({
       placement="center"
       backdrop="blur"
       classNames={{
-        base: "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 max-w-md font-semibold",
+        base: "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 max-w-md font-semibold mx-4",
         header:
           "border-b border-zinc-200 dark:border-zinc-800 pb-2 font-semibold",
         footer:
@@ -89,6 +90,58 @@ export const NewFoodRecordModal = ({
             </ModalHeader>
 
             <ModalBody className="py-3 gap-2 font-semibold">
+              <div className="bg-zinc-100 dark:bg-zinc-950/50 p-3 rounded-xl border border-zinc-200 dark:border-white/5 space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-zinc-600 dark:text-zinc-400">
+                    {t("newFoodModal.calories")}
+                  </span>
+                  <span className="font-bold text-zinc-900 dark:text-zinc-200">
+                    {Math.round(food.calories * ratio)} kcal
+                  </span>
+                </div>
+
+                <hr className="border-zinc-300 dark:border-zinc-800" />
+
+                <div className="flex flex-row gap-4 items-start">
+                  <div className="shrink-0 w-[120px] h-[120px]">
+                    <ImageFromURL
+                      url={food.imgUrl}
+                      macroName={food.name}
+                      width={120}
+                      height={120}
+                    />
+                  </div>
+
+                  <div className="flex-1 h-[120px] flex flex-col divide-y divide-zinc-200 dark:divide-zinc-700 overflow-hidden">
+                    {MacroArray.filter((macro) => macro !== "calories").map(
+                      (macro) => {
+                        const translationKey =
+                          macro === "carbohydrates"
+                            ? "carbsShort"
+                            : `${macro}Short`;
+                        const rawValue = food[macro as keyof Food] as number;
+                        if (!rawValue) return null;
+                        const calculatedValue = (rawValue * ratio).toFixed(2);
+
+                        return (
+                          <div
+                            key={macro}
+                            className={`${MACRO_TAILWIND_THEME[macro].text} flex flex-row justify-between items-center flex-1`}
+                          >
+                            <span className="text-xs font-extrabold">
+                              {t(`newFoodModal.${translationKey}`)}
+                            </span>
+                            <span className="text-zinc-600 dark:text-zinc-300 font-bold text-xs">
+                              {calculatedValue}g
+                            </span>
+                          </div>
+                        );
+                      },
+                    )}
+                  </div>
+                </div>
+              </div>
+
               <Input
                 type="number"
                 label={t("newFoodModal.amountLabel")}
@@ -106,47 +159,6 @@ export const NewFoodRecordModal = ({
                   label: "text-zinc-500 dark:text-zinc-400",
                 }}
               />
-
-              <div className="bg-zinc-100 dark:bg-zinc-950/50 p-3 rounded-xl border border-zinc-200 dark:border-white/5 space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-zinc-600 dark:text-zinc-400">
-                    {t("newFoodModal.calories")}
-                  </span>
-                  <span className="font-bold text-zinc-900 dark:text-zinc-200">
-                    {Math.round(food.calories * ratio)} kcal
-                  </span>
-                </div>
-
-                <hr className="border-zinc-300 dark:border-zinc-800" />
-
-                <div className="grid grid-cols-2 gap-2 text-xs font-semibold">
-                  {/* Map over the macros, skipping calories */}
-                  {MacroArray.filter((macro) => macro !== "calories").map(
-                    (macro) => {
-                      // Because key is "carbohydrates" but translation is "carbsShort"
-                      const translationKey =
-                        macro === "carbohydrates"
-                          ? "carbsShort"
-                          : `${macro}Short`;
-
-                      const rawValue = food[macro as keyof Food] as number;
-                      const calculatedValue = (rawValue * ratio).toFixed(1);
-
-                      return (
-                        <div
-                          key={macro}
-                          className={`${MACRO_TAILWIND_THEME[macro].text} font-extrabold`}
-                        >
-                          {t(`newFoodModal.${translationKey}`)}:{" "}
-                          <span className="text-zinc-600 dark:text-zinc-300 font-bold">
-                            {calculatedValue}g
-                          </span>
-                        </div>
-                      );
-                    },
-                  )}
-                </div>
-              </div>
             </ModalBody>
 
             <ModalFooter className="p-2">

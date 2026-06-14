@@ -120,7 +120,7 @@
     "proteinShort": "Bielkoviny",
     "carbsShort": "Sacharidy",
     "fatShort": "Tuky",
-    "fiberShort": "vlákniny",
+    "fiberShort": "Vlákniny",
     "sugarShort": "Cukry",
     "cancel": "Zrušiť",
     "saveChanges": "Uložiť zmeny"
@@ -158,5 +158,18 @@
     "saltPlaceholder": "Soľ",
     "submitBtn": "Odoslať",
     "cancelBtn": "Zrušiť"
+  },
+  "editFoodModal": {
+    "title": "Upraviť {{name}}",
+    "subtitle": "Upravte celkovú hmotnosť pre prepočet živín",
+    "amountLabel": "Množstvo (gramy)",
+    "calories": "Kalórie",
+    "proteinShort": "Bielkoviny",
+    "carbsShort": "Sacharidy",
+    "fatShort": "Tuky",
+    "fiberShort": "Vlákniny",
+    "sugarShort": "Cukry",
+    "cancel": "Zrušiť",
+    "saveChanges": "Uložiť zmeny"
   }
 }

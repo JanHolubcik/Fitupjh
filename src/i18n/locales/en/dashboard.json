@@ -158,5 +158,18 @@
     "saltPlaceholder": "Salt",
     "submitBtn": "Submit",
     "cancelBtn": "Cancel"
+  },
+  "editFoodModal": {
+    "title": "Edit {{name}}",
+    "subtitle": "Adjust total weight to scale macros",
+    "amountLabel": "Amount (grams)",
+    "calories": "Calories",
+    "proteinShort": "Protein",
+    "carbsShort": "Carbohydrates",
+    "fatShort": "Fat",
+    "sugarShort": "Sugar",
+    "fiberShort": "Fiber",
+    "cancel": "Cancel",
+    "saveChanges": "Save Changes"
   }
 }
