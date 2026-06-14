@@ -11,6 +11,6 @@ export const getSearchedFoodOptions = (searchTerm: string) => ({
     });
 
     if (!res.ok) throw new Error("Update failed");
-    return res.json() as Promise<FoodClass[]>;
+    return res.json() as Promise<(FoodClass & { originalName?: string })[]>;
   },
 });

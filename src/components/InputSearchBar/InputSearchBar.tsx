@@ -179,7 +179,7 @@ export const InputSearchBar = () => {
                   <ImageFromURL
                     width={35}
                     height={35}
-                    macroName={key.name}
+                    macroName={key.originalName ? key.originalName : key.name}
                     url={key.imgUrl}
                   />
                 </div>

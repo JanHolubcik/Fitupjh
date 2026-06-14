@@ -1,7 +1,9 @@
 import { FoodClass } from "@/models/Food";
 import { activityLevel } from "@/models/users";
 
-export type ReturnTypeFood = FoodClass[] | undefined;
+export type ReturnTypeFood =
+  | (FoodClass & { originalName?: string })[]
+  | undefined;
 
 export type macros = {
   calories: number;
@@ -26,6 +28,7 @@ export type macrosCapital = {
 export type Food = {
   id: number;
   name: string;
+  originalName?: string;
   calories: number;
   amount: string;
   fat: number;

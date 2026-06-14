@@ -14,6 +14,7 @@ type macrosLocal = {
   fiber: number;
   salt: number;
   imgUrl: string;
+  originalName?: string;
 };
 
 type props = {
@@ -44,7 +45,11 @@ const AddFoodComponent = (props: props) => {
         <div className="flex-shrink-0 dark:bg-zinc-950/40 p-1 md:p-1.5 rounded-xl border border-white/5 shadow-inner">
           <ImageFromURL
             url={props.macros.imgUrl}
-            macroName={props.macros.name}
+            macroName={
+              props.macros.originalName
+                ? props.macros.originalName
+                : props.macros.name
+            }
           />
         </div>
 
