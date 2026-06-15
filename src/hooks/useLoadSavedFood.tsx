@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { LastMonthFoodOptions } from "@/lib/queriesOptions/LastMonthFoodOptions";
 import { setSavedFoodMonth } from "@/features/savedFoodslice/yourIntakeSlice";
 import { useQuery } from "@tanstack/react-query";
-import { format, subDays } from "date-fns";
+import { addDays, format, subDays } from "date-fns";
 import { SavedFoodMonth } from "@/types/Types";
 
 type props = {
@@ -21,7 +21,7 @@ type props = {
 const useLoadSavedFood = ({ userId, daysAgo }: props) => {
   const dispatch = useDispatch();
 
-  const today = useMemo(() => new Date().toISOString(), []);
+  const today = useMemo(() => addDays(Date(), 1).toISOString(), []);
   const fromDate = useMemo(
     () => (daysAgo ? subDays(new Date(), daysAgo).toISOString() : ""),
     [],
@@ -35,6 +35,7 @@ const useLoadSavedFood = ({ userId, daysAgo }: props) => {
 
   useEffect(() => {
     if (isSuccess && Array.isArray(monthData)) {
+      console.log(monthData);
       const dateKeyedData = monthData.reduce((acc, item) => {
         const date = format(item.day, "yyyy-MM-dd");
         const { breakfast, lunch, dinner } = item.savedFood;
