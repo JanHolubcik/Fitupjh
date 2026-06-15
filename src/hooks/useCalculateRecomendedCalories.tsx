@@ -7,15 +7,13 @@ import {
   FoodType,
 } from "@/types/Types";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
 import { useMemo } from "react";
 
 export const useCalculateRecommendedCalories = (savedFood: FoodType | null) => {
-  const { data } = useSession();
   const { data: user } = useSuspenseQuery(UserInfoOptions());
 
   const recommendedCaloriesValue = useMemo(() => {
-    if (data?.user?.weight && data?.user?.height) {
+    if (user?.weight && user.height) {
       const bmr = 10 * user.weight + 6.25 * user.height - 5 * 25 + 5;
       const multiplier = ACTIVITY_MULTIPLIERS[user.activityLevel] || 1.2;
       const tdee = bmr * multiplier;

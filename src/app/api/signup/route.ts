@@ -67,7 +67,8 @@ export async function POST(request: NextRequest) {
       image: "pfps/1.png",
       weight: weight,
       height: height,
-      goal: "lose weight",
+      goal: "maintainWeight",
+      activityLevel: "lightlyActive",
     });
 
     return NextResponse.json(
