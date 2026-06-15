@@ -1,4 +1,4 @@
-import { useCalculateRecommendedCalories } from "@/app/[lng]/yourintake/hooks/useCalculateRecomendedCalories";
+import { useCalculateRecommendedCalories } from "@/hooks/useCalculateRecomendedCalories";
 import { CardUniversal } from "@/components/common";
 import { FoodType } from "@/types/Types";
 import { CardBody, CircularProgress } from "@nextui-org/react";

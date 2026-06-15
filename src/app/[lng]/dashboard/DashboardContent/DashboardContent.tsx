@@ -1,15 +1,15 @@
 "use client";
 
-import { CalorieCard } from "./CalorieCard";
+import { CalorieCard } from "./components/CalorieCard/CalorieCard";
 
 import useLoadSavedFood from "@/hooks/useLoadSavedFood";
 import { useSession } from "next-auth/react";
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 
-import { AccordionTimeFrame } from "./AccordionTimeFrame/AccordionTimeFrame";
-import { TodayMacros } from "./TodayMacros/TodayMacros";
-import MyGraph from "@/app/[lng]/myprogress/MyGraph";
-import { DateSwitcher } from "./DateSwitcher/DateSwitcher";
+import { AccordionTimeFrame } from "./components/AccordionTimeFrame/AccordionTimeFrame";
+import { TodayMacros } from "./components/TodayMacros/TodayMacros";
+import MyGraph from "@/components/ChartProgress/GraphProgessComponent";
+import { DateSwitcher } from "./components/DateSwitcher/DateSwitcher";
 
 import {
   DateSwitcherSkeleton,
@@ -17,7 +17,7 @@ import {
   TodayMacrosSkeleton,
   AccordionTimeFrameSkeleton,
   MyGraphSkeleton,
-} from "./Skeletons";
+} from "./components/Skeletons";
 
 export const DashboardContent = () => {
   const { data } = useSession();

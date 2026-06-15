@@ -6,8 +6,9 @@ import {
 } from "@/lib/queriesOptions/UserInfoOptions";
 import { getUser } from "@/lib/user-db";
 import { getServerSession } from "next-auth";
-import { DashboardContent } from "./components/DashboardContent";
+
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { DashboardContent } from "./DashboardContent/DashboardContent";
 
 export default async function Dashboard() {
   const session = await getServerSession(authOptions);

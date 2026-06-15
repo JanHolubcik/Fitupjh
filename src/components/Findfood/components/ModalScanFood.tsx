@@ -9,8 +9,9 @@ import {
   ModalFooter,
 } from "@nextui-org/react";
 import { ModalBarcodeScan } from "./ModalBarcodeScan";
-import { ModalTakePicture } from "@/app/[lng]/dashboard/components/ModalTakePicture/ModalTakePicture";
+
 import { useT } from "next-i18next/client";
+import { ModalTakePicture } from "@/app/[lng]/dashboard/DashboardContent/components/ModalTakePicture/ModalTakePicture";
 
 type props = {
   isOpen: boolean;

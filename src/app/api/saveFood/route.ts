@@ -1,6 +1,5 @@
-import { getSavedFood } from "@/lib/YourIntake/search-db";
 import { NextRequest, NextResponse } from "next/server";
-import { saveFoodInDay } from "@/lib/food-db";
+import { checkForSavedFood, saveFoodInDay } from "@/lib/food-db";
 import { FoodType } from "@/types/Types";
 import { isValid, parse, parseISO } from "date-fns";
 import { withAuth } from "../functions";
@@ -30,7 +29,7 @@ export async function GET(req: NextRequest) {
     }
     const isoDate = parsed.toISOString();
 
-    const food = await getSavedFood(isoDate, userID).then((res) => {
+    const food = await checkForSavedFood(isoDate, userID).then((res) => {
       if (!res.savedFood) {
         return {
           breakfast: [],

@@ -1,4 +1,7 @@
-import { capitalizeFirstLetter, useIsSm } from "../constants/FunctionsHelper";
+import {
+  capitalizeFirstLetter,
+  useIsSm,
+} from "../app/[lng]/constants/FunctionsHelper";
 import { ChartOptions, ChartData } from "chart.js";
 
 type props = {

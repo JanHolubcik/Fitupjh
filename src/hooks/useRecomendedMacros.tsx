@@ -4,7 +4,7 @@ import { LastMonthFoodOptions } from "@/lib/queriesOptions/LastMonthFoodOptions"
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 
-import { calculateRecommendedMacros } from "../constants/FunctionsHelper";
+import { calculateRecommendedMacros } from "../app/[lng]/constants/FunctionsHelper";
 
 import { SavedFoodClass } from "@/models/savedFood";
 import { Food, FoodType, SavedFoodMonth } from "@/types/Types";

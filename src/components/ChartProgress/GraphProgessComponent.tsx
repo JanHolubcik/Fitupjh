@@ -1,0 +1,66 @@
+"use client";
+
+import { useState } from "react";
+import useMacros from "../../hooks/useRecomendedMacros";
+import { CardBody, Spinner } from "@nextui-org/react";
+import ChartProgress from "./ChartProgress";
+import { CardUniversal } from "../common";
+import { FaChartLine } from "react-icons/fa";
+
+const MyGraph = () => {
+  const { labels, isLoading, macroDatasets, RecommendedMacros } = useMacros();
+  const [selectedMacro, setSelectedMacro] =
+    useState<keyof typeof macroDatasets>("protein");
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center sm:w-full w-80 h-64 shadow-xl rounded-xl gap-4">
+        <Spinner size="lg" />
+        <p className="text-default-500">Loading graph, please wait...</p>
+      </div>
+    );
+  }
+
+  if (labels.length === 0) {
+    return (
+      <CardUniversal className="sm:w-full w-80 shadow-xl h-64 flex items-center justify-center">
+        <CardBody className="flex flex-col items-center justify-center text-center gap-3">
+          <FaChartLine size={90} />
+          <div>
+            <h3 className="text-lg font-semibold text-default-700">
+              No Data Yet
+            </h3>
+            <p className="text-sm text-default-500 max-w-[200px] mx-auto mt-1">
+              Start logging your meals to see your macro progress appear here!
+            </p>
+          </div>
+        </CardBody>
+      </CardUniversal>
+    );
+  }
+
+  const emptyDays = macroDatasets["calories"].filter((v) => v === 0).length;
+
+  // Since isLoading and empty states are handled above,
+  // we only render the actual graph down here.
+  return (
+    <div className="flex flex-col sm:w-full w-80 shadow-xl">
+      <div className="w-full overflow-auto">
+        <div className="w-full">
+          <ChartProgress
+            labels={labels}
+            dataValues={macroDatasets[selectedMacro]}
+            recommendedValue={RecommendedMacros[selectedMacro]}
+            selectedMacro={selectedMacro}
+            macroDatasets={macroDatasets}
+            setSelectedMacro={setSelectedMacro}
+            emptyDays={emptyDays}
+            messageForSelectedMacro={""}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default MyGraph;

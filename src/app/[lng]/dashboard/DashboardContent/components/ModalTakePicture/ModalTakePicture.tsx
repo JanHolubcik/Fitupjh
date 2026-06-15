@@ -14,7 +14,6 @@ import { useMutation } from "@tanstack/react-query";
 import { FoodImageAIOptions } from "@/lib/queriesOptions/FoodImageAIOptions";
 import { useT } from "next-i18next/client";
 
-// Import your hooks and types
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 import { getTimeOfDay } from "@/app/[lng]/constants/FunctionsHelper";
 import { Food } from "@/types/Types";
@@ -54,7 +53,6 @@ export const ModalTakePicture = ({
   const cameraRef = useRef<any>(null);
   const { t } = useT("dashboard");
 
-  // Bring in your intake operations
   const { addToFoodObject } = useYourIntakeOperations();
 
   const [image, setImage] = useState<any | null>(null);
@@ -90,7 +88,6 @@ export const ModalTakePicture = ({
   const handleAddFood = () => {
     if (!result) return;
 
-    // Defaulting to 100g if the AI doesn't estimate a weight
     const weight = result.ProductWeight || 100;
     const multiplier = weight / 100;
 
@@ -114,7 +111,6 @@ export const ModalTakePicture = ({
 
     addToFoodObject(parsedFood, timeOfDay || getTimeOfDay());
 
-    // Close everything after successfully adding
     if (onCloseAll) {
       onCloseAll();
     }
