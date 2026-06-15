@@ -24,6 +24,7 @@ import { useDispatch } from "react-redux";
 import { setNewFoodBarCode } from "@/features/savedFoodslice/yourIntakeSlice";
 import { getTimeOfDay } from "@/app/[lng]/constants/FunctionsHelper";
 import { useT } from "next-i18next/client";
+import { ModalCreateFood } from "./ModalCreateFood";
 
 type props = {
   onOpenChange: () => void;
@@ -88,9 +89,15 @@ export const ModalBarcodeScan = (props: props) => {
 
   const { mutate: scanProduct, isPending, data } = useScanProduct(onOpen);
 
+  const {
+    isOpen: isOpenNewFood,
+    onOpen: onOpenNewFood,
+    onOpenChange: onOpenChangeNewFood,
+  } = useDisclosure();
+
   const handleYes = () => {
     onOpenChange();
-    props.onOpenNewFood();
+    onOpenNewFood();
   };
 
   const handleScan = async (detectedCodes: any) => {
@@ -301,6 +308,11 @@ export const ModalBarcodeScan = (props: props) => {
           )}
         </ModalContent>
       </Modal>
+      <ModalCreateFood
+        isOpen={isOpenNewFood}
+        onOpenChange={onOpenChangeNewFood}
+        onCloseAll={props.onCloseAll}
+      />
     </>
   );
 };

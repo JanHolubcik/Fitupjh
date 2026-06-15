@@ -16,13 +16,13 @@ import { ModalTakePicture } from "@/app/[lng]/dashboard/DashboardContent/compone
 type props = {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
-
+  onClose: () => void;
   timeOfDay: "breakfast" | "lunch" | "dinner";
 };
 
-export const ModalScanFood = ({ isOpen, onOpenChange }: props) => {
+export const ModalScanFood = ({ isOpen, onOpenChange, onClose }: props) => {
   const { t } = useT("dashboard");
-  const { onClose } = useDisclosure();
+
   const {
     isOpen: isOpenBarCode,
     onOpen: onOpenBarCode,
@@ -34,11 +34,15 @@ export const ModalScanFood = ({ isOpen, onOpenChange }: props) => {
     onOpen: onOpenNewFood,
     onClose: onCloseNewFood,
   } = useDisclosure();
-  const { isOpen: isOpenAI, onOpenChange: onOpenChangeAI } = useDisclosure();
+  const {
+    isOpen: isOpenAI,
+    onClose: onCloseAI,
+    onOpenChange: onOpenChangeAI,
+  } = useDisclosure();
 
   const closeAllModals = () => {
     onCloseBarCode();
-    onOpenChangeAI();
+    onCloseAI();
     onCloseNewFood();
     onClose();
   };
@@ -111,7 +115,7 @@ export const ModalScanFood = ({ isOpen, onOpenChange }: props) => {
         onOpenChange={onOpenChangeAI}
         isOpen={isOpenAI}
         onOpenNewFood={onOpenNewFood}
-        onClose={onCloseBarCode}
+        onClose={onCloseAI}
         onCloseAll={closeAllModals}
       />
     </>

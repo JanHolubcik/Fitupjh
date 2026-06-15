@@ -79,10 +79,10 @@ export const InputSearchBar = () => {
 
   const { isOpen: isOpenNew, onOpen, onOpenChange, onClose } = useDisclosure();
   const {
-    isOpen: QRisOpen,
-    onOpen: QRonOpen,
-    onOpenChange: QRonOpenChange,
-    onClose: QRonClose,
+    isOpen: isOpenBarScan,
+    onOpen: onOpenBarScan,
+    onOpenChange: onOpenChangeBarScan,
+    onClose: onCloseBarScan,
   } = useDisclosure();
   const {
     isOpen: isOpenNewFood,
@@ -91,9 +91,8 @@ export const InputSearchBar = () => {
   } = useDisclosure();
 
   const closeAllModals = () => {
-    QRonClose();
+    onCloseBarScan();
     onClose();
-    QRonClose();
   };
 
   return (
@@ -135,7 +134,7 @@ export const InputSearchBar = () => {
       </div>
 
       <Button
-        onPress={() => QRonOpen()}
+        onPress={() => onOpenBarScan()}
         className="rounded-l-none min-w-10 h-8 self-center bg-primary-100 dark:bg-primary-400 hover:bg-primary-200"
       >
         <Image
@@ -230,8 +229,9 @@ export const InputSearchBar = () => {
         timeOfDay={getTimeOfDay()}
       />
       <ModalScanFood
-        isOpen={QRisOpen}
-        onOpenChange={QRonOpenChange}
+        isOpen={isOpenBarScan}
+        onOpenChange={onOpenChangeBarScan}
+        onClose={onCloseBarScan}
         timeOfDay={getTimeOfDay()}
       />
       <ModalCreateFood
