@@ -74,7 +74,6 @@ export const ModalFindFood = (props: props) => {
     isOpen: isOpenBarScan,
     onOpen: onOpenBarScan,
     onOpenChange: onOpenChangeBarScan,
-    onClose: onCloseBarScan,
   } = useDisclosure();
 
   useEffect(() => {

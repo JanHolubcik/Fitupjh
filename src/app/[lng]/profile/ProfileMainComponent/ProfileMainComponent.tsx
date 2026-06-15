@@ -12,9 +12,9 @@ import {
 } from "@nextui-org/react";
 
 import { useT } from "next-i18next/client";
-import { CardUniversal } from "../common";
-import { ThemeSwitcher } from "../Navbar/components/ThemeSwitcher";
-import { LanguagePicker } from "../Navbar/components/LanguagePicker";
+import { CardUniversal } from "../../../../components/common";
+import { ThemeSwitcher } from "../../../../components/Navbar/components/ThemeSwitcher";
+import { LanguagePicker } from "../../../../components/Navbar/components/LanguagePicker";
 import { UserInfoOptions } from "@/lib/queriesOptions/UserInfoOptions";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 

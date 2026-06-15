@@ -20,7 +20,7 @@ type props = {
   timeOfDay: "breakfast" | "lunch" | "dinner";
 };
 
-export const ModalScanFood = ({ isOpen, onOpenChange, timeOfDay }: props) => {
+export const ModalScanFood = ({ isOpen, onOpenChange }: props) => {
   const { t } = useT("dashboard");
   const { onClose } = useDisclosure();
   const {
@@ -32,14 +32,9 @@ export const ModalScanFood = ({ isOpen, onOpenChange, timeOfDay }: props) => {
   const {
     isOpen: isOpenNewFood,
     onOpen: onOpenNewFood,
-    onOpenChange: onOpenChangeNewFood,
     onClose: onCloseNewFood,
   } = useDisclosure();
-  const {
-    isOpen: isOpenAI,
-    onOpen: onOpenAI,
-    onOpenChange: onOpenChangeAI,
-  } = useDisclosure();
+  const { isOpen: isOpenAI, onOpenChange: onOpenChangeAI } = useDisclosure();
 
   const closeAllModals = () => {
     onCloseBarCode();

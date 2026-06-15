@@ -1,4 +1,4 @@
-import ProfileMainComponent from "@/components/ProfileMainComponent/ProfileMainComponent";
+import ProfileMainComponent from "@/app/[lng]/profile/ProfileMainComponent/ProfileMainComponent";
 import { getQueryClient } from "@/get-query-client";
 import { authOptions } from "@/lib/auth";
 import {
