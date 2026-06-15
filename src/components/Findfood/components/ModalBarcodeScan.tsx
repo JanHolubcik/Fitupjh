@@ -41,20 +41,37 @@ const onError = (
 ) => {
   switch (error.kind) {
     case "permission-denied":
-      setError(t("modalBarcodeScan.cameraDenied", "Camera permission was denied."));
+      setError(
+        t("modalBarcodeScan.cameraDenied", "Camera permission was denied."),
+      );
       break;
     case "no-camera":
-      setError(t("modalBarcodeScan.noCamera", "No camera was found on this device."));
+      setError(
+        t("modalBarcodeScan.noCamera", "No camera was found on this device."),
+      );
       break;
     case "in-use":
-      setError(t("modalBarcodeScan.cameraInUse", "Camera is already in use by another application."));
+      setError(
+        t(
+          "modalBarcodeScan.cameraInUse",
+          "Camera is already in use by another application.",
+        ),
+      );
       break;
     case "unsupported":
-      setError(t("modalBarcodeScan.cameraUnsupported", "This browser does not support camera access."));
+      setError(
+        t(
+          "modalBarcodeScan.cameraUnsupported",
+          "This browser does not support camera access.",
+        ),
+      );
       break;
     default:
       setError(
-        t("modalBarcodeScan.cameraError", "An error occurred while accessing the camera: ") + error.message,
+        t(
+          "modalBarcodeScan.cameraError",
+          "An error occurred while accessing the camera: ",
+        ) + error.message,
       );
   }
 };
@@ -103,16 +120,15 @@ export const ModalBarcodeScan = (props: props) => {
 
       const parsedFood: Food = {
         id: Date.now(),
-        name: food.name,
         amount: `${weight}`,
+        ...food,
         calories: Math.round(food.calories_per_100g * multiplier),
-        fat: Number((food.fat * multiplier).toFixed(1)),
-        protein: Number((food.protein * multiplier).toFixed(1)),
-        sugar: Number((food.sugar * multiplier).toFixed(1)),
-        carbohydrates: Number((food.carbohydrates * multiplier).toFixed(1)),
-        fiber: Number((food.fiber * multiplier).toFixed(1)),
-        salt: Number((food.salt * multiplier).toFixed(1)),
-        imgUrl: food.imgUrl,
+        fat: Number(food.fat * multiplier),
+        protein: Number(food.protein * multiplier),
+        sugar: Number(food.sugar * multiplier),
+        carbohydrates: Number(food.carbohydrates * multiplier),
+        fiber: Number(food.fiber * multiplier),
+        salt: Number(food.salt * multiplier),
       };
 
       addToFoodObject(parsedFood, props.timeOfDay || getTimeOfDay());
@@ -157,7 +173,10 @@ export const ModalBarcodeScan = (props: props) => {
                   {t("modalBarcodeScan.title", "Scan Barcode")}
                 </h3>
                 <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
-                  {t("modalBarcodeScan.subtitle", "Align the barcode within the frame to fetch nutrition macros.")}
+                  {t(
+                    "modalBarcodeScan.subtitle",
+                    "Align the barcode within the frame to fetch nutrition macros.",
+                  )}
                 </p>
               </ModalHeader>
 
@@ -195,18 +214,33 @@ export const ModalBarcodeScan = (props: props) => {
                   {isPending ? (
                     <>
                       <p className="text-sm font-medium">
-                        {t("modalBarcodeScan.detectedWait", "We detected a barcode, please wait until your food is loaded.")}
+                        {t(
+                          "modalBarcodeScan.detectedWait",
+                          "We detected a barcode, please wait until your food is loaded.",
+                        )}
                       </p>
                       <Spinner />
                     </>
                   ) : (
                     <div className="space-y-1">
                       <h4 className="text-sm font-semibold text-slate-800 dark:text-zinc-200">
-                        {t("modalBarcodeScan.autoFetch", "We'll automatically fetch the macros. If the product isn't found, you can add it manually.")}
+                        {t(
+                          "modalBarcodeScan.autoFetch",
+                          "We'll automatically fetch the macros. If the product isn't found, you can add it manually.",
+                        )}
                       </h4>
                       {isChromeMobile && (
                         <p className="text-xs text-slate-500 dark:text-zinc-400 mt-2">
-                          <strong>{t("modalBarcodeScan.chromeUsers", "For Chrome users:")}</strong> {t("modalBarcodeScan.chromeBug", "Try pressing the zoom buttons while scanning if you have trouble with detection. Chrome's built-in scanner can be buggy, but zooming usually helps.")}
+                          <strong>
+                            {t(
+                              "modalBarcodeScan.chromeUsers",
+                              "For Chrome users:",
+                            )}
+                          </strong>{" "}
+                          {t(
+                            "modalBarcodeScan.chromeBug",
+                            "Try pressing the zoom buttons while scanning if you have trouble with detection. Chrome's built-in scanner can be buggy, but zooming usually helps.",
+                          )}
                         </p>
                       )}
                     </div>
@@ -244,7 +278,10 @@ export const ModalBarcodeScan = (props: props) => {
               </ModalHeader>
               <ModalBody>
                 <p>
-                  {t("modalBarcodeScan.notFoundPrompt", "The barcode you scanned was not found. Would you like to add it manually?")}
+                  {t(
+                    "modalBarcodeScan.notFoundPrompt",
+                    "The barcode you scanned was not found. Would you like to add it manually?",
+                  )}
                 </p>
               </ModalBody>
               <ModalFooter>

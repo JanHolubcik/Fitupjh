@@ -10,6 +10,8 @@ import {
 } from "@nextui-org/react";
 
 import { WebCamera } from "@shivantra/react-web-camera";
+import { useMutation } from "@tanstack/react-query";
+import { FoodImageAIOptions } from "@/lib/queriesOptions/FoodImageAIOptions";
 import { useT } from "next-i18next/client";
 
 // Import your hooks and types
@@ -56,8 +58,9 @@ export const ModalTakePicture = ({
   const { addToFoodObject } = useYourIntakeOperations();
 
   const [image, setImage] = useState<any | null>(null);
-  const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
+
+  const analyzeImageMutation = useMutation(FoodImageAIOptions());
 
   const handleCaptureAndAnalyze = async () => {
     if (cameraRef.current) {
@@ -66,28 +69,15 @@ export const ModalTakePicture = ({
       if (!photoBase64) return;
 
       setImage(photoBase64);
-      setLoading(true);
       setResult(null);
 
       try {
-        const response = await fetch("/api/foodImageAI", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ imageBase64: photoBase64 }),
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setResult(data);
-        } else {
-          console.error("Failed to analyze image");
-        }
+        const data = await analyzeImageMutation.mutateAsync(
+          photoBase64 as string,
+        );
+        setResult(data);
       } catch (error) {
         console.error("Error sending image for analysis:", error);
-      } finally {
-        setLoading(false);
       }
     }
   };
@@ -203,7 +193,7 @@ export const ModalTakePicture = ({
                     className="rounded-xl shadow-md max-w-[340px] w-full border border-zinc-200 dark:border-zinc-800"
                   />
 
-                  {loading && (
+                  {analyzeImageMutation.isPending && (
                     <div className="flex flex-col items-center gap-3 my-4">
                       <Spinner size="lg" color="primary" />
                       <p className="font-semibold text-zinc-600 dark:text-zinc-300">

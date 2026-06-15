@@ -138,6 +138,7 @@
     "toastPending": "Sending request...",
     "toastSuccess": "New food was saved successfully!",
     "toastError": "There was an error while trying to save new food.",
+    "toastBadValue": "Can't save your food record, grams shouldn't be lower than 1.",
     "barcodeLabel": "Barcode",
     "barcodePlaceholder": "Barcode number",
     "foodNameLabel": "Food name",

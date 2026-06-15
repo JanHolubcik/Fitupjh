@@ -14,7 +14,6 @@ import {
 
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
 import { useT } from "next-i18next/client";
 import { Formik, Form } from "formik";
 
@@ -72,37 +71,10 @@ export const ModalCreateFood = (props: props) => {
                 salt: Math.max(0, Number(values.salt) || 0),
               };
 
-              const res = fetch("/api/food", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(values),
-                credentials: "include",
-              }).finally(() => {
-                dispatch(setNewFoodBarCode(""));
-                addToFoodObject(parsedFoodData, getTimeOfDay());
-                setSubmitting(false);
-                resetForm();
-              });
-
-              toast.promise(
-                res,
-                {
-                  pending: t("modalCreateFood.toastPending"),
-                  success: t("modalCreateFood.toastSuccess"),
-                  error: t("modalCreateFood.toastError"),
-                },
-                {
-                  position: "bottom-left",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: false,
-                  pauseOnHover: true,
-                  draggable: true,
-                  theme: "dark",
-                },
-              );
+              dispatch(setNewFoodBarCode(""));
+              addToFoodObject(parsedFoodData, getTimeOfDay());
+              setSubmitting(false);
+              resetForm();
 
               props.onOpenChange();
               if (props.onCloseAll) {

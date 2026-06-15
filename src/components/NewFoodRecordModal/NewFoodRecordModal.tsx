@@ -16,6 +16,7 @@ import {
   MacroArray,
 } from "@/app/[lng]/constants/MacrosHelper";
 import ImageFromURL from "../ImageFromURL/ImageFromURL";
+import { toast } from "react-toastify";
 
 type props = {
   isOpen: boolean;
@@ -47,16 +48,22 @@ export const NewFoodRecordModal = ({
   const ratio = grams / (initialGrams || 1);
 
   const handleSave = (onClose: () => void) => {
+    if (grams < 1) {
+      toast.error(t("modalCreateFood.toastBadValue"), {
+        position: "bottom-left",
+      });
+      return;
+    }
     const updatedFood: Food = {
       ...food,
       amount: `${grams}`,
-      calories: Math.round(food.calories * ratio),
-      protein: Number(food.protein * ratio),
-      carbohydrates: Number(food.carbohydrates * ratio),
-      fat: Number(food.fat * ratio),
-      sugar: Number(food.sugar * ratio),
-      fiber: Number(food.fiber * ratio),
-      salt: Number(food.salt * ratio),
+      calories: Math.round(food.calories),
+      protein: Number(food.protein),
+      carbohydrates: Number(food.carbohydrates),
+      fat: Number(food.fat),
+      sugar: Number(food.sugar),
+      fiber: Number(food.fiber),
+      salt: Number(food.salt),
     };
     addToFoodObject(updatedFood, timeOfDay);
     onClose();
@@ -106,7 +113,9 @@ export const NewFoodRecordModal = ({
                   <div className="shrink-0 w-[120px] h-[120px]">
                     <ImageFromURL
                       url={food.imgUrl}
-                      macroName={food.name}
+                      macroName={
+                        food.originalName ? food.originalName : food.name
+                      }
                       width={120}
                       height={120}
                     />
@@ -121,7 +130,7 @@ export const NewFoodRecordModal = ({
                             : `${macro}Short`;
                         const rawValue = food[macro as keyof Food] as number;
                         if (!rawValue) return null;
-                        const calculatedValue = (rawValue * ratio).toFixed(2);
+                        const calculatedValue = (rawValue * ratio).toFixed(1);
 
                         return (
                           <div

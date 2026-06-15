@@ -7,7 +7,6 @@ import {
   ModalFooter,
   Button,
   Input,
-  Image,
 } from "@nextui-org/react";
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 import { Food } from "@/types/Types";
@@ -43,7 +42,8 @@ export const EditFoodModal = ({
   }, [food, isOpen]);
 
   if (!food) return null;
-
+  //create const for component only
+  const foodComponent = { ...food };
   const initialGrams = parseFloat(food.amount) || 100;
   const ratio = grams / (initialGrams || 1);
 
@@ -98,7 +98,7 @@ export const EditFoodModal = ({
                       {t("editFoodModal.calories")}
                     </span>
                     <span className="font-bold text-zinc-900 dark:text-zinc-200">
-                      {Math.round(food.calories * ratio)} kcal
+                      {Math.round(foodComponent.calories * ratio)} kcal
                     </span>
                   </div>
 
@@ -107,10 +107,14 @@ export const EditFoodModal = ({
                   <div className="flex flex-row gap-2 items-start w-full">
                     <div className="shrink-0 w-[120px] h-[120px]">
                       <ImageFromURL
-                        url={food.imgUrl}
+                        url={foodComponent.imgUrl}
                         width={120}
                         height={120}
-                        macroName={food.name}
+                        macroName={
+                          foodComponent.originalName
+                            ? foodComponent.originalName
+                            : food.name
+                        }
                       />
                     </div>
 
@@ -121,7 +125,9 @@ export const EditFoodModal = ({
                             macro === "carbohydrates"
                               ? "carbsShort"
                               : `${macro}Short`;
-                          const rawValue = food[macro as keyof Food] as number;
+                          const rawValue = foodComponent[
+                            macro as keyof Food
+                          ] as number;
                           if (macro === "sugar" && !rawValue) return null;
                           const calculatedValue = (rawValue * ratio).toFixed(1);
 
@@ -155,6 +161,7 @@ export const EditFoodModal = ({
                 endContent={<span className="text-zinc-500 text-sm">g</span>}
                 variant="bordered"
                 autoFocus
+                min={1}
                 classNames={{
                   inputWrapper:
                     "font-semibold border-zinc-300 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500 focus-within:!border-zinc-500 dark:focus-within:!border-zinc-400",

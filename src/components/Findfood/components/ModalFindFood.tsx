@@ -104,7 +104,7 @@ export const ModalFindFood = (props: props) => {
       return () => clearTimeout(timer);
     }
   }, [props.isOpen]);
-
+  console.log();
   const sm = useIsSm();
   return (
     <>
@@ -192,17 +192,10 @@ export const ModalFindFood = (props: props) => {
                           AddFood={() => {
                             onOpenNew();
                             setSelectedFood({
+                              ...key,
                               id: id,
-                              name: key.name,
                               calories: key.calories_per_100g,
                               amount: grams.toString(),
-                              fat: key.fat,
-                              protein: key.protein,
-                              sugar: key.sugar,
-                              carbohydrates: key.carbohydrates,
-                              fiber: key.fiber,
-                              salt: key.salt,
-                              imgUrl: key.imgUrl,
                             });
                           }}
                           onClose={onClose}

@@ -138,6 +138,7 @@
     "toastPending": "Odosielanie požiadavky...",
     "toastSuccess": "Nový záznam bolo úspešne uložené!",
     "toastError": "Pri ukladaní nového jedla sa vyskytla chyba.",
+    "toastBadValue": "Záznam nie je možné uložit, gramy by nemali byť menšie ako 1.",
     "barcodeLabel": "Čiarový kód",
     "barcodePlaceholder": "Číslo čiarového kódu",
     "foodNameLabel": "Názov jedla",

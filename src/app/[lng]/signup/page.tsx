@@ -7,6 +7,9 @@ import { signupSchema } from "@/lib/validationShemas/signupValidationSchema";
 import { useT } from "next-i18next/client";
 import { CardUniversal } from "@/components/common";
 import { useFormik } from "formik";
+import { useMutation } from "@tanstack/react-query";
+import { SignupOptions } from "@/lib/queriesOptions/SignupOptions";
+import { LanguagePicker } from "@/components/Navbar/components/LanguagePicker";
 
 const customInputStyles = {
   inputWrapper:
@@ -21,6 +24,8 @@ export default function Signup() {
   const params = useParams();
   const lng = params?.lng || "en";
   const { t } = useT("signup");
+
+  const signupMutation = useMutation(SignupOptions());
 
   const formik = useFormik({
     initialValues: {
@@ -53,20 +58,8 @@ export default function Signup() {
       setStatus(null);
 
       try {
-        const res = await fetch("/api/signup", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(values),
-        });
-
-        const data = await res.json();
-
-        if (res.ok) {
-          router.push(`/${lng}/login`);
-        } else {
-          setStatus(data.error ? t(data.error) : t("errors.serverError"));
-          setSubmitting(false);
-        }
+        await signupMutation.mutateAsync(values);
+        router.push(`/${lng}/login`);
       } catch (err) {
         setStatus(t("errors.serverError"));
         setSubmitting(false);
@@ -155,6 +148,10 @@ export default function Signup() {
                 errorMessage={formik.touched.weight && formik.errors.weight}
                 isDisabled={formik.isSubmitting}
               />
+            </div>
+
+            <div className="block sm:hidden">
+              <LanguagePicker />
             </div>
 
             {formik.status && (

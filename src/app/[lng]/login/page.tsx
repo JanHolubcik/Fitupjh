@@ -7,6 +7,7 @@ import PulsingButton from "@/components/PulsingButton/PulsingButton";
 import { useT } from "next-i18next/client";
 import { CardUniversal } from "@/components/common";
 import { useFormik } from "formik";
+import { LanguagePicker } from "@/components/Navbar/components/LanguagePicker";
 
 const customInputStyles = {
   inputWrapper:
@@ -82,7 +83,9 @@ export default function Login() {
               isDisabled={formik.isSubmitting}
               required
             />
-
+            <div className="block sm:hidden">
+              <LanguagePicker />
+            </div>
             {formik.status && (
               <div className="bg-red-500/10 border border-red-500/50 text-red-400 text-sm font-medium rounded-lg p-3 text-center">
                 {formik.status}

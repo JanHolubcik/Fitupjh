@@ -98,15 +98,13 @@ const NavbarComponent = () => {
     }
 
     return (
-      <Button
-        as={Link}
-        href="/login"
-        variant="bordered"
+      <Link
+        href={`/${lng}/login`}
         size="sm"
-        className="hidden sm:flex border-black/20 dark:border-white/20 text-black dark:text-white hover:bg-black/5 dark:hover:bg-white/10"
+        className="hidden sm:flex font-medium border-2 text-xs  dark:text-white border-zinc-600 rounded-lg p-[6px]"
       >
         {t("signIn")}
-      </Button>
+      </Link>
     );
   };
 
@@ -168,15 +166,15 @@ const NavbarComponent = () => {
             {showSession()}
 
             {status !== "authenticated" && (
-              <Button
+              <Link
                 as={Link}
-                href="/signup"
+                href={`/${lng}/signup`}
                 color="primary"
                 size="sm"
-                className="hidden sm:flex font-medium"
+                className="hidden sm:flex bg-primary font-medium  text-xs text-white  rounded-lg w-22 p-[7px]"
               >
                 {t("signUp")}
-              </Button>
+              </Link>
             )}
           </div>
         </NavbarContent>
@@ -257,7 +255,7 @@ const NavbarComponent = () => {
             </Link>
 
             <Link
-              href="/login"
+              href={`/${lng}/login`}
               className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
                 pathname === "/login"
                   ? "text-primary"
@@ -271,11 +269,11 @@ const NavbarComponent = () => {
             </Link>
 
             <Link
-              href="/signup"
+              href={`/${lng}/signup`}
               className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
                 pathname === "/signup"
                   ? "text-primary"
-                  : "text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-zinc-200"
+                  : "text-zinc-600  dark:text-zinc-400 hover:text-black dark:hover:text-zinc-200"
               }`}
             >
               <FaUserPlus className="text-lg" />
