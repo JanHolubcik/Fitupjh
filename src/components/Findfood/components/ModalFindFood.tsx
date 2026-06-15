@@ -73,6 +73,7 @@ export const ModalFindFood = (props: props) => {
   const {
     isOpen: isOpenBarScan,
     onOpen: onOpenBarScan,
+    onClose: onCloseBarScan,
     onOpenChange: onOpenChangeBarScan,
   } = useDisclosure();
 
@@ -225,6 +226,7 @@ export const ModalFindFood = (props: props) => {
                         isOpen={isOpenBarScan}
                         onOpenChange={onOpenChangeBarScan}
                         timeOfDay={getTimeOfDay()}
+                        onClose={onCloseBarScan}
                       />
                     </>
                   )}

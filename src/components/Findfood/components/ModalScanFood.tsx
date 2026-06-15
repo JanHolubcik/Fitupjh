@@ -85,10 +85,8 @@ export const ModalScanFood = ({ isOpen, onOpenChange, onClose }: props) => {
                     {t("modalScanFood.disclaimerText")}
                   </p>
                 </div>
-              </ModalBody>
-              <ModalFooter className="flex-col px-6 py-4 border-t border-zinc-100 dark:border-zinc-800">
                 <ButtonGroup
-                  className="w-full shadow-sm"
+                  className="w-full shadow-sm pt-4"
                   color="primary"
                   size="lg"
                 >
@@ -99,6 +97,16 @@ export const ModalScanFood = ({ isOpen, onOpenChange, onClose }: props) => {
                     {t("modalScanFood.useAIBtn")}
                   </Button>
                 </ButtonGroup>
+              </ModalBody>
+              <ModalFooter className="p-1 m-3">
+                <Button
+                  size="sm"
+                  color="primary"
+                  className="bg-red-600 text-white text-sm font-medium p-5 mt-2"
+                  onPress={onClose}
+                >
+                  {t("close")}
+                </Button>
               </ModalFooter>
             </>
           )}

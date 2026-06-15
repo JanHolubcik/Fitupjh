@@ -1,7 +1,11 @@
 import { FoodClass } from "@/models/Food";
 import { useMutation } from "@tanstack/react-query";
 
-type ScanResponse = FoodClass & { notFound?: boolean; barcode?: string };
+type ScanResponse = FoodClass & {
+  notFound?: boolean;
+  barcode?: string;
+  originalName?: string;
+};
 
 export const useScanProduct = (onProductNotFound: () => void) => {
   return useMutation<ScanResponse, Error, string>({

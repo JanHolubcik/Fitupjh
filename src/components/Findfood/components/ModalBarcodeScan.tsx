@@ -25,6 +25,7 @@ import { setNewFoodBarCode } from "@/features/savedFoodslice/yourIntakeSlice";
 import { getTimeOfDay } from "@/app/[lng]/constants/FunctionsHelper";
 import { useT } from "next-i18next/client";
 import { ModalCreateFood } from "./ModalCreateFood";
+import { NewFoodRecordModal } from "@/components/NewFoodRecordModal/NewFoodRecordModal";
 
 type props = {
   onOpenChange: () => void;
@@ -79,6 +80,7 @@ const onError = (
 
 export const ModalBarcodeScan = (props: props) => {
   const dispatch = useDispatch();
+  const [selectedFood, setSelectedFood] = useState<Food>();
   const [isErrorScan, setISErrorScan] = useState("");
   const { t } = useT("dashboard");
 
@@ -86,6 +88,11 @@ export const ModalBarcodeScan = (props: props) => {
 
   const { addToFoodObject } = useYourIntakeOperations();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const {
+    isOpen: isOpenNewRecord,
+    onOpen: onOpenNewRecord,
+    onOpenChange: onOpenChangeNewRecord,
+  } = useDisclosure();
 
   const { mutate: scanProduct, isPending, data } = useScanProduct(onOpen);
 
@@ -120,6 +127,7 @@ export const ModalBarcodeScan = (props: props) => {
       if (!data.name) {
         return;
       }
+      const originalName = data.originalName;
       const food = (data as FoodClass) || undefined;
 
       const weight = food.ProductWeight || 100;
@@ -136,10 +144,10 @@ export const ModalBarcodeScan = (props: props) => {
         carbohydrates: Number(food.carbohydrates * multiplier),
         fiber: Number(food.fiber * multiplier),
         salt: Number(food.salt * multiplier),
+        originalName: originalName,
       };
-
-      addToFoodObject(parsedFood, props.timeOfDay || getTimeOfDay());
-      props.onCloseAll && props.onCloseAll();
+      setSelectedFood(parsedFood);
+      onOpenChangeNewRecord();
     }
   }, [data]);
 
@@ -311,6 +319,13 @@ export const ModalBarcodeScan = (props: props) => {
       <ModalCreateFood
         isOpen={isOpenNewFood}
         onOpenChange={onOpenChangeNewFood}
+        onCloseAll={props.onCloseAll}
+      />
+      <NewFoodRecordModal
+        isOpen={isOpenNewRecord}
+        onOpenChange={onOpenChangeNewRecord}
+        food={selectedFood}
+        timeOfDay={props.timeOfDay ?? getTimeOfDay()}
         onCloseAll={props.onCloseAll}
       />
     </>

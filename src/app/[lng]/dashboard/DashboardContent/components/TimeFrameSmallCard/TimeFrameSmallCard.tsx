@@ -152,6 +152,7 @@ export const TimeFrameSmallCard = (props: props) => {
         isOpen={QRisOpen}
         onOpenChange={QRonOpenChange}
         timeOfDay={props.timeFrame && getTimeOfDay()}
+        onClose={QRonClose}
       />
       <ModalCreateFood
         isOpen={isOpenNewFood}

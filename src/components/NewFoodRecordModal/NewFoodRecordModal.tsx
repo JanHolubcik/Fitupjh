@@ -23,6 +23,7 @@ type props = {
   onOpenChange: (isOpen: boolean) => void;
   food: Food | undefined;
   timeOfDay: "breakfast" | "lunch" | "dinner";
+  onCloseAll?: () => void;
 };
 
 export const NewFoodRecordModal = ({
@@ -30,6 +31,7 @@ export const NewFoodRecordModal = ({
   onOpenChange,
   food,
   timeOfDay,
+  onCloseAll,
 }: props) => {
   const [grams, setGrams] = useState<number>(100);
   const { addToFoodObject } = useYourIntakeOperations();
@@ -67,6 +69,7 @@ export const NewFoodRecordModal = ({
     };
     addToFoodObject(updatedFood, timeOfDay);
     onClose();
+    onCloseAll && onCloseAll();
   };
 
   return (
