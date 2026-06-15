@@ -23,8 +23,11 @@ import { NewFoodRecordModal } from "../NewFoodRecordModal/NewFoodRecordModal";
 import { ModalCreateFood } from "../Findfood/components/ModalCreateFood";
 import { useT } from "next-i18next/client";
 import { ModalScanFood } from "../Findfood/components/ModalScanFood";
+import { usePathname } from "next/navigation";
 
 export const InputSearchBar = () => {
+  const pathname = usePathname();
+  const currentLocale = pathname.split("/")[1] || "en";
   const [searchTerm, setSearchTerm] = useState("");
   const { t } = useT("dashboard");
 
@@ -35,7 +38,7 @@ export const InputSearchBar = () => {
   const debouncedSearchTerm = useDebounce(searchTerm, 500, setLoading);
   const [selectedFood, setSelectedFood] = useState<Food>();
   const searchFoodMutation = useMutation(
-    getSearchedFoodOptions(debouncedSearchTerm),
+    getSearchedFoodOptions(debouncedSearchTerm, currentLocale),
   );
 
   useEffect(() => {

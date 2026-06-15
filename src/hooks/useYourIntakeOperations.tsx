@@ -113,6 +113,7 @@ const useYourIntakeOperations = () => {
           carbohydrates: carbs * coefficient,
           fiber: fiber * coefficient,
           salt: salt * coefficient,
+          originalName: originalName && "",
           imgUrl,
         },
       }),

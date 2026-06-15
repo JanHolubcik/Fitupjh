@@ -2,7 +2,6 @@ import { addNewFood, getFood } from "@/lib/food-db";
 import { FoodSchema } from "@/lib/validationShemas/foodValidationSchema";
 import { NextRequest, NextResponse } from "next/server";
 import { withAuth } from "../functions";
-import { cookies } from "next/headers";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -34,8 +33,8 @@ export async function GET(req: NextRequest) {
   return withAuth(req, async () => {
     const { searchParams } = req.nextUrl;
     const searchTerm = searchParams.get("searchTerm") || "";
-    const cookieStore = cookies();
-    const language = (await cookieStore).get("i18next")?.value || "en";
+    const language = searchParams.get("currentLocale") || "en";
+
     try {
       const foodData = await getFood(searchTerm, language);
 

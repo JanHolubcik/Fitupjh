@@ -22,6 +22,7 @@ import { getSearchedFoodOptions } from "@/lib/queriesOptions/GetSearchedFoodOpti
 import { NewFoodRecordModal } from "@/components/NewFoodRecordModal/NewFoodRecordModal";
 import { useT } from "next-i18next/client";
 import { ModalScanFood } from "./ModalScanFood";
+import { usePathname } from "next/navigation";
 
 type props = {
   onOpenChange: () => void;
@@ -46,6 +47,8 @@ function useDebounce<T>(
 }
 
 export const ModalFindFood = (props: props) => {
+  const pathname = usePathname();
+  const currentLocale = pathname.split("/")[1] || "en";
   const { t } = useT("dashboard");
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -66,7 +69,7 @@ export const ModalFindFood = (props: props) => {
   const debouncedSearchTerm = useDebounce(searchTerm, 500, setLoading);
 
   const searchFoodMutation = useMutation(
-    getSearchedFoodOptions(debouncedSearchTerm),
+    getSearchedFoodOptions(debouncedSearchTerm, currentLocale),
   );
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
