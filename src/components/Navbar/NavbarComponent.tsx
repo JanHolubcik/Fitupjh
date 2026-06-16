@@ -17,7 +17,6 @@ import {
 
 import imagepfp3 from "../../../public/pfps/3.png";
 
-import { signOut, useSession } from "next-auth/react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { InputSearchBar } from "../InputSearchBar/InputSearchBar";
 import { LanguagePicker } from "./components/LanguagePicker";
@@ -26,26 +25,26 @@ import { useT } from "next-i18next/client";
 import {
   FaChartArea,
   FaSignOutAlt,
-  FaUserAlt,
   FaHome,
   FaSignInAlt,
   FaUserPlus,
   FaPlus,
 } from "react-icons/fa";
 import { ModalFindFood } from "../Findfood/components/ModalFindFood";
+import { authClient } from "@/lib/auth-client";
+import { AuthSessionData } from "@/lib/auth";
 
-const NavbarComponent = () => {
+const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const pathname = usePathname();
   const { t } = useT("navbar");
-  const { status, data } = useSession();
   const router = useRouter();
 
   const params = useParams();
   const lng = params?.lng || "en";
 
   const navigationProperties = [
-    ...(status === "authenticated"
+    ...(data
       ? [
           { id: 1, href: `/${lng}/dashboard`, description: t("dashboard") },
           { id: 2, href: `/${lng}/profile`, description: t("profile") },
@@ -54,7 +53,7 @@ const NavbarComponent = () => {
   ];
 
   const showSession = () => {
-    if (status === "authenticated") {
+    if (data) {
       return (
         <Dropdown className="hidden sm:block" placement="bottom-end">
           <DropdownTrigger className="hidden sm:block">
@@ -87,7 +86,13 @@ const NavbarComponent = () => {
               className="text-danger"
               color="danger"
               onPress={() =>
-                signOut({ redirect: false }).then(() => router.push("/"))
+                authClient.signOut({
+                  fetchOptions: {
+                    onSuccess: () => {
+                      router.push("/login");
+                    },
+                  },
+                })
               }
             >
               {t("logout")}
@@ -117,11 +122,7 @@ const NavbarComponent = () => {
       >
         <NavbarContent
           justify="start"
-          className={
-            status === "authenticated"
-              ? "hidden sm:flex flex-grow-0"
-              : "flex flex-grow-0"
-          }
+          className={data ? "hidden sm:flex flex-grow-0" : "flex flex-grow-0"}
         >
           <NavbarBrand className="gap-5">
             <Link href="/" className="gap-2 flex">
@@ -153,7 +154,7 @@ const NavbarComponent = () => {
         </NavbarContent>
 
         <NavbarContent className="sm:hidden" justify="start"></NavbarContent>
-        {status === "authenticated" && pathname === `/${lng}/dashboard` && (
+        {data && pathname === `/${lng}/dashboard` && (
           <NavbarContent justify="end" className="h-20 sm:flex hidden">
             <InputSearchBar />
           </NavbarContent>
@@ -165,7 +166,7 @@ const NavbarComponent = () => {
             <ThemeSwitcher />
             {showSession()}
 
-            {status !== "authenticated" && (
+            {!data && (
               <Link
                 as={Link}
                 href={`/${lng}/signup`}
@@ -179,7 +180,7 @@ const NavbarComponent = () => {
           </div>
         </NavbarContent>
       </Navbar>
-      {status === "authenticated" && (
+      {data && (
         <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/70 dark:bg-zinc-950/70 backdrop-blur-lg border-t border-black/10 dark:border-white/10 pb-[env(safe-area-inset-bottom)]">
           <div className="flex flex-row  items-center h-16">
             {pathname === `/${lng}/dashboard` && (
@@ -216,7 +217,13 @@ const NavbarComponent = () => {
                   : "text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-zinc-200"
               }`}
             >
-              <FaUserAlt className="text-lg" />
+              <Avatar
+                isBordered
+                color="primary"
+                size="sm"
+                src={data?.user?.image || imagepfp3.src}
+                className="cursor-pointer transition-transform hover:scale-105 shrink-0"
+              />
               <span className="text-[10px] font-medium tracking-wide">
                 {t("profile")}
               </span>
@@ -224,9 +231,7 @@ const NavbarComponent = () => {
 
             <Link
               className="flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors cursor-pointer text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-500"
-              onPress={() =>
-                signOut({ redirect: false }).then(() => router.push("/"))
-              }
+              onPress={() => authClient.signOut()}
             >
               <FaSignOutAlt className="text-lg" />
               <span className="text-[10px] font-medium tracking-wide">
@@ -237,7 +242,7 @@ const NavbarComponent = () => {
         </div>
       )}
 
-      {status === "unauthenticated" && (
+      {!data && (
         <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/70 dark:bg-zinc-950/70 backdrop-blur-lg border-t border-black/10 dark:border-white/10 pb-[env(safe-area-inset-bottom)]">
           <div className="flex flex-row items-center h-16">
             <Link

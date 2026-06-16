@@ -1,4 +1,3 @@
-import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 import {
   Button,
   Modal,
@@ -86,13 +85,9 @@ export const ModalBarcodeScan = (props: props) => {
 
   prepareZXingModule({ fireImmediately: true });
 
-  const { addToFoodObject } = useYourIntakeOperations();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const {
-    isOpen: isOpenNewRecord,
-    onOpen: onOpenNewRecord,
-    onOpenChange: onOpenChangeNewRecord,
-  } = useDisclosure();
+  const { isOpen: isOpenNewRecord, onOpenChange: onOpenChangeNewRecord } =
+    useDisclosure();
 
   const { mutate: scanProduct, isPending, data } = useScanProduct(onOpen);
 

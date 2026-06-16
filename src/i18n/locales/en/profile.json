@@ -28,5 +28,20 @@
   "saveTargets": "Save Targets",
   "dangerZone": "Danger Zone",
   "deleteAccount": "Delete Account",
-  "deleteAccountNotice": "Permanently delete your account, biometrics, and all scanned food data. This cannot be undone."
+  "deleteAccountNotice": "Permanently delete your account, biometrics, and all scanned food data. This cannot be undone.",
+  "accountDetails": "Account Details",
+  "accountDetailsDesc": "Update your avatar and display name.",
+  "avatarUrl": "Avatar Image URL",
+  "displayName": "Display Name",
+  "saveChanges": "Save Changes",
+  "changeEmail": "Change Email",
+  "changeEmailDesc": "Update the email address associated with your account.",
+  "currentEmail": "Current Email",
+  "newEmail": "New Email",
+  "updateEmail": "Update Email",
+  "changePassword": "Change Password",
+  "changePasswordDesc": "Ensure your account is using a long, random password to stay secure.",
+  "currentPassword": "Current Password",
+  "newPassword": "New Password",
+  "updatePassword": "Update Password"
 }

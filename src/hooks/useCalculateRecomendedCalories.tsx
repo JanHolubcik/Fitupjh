@@ -1,23 +1,28 @@
 import { calculateCaloriesSum } from "@/app/[lng]/constants/FunctionsHelper";
-import { UserInfoOptions } from "@/lib/queriesOptions/UserInfoOptions";
+import { authClient } from "@/lib/auth-client";
 
 import {
   ACTIVITY_MULTIPLIERS,
   GOAL_MULTIPLIERS,
   FoodType,
 } from "@/types/Types";
-import { useSuspenseQuery } from "@tanstack/react-query";
+
 import { useMemo } from "react";
 
 export const useCalculateRecommendedCalories = (savedFood: FoodType | null) => {
-  const { data: user } = useSuspenseQuery(UserInfoOptions());
+  const { data } = authClient.useSession();
+  const user = data?.user;
 
+  const activityKey = (user?.activityLevel ||
+    "lightlyActive") as keyof typeof ACTIVITY_MULTIPLIERS;
+  const goalKey = (user?.goal ||
+    "maintainWeight") as keyof typeof GOAL_MULTIPLIERS;
   const recommendedCaloriesValue = useMemo(() => {
     if (user?.weight && user.height) {
       const bmr = 10 * user.weight + 6.25 * user.height - 5 * 25 + 5;
-      const multiplier = ACTIVITY_MULTIPLIERS[user.activityLevel] || 1.2;
+      const multiplier = ACTIVITY_MULTIPLIERS[activityKey] || 1.2;
       const tdee = bmr * multiplier;
-      return Math.round(tdee * GOAL_MULTIPLIERS[user.goal]);
+      return Math.round(tdee * GOAL_MULTIPLIERS[goalKey]);
     } else {
       return 0;
     }

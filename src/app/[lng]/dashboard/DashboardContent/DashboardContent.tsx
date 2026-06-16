@@ -3,7 +3,7 @@
 import { CalorieCard } from "./components/CalorieCard/CalorieCard";
 
 import useLoadSavedFood from "@/hooks/useLoadSavedFood";
-import { useSession } from "next-auth/react";
+
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 
 import { AccordionTimeFrame } from "./components/AccordionTimeFrame/AccordionTimeFrame";
@@ -18,11 +18,12 @@ import {
   AccordionTimeFrameSkeleton,
   MyGraphSkeleton,
 } from "./components/Skeletons";
+import { authClient } from "@/lib/auth-client";
 
 export const DashboardContent = () => {
-  const { data } = useSession();
+  const { data: session } = authClient.useSession();
   const { isFetched } = useLoadSavedFood({
-    userId: data?.user?.id,
+    userId: session?.user?.id,
     daysAgo: 10,
   });
   const { savedFood } = useYourIntakeOperations();

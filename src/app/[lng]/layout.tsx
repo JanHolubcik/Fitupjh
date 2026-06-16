@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import "reflect-metadata";
 import React from "react";
+
 import {
   getT,
   getResources,
@@ -12,9 +13,7 @@ import {
 import { I18nProvider } from "next-i18next/client";
 
 import NavbarComponent from "@/components/Navbar/NavbarComponent";
-import { authOptions } from "@/lib/auth";
 import Providers from "./providers";
-import { getServerSession } from "next-auth";
 import Script from "next/script";
 import i18nConfig from "@/i18n.config";
 
@@ -31,6 +30,9 @@ export async function generateStaticParams() {
   return generateI18nStaticParams();
 }
 
+import { headers } from "next/headers";
+import { auth } from "@/lib/auth";
+
 export default async function RootLayout({
   children,
   params,
@@ -41,7 +43,11 @@ export default async function RootLayout({
   const { lng } = await params;
   const { i18n } = await getT();
   const resources = getResources(i18n);
-  const session = await getServerSession(authOptions);
+
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  console.log(session?.user.name);
   initServerI18next;
   return (
     <html lang={lng} suppressHydrationWarning>
@@ -70,9 +76,9 @@ export default async function RootLayout({
         />
       </head>
       <body className={inter.className}>
-        <Providers session={session}>
+        <Providers>
           <I18nProvider language={lng} resources={resources}>
-            <NavbarComponent />
+            <NavbarComponent data={session} />
 
             <main className="pb-10 sm:pb-0">{children}</main>
           </I18nProvider>

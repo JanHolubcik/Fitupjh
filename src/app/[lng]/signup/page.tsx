@@ -10,6 +10,7 @@ import { useFormik } from "formik";
 import { useMutation } from "@tanstack/react-query";
 import { SignupOptions } from "@/lib/queriesOptions/SignupOptions";
 import { LanguagePicker } from "@/components/Navbar/components/LanguagePicker";
+import { authClient } from "@/lib/auth-client";
 
 const customInputStyles = {
   inputWrapper:
@@ -58,8 +59,34 @@ export default function Signup() {
       setStatus(null);
 
       try {
-        await signupMutation.mutateAsync(values);
-        router.push(`/${lng}/login`);
+        //await signupMutation.mutateAsync(values);
+
+        const { data, error } = await authClient.signUp.email(
+          {
+            email: values.userEmail, // user email address
+            password: values.password, // user password -> min 8 characters by default
+            name: values.username, // user display name
+            image: "", // User image URL (optional)
+            callbackURL: "/dashboard", // A URL to redirect to after the user verifies their email (optional)
+            weight: Number(values.weight),
+            height: Number(values.height),
+          },
+          {
+            onRequest: (ctx) => {
+              //show loading
+            },
+            onSuccess: (ctx) => {
+              //redirect to the dashboard or sign in page
+            },
+            onError: (ctx) => {},
+          },
+        );
+
+        if (error) {
+          setStatus(error.message || t("errors.serverError"));
+          setSubmitting(false);
+          return;
+        }
       } catch (err) {
         setStatus(t("errors.serverError"));
         setSubmitting(false);

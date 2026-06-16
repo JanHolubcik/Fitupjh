@@ -30,11 +30,8 @@ export const TimeFrameSmallCard = (props: props) => {
   const { removeFromSavedFood } = useYourIntakeOperations();
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const { t } = useT("dashboard");
-  const {
-    isOpen: isOpenNewFood,
-    onOpen: onOpenNewFood,
-    onOpenChange: onOpenChangeNewFood,
-  } = useDisclosure();
+  const { isOpen: isOpenNewFood, onOpenChange: onOpenChangeNewFood } =
+    useDisclosure();
   const {
     isOpen: QRisOpen,
     onOpenChange: QRonOpenChange,

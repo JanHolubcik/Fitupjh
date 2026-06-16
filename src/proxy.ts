@@ -1,13 +1,12 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { getToken } from "next-auth/jwt";
 import { createProxy } from "next-i18next/proxy";
 import i18nConfig from "./i18n.config";
+import { auth } from "@/lib/auth"; // Import your Better Auth instance
 
 const i18nProxy = createProxy(i18nConfig);
 
 const notLoggedInProtectedRoutes = ["/dashboard", "/profile"];
-
 const LoggedInProtectedRoutes = ["/login", "/signup"];
 
 export async function proxy(req: NextRequest) {
@@ -25,24 +24,26 @@ export async function proxy(req: NextRequest) {
       pathname.match(new RegExp(`^/[^/]+${route}`)),
   );
 
-  if (isNotLoggedInProtected) {
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-
-    if (!token) {
-      const signInUrl = new URL("/login", req.url);
-      signInUrl.searchParams.set("callbackUrl", req.url);
-      return NextResponse.redirect(signInUrl);
-    }
+  if (!isNotLoggedInProtected && !isLoggedInProtectedRoutes) {
+    return i18nProxy(req);
   }
 
-  if (isLoggedInProtectedRoutes) {
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const session = await auth.api.getSession({
+    headers: req.headers,
+  });
 
-    if (token) {
-      const signInUrl = new URL("/dashboard", req.url);
-      signInUrl.searchParams.set("callbackUrl", req.url);
-      return NextResponse.redirect(signInUrl);
-    }
+  const isAuthenticated = !!session?.user;
+
+  if (isNotLoggedInProtected && !isAuthenticated) {
+    const signInUrl = new URL("/login", req.url);
+
+    signInUrl.searchParams.set("callbackUrl", req.url);
+    return NextResponse.redirect(signInUrl);
+  }
+
+  if (isLoggedInProtectedRoutes && isAuthenticated) {
+    const dashboardUrl = new URL("/dashboard", req.url);
+    return NextResponse.redirect(dashboardUrl);
   }
 
   return i18nProxy(req);

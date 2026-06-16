@@ -2,12 +2,13 @@
 
 import { useRouter, useParams } from "next/navigation";
 import { Link, Input, Spinner, CardHeader, CardBody } from "@nextui-org/react";
-import { signIn } from "next-auth/react";
+
 import PulsingButton from "@/components/PulsingButton/PulsingButton";
 import { useT } from "next-i18next/client";
 import { CardUniversal } from "@/components/common";
 import { useFormik } from "formik";
 import { LanguagePicker } from "@/components/Navbar/components/LanguagePicker";
+import { authClient } from "@/lib/auth-client";
 
 const customInputStyles = {
   inputWrapper:
@@ -30,21 +31,31 @@ export default function Login() {
     onSubmit: async (values, { setStatus, setSubmitting }) => {
       setStatus(null);
 
-      const res = await signIn("credentials", {
-        email: values.email,
-        password: values.password,
-        redirect: false,
-      });
+      const { data, error } = await authClient.signIn.email(
+        {
+          email: values.email,
+          password: values.password,
 
-      if (res?.error) {
+          callbackURL: "/dashboard",
+        },
+        {
+          onRequest: (ctx) => {
+            //show loading
+          },
+          onSuccess: (ctx) => {
+            //redirect to the dashboard or sign in page
+          },
+          onError: (ctx) => {},
+        },
+      );
+
+      if (error) {
         setStatus(t("invalidEmailPassword"));
         setSubmitting(false);
         return;
       }
 
-      if (res?.ok) {
-        return router.push(`/${lng}/dashboard`);
-      }
+      return router.push(`/${lng}/dashboard`);
     },
   });
 

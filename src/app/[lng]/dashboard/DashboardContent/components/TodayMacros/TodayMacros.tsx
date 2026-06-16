@@ -20,25 +20,28 @@ import {
 } from "@/app/[lng]/constants/MacrosHelper";
 import { useT } from "next-i18next/client";
 import { CardUniversal } from "@/components/common";
-import { UserInfoOptions } from "@/lib/queriesOptions/UserInfoOptions";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { authClient } from "@/lib/auth-client";
 
 type props = {
   savedFood: FoodType;
 };
 
 export const TodayMacros = ({ savedFood }: props) => {
-  const { data: user } = useSuspenseQuery(UserInfoOptions());
-
+  const { data } = authClient.useSession();
+  const user = data?.user;
   const { t } = useT("dashboard");
+  const activityKey = (user?.activityLevel ||
+    "lightlyActive") as keyof typeof ACTIVITY_MULTIPLIERS;
+  const goalKey = (user?.goal ||
+    "maintainWeight") as keyof typeof GOAL_MULTIPLIERS;
   const recommendedMacros = useMemo(
     () =>
       user
         ? calculateRecommendedMacros(
-            user?.weight,
-            user?.height,
-            ACTIVITY_MULTIPLIERS[user.activityLevel],
-            GOAL_MULTIPLIERS[user.goal],
+            user.weight ? user.weight : 0,
+            user.height ? user.height : 0,
+            ACTIVITY_MULTIPLIERS[activityKey],
+            GOAL_MULTIPLIERS[goalKey],
           )
         : {
             calories: 0,

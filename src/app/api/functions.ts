@@ -1,71 +1,40 @@
-import { getToken, JWT } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
-import { jwtVerify } from "jose";
-import { ApolloServer } from "@apollo/server";
-import { startServerAndCreateNextHandler } from "@as-integrations/next";
-export const validateToken = async (req: NextRequest) => {
-  let token = await getToken({
-    req,
-    secret: process.env.NEXTAUTH_SECRET,
+import { auth } from "@/lib/auth";
+
+import type { Session, User } from "better-auth";
+
+const validate = async (req: NextRequest) => {
+  const authData = await auth.api.getSession({
+    headers: req.headers,
   });
 
-  if (!token) {
-    const authHeader = req.headers.get("Authorization");
-    if (authHeader?.startsWith("Bearer ")) {
-      const tokenString = authHeader.substring(7);
-
-      try {
-        const secret = new TextEncoder().encode(
-          process.env.NEXTAUTH_SECRET || "",
-        );
-        const verified = await jwtVerify(tokenString, secret);
-        token = verified.payload as JWT;
-      } catch (error) {
-        throw new Error("Invalid or expired token" + error);
-      }
-    }
-  }
-
-  if (!token) {
+  if (!authData || !authData.user) {
     throw new Error("Unauthorized - Please login first");
   }
 
-  return token;
+  return authData;
 };
+
 /**
- *
+ *  Function that checks if user has valid session
  * @param req
  * @param handler
  * @returns
  */
 export const withAuth = async (
   req: NextRequest,
-  handler: (req: NextRequest, token: JWT) => Promise<NextResponse>,
+  handler: (
+    req: NextRequest,
+    authData: { user: User; session: Session },
+  ) => Promise<NextResponse>,
 ) => {
   try {
-    const token = await validateToken(req);
-    return await handler(req, token);
+    const authData = await validate(req);
+    return await handler(req, authData);
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Unauthorized" },
       { status: 401 },
     );
   }
-};
-
-/**
- * Converts response into NextResponse to fit validation with JWT token.
- * @param server
- * @returns
- */
-export const createApolloHandler = (server: ApolloServer) => {
-  const handler = startServerAndCreateNextHandler(server);
-  return async (req: NextRequest): Promise<NextResponse> => {
-    const response = await handler(req);
-
-    return new NextResponse(response.body, {
-      status: response.status,
-      headers: response.headers,
-    });
-  };
 };

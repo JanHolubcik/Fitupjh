@@ -2,7 +2,6 @@
 import { format } from "date-fns";
 import { LastMonthFoodOptions } from "@/lib/queriesOptions/LastMonthFoodOptions";
 import { useQuery } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
 
 import { calculateRecommendedMacros } from "../app/[lng]/constants/FunctionsHelper";
 
@@ -11,6 +10,7 @@ import { Food, FoodType, SavedFoodMonth } from "@/types/Types";
 
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import { authClient } from "@/lib/auth-client";
 const calculateAverage = (array: number[]) => {
   if (array.length === 0) return 0;
 
@@ -36,7 +36,7 @@ function transformReduxToApi(month: SavedFoodMonth): ClientSavedFood[] {
 
 const useMacros = () => {
   const date = format(new Date(), "yyyy-MM-dd");
-  const { data } = useSession();
+  const { data } = authClient.useSession();
 
   const reduxSavedFood = useSelector((state: RootState) => state.savedFood);
   const hasReduxData = Object.keys(reduxSavedFood.month).length > 0;

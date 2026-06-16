@@ -1,12 +1,13 @@
 "use client";
 
+import { authClient } from "@/lib/auth-client";
 import { Image, Link, Button } from "@nextui-org/react";
-import { useSession } from "next-auth/react";
+
 import { useT } from "next-i18next/client";
 import { useParams } from "next/navigation";
 
 export default function Home() {
-  const { data } = useSession();
+  const { data } = authClient.useSession();
   const { t } = useT("home");
   const params = useParams();
   const lng = params?.lng || "en";

@@ -7,7 +7,7 @@ import {
 } from "@/features/savedFoodslice/yourIntakeSlice";
 
 import { format } from "date-fns";
-import { useSession } from "next-auth/react";
+
 import { selectSavedFoodByDate } from "@/features/savedFoodslice/yourIntakeSlice";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -17,11 +17,12 @@ import { useMutation } from "@tanstack/react-query";
 import { SaveFoodOptions } from "@/lib/queriesOptions/SaveFoodOptions";
 import { useT } from "next-i18next/client";
 import { Food } from "@/types/Types";
+import { authClient } from "@/lib/auth-client";
 
 type timeOfDay = "breakfast" | "lunch" | "dinner";
 
 const useYourIntakeOperations = () => {
-  const { status, data } = useSession();
+  const { data } = authClient.useSession();
   const dispatch = useDispatch();
   const { t } = useT("dashboard");
 
@@ -38,7 +39,7 @@ const useYourIntakeOperations = () => {
     foodToSave?: typeof savedFood,
     isLastItem: boolean = false,
   ) => {
-    if (status !== "authenticated" || !data?.user?.id) return;
+    if (!data) return;
 
     const food = foodToSave || savedFood;
 

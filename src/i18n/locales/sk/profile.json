@@ -28,5 +28,20 @@
   "saveTargets": "Uložiť ciele",
   "dangerZone": "Nebezpečná zóna",
   "deleteAccount": "Vymazať účet",
-  "deleteAccountNotice": "Natrvalo vymazať váš účet, biometriu a všetky naskenované údaje o jedle. Tento krok sa nedá vrátiť späť."
+  "deleteAccountNotice": "Natrvalo vymazať váš účet, biometriu a všetky naskenované údaje o jedle. Tento krok sa nedá vrátiť späť.",
+  "accountDetails": "Detaily účtu",
+  "accountDetailsDesc": "Zmeňte si avatar a meno.",
+  "avatarUrl": "URL obrázka avatara",
+  "displayName": "Meno",
+  "saveChanges": "Uložiť zmeny",
+  "changeEmail": "Zmeniť e-mail",
+  "changeEmailDesc": "Aktualizujte e-mailovú adresu priradenú k vášmu účtu.",
+  "currentEmail": "Súčasný e-mail",
+  "newEmail": "Nový e-mail",
+  "updateEmail": "Aktualizovať e-mail",
+  "changePassword": "Zmeniť heslo",
+  "changePasswordDesc": "Uistite sa, že váš účet používa dlhé a náhodné heslo pre zachovanie bezpečnosti.",
+  "currentPassword": "Súčasné heslo",
+  "newPassword": "Nové heslo",
+  "updatePassword": "Aktualizovať heslo"
 }

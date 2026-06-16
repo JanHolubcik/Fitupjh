@@ -1,17 +1,19 @@
 import { getQueryClient } from "@/get-query-client";
-import { authOptions } from "@/lib/auth";
+
 import {
   UserInfoOptions,
   ClientUser,
 } from "@/lib/queriesOptions/UserInfoOptions";
 import { getUser } from "@/lib/user-db";
-import { getServerSession } from "next-auth";
+import { headers } from "next/headers";
 
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { DashboardContent } from "./DashboardContent/DashboardContent";
+import { auth } from "@/lib/auth";
 
 export default async function Dashboard() {
-  const session = await getServerSession(authOptions);
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
   const queryClient = getQueryClient();
   if (session?.user?.email) {
     try {
@@ -29,9 +31,7 @@ export default async function Dashboard() {
   void queryClient.prefetchQuery(UserInfoOptions());
   return (
     <main className="flex min-h-screen flex-col items-center p-24 pt-0 bg-default-50/50">
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <DashboardContent />
-      </HydrationBoundary>
+      <DashboardContent />
     </main>
   );
 }
