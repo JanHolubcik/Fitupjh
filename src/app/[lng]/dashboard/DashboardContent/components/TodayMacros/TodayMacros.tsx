@@ -114,7 +114,10 @@ export const TodayMacros = ({ savedFood }: props) => {
   }, [user?.weight, user?.height, savedFood]);
 
   return (
-    <CardUniversal className="w-full h-full sm:max-w-4xl  flex flex-col gap-4 ">
+    <CardUniversal
+      id={"tour-macros"}
+      className="w-full h-full sm:max-w-4xl  flex flex-col gap-4 "
+    >
       <CardBody className="grid  md:grid-cols-2 grid-cols-1  gap-2">
         {MacroArray.map((macro) => (
           <MacroProgressBar

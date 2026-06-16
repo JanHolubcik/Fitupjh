@@ -23,7 +23,10 @@ const MyGraph = () => {
 
   if (labels.length === 0) {
     return (
-      <CardUniversal className="sm:w-full w-80 shadow-xl h-64 flex items-center justify-center">
+      <CardUniversal
+        id="tour-chart"
+        className="sm:w-full w-80 shadow-xl h-64 flex items-center justify-center"
+      >
         <CardBody className="flex flex-col items-center justify-center text-center gap-3">
           <FaChartLine size={90} />
           <div>
@@ -41,10 +44,8 @@ const MyGraph = () => {
 
   const emptyDays = macroDatasets["calories"].filter((v) => v === 0).length;
 
-  // Since isLoading and empty states are handled above,
-  // we only render the actual graph down here.
   return (
-    <div className="flex flex-col sm:w-full w-80 shadow-xl">
+    <div id="tour-chart" className="flex flex-col sm:w-full w-80 shadow-xl">
       <div className="w-full overflow-auto">
         <div className="w-full">
           <ChartProgress

@@ -68,7 +68,10 @@ const useMacros = () => {
       });
 
   const RecommendedMacros = data?.user
-    ? calculateRecommendedMacros(data?.user?.weight, data?.user?.height)
+    ? calculateRecommendedMacros(
+        data?.user?.weight ? data?.user?.weight : 0,
+        data?.user?.height ? data?.user?.height : 0,
+      )
     : {
         calories: 0,
         fat: 0,

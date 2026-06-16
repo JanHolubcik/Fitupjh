@@ -100,6 +100,7 @@ export const InputSearchBar = () => {
 
   return (
     <div
+      id="tour-search-bar"
       ref={containerRef}
       className="relative flex items-center w-full max-w-full min-w-60 sm:min-w-56 sm:w-full rounded-xl"
     >
@@ -137,6 +138,7 @@ export const InputSearchBar = () => {
       </div>
 
       <Button
+        id="tour-barcode-ai"
         onPress={() => onOpenBarScan()}
         className="rounded-l-none min-w-10 h-8 self-center bg-primary-100 dark:bg-primary-400 hover:bg-primary-200"
       >

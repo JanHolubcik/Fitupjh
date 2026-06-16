@@ -33,6 +33,7 @@
     "better-auth": "^1.6.19",
     "date-fns": "^4.1.0",
     "dotenv": "^17.2.3",
+    "driver.js": "^1.4.0",
     "formik": "^2.4.9",
     "framer-motion": "^11.0.18",
     "graphql": "^16.12.0",

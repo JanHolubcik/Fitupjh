@@ -46,6 +46,11 @@ export async function proxy(req: NextRequest) {
     return NextResponse.redirect(dashboardUrl);
   }
 
+  if (session && !session.user.weight) {
+    const onboarding = new URL("/onboarding", req.url);
+    return NextResponse.redirect(onboarding);
+  }
+
   return i18nProxy(req);
 }
 

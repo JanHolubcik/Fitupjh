@@ -1,8 +1,16 @@
 "use client";
 
 import { useRouter, useParams } from "next/navigation";
-import { CardBody, CardHeader, Input, Link, Spinner } from "@nextui-org/react";
-import PulsingButton from "@/components/PulsingButton/PulsingButton";
+import {
+  Button,
+  ButtonGroup,
+  CardBody,
+  CardHeader,
+  Input,
+  Link,
+  Spinner,
+} from "@nextui-org/react";
+
 import { signupSchema } from "@/lib/validationShemas/signupValidationSchema";
 import { useT } from "next-i18next/client";
 import { CardUniversal } from "@/components/common";
@@ -11,6 +19,7 @@ import { useMutation } from "@tanstack/react-query";
 import { SignupOptions } from "@/lib/queriesOptions/SignupOptions";
 import { LanguagePicker } from "@/components/Navbar/components/LanguagePicker";
 import { authClient } from "@/lib/auth-client";
+import { FaApple, FaDiscord, FaGoogle } from "react-icons/fa";
 
 const customInputStyles = {
   inputWrapper:
@@ -27,6 +36,13 @@ export default function Signup() {
   const { t } = useT("signup");
 
   const signupMutation = useMutation(SignupOptions());
+
+  const handleDiscordLogin = async () => {
+    await authClient.signIn.social({
+      provider: "discord",
+      callbackURL: "/dashboard",
+    });
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -187,11 +203,11 @@ export default function Signup() {
               </div>
             )}
 
-            <PulsingButton
+            <Button
               className="w-full mt-4 font-bold text-lg h-12"
               type="submit"
+              color="primary"
               disabled={formik.isSubmitting}
-              noPulsing
             >
               {formik.isSubmitting ? (
                 <div className="flex items-center gap-2">
@@ -201,7 +217,7 @@ export default function Signup() {
               ) : (
                 t("signUpButton")
               )}
-            </PulsingButton>
+            </Button>
 
             <div className="text-center mt-4">
               <span className="text-sm dark:text-zinc-400">
@@ -213,6 +229,50 @@ export default function Signup() {
               >
                 {t("logInLink")}
               </Link>
+              <ButtonGroup className="w-64 self-center">
+                <Button
+                  className="w-full mt-4  font-bold text-lg  bg-white text-zinc-700 border border-zinc-300 hover:bg-zinc-50 dark:bg-white dark:hover:bg-zinc-100"
+                  disabled={formik.isSubmitting}
+                >
+                  {formik.isSubmitting ? (
+                    <div className="flex items-center gap-2">
+                      <Spinner size="sm" color="current" />
+                      <span>{t("creatingAccount")}</span>
+                    </div>
+                  ) : (
+                    // Adding the Google red/blue just to the icon makes it look incredibly clean
+                    <FaGoogle size={22} className="text-[#DB4437]" />
+                  )}
+                </Button>
+                <Button
+                  className="w-full mt-4 font-bold text-lg bg-[#5865F2] text-white hover:bg-[#4752C4]"
+                  onPress={handleDiscordLogin}
+                  disabled={formik.isSubmitting}
+                >
+                  {formik.isSubmitting ? (
+                    <div className="flex items-center gap-2">
+                      <Spinner size="sm" color="current" />
+                      <span>{t("creatingAccount")}</span>
+                    </div>
+                  ) : (
+                    <FaDiscord size={24} />
+                  )}
+                </Button>
+
+                <Button
+                  className="w-full mt-4 font-bold text-lg  bg-black text-white hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
+                  disabled={formik.isSubmitting}
+                >
+                  {formik.isSubmitting ? (
+                    <div className="flex items-center gap-2">
+                      <Spinner size="sm" color="current" />
+                      <span>{t("creatingAccount")}</span>
+                    </div>
+                  ) : (
+                    <FaApple size={24} />
+                  )}
+                </Button>
+              </ButtonGroup>
             </div>
           </form>
         </CardBody>

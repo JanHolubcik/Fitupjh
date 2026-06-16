@@ -106,7 +106,7 @@ export const ModalTakePicture = ({
       ),
       fiber: Number(((result.fiber || 0) * multiplier).toFixed(1)),
       salt: Number(((result.salt || 0) * multiplier).toFixed(1)),
-      imgUrl: result.imgUrl || image, // Optional: save the picture they just took!
+      imgUrl: result.imgUrl || image,
     };
 
     addToFoodObject(parsedFood, timeOfDay || getTimeOfDay());

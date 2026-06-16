@@ -32,7 +32,7 @@ export const AccordionTimeFrame = ({ savedFood }: props) => {
   };
 
   return (
-    <CardUniversal className="w-80 sm:w-full self-center">
+    <CardUniversal id={"tour-meals"} className="w-80 sm:w-full self-center">
       <CardBody className="max-w-2xl ">
         <Accordion
           variant="light"

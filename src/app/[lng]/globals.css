@@ -52,6 +52,57 @@ body {
   }
 }
 
+/* --- DRIVER.JS CUSTOM THEME --- */
+
+/* Light Mode Defaults (and mobile button sizes) */
+.driver-popover {
+  border-radius: 16px !important;
+  padding: 20px !important;
+  /* Match your NextUI/Tailwind Zinc theme */
+  border: 1px solid #e4e4e7 !important; 
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1) !important;
+}
+
+/* Make buttons bigger for mobile screens */
+.driver-popover-footer button {
+  padding: 12px 16px !important; /* Larger touch target */
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  text-shadow: none !important;
+}
+
+/* Primary "Next/Done" button styling to match your blue */
+.driver-popover-footer .driver-popover-next-btn {
+  background-color: #3b82f6 !important; /* Tailwind blue-500 */
+  color: white !important;
+  border: none !important;
+}
+
+/* Dark Mode Overrides */
+/* Assuming you use the standard `<html class="dark">` for Tailwind */
+.dark .driver-popover {
+  background-color: #18181b !important; /* Tailwind zinc-900 */
+  color: #ffffff !important;
+  border: 1px solid #27272a !important; /* Tailwind zinc-800 */
+}
+
+.dark .driver-popover-title {
+  color: #ffffff !important;
+}
+
+.dark .driver-popover-description {
+  color: #a1a1aa !important; /* Tailwind zinc-400 */
+}
+
+/* Dark mode secondary buttons (Prev/Close) */
+.dark .driver-popover-footer .driver-popover-prev-btn,
+.dark .driver-popover-footer .driver-popover-close-btn {
+  color: #d4d4d8 !important; /* zinc-300 */
+  background-color: #27272a !important; /* zinc-800 */
+  border: none !important;
+}
+
 
 
 

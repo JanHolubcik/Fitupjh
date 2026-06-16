@@ -26,6 +26,7 @@ export const auth = betterAuth({
       targetFat: { type: "number", required: false },
       targetSugar: { type: "number", required: false },
       manualOverride: { type: "boolean", required: false },
+      guideSeen: { type: "boolean", defaultValue: false },
     },
   },
   experimental: { joins: true },

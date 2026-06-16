@@ -24,7 +24,10 @@ export const CalorieCard = (props: props) => {
   }
 
   return (
-    <CardUniversal className="flex h-auto items-center justify-center w-80 max-w-80 ">
+    <CardUniversal
+      id={"tour-calories"}
+      className="flex h-auto items-center justify-center w-80 max-w-80 "
+    >
       <CardBody className="flex justify-center items-center ">
         <CircularProgress
           classNames={{
