@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import { authClient } from "@/lib/auth-client";
 import { useT } from "next-i18next/client";
 import { CardUniversal } from "@/components/common";
+import { useRouter } from "next/navigation";
 
 const fileToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -27,6 +28,7 @@ const fileToBase64 = (file: File): Promise<string> => {
 type User = typeof authClient.$Infer.Session.user;
 
 export default function AccountDetails({ user }: { user: User }) {
+  const router = useRouter();
   const { t } = useT("profile");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -52,6 +54,7 @@ export default function AccountDetails({ user }: { user: User }) {
       },
       { theme: "dark", position: "bottom-left", autoClose: 3000 },
     );
+    router.refresh();
   };
 
   return (

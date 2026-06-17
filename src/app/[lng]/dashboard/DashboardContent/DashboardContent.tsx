@@ -8,7 +8,7 @@ import useLoadSavedFood from "@/hooks/useLoadSavedFood";
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 import { AccordionTimeFrame } from "./components/AccordionTimeFrame/AccordionTimeFrame";
 import { TodayMacros } from "./components/TodayMacros/TodayMacros";
-import MyGraph from "@/components/ChartProgress/GraphProgessComponent";
+
 import { DateSwitcher } from "./components/DateSwitcher/DateSwitcher";
 
 import {
@@ -21,6 +21,7 @@ import {
 import { useT } from "next-i18next/client";
 import { authClient } from "@/lib/auth-client";
 import { useIsSm } from "../../constants/FunctionsHelper";
+import MyGraph from "@/components/ChartProgress/GraphProgressComponent";
 
 export const DashboardContent = () => {
   const { t } = useT("dashboard");

@@ -13,11 +13,13 @@ import {
 import { Formik, Form } from "formik";
 
 import { useT } from "next-i18next/client";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 type User = typeof authClient.$Infer.Session.user;
 
 export const BiometricAndGoals = ({ user }: { user: User }) => {
+  const router = useRouter();
   const { t } = useT("profile");
   const handleManualSubmit = async (values: any) => {
     const updatePromise = authClient.updateUser({
@@ -41,6 +43,7 @@ export const BiometricAndGoals = ({ user }: { user: User }) => {
       },
       { position: "bottom-left", autoClose: 3000, theme: "dark" },
     );
+    router.refresh();
   };
   return (
     <CardUniversal className="shadow-md bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-zinc-200 dark:border-zinc-800">

@@ -121,6 +121,8 @@
     "salt": "Salt"
   },
   "chart": {
+    "noDataYet": "No Data Yet",
+    "logThreeDays": "Please log at least 3 days of meals to see the graph.",
     "dayAverage": "day average",
     "goal": "Goal",
     "weeklyPeak": "Weekly peak",

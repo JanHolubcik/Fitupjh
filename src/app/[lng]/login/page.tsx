@@ -9,6 +9,7 @@ import { CardUniversal } from "@/components/common";
 import { useFormik } from "formik";
 import { LanguagePicker } from "@/components/Navbar/components/LanguagePicker";
 import { authClient } from "@/lib/auth-client";
+import SignOAuth from "@/components/SignOAuth/SignOauth";
 
 const customInputStyles = {
   inputWrapper:
@@ -131,6 +132,7 @@ export default function Login() {
               </Link>
             </div>
           </form>
+          <SignOAuth />
         </CardBody>
       </CardUniversal>
     </main>

@@ -122,6 +122,8 @@
     "salt": "Soľ"
   },
   "chart": {
+    "noDataYet": "Zatiaľ žiadne údaje",
+    "logThreeDays": "Zaznamenajte si aspoň 3 dni, aby ste videli graf.",
     "dayAverage": "denný priemer",
     "goal": "Cieľ",
     "weeklyPeak": "Maximum",

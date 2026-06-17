@@ -62,6 +62,17 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
       : []),
   ];
 
+  const signOut = () => {
+    authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.refresh();
+          router.push("/login");
+        },
+      },
+    });
+  };
+
   const showSession = () => {
     if (data) {
       return (
@@ -95,15 +106,7 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
               key="logout"
               className="text-danger"
               color="danger"
-              onPress={() =>
-                authClient.signOut({
-                  fetchOptions: {
-                    onSuccess: () => {
-                      router.push("/login");
-                    },
-                  },
-                })
-              }
+              onPress={signOut}
             >
               {t("logout")}
             </DropdownItem>
@@ -272,7 +275,7 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
 
             <Link
               className="flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors cursor-pointer text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-500"
-              onPress={() => authClient.signOut()}
+              onPress={signOut}
             >
               <FaSignOutAlt className="text-lg" />
               <span className="text-[10px] font-medium tracking-wide">

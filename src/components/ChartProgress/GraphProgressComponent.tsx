@@ -2,26 +2,19 @@
 
 import { useState } from "react";
 import useMacros from "../../hooks/useRecomendedMacros";
-import { CardBody, Spinner } from "@nextui-org/react";
+import { CardBody } from "@nextui-org/react";
 import ChartProgress from "./ChartProgress";
 import { CardUniversal } from "../common";
 import { FaChartLine } from "react-icons/fa";
+import { useT } from "next-i18next/client";
 
 const MyGraph = () => {
-  const { labels, isLoading, macroDatasets, RecommendedMacros } = useMacros();
+  const { labels, macroDatasets, RecommendedMacros } = useMacros();
   const [selectedMacro, setSelectedMacro] =
     useState<keyof typeof macroDatasets>("protein");
+  const { t } = useT("dashboard");
 
-  if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center sm:w-full w-80 h-64 shadow-xl rounded-xl gap-4">
-        <Spinner size="lg" />
-        <p className="text-default-500">Loading graph, please wait...</p>
-      </div>
-    );
-  }
-
-  if (labels.length === 0) {
+  if (labels.length < 3) {
     return (
       <CardUniversal
         id="tour-chart"
@@ -31,10 +24,10 @@ const MyGraph = () => {
           <FaChartLine size={90} />
           <div>
             <h3 className="text-lg font-semibold text-default-700">
-              No Data Yet
+              {t("chart.noDataYet")}
             </h3>
             <p className="text-sm text-default-500 max-w-[200px] mx-auto mt-1">
-              Start logging your meals to see your macro progress appear here!
+              {t("chart.logThreeDays")}
             </p>
           </div>
         </CardBody>
