@@ -76,7 +76,9 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className={inter.className}>
+      <body
+        className={`${inter.className} bg-background text-foreground antialiased`}
+      >
         <Providers>
           <I18nProvider language={lng} resources={resources}>
             <NavbarComponent data={session} />
