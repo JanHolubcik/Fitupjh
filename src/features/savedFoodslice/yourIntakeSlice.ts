@@ -21,6 +21,12 @@ const emptyDay: FoodType = {
   dinner: [],
 };
 
+const getEmptyDay = (): FoodType => ({
+  breakfast: [],
+  lunch: [],
+  dinner: [],
+});
+
 const initialState: SavedFoodState = {
   currentDate: format(new Date(), "yyyy-MM-dd"),
   month: {},
@@ -48,10 +54,9 @@ const savedFoodSlice = createSlice({
       }>,
     ) => {
       const { date, timeOfDay, food } = action.payload;
-      console.log("Saving");
-      console.log(food);
+
       if (!state.month[date]) {
-        state.month[date] = { ...emptyDay };
+        state.month[date] = getEmptyDay();
       }
 
       state.month[date][timeOfDay].push(food);
@@ -134,6 +139,6 @@ export const editAndPersistFood = (
 export const selectSavedFoodByDate = (
   state: RootState,
   date: string,
-): FoodType => state.savedFood.month[date] ?? emptyDay;
+): FoodType => state.savedFood.month[date] ?? getEmptyDay();
 
 export default savedFoodSlice.reducer;

@@ -63,8 +63,7 @@ const useYourIntakeOperations = () => {
 
   const addToFoodObject = async (food: Food, timeOfDay: timeOfDay) => {
     const date = format(currentDate, "yyyy-MM-dd");
-    console.log("Original name");
-    console.log(food.originalName);
+
     const {
       name,
       calories,

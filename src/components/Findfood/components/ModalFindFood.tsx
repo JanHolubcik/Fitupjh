@@ -107,7 +107,7 @@ export const ModalFindFood = (props: props) => {
       return () => clearTimeout(timer);
     }
   }, [props.isOpen]);
-  console.log();
+
   const sm = useIsSm();
   return (
     <>
