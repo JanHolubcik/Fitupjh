@@ -1,7 +1,7 @@
 import { FoodType } from "@/types/Types";
 import connectDB from "./connect-db";
 import { Food, FoodClass } from "@/models/Food";
-import { SavedFood } from "@/models/savedFood";
+import { SavedFood } from "@/models/SavedFood";
 import mongoose from "mongoose";
 import { FoodInput } from "./validationShemas/foodValidationSchema";
 import { format } from "date-fns";

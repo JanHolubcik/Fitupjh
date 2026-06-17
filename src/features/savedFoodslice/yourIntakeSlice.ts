@@ -15,17 +15,17 @@ type SavedFoodState = {
   newFoodBarCode?: string;
 };
 
-const emptyDay: FoodType = {
-  breakfast: [],
-  lunch: [],
-  dinner: [],
-};
-
 const getEmptyDay = (): FoodType => ({
   breakfast: [],
   lunch: [],
   dinner: [],
 });
+
+const emptyDayFallback: FoodType = {
+  breakfast: [],
+  lunch: [],
+  dinner: [],
+};
 
 const initialState: SavedFoodState = {
   currentDate: format(new Date(), "yyyy-MM-dd"),
@@ -77,7 +77,7 @@ const savedFoodSlice = createSlice({
     ) => {
       const { date, timeOfDay, id } = action.payload;
       if (!state.month[date]) {
-        state.month[date] = { ...emptyDay };
+        state.month[date] = getEmptyDay();
       }
       state.month[date][timeOfDay] = state.month[date][timeOfDay].filter(
         (foodItem) => foodItem.id !== id,
@@ -95,7 +95,7 @@ const savedFoodSlice = createSlice({
       const { date, timeOfDay, id, updatedFood } = action.payload;
 
       if (!state.month[date]) {
-        state.month[date] = { ...emptyDay };
+        state.month[date] = getEmptyDay();
       }
 
       // Replace old item value directly using its index reference
@@ -139,6 +139,6 @@ export const editAndPersistFood = (
 export const selectSavedFoodByDate = (
   state: RootState,
   date: string,
-): FoodType => state.savedFood.month[date] ?? getEmptyDay();
+): FoodType => state.savedFood.month[date] ?? emptyDayFallback;
 
 export default savedFoodSlice.reducer;

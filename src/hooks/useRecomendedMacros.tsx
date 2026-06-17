@@ -3,7 +3,7 @@ import { format } from "date-fns";
 
 import { calculateRecommendedMacros } from "../app/[lng]/constants/FunctionsHelper";
 
-import { SavedFoodClass } from "@/models/savedFood";
+import { SavedFoodClass } from "@/models/SavedFood";
 import { Food, FoodType, SavedFoodMonth } from "@/types/Types";
 
 import { useSelector } from "react-redux";

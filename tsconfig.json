@@ -38,7 +38,7 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "global.d.ts"
-],
+, "src/app/[lng]/dashboard/AccordionActivity"],
   "exclude": [
     "node_modules"
   ]
