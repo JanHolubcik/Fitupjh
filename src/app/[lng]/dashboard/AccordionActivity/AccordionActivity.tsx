@@ -1,17 +1,21 @@
-import { Image, Accordion, AccordionItem, CardBody } from "@nextui-org/react";
+import {
+  Image,
+  Accordion,
+  AccordionItem,
+  CardBody,
+  useDisclosure,
+} from "@nextui-org/react";
 import type { Selection } from "@nextui-org/react";
 import { useState } from "react";
 import { useT } from "next-i18next/client";
 import { CardUniversal } from "@/components/common";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { ActivitiesOptions } from "@/lib/queriesOptions/ActivitiesOptions";
+import { useActivityOperations } from "@/hooks/useActivityOperations";
 
-// You will need to create an equivalent to TimeFrameSmallCard for activities
-import { ActivitySmallCard } from "../ActivitySmallCard/ActivitySmallCard";
+import { NewActivityRecordModal } from "@/components/NewActivityRecordModal/NewActivityRecordModal";
 
-type Props = {
-  savedActivities: LoggedActivity[];
-};
-
-export const AccordionActivity = ({ savedActivities = [] }: Props) => {
+export const AccordionActivity = () => {
   const [selectedKeys, setSelectedKeys] = useState<Selection>("all");
   const { t } = useT("dashboard");
 
@@ -19,6 +23,10 @@ export const AccordionActivity = ({ savedActivities = [] }: Props) => {
     if (selectedKeys === "all") return true;
     return selectedKeys.has(key);
   };
+
+  const { data } = useSuspenseQuery(ActivitiesOptions());
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { savedActivities } = useActivityOperations();
 
   const itemClasses = {
     base: "py-1 w-full border-none mb-1 last:mb-0",
@@ -95,8 +103,33 @@ export const AccordionActivity = ({ savedActivities = [] }: Props) => {
                 />
               </div>
             }
-          ></AccordionItem>
+          >
+            <div className="flex flex-col p-2 bg-zinc-300 dark:bg-zinc-950 rounded-xl">
+              <div className="flex flex-col rounded-xl">
+                {/* {savedActivities.map((key) => (
+                  <div
+                    onClick={() => {}}
+                    className="flex flex-row items-center first:rounded-t-xl last:rounded-b-xl justify-between gap-3 p-2 bg-zinc-200 dark:bg-zinc-900 border border-white/[0.02] hover:bg-white/[0.03] hover:border-white/5  transition-all duration-200 group hover:cursor-pointer"
+                    key={key.activity.name}
+                  >
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                      <div className="flex-1 min-w-0 flex flex-col justify-center">
+                        <p className="font-bold text-xs sm:text-sm dark:text-zinc-200 capitalize whitespace-nowrap overflow-hidden text-ellipsis w-16 sm:w-36">
+                          {key.activity.name}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))} */}
+              </div>
+            </div>
+          </AccordionItem>
         </Accordion>
+        <NewActivityRecordModal
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          activities={data}
+        />
       </CardBody>
     </CardUniversal>
   );

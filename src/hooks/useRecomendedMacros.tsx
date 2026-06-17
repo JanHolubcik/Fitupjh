@@ -27,7 +27,7 @@ type ClientSavedFood = Omit<SavedFoodClass, "user_id">;
 
 function transformReduxToApi(month: SavedFoodMonth): ClientSavedFood[] {
   return Object.entries(month).map(([dateKey, foodType]) => ({
-    day: new Date(dateKey),
+    day: dateKey,
     savedFood: foodType,
   }));
 }
@@ -43,19 +43,15 @@ const useMacros = () => {
   const isArray = Array.isArray(savedFood);
   const isEmpty = !isArray || savedFood.length === 0;
 
-  const sortedFood = isEmpty
-    ? []
-    : [...savedFood].sort(
-        (a, b) => new Date(a.day).getTime() - new Date(b.day).getTime(),
-      );
+  const sortedFood = savedFood;
 
   const labels = isEmpty
     ? []
     : sortedFood.map((item) => {
-        const dateObj = new Date(item.day);
+        const dateObj = item.day;
         // "EEE" outputs Mon, Tue, Wed...
         // "dd-MM" outputs 30-04, 01-05...
-        return format(dateObj, "dd.MM EEE");
+        return dateObj;
       });
 
   const RecommendedMacros = data?.user

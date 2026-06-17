@@ -23,5 +23,4 @@ export const LastMonthFoodOptions = (dateFrom: string, dateTo: string) =>
     },
     staleTime: 600000,
     retry: 0,
-    refetchOnWindowFocus: false,
   });

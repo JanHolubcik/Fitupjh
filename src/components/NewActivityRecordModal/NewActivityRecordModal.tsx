@@ -1,0 +1,239 @@
+import React, { useState, useEffect, useMemo } from "react";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  Input,
+  Select,
+  SelectItem,
+} from "@nextui-org/react";
+
+import { useT } from "next-i18next/client";
+import { toast } from "react-toastify";
+import { ActivityClass } from "@/lib/mongo/models/Activity";
+import { useActivityOperations } from "@/hooks/useActivityOperations";
+
+type Props = {
+  isOpen: boolean;
+  onOpenChange: (isOpen: boolean) => void;
+  activities: ActivityClass[]; // Changed from a single activity to the full array
+  userWeightKg?: number;
+  onCloseAll?: () => void;
+};
+
+export const NewActivityRecordModal = ({
+  isOpen,
+  onOpenChange,
+  activities = [],
+  userWeightKg = 70,
+  onCloseAll,
+}: Props) => {
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedActivityName, setSelectedActivityName] = useState<string>("");
+  const [minutes, setMinutes] = useState<number>(30);
+
+  const { addActivityRecord } = useActivityOperations();
+  const { t } = useT("dashboard");
+
+  // Reset state every time the modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setSelectedCategory("");
+      setSelectedActivityName("");
+      setMinutes(30);
+    }
+  }, [isOpen]);
+
+  // 1. Extract unique categories from the activities array
+  const categories = useMemo(() => {
+    const cats = activities.map((a) => a.category || "General");
+    return Array.from(new Set(cats)).sort();
+  }, [activities]);
+
+  // 2. Filter activities based on the selected category
+  const filteredActivities = useMemo(() => {
+    if (!selectedCategory) return [];
+    return activities
+      .filter((a) => (a.category || "General") === selectedCategory)
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [activities, selectedCategory]);
+
+  // 3. Find the actual selected ActivityClass object
+  const selectedActivity = useMemo(() => {
+    return activities.find((a) => a.name === selectedActivityName) || null;
+  }, [activities, selectedActivityName]);
+
+  const caloriesBurned = selectedActivity
+    ? Math.round(selectedActivity.metValue * userWeightKg * (minutes / 60))
+    : 0;
+
+  const handleSave = (onClose: () => void) => {
+    if (!selectedActivity) {
+      toast.error(
+        t("newActivityModal.toastNoActivity", "Please select an activity"),
+        { position: "bottom-left" },
+      );
+      return;
+    }
+
+    if (minutes < 1) {
+      toast.error(
+        t("newActivityModal.toastBadValue", "Please enter a valid duration"),
+        { position: "bottom-left" },
+      );
+      return;
+    }
+
+    addActivityRecord({
+      activity: selectedActivity,
+      durationMinutes: minutes,
+      caloriesBurned: caloriesBurned,
+    });
+
+    onClose();
+    onCloseAll && onCloseAll();
+  };
+
+  return (
+    <Modal
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      hideCloseButton
+      placement="center"
+      backdrop="blur"
+      classNames={{
+        base: "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 max-w-md font-semibold mx-4",
+        header:
+          "border-b border-zinc-200 dark:border-zinc-800 pb-2 font-semibold",
+        footer:
+          "border-t border-zinc-200 dark:border-zinc-800 pt-2 font-semibold",
+      }}
+    >
+      <ModalContent>
+        {(onClose) => (
+          <>
+            <ModalHeader className="flex flex-col gap-1 font-semibold">
+              <h3 className="text-lg font-bold capitalize text-zinc-900 dark:text-zinc-200">
+                {t("newActivityModal.title", "Log New Activity")}
+              </h3>
+              <p className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
+                {t("newActivityModal.subtitle", "Select a type and duration")}
+              </p>
+            </ModalHeader>
+
+            <ModalBody className="py-4 gap-4 font-semibold">
+              {/* Category Dropdown */}
+              <Select
+                label={t("newActivityModal.categoryLabel", "Activity Type")}
+                placeholder="e.g., Cardio, Strength..."
+                selectedKeys={selectedCategory ? [selectedCategory] : []}
+                onChange={(e) => {
+                  setSelectedCategory(e.target.value);
+                  setSelectedActivityName(""); // Reset specific activity when category changes
+                }}
+                variant="bordered"
+                classNames={{
+                  trigger: "border-zinc-300 dark:border-zinc-700",
+                }}
+              >
+                {categories.map((cat) => (
+                  <SelectItem key={cat} value={cat}>
+                    {cat}
+                  </SelectItem>
+                ))}
+              </Select>
+
+              {/* Activity Dropdown */}
+              <Select
+                label={t("newActivityModal.activityLabel", "Specific Activity")}
+                placeholder="e.g., Running, Cycling..."
+                isDisabled={!selectedCategory} // Locked until category is chosen
+                selectedKeys={
+                  selectedActivityName ? [selectedActivityName] : []
+                }
+                onChange={(e) => setSelectedActivityName(e.target.value)}
+                variant="bordered"
+                classNames={{
+                  trigger: "border-zinc-300 dark:border-zinc-700",
+                }}
+              >
+                {filteredActivities.map((act) => (
+                  <SelectItem key={act.name} value={act.name}>
+                    {/* Optionally use act.localizedNames here if you want localized display */}
+                    {act.name}
+                  </SelectItem>
+                ))}
+              </Select>
+
+              {/* Duration Input */}
+              <Input
+                type="number"
+                label={t("newActivityModal.durationLabel", "Duration")}
+                placeholder="0"
+                value={minutes === 0 ? "" : minutes.toString()}
+                onChange={(e) =>
+                  setMinutes(Math.max(0, parseInt(e.target.value) || 0))
+                }
+                endContent={<span className="text-zinc-500 text-sm">min</span>}
+                variant="bordered"
+                classNames={{
+                  inputWrapper:
+                    "font-semibold border-zinc-300 dark:border-zinc-700 hover:border-zinc-400 dark:focus-within:!border-zinc-400 focus-within:!border-zinc-500",
+                  label: "text-zinc-500 dark:text-zinc-400",
+                }}
+              />
+
+              {/* Dynamic Stats Banner (Only shows when an activity is selected) */}
+              {selectedActivity && (
+                <div className="bg-zinc-100 dark:bg-zinc-950/50 p-3 mt-2 rounded-xl border border-zinc-200 dark:border-white/5 space-y-2 animate-appearance-in">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-zinc-600 dark:text-zinc-400">
+                      {t("newActivityModal.caloriesBurned", "Calories Burned")}
+                    </span>
+                    <span className="font-bold text-primary-500">
+                      {caloriesBurned} kcal
+                    </span>
+                  </div>
+
+                  <hr className="border-zinc-300 dark:border-zinc-800" />
+
+                  <div className="flex flex-row justify-between items-center py-1">
+                    <span className="text-xs font-extrabold text-zinc-500">
+                      {t("newActivityModal.intensity", "Intensity (MET)")}
+                    </span>
+                    <span className="text-zinc-700 dark:text-zinc-300 font-bold text-xs">
+                      {selectedActivity.metValue}
+                    </span>
+                  </div>
+                </div>
+              )}
+            </ModalBody>
+
+            <ModalFooter className="p-2">
+              <Button
+                size="sm"
+                variant="flat"
+                className="bg-zinc-200 text-zinc-700 hover:bg-zinc-300 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                onPress={() => setTimeout(() => onClose(), 10)}
+              >
+                {t("newActivityModal.cancel", "Cancel")}
+              </Button>
+              <Button
+                size="sm"
+                color="primary"
+                className="bg-blue-600 text-white font-medium"
+                isDisabled={!selectedActivity} // Prevent saving if no activity is picked
+                onPress={() => handleSave(onClose)}
+              >
+                {t("newActivityModal.saveChanges", "Save Activity")}
+              </Button>
+            </ModalFooter>
+          </>
+        )}
+      </ModalContent>
+    </Modal>
+  );
+};

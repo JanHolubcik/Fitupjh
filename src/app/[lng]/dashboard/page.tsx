@@ -6,9 +6,19 @@ import { DashboardContent } from "./DashboardContent/DashboardContent";
 import { auth } from "@/lib/auth";
 import { LastMonthFoodOptions } from "@/lib/queriesOptions/LastMonthFoodOptions";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { addDays, subDays } from "date-fns";
+import { addDays, format, subDays } from "date-fns";
 import { checkForSavedFoodMonth } from "@/lib/mongo/food-db";
-import { SavedFoodClass } from "@/lib/mongo/models/SavedFood";
+
+import {
+  checkForSavedActivitiesMonth,
+  getActivity,
+} from "@/lib/mongo/activity-db";
+import { ActivitiesOptions } from "@/lib/queriesOptions/ActivitiesOptions";
+import { ActivityClass } from "@/lib/mongo/models/Activity";
+
+import { LastMonthSavedActivities } from "@/lib/queriesOptions/LastMonthSavedActivitiesOptions";
+import { LoggedActivityType } from "@/features/DashboardSlice/DashboardSlice";
+import { FoodType } from "@/types/Types";
 
 const getMidnightISO = (date: Date) => {
   const d = new Date(date);
@@ -21,19 +31,41 @@ export default async function Dashboard() {
     headers: await headers(),
   });
   const queryClient = getQueryClient();
-  if (session?.user?.email) {
-    const today = getMidnightISO(addDays(new Date(), 1));
-    const fromDate = getMidnightISO(subDays(new Date(), 30));
+  const today = format(addDays(new Date(), 1), "yyyy-MM-dd");
+  const fromDate = format(subDays(new Date(), 30), "yyyy-MM-dd");
+  if (session?.user?.id) {
     try {
       const food = await checkForSavedFoodMonth(
         fromDate,
         today,
         session.user.id,
       );
-      const plainFood = JSON.parse(JSON.stringify(food));
+
       queryClient.setQueryData(
         LastMonthFoodOptions(fromDate, today).queryKey,
-        plainFood as SavedFoodClass[],
+        food as Record<string, FoodType>,
+      );
+
+      const activities = await getActivity();
+      const plainActivities = JSON.parse(JSON.stringify(activities));
+
+      queryClient.setQueryData(
+        ActivitiesOptions().queryKey,
+        plainActivities as ActivityClass[],
+      );
+
+      const dayTo = format(addDays(new Date(), 1), "yyyy-MM-dd");
+      const dayFrom = format(addDays(new Date(), 30), "yyyy-MM-dd");
+
+      const savedActivities = await checkForSavedActivitiesMonth(
+        dayFrom,
+        dayTo,
+        session.user.id,
+      );
+
+      queryClient.setQueryData(
+        LastMonthSavedActivities(dayFrom, dayTo).queryKey,
+        savedActivities as Record<string, LoggedActivityType[]>,
       );
     } catch (error) {
       console.error("Failed to prefetch user data", error);
@@ -43,7 +75,7 @@ export default async function Dashboard() {
   return (
     <main className="flex min-h-[calc(100vh-65px)]   flex-col items-center p-12 pt-0 bg-default-50/50">
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <DashboardContent />
+        <DashboardContent today={today} fromDate={fromDate} />
       </HydrationBoundary>
     </main>
   );

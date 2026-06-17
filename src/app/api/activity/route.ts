@@ -5,10 +5,6 @@ import { getActivity } from "@/lib/mongo/activity-db";
 
 export async function GET(req: NextRequest) {
   return withAuth(req, async () => {
-    const { searchParams } = req.nextUrl;
-    const searchTerm = searchParams.get("searchTerm") || "";
-    const language = searchParams.get("currentLocale") || "en";
-
     try {
       const activityData = await getActivity();
 

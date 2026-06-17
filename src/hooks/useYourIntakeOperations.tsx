@@ -4,11 +4,11 @@ import {
   editAndPersistFood,
   removeFromFood,
   setCurrentDate,
-} from "@/features/savedFoodslice/yourIntakeSlice";
+} from "@/features/DashboardSlice/DashboardSlice";
 
 import { format } from "date-fns";
 
-import { selectSavedFoodByDate } from "@/features/savedFoodslice/yourIntakeSlice";
+import { selectSavedFoodByDate } from "@/features/DashboardSlice/DashboardSlice";
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";

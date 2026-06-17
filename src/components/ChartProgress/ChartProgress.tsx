@@ -121,7 +121,7 @@ const getStringForMissingDay = (
 };
 
 type ChartProps = {
-  labels: string[];
+  labels: String[];
   dataValues: number[];
   recommendedValue: number;
   selectedMacro: string;

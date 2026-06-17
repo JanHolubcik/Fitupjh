@@ -5,7 +5,7 @@ import {
 import { ChartOptions, ChartData } from "chart.js";
 
 type props = {
-  labels: string[];
+  labels: String[];
   dataValues: number[];
   recommendedValue: number;
   selectedMacro: string;
@@ -60,7 +60,7 @@ export const useChartsHooks = ({
     ? displayDataValues.filter((v) => v > recommendedValue).length
     : 0;
 
-  const data: ChartData<"bar" | "line", number[], string> = {
+  const data: ChartData<"bar" | "line", number[], String> = {
     labels: displayLabels,
     datasets: [
       {

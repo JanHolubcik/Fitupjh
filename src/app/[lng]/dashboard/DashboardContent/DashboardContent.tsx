@@ -23,15 +23,20 @@ import { authClient } from "@/lib/auth-client";
 import { useIsSm } from "../../constants/FunctionsHelper";
 import MyGraph from "@/components/ChartProgress/GraphProgressComponent";
 
-export const DashboardContent = () => {
+type props = {
+  fromDate: string;
+  today: string;
+};
+
+export const DashboardContent = ({ today, fromDate }: props) => {
   const { t } = useT("dashboard");
-  const { data: session } = authClient.useSession();
-  const { isFetched } = useLoadSavedFood({ daysAgo: 30 });
+  const { data: session, isPending } = authClient.useSession();
+  const { isFetching } = useLoadSavedFood({ today, fromDate });
   const { savedFood } = useYourIntakeOperations();
   const isMobile = !useIsSm();
 
   useEffect(() => {
-    if (isFetched && session?.user && session.user.guideSeen === false) {
+    if (!isFetching && session?.user && session.user.guideSeen === false) {
       const driverObj = driver({
         showProgress: true,
         steps: [
@@ -125,9 +130,9 @@ export const DashboardContent = () => {
 
       setTimeout(() => driverObj.drive(), 200);
     }
-  }, [isFetched, session]);
+  }, [session]);
 
-  if (!isFetched)
+  if (isPending)
     return (
       <div className="flex flex-col gap-3 mt-3 items-center max-w-2xl w-full ">
         <DateSwitcherSkeleton />
