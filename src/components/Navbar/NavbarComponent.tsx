@@ -30,13 +30,22 @@ import {
   FaUserPlus,
   FaPlus,
   FaSearch,
+  FaCameraRetro,
 } from "react-icons/fa";
 import { ModalFindFood } from "../Findfood/components/ModalFindFood";
 import { authClient } from "@/lib/auth-client";
 import { AuthSessionData } from "@/lib/auth";
+import { ModalScanFood } from "../Findfood/components/ModalScanFood";
+import { getTimeOfDay } from "@/app/[lng]/constants/FunctionsHelper";
 
 const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const {
+    isOpen: isOpenBarScan,
+    onOpen: onOpenBarScan,
+    onClose: onCloseBarScan,
+    onOpenChange: onOpenChangeBarScan,
+  } = useDisclosure();
   const pathname = usePathname();
   const { t } = useT("navbar");
   const router = useRouter();
@@ -206,15 +215,21 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
                     key="action1"
                     onPress={onOpen}
                   >
-                    <p>Search food</p>
+                    {t("findFood")}
                   </DropdownItem>
-                  <DropdownItem key="action2">Add Action 2</DropdownItem>
+                  <DropdownItem
+                    onPress={onOpenBarScan}
+                    key="action2"
+                    startContent={<FaCameraRetro />}
+                  >
+                    {t("photoOrScan")}
+                  </DropdownItem>
                   <DropdownItem
                     key="action3"
                     className="text-danger"
                     color="danger"
                   >
-                    Cancel
+                    {t("close")}
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
@@ -316,6 +331,12 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
         </div>
       )}
       <ModalFindFood isOpen={isOpen} onOpenChange={onOpenChange} />
+      <ModalScanFood
+        isOpen={isOpenBarScan}
+        onOpenChange={onOpenChangeBarScan}
+        onClose={onCloseBarScan}
+        timeOfDay={getTimeOfDay()}
+      />
     </>
   );
 };
