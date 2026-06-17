@@ -1,0 +1,71 @@
+{
+  "steps": {
+    "welcome": "Welcome",
+    "yourGoal": "Your Goal",
+    "yourDetails": "Your Details",
+    "review": "Review"
+  },
+  "welcome": {
+    "title": "Welcome!",
+    "subtitle": "The easiest way to track your daily food intake. Let's get your profile set up so you can start logging.",
+    "features": {
+      "logging": {
+        "title": "Simple Daily Logging",
+        "desc": "Keep track of your meals and macros effortlessly."
+      },
+      "scanner": {
+        "title": "Barcode Scanner",
+        "desc": "Scan packaging to instantly pull up exact nutrition facts."
+      },
+      "ai": {
+        "title": "AI Food Analyzer",
+        "desc": "Just snap a photo and let our AI estimate your meal."
+      }
+    }
+  },
+  "goal": {
+    "title": "What is your main goal?",
+    "loseFat": "Lose Fat",
+    "maintain": "Maintain",
+    "buildMuscle": "Build Muscle"
+  },
+  "details": {
+    "title": "Your starting point",
+    "weightLabel": "Current Weight (kg)",
+    "heightLabel": "Height (cm)",
+    "activityLevel": "Daily Activity Level",
+    "activity": {
+      "sedentary": "Sedentary (Office job, little exercise)",
+      "lightlyActive": "Lightly Active (1-3 days/week)",
+      "mediumActive": "Moderately Active (3-5 days/week)",
+      "highlyActive": "Highly Active (6-7 days/week)"
+    }
+  },
+  "review": {
+    "title": "Review your details",
+    "subtitle": "If everything looks correct, you are ready to start!",
+    "goalLabel": "Goal",
+    "activityLevelLabel": "Activity Level",
+    "weightLabel": "Weight",
+    "heightLabel": "Height",
+    "notSet": "Not set",
+    "kg": "kg",
+    "cm": "cm",
+    "goals": {
+      "loseWeight": "Lose Fat",
+      "maintainWeight": "Maintain",
+      "gainWeight": "Build Muscle"
+    },
+    "activities": {
+      "sedentary": "Sedentary",
+      "lightlyActive": "Lightly Active",
+      "mediumActive": "Moderately Active",
+      "highlyActive": "Highly Active"
+    }
+  },
+  "buttons": {
+    "back": "Back",
+    "continue": "Continue",
+    "completeSetup": "Complete Setup"
+  }
+}

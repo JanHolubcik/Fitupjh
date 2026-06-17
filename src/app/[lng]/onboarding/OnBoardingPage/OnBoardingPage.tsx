@@ -14,6 +14,7 @@ import {
 import { Formik, Form } from "formik";
 import { toast } from "react-toastify";
 import { motion, AnimatePresence } from "framer-motion";
+import { useT } from "next-i18next/client";
 
 import {
   FaFire,
@@ -24,17 +25,19 @@ import {
   FaCamera,
 } from "react-icons/fa";
 
-const STEPS = [
-  { id: 0, title: "Welcome" },
-  { id: 1, title: "Your Goal" },
-  { id: 2, title: "Your Details" },
-  { id: 3, title: "Review" },
-];
-
 export default function OnboardingPage() {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const { t } = useT("onboarding");
+
+  const STEPS = [
+    { id: 0, title: t("steps.welcome") },
+    { id: 1, title: t("steps.yourGoal") },
+    { id: 2, title: t("steps.yourDetails") },
+    { id: 3, title: t("steps.review") },
+  ];
+
   const slideVariants = {
     hiddenRight: { x: 50, opacity: 0 },
     hiddenLeft: { x: -50, opacity: 0 },
@@ -121,22 +124,22 @@ export default function OnboardingPage() {
             setFieldValue,
           }) => {
             // Helper objects to display user-friendly labels on the review screen
-            const goalLabels = {
-              loseWeight: "Lose Fat",
-              maintainWeight: "Maintain",
-              gainWeight: "Build Muscle",
+            const goalLabels: Record<string, string> = {
+              loseWeight: t("review.goals.loseWeight"),
+              maintainWeight: t("review.goals.maintainWeight"),
+              gainWeight: t("review.goals.gainWeight"),
             };
 
-            const activityLabels = {
-              sedentary: "Sedentary",
-              lightlyActive: "Lightly Active",
-              mediumActive: "Moderately Active",
-              highlyActive: "Highly Active",
+            const activityLabels: Record<string, string> = {
+              sedentary: t("review.activities.sedentary"),
+              lightlyActive: t("review.activities.lightlyActive"),
+              mediumActive: t("review.activities.mediumActive"),
+              highlyActive: t("review.activities.highlyActive"),
             };
 
             return (
               <Form className="flex flex-col min-h-[300px]">
-                <div className="h-96 relative">
+                <div className="h-[420px] relative">
                   <AnimatePresence mode="wait">
                     {/* STEP 0: WELCOME */}
                     {step === 0 && (
@@ -149,12 +152,11 @@ export default function OnboardingPage() {
                         className="flex flex-col items-center text-center gap-4 py-2"
                       >
                         <h2 className="text-3xl font-extrabold text-zinc-900 dark:text-white">
-                          Welcome!
+                          {t("welcome.title")}
                         </h2>
 
                         <p className="text-zinc-500 dark:text-zinc-400 text-[15px] leading-relaxed max-w-sm mb-4">
-                          The easiest way to track your daily food intake. Let's
-                          get your profile set up so you can start logging.
+                          {t("welcome.subtitle")}
                         </p>
 
                         <div className="w-full flex flex-col gap-3 mt-2">
@@ -164,11 +166,10 @@ export default function OnboardingPage() {
                             </div>
                             <div className="flex flex-col">
                               <span className="font-bold text-zinc-900 dark:text-white">
-                                Simple Daily Logging
+                                {t("welcome.features.logging.title")}
                               </span>
                               <span className="text-sm text-zinc-500 dark:text-zinc-400 leading-snug">
-                                Keep track of your meals and macros
-                                effortlessly.
+                                {t("welcome.features.logging.desc")}
                               </span>
                             </div>
                           </div>
@@ -179,11 +180,10 @@ export default function OnboardingPage() {
                             </div>
                             <div className="flex flex-col">
                               <span className="font-bold text-zinc-900 dark:text-white">
-                                Barcode Scanner
+                                {t("welcome.features.scanner.title")}
                               </span>
                               <span className="text-sm text-zinc-500 dark:text-zinc-400 leading-snug">
-                                Scan packaging to instantly pull up exact
-                                nutrition facts.
+                                {t("welcome.features.scanner.desc")}
                               </span>
                             </div>
                           </div>
@@ -194,11 +194,10 @@ export default function OnboardingPage() {
                             </div>
                             <div className="flex flex-col">
                               <span className="font-bold text-zinc-900 dark:text-white">
-                                AI Food Analyzer
+                                {t("welcome.features.ai.title")}
                               </span>
                               <span className="text-sm text-zinc-500 dark:text-zinc-400 leading-snug">
-                                Just snap a photo and let our AI estimate your
-                                meal.
+                                {t("welcome.features.ai.desc")}
                               </span>
                             </div>
                           </div>
@@ -215,7 +214,7 @@ export default function OnboardingPage() {
                         className="flex flex-col items-center justify-center h-full gap-6 text-center"
                       >
                         <h2 className="text-2xl font-extrabold">
-                          What is your main goal?
+                          {t("goal.title")}
                         </h2>
                         <div className="grid grid-cols-3 gap-4 w-full">
                           <button
@@ -229,7 +228,7 @@ export default function OnboardingPage() {
                           >
                             <FaFire size={32} />
                             <span className="font-bold text-zinc-900 dark:text-white">
-                              Lose Fat
+                              {t("goal.loseFat")}
                             </span>
                           </button>
 
@@ -246,7 +245,7 @@ export default function OnboardingPage() {
                           >
                             <FaBalanceScale size={32} />
                             <span className="font-bold text-zinc-900 dark:text-white">
-                              Maintain
+                              {t("goal.maintain")}
                             </span>
                           </button>
 
@@ -261,7 +260,7 @@ export default function OnboardingPage() {
                           >
                             <FaDumbbell size={32} />
                             <span className="font-bold text-zinc-900 dark:text-white">
-                              Build Muscle
+                              {t("goal.buildMuscle")}
                             </span>
                           </button>
                         </div>
@@ -277,13 +276,13 @@ export default function OnboardingPage() {
                         className="flex flex-col justify-center h-full gap-6 w-full"
                       >
                         <h2 className="text-2xl font-extrabold mb-2 text-center md:text-left">
-                          Your starting point
+                          {t("details.title")}
                         </h2>
 
                         <div className="flex gap-4 w-full">
                           <Input
                             name="weight"
-                            label="Current Weight (kg)"
+                            label={t("details.weightLabel")}
                             type="number"
                             value={String(values.weight)}
                             onChange={handleChange}
@@ -293,7 +292,7 @@ export default function OnboardingPage() {
                           />
                           <Input
                             name="height"
-                            label="Height (cm)"
+                            label={t("details.heightLabel")}
                             type="number"
                             value={String(values.height)}
                             onChange={handleChange}
@@ -305,23 +304,23 @@ export default function OnboardingPage() {
 
                         <Select
                           name="activityLevel"
-                          label="Daily Activity Level"
+                          label={t("details.activityLevel")}
                           selectedKeys={[values.activityLevel]}
                           onChange={handleChange}
                           variant="faded"
                           className="w-full"
                         >
                           <SelectItem key="sedentary" value="sedentary">
-                            Sedentary (Office job, little exercise)
+                            {t("details.activity.sedentary")}
                           </SelectItem>
                           <SelectItem key="lightlyActive" value="lightlyActive">
-                            Lightly Active (1-3 days/week)
+                            {t("details.activity.lightlyActive")}
                           </SelectItem>
                           <SelectItem key="mediumActive" value="mediumActive">
-                            Moderately Active (3-5 days/week)
+                            {t("details.activity.mediumActive")}
                           </SelectItem>
                           <SelectItem key="highlyActive" value="highlyActive">
-                            Highly Active (6-7 days/week)
+                            {t("details.activity.highlyActive")}
                           </SelectItem>
                         </Select>
                       </motion.div>
@@ -338,17 +337,17 @@ export default function OnboardingPage() {
                       >
                         <div>
                           <h2 className="text-2xl font-extrabold mb-2">
-                            Review your details
+                            {t("review.title")}
                           </h2>
                           <p className="text-zinc-500 dark:text-zinc-400 text-sm">
-                            If everything looks correct, you are ready to start!
+                            {t("review.subtitle")}
                           </p>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4 w-full">
                           <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 flex flex-col items-center">
                             <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-1">
-                              Goal
+                              {t("review.goalLabel")}
                             </span>
                             <span className="font-bold text-zinc-900 dark:text-white">
                               {goalLabels[values.goal]}
@@ -357,7 +356,7 @@ export default function OnboardingPage() {
 
                           <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 flex flex-col items-center">
                             <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-1">
-                              Activity Level
+                              {t("review.activityLevelLabel")}
                             </span>
                             <span className="font-bold text-zinc-900 dark:text-white">
                               {activityLabels[values.activityLevel]}
@@ -366,23 +365,23 @@ export default function OnboardingPage() {
 
                           <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 flex flex-col items-center">
                             <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-1">
-                              Weight
+                              {t("review.weightLabel")}
                             </span>
                             <span className="font-bold text-zinc-900 dark:text-white">
                               {values.weight
-                                ? `${values.weight} kg`
-                                : "Not set"}
+                                ? `${values.weight} ${t("review.kg")}`
+                                : t("review.notSet")}
                             </span>
                           </div>
 
                           <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 flex flex-col items-center">
                             <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-1">
-                              Height
+                              {t("review.heightLabel")}
                             </span>
                             <span className="font-bold text-zinc-900 dark:text-white">
                               {values.height
-                                ? `${values.height} cm`
-                                : "Not set"}
+                                ? `${values.height} ${t("review.cm")}`
+                                : t("review.notSet")}
                             </span>
                           </div>
                         </div>
@@ -398,7 +397,7 @@ export default function OnboardingPage() {
                     onPress={prevStep}
                     isDisabled={step === 0 || isSubmitting || isAnimating}
                   >
-                    Back
+                    {t("buttons.back")}
                   </Button>
 
                   {step < STEPS.length - 1 ? (
@@ -408,7 +407,7 @@ export default function OnboardingPage() {
                       isDisabled={isAnimating}
                       className="bg-zinc-900 text-white dark:bg-white dark:text-black font-bold"
                     >
-                      Continue
+                      {t("buttons.continue")}
                     </Button>
                   ) : (
                     <Button
@@ -419,7 +418,7 @@ export default function OnboardingPage() {
                       {isSubmitting ? (
                         <Spinner size="sm" color="white" />
                       ) : (
-                        "Complete Setup"
+                        t("buttons.completeSetup")
                       )}
                     </Button>
                   )}

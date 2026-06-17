@@ -3,13 +3,18 @@ import { useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { LastMonthFoodOptions } from "@/lib/queriesOptions/LastMonthFoodOptions";
 import { setSavedFoodMonth } from "@/features/savedFoodslice/yourIntakeSlice";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { addDays, format, subDays } from "date-fns";
 import { SavedFoodMonth } from "@/types/Types";
 
 type props = {
   daysAgo?: number;
-  userId: string | undefined;
+};
+
+const getMidnightISO = (date: Date) => {
+  const d = new Date(date);
+  d.setUTCHours(0, 0, 0, 0);
+  return d.toISOString(); // Output: "YYYY-MM-DDT00:00:00.000Z"
 };
 
 /**
@@ -18,24 +23,24 @@ type props = {
  * @param daysAgo greater than 0.
  * @returns
  */
-const useLoadSavedFood = ({ userId, daysAgo }: props) => {
+const useLoadSavedFood = ({ daysAgo }: props) => {
   const dispatch = useDispatch();
 
-  const today = useMemo(() => addDays(Date(), 1).toISOString(), []);
+  const today = useMemo(() => getMidnightISO(addDays(new Date(), 1)), []);
+
   const fromDate = useMemo(
-    () => (daysAgo ? subDays(new Date(), daysAgo).toISOString() : ""),
-    [],
+    () => (daysAgo ? getMidnightISO(subDays(new Date(), daysAgo)) : ""),
+    [daysAgo],
   );
 
   const {
     data: monthData,
     isSuccess,
     isFetched,
-  } = useQuery(LastMonthFoodOptions(userId || "", fromDate, today));
+  } = useSuspenseQuery(LastMonthFoodOptions(fromDate, today));
 
   useEffect(() => {
-    if (isSuccess && Array.isArray(monthData)) {
-      console.log(monthData);
+    if (Array.isArray(monthData)) {
       const dateKeyedData = monthData.reduce((acc, item) => {
         const date = format(item.day, "yyyy-MM-dd");
         const { breakfast, lunch, dinner } = item.savedFood;

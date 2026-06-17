@@ -1,0 +1,71 @@
+{
+  "steps": {
+    "welcome": "Vitajte",
+    "yourGoal": "Váš cieľ",
+    "yourDetails": "Vaše údaje",
+    "review": "Prehľad"
+  },
+  "welcome": {
+    "title": "Vitajte!",
+    "subtitle": "Najjednoduchší spôsob, ako sledovať váš denný príjem jedla. Nastavme si profil, aby ste mohli začať zaznamenávať.",
+    "features": {
+      "logging": {
+        "title": "Jednoduché denné zaznamenávanie",
+        "desc": "Sledujte svoje jedlá a makrá bez námahy."
+      },
+      "scanner": {
+        "title": "Skener čiarových kódov",
+        "desc": "Naskenujte obal a okamžite zistite presné nutričné hodnoty."
+      },
+      "ai": {
+        "title": "AI analyzátor jedla",
+        "desc": "Stačí odfotiť a naša AI odhadne vaše jedlo."
+      }
+    }
+  },
+  "goal": {
+    "title": "Aký je váš hlavný cieľ?",
+    "loseFat": "Schudnúť",
+    "maintain": "Udržať váhu",
+    "buildMuscle": "Nabrať svaly"
+  },
+  "details": {
+    "title": "Váš počiatočný bod",
+    "weightLabel": "Aktuálna váha (kg)",
+    "heightLabel": "Výška (cm)",
+    "activityLevel": "Úroveň dennej aktivity",
+    "activity": {
+      "sedentary": "Sedavá (Kancelárska práca, málo cvičenia)",
+      "lightlyActive": "Zľahka aktívna (1-3 dni/týždeň)",
+      "mediumActive": "Stredne aktívna (3-5 dní/týždeň)",
+      "highlyActive": "Veľmi aktívna (6-7 dní/týždeň)"
+    }
+  },
+  "review": {
+    "title": "Skontrolujte svoje údaje",
+    "subtitle": "Ak všetko vyzerá správne, ste pripravení začať!",
+    "goalLabel": "Cieľ",
+    "activityLevelLabel": "Úroveň aktivity",
+    "weightLabel": "Váha",
+    "heightLabel": "Výška",
+    "notSet": "Nenastavené",
+    "kg": "kg",
+    "cm": "cm",
+    "goals": {
+      "loseWeight": "Schudnúť tuk",
+      "maintainWeight": "Udržať váhu",
+      "gainWeight": "Nabrať svaly"
+    },
+    "activities": {
+      "sedentary": "Sedavá",
+      "lightlyActive": "Zľahka aktívna",
+      "mediumActive": "Stredne aktívna",
+      "highlyActive": "Veľmi aktívna"
+    }
+  },
+  "buttons": {
+    "back": "Späť",
+    "continue": "Pokračovať",
+    "completeSetup": "Dokončiť nastavenie"
+  }
+}

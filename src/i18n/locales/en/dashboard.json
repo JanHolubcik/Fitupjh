@@ -1,4 +1,38 @@
 {
+  "tour": {
+    "timeTravel": {
+      "title": "Time Travel",
+      "description": "Switch between days to view past logs."
+    },
+    "calorieBudget": {
+      "title": "Calorie Budget",
+      "description": "Keep an eye on your daily budget and remaining calories here."
+    },
+    "macroBreakdown": {
+      "title": "Macro Breakdown",
+      "description": "Track your macros to ensure you are hitting your specific goals."
+    },
+    "yourMeals": {
+      "title": "Your Meals",
+      "description": "In this section you can add your daily intake."
+    },
+    "yourProgress": {
+      "title": "Your Progress",
+      "description": "Watch your consistency pay off! This chart visualizes your intake trends over time."
+    },
+    "yourProfile": {
+      "title": "Your profile",
+      "description": "Here you can change your biometric, so we can calculate your daily macros."
+    },
+    "manualSearch": {
+      "title": "Manual Search",
+      "description": "Type here to quickly search our database for your favorite foods and ingredients."
+    },
+    "smartScanning": {
+      "title": "Smart Scanning & AI",
+      "description": "Too tired to type? Scan a product's barcode or just snap a photo of your plate, and let our AI do the heavy lifting!"
+    }
+  },
   "searchPlaceholder": "Search food...",
   "close": "Close",
   "recordNotFound": " If you didn't find your food, you can add it here or try scanning.",
@@ -73,9 +107,9 @@
     "cameraError": "An error occurred while accessing the camera: "
   },
   "timeOfDay": {
-    "breakfast": "breakfast",
-    "lunch": "lunch",
-    "dinner": "dinner"
+    "breakfast": "Breakfast",
+    "lunch": "Lunch",
+    "dinner": "Dinner"
   },
   "macros": {
     "calories": "Calories",

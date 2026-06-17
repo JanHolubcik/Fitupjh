@@ -29,6 +29,7 @@ import {
   FaSignInAlt,
   FaUserPlus,
   FaPlus,
+  FaSearch,
 } from "react-icons/fa";
 import { ModalFindFood } from "../Findfood/components/ModalFindFood";
 import { authClient } from "@/lib/auth-client";
@@ -134,6 +135,7 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
             <div className="hidden sm:flex gap-5">
               {navigationProperties.map((item) => (
                 <NavbarItem
+                  id={item.id === 2 ? "tour-profile-desktop" : ""}
                   key={`desktop-${item.href}`}
                   isActive={pathname === item.href}
                 >
@@ -184,15 +186,38 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
         <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/70 dark:bg-zinc-950/70 backdrop-blur-lg border-t border-black/10 dark:border-white/10 pb-[env(safe-area-inset-bottom)]">
           <div className="flex flex-row  items-center h-16">
             {pathname === `/${lng}/dashboard` && (
-              <Link
-                className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${"text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-zinc-200"} cursor-pointer`}
-                onPress={onOpen}
-              >
-                <FaPlus className="text-lg" />
-                <span className="text-[10px] font-medium tracking-wide">
-                  {t("add")}
-                </span>
-              </Link>
+              <Dropdown placement="top" className=" dark:bg-zinc-900 bg-white">
+                <DropdownTrigger>
+                  <Link
+                    as="button"
+                    id="tour-search-bar-mobile"
+                    className="flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-zinc-200 cursor-pointer outline-none"
+                  >
+                    <FaPlus className="text-lg" />
+                    <span className="text-[10px] font-medium tracking-wide">
+                      {t("add")}
+                    </span>
+                  </Link>
+                </DropdownTrigger>
+
+                <DropdownMenu aria-label="Add options">
+                  <DropdownItem
+                    startContent={<FaSearch />}
+                    key="action1"
+                    onPress={onOpen}
+                  >
+                    <p>Search food</p>
+                  </DropdownItem>
+                  <DropdownItem key="action2">Add Action 2</DropdownItem>
+                  <DropdownItem
+                    key="action3"
+                    className="text-danger"
+                    color="danger"
+                  >
+                    Cancel
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
             )}
 
             <Link
@@ -210,6 +235,7 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
             </Link>
 
             <Link
+              id="tour-profile-mobile"
               href={`/${lng}/profile`}
               className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
                 pathname === `/${lng}/profile`

@@ -3,12 +3,18 @@ import { checkForSavedFoodMonth } from "@/lib/food-db";
 
 import { isValid, parseISO, subDays } from "date-fns";
 import { withAuth } from "../functions";
+import { auth } from "@/lib/auth";
 
 export async function GET(req: NextRequest) {
   return withAuth(req, async () => {
     const dateTo = req.nextUrl.searchParams.get("dateTo");
     const dateFrom = req.nextUrl.searchParams.get("dateFrom");
-    const userID = req.nextUrl.searchParams.get("user_id");
+
+    const authData = await auth.api.getSession({
+      headers: req.headers,
+    });
+
+    const userID = authData?.user.id;
 
     if (!userID || typeof userID !== "string") {
       return new NextResponse("Missing or invalid userID", { status: 400 });

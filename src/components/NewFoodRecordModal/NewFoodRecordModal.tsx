@@ -66,6 +66,7 @@ export const NewFoodRecordModal = ({
       sugar: Number(food.sugar),
       fiber: Number(food.fiber),
       salt: Number(food.salt),
+      originalName: food.originalName,
     };
     addToFoodObject(updatedFood, timeOfDay);
     onClose();

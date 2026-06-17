@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { createProxy } from "next-i18next/proxy";
 import i18nConfig from "./i18n.config";
-import { auth } from "@/lib/auth"; // Import your Better Auth instance
+import { auth } from "@/lib/auth";
 
 const i18nProxy = createProxy(i18nConfig);
 
@@ -24,7 +24,10 @@ export async function proxy(req: NextRequest) {
       pathname.match(new RegExp(`^/[^/]+${route}`)),
   );
 
-  if (!isNotLoggedInProtected && !isLoggedInProtectedRoutes) {
+  const isRootPath =
+    pathname === "/" || /^\/[a-zA-Z]{2}(-[a-zA-Z]{2})?(\/)?$/.test(pathname);
+
+  if (!isNotLoggedInProtected && !isLoggedInProtectedRoutes && !isRootPath) {
     return i18nProxy(req);
   }
 
@@ -36,7 +39,6 @@ export async function proxy(req: NextRequest) {
 
   if (isNotLoggedInProtected && !isAuthenticated) {
     const signInUrl = new URL("/login", req.url);
-
     signInUrl.searchParams.set("callbackUrl", req.url);
     return NextResponse.redirect(signInUrl);
   }
@@ -46,9 +48,16 @@ export async function proxy(req: NextRequest) {
     return NextResponse.redirect(dashboardUrl);
   }
 
-  if (session && !session.user.weight) {
-    const onboarding = new URL("/onboarding", req.url);
-    return NextResponse.redirect(onboarding);
+  if (isRootPath && isAuthenticated) {
+    if (!session.user.weight && !session.user.height) {
+      return NextResponse.redirect(new URL("/onboarding", req.url));
+    }
+    return NextResponse.redirect(new URL("/dashboard", req.url));
+  }
+
+  if (session && !session.user.weight && !session.user.height) {
+    const onboardingUrl = new URL("/onboarding", req.url);
+    return NextResponse.redirect(onboardingUrl);
   }
 
   return i18nProxy(req);

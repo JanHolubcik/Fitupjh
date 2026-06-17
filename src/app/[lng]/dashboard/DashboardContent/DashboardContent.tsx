@@ -2,8 +2,7 @@
 
 import { useEffect } from "react";
 import { driver } from "driver.js";
-import "driver.js/dist/driver.css"; // Required for the spotlight styling
-
+import "driver.js/dist/driver.css";
 import { CalorieCard } from "./components/CalorieCard/CalorieCard";
 import useLoadSavedFood from "@/hooks/useLoadSavedFood";
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
@@ -19,17 +18,17 @@ import {
   AccordionTimeFrameSkeleton,
   MyGraphSkeleton,
 } from "./components/Skeletons";
+import { useT } from "next-i18next/client";
 import { authClient } from "@/lib/auth-client";
+import { useIsSm } from "../../constants/FunctionsHelper";
 
 export const DashboardContent = () => {
+  const { t } = useT("dashboard");
   const { data: session } = authClient.useSession();
-  const { isFetched } = useLoadSavedFood({
-    userId: session?.user?.id,
-    daysAgo: 10,
-  });
+  const { isFetched } = useLoadSavedFood({ daysAgo: 30 });
   const { savedFood } = useYourIntakeOperations();
+  const isMobile = !useIsSm();
 
-  // === DRIVER.JS EFFECT ===
   useEffect(() => {
     if (isFetched && session?.user && session.user.guideSeen === false) {
       const driverObj = driver({
@@ -38,9 +37,8 @@ export const DashboardContent = () => {
           {
             element: "#tour-date",
             popover: {
-              title: "Time Travel",
-              description:
-                "Switch between days to view past logs or plan ahead.",
+              title: t("tour.timeTravel.title"),
+              description: t("tour.timeTravel.description"),
               side: "bottom",
               align: "start",
             },
@@ -48,9 +46,8 @@ export const DashboardContent = () => {
           {
             element: "#tour-calories",
             popover: {
-              title: "Calorie Budget",
-              description:
-                "Keep an eye on your daily budget and remaining calories here.",
+              title: t("tour.calorieBudget.title"),
+              description: t("tour.calorieBudget.description"),
               side: "bottom",
               align: "start",
             },
@@ -58,9 +55,8 @@ export const DashboardContent = () => {
           {
             element: "#tour-macros",
             popover: {
-              title: "Macro Breakdown",
-              description:
-                "Track your Protein, Carbs, and Fats to ensure you are hitting your specific goals.",
+              title: t("tour.macroBreakdown.title"),
+              description: t("tour.macroBreakdown.description"),
               side: "bottom",
               align: "start",
             },
@@ -69,9 +65,8 @@ export const DashboardContent = () => {
           {
             element: "#tour-meals",
             popover: {
-              title: "Your Meals",
-              description:
-                "Expand these sections to view everything you've logged for the day.",
+              title: t("tour.yourMeals.title"),
+              description: t("tour.yourMeals.description"),
               side: "top",
               align: "start",
             },
@@ -79,29 +74,37 @@ export const DashboardContent = () => {
           {
             element: "#tour-chart",
             popover: {
-              title: "Your Progress",
-              description:
-                "Watch your consistency pay off! This chart visualizes your intake trends over time.",
+              title: t("tour.yourProgress.title"),
+              description: t("tour.yourProgress.description"),
               side: "top",
               align: "start",
             },
           },
           {
-            element: "#tour-search-bar",
+            element: isMobile
+              ? "#tour-profile-mobile"
+              : "#tour-profile-desktop",
             popover: {
-              title: "Manual Search",
-              description:
-                "Type here to quickly search our database for your favorite foods and ingredients.",
+              title: t("tour.yourProfile.title"),
+              description: t("tour.yourProfile.description"),
               side: "bottom",
               align: "start",
             },
           },
           {
-            element: "#tour-barcode-ai",
+            element: isMobile ? "#tour-search-bar-mobile" : "#tour-search-bar",
             popover: {
-              title: "Smart Scanning & AI",
-              description:
-                "Too tired to type? Scan a product's barcode or just snap a photo of your plate, and let our AI do the heavy lifting!",
+              title: t("tour.manualSearch.title"),
+              description: t("tour.manualSearch.description"),
+              side: "bottom",
+              align: "start",
+            },
+          },
+          {
+            element: isMobile ? "#tour-search-bar-mobile" : "#tour-barcode-ai",
+            popover: {
+              title: t("tour.smartScanning.title"),
+              description: t("tour.smartScanning.description"),
               side: "top",
               align: "center",
             },

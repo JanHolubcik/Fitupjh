@@ -28,7 +28,7 @@ export const AccordionTimeFrame = ({ savedFood }: props) => {
       "px-3 py-0 data-[hover=true]:bg-default-100 rounded-xl h-16 flex items-center transition-all duration-200",
     indicator:
       "text-medium text-default-400 data-[open=true]:text-primary transition-transform duration-200",
-    content: "text-small font-bold px-3 pb-3 pt-1",
+    content: "text-small font-bold  pt-1",
   };
 
   return (

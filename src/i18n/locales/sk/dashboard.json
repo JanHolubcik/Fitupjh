@@ -1,4 +1,38 @@
 {
+  "tour": {
+    "timeTravel": {
+      "title": "Cestovanie v čase",
+      "description": "Prepínajte medzi dňami pre zobrazenie záznamov."
+    },
+    "calorieBudget": {
+      "title": "Kalorický rozpočet",
+      "description": "Tu môžete sledovať svoj denný príjem a zostávajúce kalórie."
+    },
+    "macroBreakdown": {
+      "title": "Rozpis makroživín",
+      "description": "Sledujte svoje makrá, aby ste sa uistili, že dosahujete svoje ciele."
+    },
+    "yourMeals": {
+      "title": "Vaše jedlá",
+      "description": "V tejto sekcii pridávajte svoj denný príjem"
+    },
+    "yourProgress": {
+      "title": "Váš pokrok",
+      "description": "Sledujte, ako sa vaša dôslednosť vypláca! Tento graf vizualizuje trendy vášho príjmu."
+    },
+    "yourProfile": {
+      "title": "Váš profil",
+      "description": "Tu si môžete zmeniť svoje biometrické údaje, aby sme vám mohli vypočítať denné makrá."
+    },
+    "manualSearch": {
+      "title": "Manuálne vyhľadávanie",
+      "description": "Vyhľadávajte v našej databáze pre vaše obľúbené jedlá a ingrediencie."
+    },
+    "smartScanning": {
+      "title": "Inteligentné skenovanie a AI",
+      "description": "Ste príliš unavení na písanie? Naskenujte čiarový kód produktu alebo jednoducho odfoťte svoj tanier a nechajte našu AI urobiť ťažkú prácu!"
+    }
+  },
   "searchPlaceholder": "Hľadať jedlo...",
   "kcalRemaining": "{{amount}} Kcal zostáva",
   "recordNotFound": "Ak si svoje jedlo nenašiel vyskúšaj jedlo naskanovať alebo pridať manuálne.",
@@ -74,9 +108,9 @@
     "cameraError": "Pri prístupe ku kamere sa vyskytla chyba: "
   },
   "timeOfDay": {
-    "breakfast": "raňajky",
-    "lunch": "obed",
-    "dinner": "večera"
+    "breakfast": "Raňajky",
+    "lunch": "Obed",
+    "dinner": "Večera"
   },
   "macros": {
     "calories": "Kalórie",

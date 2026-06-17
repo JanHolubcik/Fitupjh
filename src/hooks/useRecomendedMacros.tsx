@@ -1,7 +1,5 @@
 "use client";
 import { format } from "date-fns";
-import { LastMonthFoodOptions } from "@/lib/queriesOptions/LastMonthFoodOptions";
-import { useQuery } from "@tanstack/react-query";
 
 import { calculateRecommendedMacros } from "../app/[lng]/constants/FunctionsHelper";
 
@@ -39,16 +37,9 @@ const useMacros = () => {
   const { data } = authClient.useSession();
 
   const reduxSavedFood = useSelector((state: RootState) => state.savedFood);
-  const hasReduxData = Object.keys(reduxSavedFood.month).length > 0;
 
-  const { data: apiSavedFood, isLoading } = useQuery({
-    ...LastMonthFoodOptions(data?.user?.id!, "", date.toString()),
-    enabled: !hasReduxData,
-  });
+  const savedFood = transformReduxToApi(reduxSavedFood.month);
 
-  const savedFood = hasReduxData
-    ? transformReduxToApi(reduxSavedFood.month)
-    : apiSavedFood;
   const isArray = Array.isArray(savedFood);
   const isEmpty = !isArray || savedFood.length === 0;
 
@@ -142,7 +133,6 @@ const useMacros = () => {
     dataMacros: isEmpty ? [] : dataMacros,
     labels,
     RecommendedMacros,
-    isLoading,
   };
 };
 
