@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import counterReducer from "@/features/counter/counterSlice";
-import savedFoodReducer from "@/features/savedFoodslice/yourIntakeSlice";
+import savedFoodReducer from "@/features/DashboardSlice/DashboardSlice";
 
 /*
 Creating a Redux Store per Request
@@ -12,7 +12,7 @@ The first change is to move from defining store as a global or module-singleton 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      counter: counterReducer, 
+      counter: counterReducer,
       savedFood: savedFoodReducer,
     },
   });

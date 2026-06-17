@@ -4,7 +4,7 @@ import { Food, FoodClass } from "@/lib/mongo/models/Food";
 import { SavedFood } from "@/lib/mongo/models/SavedFood";
 import mongoose from "mongoose";
 import { FoodInput } from "../validationShemas/foodValidationSchema";
-import { format } from "date-fns";
+import { addDays, format, parse } from "date-fns";
 
 export async function getFoods() {
   try {
@@ -256,51 +256,39 @@ export async function checkForSavedFoodMonth(
     await connectDB();
 
     const existingRecords = await SavedFood.find({
-      user_id: { $exists: true, $eq: new mongoose.Types.ObjectId(user_id) },
-      day: { $gte: new Date(dateFrom), $lte: new Date(dateTo) },
+      user_id: new mongoose.Types.ObjectId(user_id),
+      day: { $gte: dateFrom, $lte: dateTo },
     }).lean();
 
     const recordMap = new Map<string, any>();
     existingRecords.forEach((record) => {
-      const dateStr = new Date(record.day).toISOString().split("T")[0];
-      recordMap.set(dateStr, record);
+      recordMap.set(record.day.toString(), record);
     });
 
-    const completeRecords: any[] = [];
+    const foodMonth: Record<string, FoodType> = {};
 
-    const start = new Date(dateFrom);
-    const end = new Date(dateTo);
+    let currentParsedDate = parse(dateFrom, "yyyy-MM-dd", new Date());
+    const endParsedDate = parse(dateTo, "yyyy-MM-dd", new Date());
 
-    const current = new Date(start);
-
-    while (current <= end) {
-      const dateStr = current.toISOString().split("T")[0];
+    while (currentParsedDate <= endParsedDate) {
+      const dateStr = format(currentParsedDate, "yyyy-MM-dd");
 
       if (recordMap.has(dateStr)) {
-        completeRecords.push(recordMap.get(dateStr));
+        foodMonth[dateStr] = recordMap.get(dateStr)!.savedFood as FoodType;
       } else {
-        completeRecords.push({
-          _id: new mongoose.Types.ObjectId(), // Generate a fake ID to match schema expectations
-          user_id: new mongoose.Types.ObjectId(user_id),
-          day: format(new Date(), "yyyy-MM-dd"),
-          savedFood: {
-            breakfast: [],
-            lunch: [],
-            dinner: [],
-          },
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        });
+        foodMonth[dateStr] = {
+          breakfast: [],
+          lunch: [],
+          dinner: [],
+        };
       }
 
-      // Move to the next day
-      current.setDate(current.getDate() + 1);
+      currentParsedDate = addDays(currentParsedDate, 1);
     }
 
-    if (!existingRecords.length) return {};
-
-    return existingRecords;
+    return foodMonth;
   } catch (error) {
+    console.error("Error in checkForSavedFoodMonth:", error);
     return { error };
   }
 }

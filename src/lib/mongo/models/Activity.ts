@@ -19,28 +19,25 @@ import mongoose from "mongoose";
 @ModelOptions({
   schemaOptions: {
     timestamps: true,
-    collection: "activities", // Fixed from "food"
+    collection: "activities",
   },
   options: {
     allowMixed: Severity.ALLOW,
   },
 })
-@index({ name: 1 }) // Fixed from "title"
+@index({ name: 1 })
 class ActivityClass {
   @prop({ required: true, unique: true })
   name: string;
-
-  // MET (Metabolic Equivalent) is standard for calculating calories burned.
-  // E.g., Walking = 3.0, Running = 9.8, Biking = 7.5
+  @prop({ required: false, type: () => String, default: new Map() })
+  localizedNames: Map<string, string>;
   @prop({ required: true })
   metValue: number;
 
-  // Optional: Good for filtering the UI (e.g., "Cardio", "Strength")
   @prop({ required: false })
   category?: string;
 }
 
-// Fixed from FoodClass fallback
 const Activity =
   mongoose.models.ActivityClass || getModelForClass(ActivityClass);
 export { Activity, ActivityClass };

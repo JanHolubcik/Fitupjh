@@ -1,9 +1,9 @@
-import { FoodType } from "@/types/Types";
 import { queryOptions } from "@tanstack/react-query";
+import { LoggedActivityType } from "@/features/DashboardSlice/DashboardSlice";
 
-export const LastMonthFoodOptions = (dateFrom: string, dateTo: string) =>
+export const LastMonthSavedActivities = (dateFrom: string, dateTo: string) =>
   queryOptions({
-    queryKey: ["lastMonthFood", dateTo, dateFrom] as const,
+    queryKey: ["lastMonthSavedActivity", dateTo, dateFrom] as const,
     queryFn: async ({ queryKey }) => {
       const isServer = typeof window === "undefined";
       let baseUrl = "";
@@ -15,11 +15,11 @@ export const LastMonthFoodOptions = (dateFrom: string, dateTo: string) =>
             : "http://localhost:3000");
       }
       const res = await fetch(
-        `${baseUrl}/api/lastMonthFood?dateFrom=${dateFrom}&dateTo=${dateTo}`,
+        `${baseUrl}/api/lastMonthSavedActivity?dateFrom=${dateFrom}&dateTo=${dateTo}`,
         { cache: "no-store", credentials: "include" },
       );
 
-      return res.json() as Promise<Record<string, FoodType>>;
+      return res.json() as Promise<Record<string, LoggedActivityType[]>>;
     },
     staleTime: 600000,
     retry: 0,
