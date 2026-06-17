@@ -4,5 +4,8 @@
   "profile": "Profile",
   "signIn": "Sign in",
   "signUp": "Sign up",
-  "logout": "Logout"
+  "logout": "Logout",
+  "close": "Close",
+  "findFood": "Find food",
+  "photoOrScan": "Photo or scan"
 }

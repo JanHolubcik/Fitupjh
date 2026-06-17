@@ -4,5 +4,8 @@
   "profile": "Profil",
   "signIn": "Prihlásenie",
   "signUp": "Registrácia",
-  "logout": "Odhlásenie"
+  "logout": "Odhlásenie",
+  "close": "Zavriet",
+  "findFood": "Vyhľadaj jedlo",
+  "photoOrScan": "Odfoť alebo naskenuj"
 }
