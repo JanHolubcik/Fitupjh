@@ -1,4 +1,4 @@
-import { SavedFoodClass } from "@/models/SavedFood";
+import { SavedFoodClass } from "@/lib/mongo/models/SavedFood";
 import { queryOptions } from "@tanstack/react-query";
 
 export const LastMonthFoodOptions = (dateFrom: string, dateTo: string) =>

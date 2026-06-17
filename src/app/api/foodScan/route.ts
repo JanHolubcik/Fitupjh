@@ -1,4 +1,4 @@
-import { addNewFood, getFoodByQR } from "@/lib/food-db";
+import { addNewFood, getFoodByBarcode } from "@/lib/mongo/food-db";
 
 import { NextRequest, NextResponse } from "next/server";
 import { withAuth } from "../functions";
@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
       return new NextResponse("Missing or invalid QRCode", { status: 400 });
     }
     try {
-      const localFood = await getFoodByQR(QRCode);
+      const localFood = await getFoodByBarcode(QRCode);
 
       if (localFood.error !== "Food not found") {
         return NextResponse.json(localFood);

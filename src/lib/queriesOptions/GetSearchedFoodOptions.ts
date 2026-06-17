@@ -1,4 +1,4 @@
-import { FoodClass } from "@/models/Food";
+import { FoodClass } from "@/lib/mongo/models/Food";
 
 export const getSearchedFoodOptions = (
   searchTerm: string,

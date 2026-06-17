@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { checkForSavedFood, saveFoodInDay } from "@/lib/food-db";
+import { checkForSavedFood, saveFoodInDay } from "@/lib/mongo/food-db";
 import { FoodType } from "@/types/Types";
 import { isValid, parse, parseISO } from "date-fns";
 import { withAuth } from "../functions";

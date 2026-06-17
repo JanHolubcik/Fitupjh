@@ -1,9 +1,9 @@
 import { FoodType } from "@/types/Types";
 import connectDB from "./connect-db";
-import { Food, FoodClass } from "@/models/Food";
-import { SavedFood } from "@/models/SavedFood";
+import { Food, FoodClass } from "@/lib/mongo/models/Food";
+import { SavedFood } from "@/lib/mongo/models/SavedFood";
 import mongoose from "mongoose";
-import { FoodInput } from "./validationShemas/foodValidationSchema";
+import { FoodInput } from "../validationShemas/foodValidationSchema";
 import { format } from "date-fns";
 
 export async function getFoods() {
@@ -107,15 +107,15 @@ export async function getFood(substring: string, language?: string) {
   }
 }
 /**
- * Retrieves a food item by its QR code.
- * @param qrCode
+ * Retrieves a food item by its Barcode code.
+ * @param Barcode
  * @returns
  */
-export async function getFoodByQR(qrCode: string) {
+export async function getFoodByBarcode(Barcode: string) {
   try {
     await connectDB();
-
-    const food = await Food.findOne({ QRcode: qrCode })
+    //TODO:yes it says qrcode, I should probably write script to change this
+    const food = await Food.findOne({ QRcode: Barcode })
       .lean<FoodClass>()
       .exec();
 

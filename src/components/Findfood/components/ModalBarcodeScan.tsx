@@ -18,7 +18,7 @@ import {
   prepareZXingModule,
 } from "@yudiel/react-qr-scanner";
 import { useScanProduct } from "./useScanProduct";
-import { FoodClass } from "@/models/Food";
+import { FoodClass } from "@/lib/mongo/models/Food";
 import { useDispatch } from "react-redux";
 import { setNewFoodBarCode } from "@/features/savedFoodslice/yourIntakeSlice";
 import { getTimeOfDay } from "@/app/[lng]/constants/FunctionsHelper";

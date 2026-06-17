@@ -1,4 +1,4 @@
-import { FoodClass } from "@/models/Food";
+import { FoodClass } from "@/lib/mongo/models/Food";
 import { activityLevel } from "@/models/users";
 
 export type ReturnTypeFood =

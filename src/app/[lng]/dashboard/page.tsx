@@ -7,8 +7,8 @@ import { auth } from "@/lib/auth";
 import { LastMonthFoodOptions } from "@/lib/queriesOptions/LastMonthFoodOptions";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { addDays, subDays } from "date-fns";
-import { checkForSavedFoodMonth } from "@/lib/food-db";
-import { SavedFoodClass } from "@/models/SavedFood";
+import { checkForSavedFoodMonth } from "@/lib/mongo/food-db";
+import { SavedFoodClass } from "@/lib/mongo/models/SavedFood";
 
 const getMidnightISO = (date: Date) => {
   const d = new Date(date);

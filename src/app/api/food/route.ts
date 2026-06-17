@@ -1,4 +1,4 @@
-import { addNewFood, getFood } from "@/lib/food-db";
+import { addNewFood, getFood } from "@/lib/mongo/food-db";
 import { FoodSchema } from "@/lib/validationShemas/foodValidationSchema";
 import { NextRequest, NextResponse } from "next/server";
 import { withAuth } from "../functions";
