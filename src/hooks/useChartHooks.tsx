@@ -38,7 +38,7 @@ export const useChartsHooks = ({
   const isSmallScreen = useIsSm();
   const displayLabels = isSmallScreen
     ? labels
-    : labels.map((label) => label.slice(-3));
+    : labels.map((label) => label.slice(-4));
   const displayDataValues = dataValues;
   const capitalizedMacro = capitalizeFirstLetter(selectedMacro);
   const theme = getMacroColor(selectedMacro);

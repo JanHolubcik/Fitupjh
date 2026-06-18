@@ -6,7 +6,7 @@ import { DashboardContent } from "./DashboardContent/DashboardContent";
 import { auth } from "@/lib/auth";
 import { LastMonthFoodOptions } from "@/lib/queriesOptions/LastMonthFoodOptions";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { addDays, format, subDays } from "date-fns";
+import {  format, subDays } from "date-fns";
 import { checkForSavedFoodMonth } from "@/lib/mongo/food-db";
 
 import {
@@ -31,7 +31,7 @@ export default async function Dashboard() {
     headers: await headers(),
   });
   const queryClient = getQueryClient();
-  const dateTo = format(addDays(new Date(), 1), "yyyy-MM-dd");
+  const dateTo = format(new Date(), "yyyy-MM-dd");
   const dateFrom = format(subDays(new Date(), 30), "yyyy-MM-dd");
   if (session?.user?.id) {
     try {
