@@ -67,16 +67,19 @@ export default function AccountDetails({ user }: { user: User }) {
 
       <Formik
         enableReinitialize
-        initialValues={{ name: user?.name || "", image: user?.image || "" }}
+        initialValues={{
+          name: user?.name || "",
+          image: user?.image || undefined,
+        }}
         onSubmit={async (values, { setSubmitting }) => {
           let finalImageUrl = values.image;
 
           if (selectedFile) {
             try {
               const compressedFile = await imageCompression(selectedFile, {
-                maxSizeMB: 0.05,
+                maxSizeMB: 0.2,
                 maxWidthOrHeight: 250,
-                useWebWorker: true,
+                useWebWorker: false,
               });
 
               const formData = new FormData();
@@ -102,11 +105,12 @@ export default function AccountDetails({ user }: { user: User }) {
             }
           }
 
-          await handleAccountSubmit({
-            name: values.name,
-            image: finalImageUrl,
-          });
-
+          if (finalImageUrl) {
+            await handleAccountSubmit({
+              name: values.name,
+              image: finalImageUrl,
+            });
+          }
           setSelectedFile(null);
           setSubmitting(false);
         }}
@@ -121,7 +125,11 @@ export default function AccountDetails({ user }: { user: User }) {
           <Form>
             <CardBody className="px-6 py-6 flex flex-col sm:flex-row gap-6 items-start">
               <div className="flex flex-col items-center gap-3 shrink-0 mx-auto sm:mx-0">
-                <Avatar src={values.image} className="w-20 h-20 text-large" />
+                <Avatar
+                  key={values.image}
+                  src={values.image}
+                  className="w-20 h-20 text-large"
+                />
                 <Button
                   size="sm"
                   variant="flat"
@@ -130,7 +138,7 @@ export default function AccountDetails({ user }: { user: User }) {
                 >
                   Change Picture
                 </Button>
-                <input
+                <Input
                   type="file"
                   ref={fileInputRef}
                   className="hidden"
