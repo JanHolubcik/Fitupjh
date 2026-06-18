@@ -1,7 +1,6 @@
 import { NextRequest } from "next/server";
 import { isValid, parseISO } from "date-fns";
 import { withAuth } from "../functions";
-import { auth } from "@/lib/auth";
 import { checkForSavedActivitiesMonth } from "@/lib/mongo/activity-db";
 import { ApiSuccess, ApiError } from "@/lib/api-response";
 import { logger } from "@/lib/logger";

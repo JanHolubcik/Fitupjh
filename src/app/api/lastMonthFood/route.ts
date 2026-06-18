@@ -1,7 +1,6 @@
 import { NextRequest } from "next/server";
 import { checkForSavedFoodMonth } from "@/lib/mongo/food-db";
 import { withAuth } from "../functions";
-import { auth } from "@/lib/auth";
 import { ApiSuccess, ApiError } from "@/lib/api-response";
 import { logger } from "@/lib/logger";
 
