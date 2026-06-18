@@ -26,12 +26,12 @@ export const AccordionTimeFrame = () => {
       "px-3 py-0 data-[hover=true]:bg-default-100 rounded-xl h-16 flex items-center transition-all duration-200",
     indicator:
       "text-medium text-default-400 data-[open=true]:text-primary transition-transform duration-200",
-    content: "text-small font-bold px-3 pb-3 pt-1",
+    content: "text-small font-bold  pb-3 pt-1",
   };
 
   return (
-    <CardUniversal className="w-80 sm:w-full self-center">
-      <CardBody className="max-w-2xl ">
+    <CardUniversal className="w-full sm:max-w-2xl self-center">
+      <CardBody className="p-3 sm:p-5 max-w-2xl">
         <Accordion
           variant="light"
           selectionMode="multiple"

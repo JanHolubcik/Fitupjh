@@ -18,7 +18,7 @@ const MyGraph = () => {
     return (
       <CardUniversal
         id="tour-chart"
-        className="sm:w-full w-80 shadow-xl h-64 flex items-center justify-center"
+        className="w-full shadow-xl h-64 flex items-center justify-center"
       >
         <CardBody className="flex flex-col items-center justify-center text-center gap-3">
           <FaChartLine size={90} />
@@ -38,7 +38,7 @@ const MyGraph = () => {
   const emptyDays = macroDatasets["calories"].filter((v) => v === 0).length;
 
   return (
-    <div id="tour-chart" className="flex flex-col sm:w-full w-80 shadow-xl">
+    <div id="tour-chart" className="flex flex-col w-full shadow-xl">
       <div className="w-full overflow-auto">
         <div className="w-full">
           <ChartProgress

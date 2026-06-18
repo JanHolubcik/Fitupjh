@@ -54,9 +54,9 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
   const navigationProperties = [
     ...(data
       ? [
-          { id: 1, href: `/${lng}/dashboard`, description: t("dashboard") },
-          { id: 2, href: `/${lng}/profile`, description: t("profile") },
-        ]
+        { id: 1, href: `/${lng}/dashboard`, description: t("dashboard") },
+        { id: 2, href: `/${lng}/profile`, description: t("profile") },
+      ]
       : []),
   ];
 
@@ -152,11 +152,10 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
                 >
                   <Link
                     href={item.href}
-                    className={`text-[15px] font-extrabold dark:font-bold transition-colors ${
-                      pathname === item.href
+                    className={`text-[15px] font-extrabold dark:font-bold transition-colors ${pathname === item.href
                         ? "text-primary"
                         : "text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white"
-                    }`}
+                      }`}
                   >
                     {item.description}
                   </Link>
@@ -239,11 +238,10 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
 
             <Link
               href={`/${lng}/dashboard`}
-              className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
-                pathname === `/${lng}/dashboard`
+              className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${pathname === `/${lng}/dashboard`
                   ? "text-primary"
                   : "text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-zinc-200"
-              }`}
+                }`}
             >
               <FaChartArea className="text-lg" />
               <span className="text-[10px] font-medium tracking-wide">
@@ -254,16 +252,15 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
             <Link
               id="tour-profile-mobile"
               href={`/${lng}/profile`}
-              className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
-                pathname === `/${lng}/profile`
+              className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${pathname === `/${lng}/profile`
                   ? "text-primary"
                   : "text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-zinc-200"
-              }`}
+                }`}
             >
               <Avatar
                 key={data?.user?.image}
                 isBordered
-                color="primary"
+                color={pathname === `/${lng}/profile` ? "primary" : "default"}
                 size="sm"
                 src={data?.user?.image || ""}
                 className="cursor-pointer transition-transform hover:scale-105 shrink-0"
@@ -291,11 +288,10 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
           <div className="flex flex-row items-center h-16">
             <Link
               href="/"
-              className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
-                pathname === "/"
+              className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${pathname === "/"
                   ? "text-primary"
                   : "text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-zinc-200"
-              }`}
+                }`}
             >
               <FaHome className="text-lg" />
               <span className="text-[10px] font-medium tracking-wide">
@@ -305,11 +301,10 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
 
             <Link
               href={`/${lng}/login`}
-              className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
-                pathname === "/login"
+              className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${pathname === "/login"
                   ? "text-primary"
                   : "text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-zinc-200"
-              }`}
+                }`}
             >
               <FaSignInAlt className="text-lg" />
               <span className="text-[10px] font-medium tracking-wide">
@@ -319,11 +314,10 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
 
             <Link
               href={`/${lng}/signup`}
-              className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
-                pathname === "/signup"
+              className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${pathname === "/signup"
                   ? "text-primary"
                   : "text-zinc-600  dark:text-zinc-400 hover:text-black dark:hover:text-zinc-200"
-              }`}
+                }`}
             >
               <FaUserPlus className="text-lg" />
               <span className="text-[10px] font-medium tracking-wide">

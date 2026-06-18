@@ -46,9 +46,9 @@ export const DashboardContent = ({ dateTo, dateFrom }: props) => {
     );
 
   return (
-    <div className="flex flex-col gap-3 mt-3 items-center max-w-2xl w-full font-bold">
+    <div className="flex flex-col gap-3 mt-3 items-center p-3 max-w-2xl w-full font-bold">
       <DateSwitcher />
-      <div className="flex sm:flex-row flex-col gap-3 sm:w-full">
+      <div className="flex sm:flex-row flex-col gap-3 w-full">
         <CalorieCard />
         <TodayMacros />
       </div>

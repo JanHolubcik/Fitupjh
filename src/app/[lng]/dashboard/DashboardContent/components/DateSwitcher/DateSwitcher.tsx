@@ -21,30 +21,34 @@ export const DateSwitcher = () => {
   return (
     <CardUniversal
       id="tour-date"
-      className="sm:w-56 w-[360px] sticky top-2 z-10"
+      className="w-full sm:max-w-2xl sticky top-2 z-10 border-primary/30 dark:border-primary/20 shadow-xl"
     >
-      <CardBody className=" flex flex-row items-center justify-between gap-1 py-2">
+      <CardBody className="flex flex-row items-center justify-between gap-1 py-2">
         <Button
           size="sm"
           isIconOnly
+          variant="flat"
+          color="primary"
           onPress={() => setNewDateAndFetchFood(-1)}
           aria-label={t("dateSwitcher.previousDay")}
-          className="sm:w-7 sm:h-7 min-w-7"
+          className="w-8 h-8 min-w-8 sm:w-7 sm:h-7 sm:min-w-7 rounded-lg"
         >
           <FaArrowLeft size={13} />
         </Button>
-        <div className="flex items-center gap-1 text-xs font-semibold tracking-tight">
-          <FaCalendarAlt className="text-default-500 flex-shrink-0" size={12} />
+        <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-extrabold tracking-wider bg-primary-50 dark:bg-primary/10 text-primary px-3 py-1 rounded-full">
+          <FaCalendarAlt className="flex-shrink-0" size={12} />
           <span>{format(currentDate, "dd.MM / EEE")}</span>
         </div>
 
         <Button
           size="sm"
           isIconOnly
+          variant="flat"
+          color="primary"
           isDisabled={disabledButton}
           onPress={() => setNewDateAndFetchFood(1)}
           aria-label={t("dateSwitcher.nextDay")}
-          className="sm:w-7 sm:h-7 min-w-7"
+          className="w-8 h-8 min-w-8 sm:w-7 sm:h-7 sm:min-w-7 rounded-lg"
         >
           <FaArrowRight size={13} />
         </Button>

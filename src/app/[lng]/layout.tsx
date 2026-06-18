@@ -77,7 +77,7 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className={`${inter.className} bg-background text-foreground antialiased`}
+        className={`${inter.className} pb-4 bg-background text-foreground antialiased`}
       >
         <Providers>
           <I18nProvider language={lng} resources={resources}>

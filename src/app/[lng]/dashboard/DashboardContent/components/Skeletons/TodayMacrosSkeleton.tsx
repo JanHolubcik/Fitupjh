@@ -3,7 +3,7 @@ import { CardBody, Skeleton } from "@nextui-org/react";
 
 export const TodayMacrosSkeleton = () => {
   return (
-    <CardUniversal className="w-full shadow-md bg-zinc-900/80 backdrop-blur-md border border-zinc-800">
+    <CardUniversal className="w-full sm:flex-1 shadow-md bg-zinc-900/80 backdrop-blur-md border border-zinc-800">
       <CardBody className="flex flex-col gap-3">
         {[...Array(6)].map((_, i) => (
           <div

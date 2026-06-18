@@ -75,7 +75,7 @@ export default async function Dashboard() {
   }
 
   return (
-    <main className="flex min-h-[calc(100vh-65px)]   flex-col items-center p-12 pt-0 bg-default-50/50">
+    <main className="flex min-h-[calc(100vh-65px)] flex-col items-center p-4 sm:p-12 sm:pt-0 pt-0 bg-default-50/50">
       <HydrationBoundary state={dehydrate(queryClient)}>
         <DashboardContent dateTo={dateTo} dateFrom={dateFrom} />
       </HydrationBoundary>

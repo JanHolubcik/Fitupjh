@@ -138,11 +138,11 @@ export const FoodRecordModal = ({
                   <hr className="border-zinc-300 dark:border-zinc-800" />
 
                   <div className="flex flex-row gap-2 items-start w-full">
-                    <div className="shrink-0 w-[120px] h-[120px]">
+                    <div className="shrink-0 w-[90px] h-[90px] sm:w-[120px] sm:h-[120px]">
                       <ImageFromURL
                         url={foodComponent.imgUrl}
-                        width={120}
-                        height={120}
+                        width={90}
+                        height={90}
                         macroName={
                           foodComponent.originalName
                             ? foodComponent.originalName
@@ -151,7 +151,7 @@ export const FoodRecordModal = ({
                       />
                     </div>
 
-                    <div className="flex-1 h-[120px] flex flex-col justify-between divide-y divide-zinc-200 dark:divide-zinc-800 overflow-hidden">
+                    <div className="flex-1 h-[90px] sm:h-[120px] flex flex-col justify-between divide-y divide-zinc-200 dark:divide-zinc-800 overflow-hidden">
                       {MacroArray.filter((macro) => macro !== "calories").map(
                         (macro) => {
                           const translationKey =

@@ -68,9 +68,9 @@ export const AccordionActivity = () => {
   return (
     <CardUniversal
       id={"tour-activities"}
-      className="w-80 sm:w-full self-center"
+      className="w-full sm:max-w-2xl self-center"
     >
-      <CardBody className="max-w-2xl">
+      <CardBody className="p-3 sm:p-5 max-w-2xl">
         <Accordion
           variant="light"
           selectionMode="multiple"
