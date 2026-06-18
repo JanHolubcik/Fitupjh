@@ -66,18 +66,7 @@ export const FoodRecordModal = ({
     }
 
     if (mode === "edit") {
-      const updatedFood: Food = {
-        ...food,
-        amount: `${grams}`,
-        calories: Math.round(food.calories * ratio),
-        protein: Number(food.protein * ratio),
-        carbohydrates: Number(food.carbohydrates * ratio),
-        fat: Number(food.fat * ratio),
-        sugar: Number(food.sugar * ratio),
-        fiber: Number(food.fiber * ratio),
-        salt: Number(food.salt * ratio),
-      };
-      updateFood(updatedFood, timeOfDay);
+      updateFood(food, grams, timeOfDay);
       onClose();
     } else {
       const updatedFood: Food = {
@@ -163,7 +152,7 @@ export const FoodRecordModal = ({
                           const rawValue = foodComponent[
                             macro as keyof Food
                           ] as number;
-                          if (!rawValue) return null;
+                          if (rawValue === undefined || rawValue === null) return null;
                           const calculatedValue = (rawValue * ratio).toFixed(1);
 
                           return (

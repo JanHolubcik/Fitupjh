@@ -90,23 +90,18 @@ export const ModalTakePicture = ({
     if (!result) return;
 
     const weight = result.ProductWeight || 100;
-    const multiplier = weight / 100;
 
     const parsedFood: Food = {
       id: Date.now(),
       name: result.name || "AI Analyzed Food",
       amount: `${weight}`,
-      calories: Math.round(
-        (result.calories_per_100g || result.calories || 0) * multiplier,
-      ),
-      fat: Number(((result.fat || 0) * multiplier).toFixed(1)),
-      protein: Number(((result.protein || 0) * multiplier).toFixed(1)),
-      sugar: Number(((result.sugar || 0) * multiplier).toFixed(1)),
-      carbohydrates: Number(
-        ((result.carbohydrates || 0) * multiplier).toFixed(1),
-      ),
-      fiber: Number(((result.fiber || 0) * multiplier).toFixed(1)),
-      salt: Number(((result.salt || 0) * multiplier).toFixed(1)),
+      calories: Math.round(result.calories_per_100g || result.calories || 0),
+      fat: Number(result.fat || 0),
+      protein: Number(result.protein || 0),
+      sugar: Number(result.sugar || 0),
+      carbohydrates: Number(result.carbohydrates || 0),
+      fiber: Number(result.fiber || 0),
+      salt: Number(result.salt || 0),
       imgUrl: result.imgUrl || image,
     };
 

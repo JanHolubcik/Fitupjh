@@ -23,13 +23,13 @@ import useGuide from "@/hooks/useGuide";
 import { AccordionActivity } from "../AccordionActivity/AccordionActivity";
 
 type props = {
-  today: string;
-  fromDate: string;
+  dateTo: string;
+  dateFrom: string;
 };
 
-export const DashboardContent = ({ today, fromDate }: props) => {
+export const DashboardContent = ({ dateTo, dateFrom }: props) => {
   const { data: session, isPending } = authClient.useSession();
-  const { isFetching } = useLoadSavedFood({ today, fromDate });
+  const { isFetching } = useLoadSavedFood({ dateTo, dateFrom });
 
   useGuide({ isFetched: !isFetching, user: session?.user || undefined });
   if (isFetching || isPending)

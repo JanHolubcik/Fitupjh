@@ -31,13 +31,13 @@ export default async function Dashboard() {
     headers: await headers(),
   });
   const queryClient = getQueryClient();
-  const today = format(addDays(new Date(), 1), "yyyy-MM-dd");
-  const fromDate = format(subDays(new Date(), 30), "yyyy-MM-dd");
+  const dateTo = format(addDays(new Date(), 1), "yyyy-MM-dd");
+  const dateFrom = format(subDays(new Date(), 30), "yyyy-MM-dd");
   if (session?.user?.id) {
     try {
       const food = await checkForSavedFoodMonth(
-        fromDate,
-        today,
+        dateFrom,
+        dateTo,
         session.user.id,
       );
       // Here we are using JSON.parse(JSON.stringify(food)) to convert the food to a plain object.
@@ -46,7 +46,7 @@ export default async function Dashboard() {
       const plainFood = JSON.parse(JSON.stringify(food));
 
       queryClient.setQueryData(
-        LastMonthFoodOptions(fromDate, today).queryKey,
+        LastMonthFoodOptions(dateFrom, dateTo).queryKey,
         plainFood as Record<string, FoodType>,
       );
 
@@ -58,18 +58,15 @@ export default async function Dashboard() {
         plainActivities as ActivityClass[],
       );
 
-      const dayTo = format(addDays(new Date(), 1), "yyyy-MM-dd");
-      const dayFrom = format(subDays(new Date(), 30), "yyyy-MM-dd");
-
       const savedActivities = await checkForSavedActivitiesMonth(
-        dayFrom,
-        dayTo,
+        dateFrom,
+        dateTo,
         session.user.id,
       );
       const plainSavedActivities = JSON.parse(JSON.stringify(savedActivities));
       // Same here as before with food.
       queryClient.setQueryData(
-        LastMonthSavedActivities(dayFrom, dayTo).queryKey,
+        LastMonthSavedActivities(dateFrom, dateTo).queryKey,
         plainSavedActivities as Record<string, LoggedActivityType[]>,
       );
     } catch (error) {
@@ -80,7 +77,7 @@ export default async function Dashboard() {
   return (
     <main className="flex min-h-[calc(100vh-65px)]   flex-col items-center p-12 pt-0 bg-default-50/50">
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <DashboardContent today={today} fromDate={fromDate} />
+        <DashboardContent dateTo={dateTo} dateFrom={dateFrom} />
       </HydrationBoundary>
     </main>
   );

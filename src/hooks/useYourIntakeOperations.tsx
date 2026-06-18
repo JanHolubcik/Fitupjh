@@ -138,18 +138,33 @@ const useYourIntakeOperations = () => {
   );
 
   const updateFood = useCallback(
-    async (updatedFoodItem: Food, timeOfDay: timeOfDay) => {
+    async (foodItem: Food, newGrams: number, timeOfDay: timeOfDay) => {
+      const initialGrams = parseFloat(foodItem.amount) || 100;
+      const ratio = newGrams / (initialGrams || 1);
+
+      const updatedFoodItem: Food = {
+        ...foodItem,
+        amount: `${newGrams}`,
+        calories: Math.round(foodItem.calories * ratio),
+        protein: Number(foodItem.protein * ratio),
+        carbohydrates: Number(foodItem.carbohydrates * ratio),
+        fat: Number(foodItem.fat * ratio),
+        sugar: Number(foodItem.sugar * ratio),
+        fiber: Number(foodItem.fiber * ratio),
+        salt: Number(foodItem.salt * ratio),
+      };
+
       dispatch(
         EditFood({
           date: dateString,
           timeOfDay,
-          id: updatedFoodItem.id,
+          id: foodItem.id,
           updatedFood: updatedFoodItem,
         }),
       );
 
       const updatedTimeOfDayArray = savedFood[timeOfDay].map((f) =>
-        f.id === updatedFoodItem.id ? updatedFoodItem : f,
+        f.id === foodItem.id ? updatedFoodItem : f,
       );
 
       const fullUpdatedObject = {
