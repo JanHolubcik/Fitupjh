@@ -19,7 +19,7 @@ import mongoose from "mongoose";
 @ModelOptions({
   schemaOptions: {
     timestamps: true,
-    collection: "activities",
+    collection: "activities", // Fixed from "food"
   },
   options: {
     allowMixed: Severity.ALLOW,

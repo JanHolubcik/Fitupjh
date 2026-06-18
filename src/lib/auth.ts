@@ -48,6 +48,15 @@ export const auth = betterAuth({
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     },
   },
+  session: {
+    cookieCache: {
+      enabled: true,
+      maxAge: 5 * 60, // Cache duration in seconds
+    },
+    advanced: {
+      useJWT: false, // <-- Ensure JWT mode is off, forcing the app to use the DB
+    },
+  },
 });
 
 export type AuthSessionData = Awaited<ReturnType<typeof auth.api.getSession>>;

@@ -18,22 +18,26 @@ import {
 import ImageFromURL from "../ImageFromURL/ImageFromURL";
 import { toast } from "react-toastify";
 
-interface EditFoodModalProps {
+interface FoodRecordModalProps {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
-  food: Food | null; // Pass null if no food is selected yet
+  food: Food | null | undefined;
   timeOfDay: "breakfast" | "lunch" | "dinner";
+  mode: "edit" | "new";
+  onCloseAll?: () => void;
 }
 
-export const EditFoodModal = ({
+export const FoodRecordModal = ({
   isOpen,
   onOpenChange,
   food,
   timeOfDay,
-}: EditFoodModalProps) => {
+  mode,
+  onCloseAll,
+}: FoodRecordModalProps) => {
   const [grams, setGrams] = useState<number>(100);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { updateFood } = useYourIntakeOperations();
+  const { updateFood, addToFoodObject } = useYourIntakeOperations();
   const { t } = useT("dashboard");
 
   useEffect(() => {
@@ -44,33 +48,56 @@ export const EditFoodModal = ({
   }, [food, isOpen]);
 
   if (!food) return null;
-  //create const for component only
+
   const foodComponent = { ...food };
   const initialGrams = parseFloat(food.amount) || 100;
   const ratio = grams / (initialGrams || 1);
+
+  const tBase = mode === "edit" ? "editFoodModal" : "newFoodModal";
 
   const handleSave = (onClose: () => void) => {
     inputRef.current?.blur();
 
     if (grams < 1) {
-      toast.error(t("modalCreateFood.toastBadValue"), {
+      toast.error(t("modalCreateFood.toastBadValue", "Amount must be at least 1g"), {
         position: "bottom-left",
       });
       return;
     }
-    const updatedFood: Food = {
-      ...food,
-      amount: `${grams}`,
-      calories: Math.round(food.calories * ratio),
-      protein: Number(food.protein * ratio),
-      carbohydrates: Number(food.carbohydrates * ratio),
-      fat: Number(food.fat * ratio),
-      sugar: Number(food.sugar * ratio),
-      fiber: Number(food.fiber * ratio),
-      salt: Number(food.salt * ratio),
-    };
-    updateFood(updatedFood, timeOfDay);
-    onClose();
+
+    if (mode === "edit") {
+      const updatedFood: Food = {
+        ...food,
+        amount: `${grams}`,
+        calories: Math.round(food.calories * ratio),
+        protein: Number(food.protein * ratio),
+        carbohydrates: Number(food.carbohydrates * ratio),
+        fat: Number(food.fat * ratio),
+        sugar: Number(food.sugar * ratio),
+        fiber: Number(food.fiber * ratio),
+        salt: Number(food.salt * ratio),
+      };
+      updateFood(updatedFood, timeOfDay);
+      onClose();
+    } else {
+      const updatedFood: Food = {
+        ...food,
+        amount: `${grams}`,
+        calories: Math.round(food.calories),
+        protein: Number(food.protein),
+        carbohydrates: Number(food.carbohydrates),
+        fat: Number(food.fat),
+        sugar: Number(food.sugar),
+        fiber: Number(food.fiber),
+        salt: Number(food.salt),
+        originalName: food.originalName,
+      };
+      addToFoodObject(updatedFood, timeOfDay);
+      onClose();
+      if (onCloseAll) {
+        onCloseAll();
+      }
+    }
   };
 
   return (
@@ -82,10 +109,8 @@ export const EditFoodModal = ({
       backdrop="blur"
       classNames={{
         base: "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 max-w-md font-semibold mx-4",
-        header:
-          "border-b border-zinc-200 dark:border-zinc-800 pb-2 font-semibold",
-        footer:
-          "border-t border-zinc-200 dark:border-zinc-800 pt-2 font-semibold",
+        header: "border-b border-zinc-200 dark:border-zinc-800 pb-2 font-semibold",
+        footer: "border-t border-zinc-200 dark:border-zinc-800 pt-2 font-semibold",
       }}
     >
       <ModalContent>
@@ -93,10 +118,10 @@ export const EditFoodModal = ({
           <>
             <ModalHeader className="flex flex-col gap-1 font-semibold">
               <h3 className="text-sm font-bold capitalize text-zinc-900 dark:text-zinc-200">
-                {t("editFoodModal.title", { name: food.name })}
+                {t(`${tBase}.title`, { name: food.name })}
               </h3>
               <p className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
-                {t("editFoodModal.subtitle")}
+                {t(`${tBase}.subtitle`)}
               </p>
             </ModalHeader>
 
@@ -105,7 +130,7 @@ export const EditFoodModal = ({
                 <div className="bg-zinc-100 w-full dark:bg-zinc-950/50 p-3 rounded-xl border border-zinc-200 dark:border-white/5 space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-zinc-600 dark:text-zinc-400">
-                      {t("editFoodModal.calories")}
+                      {t(`${tBase}.calories`)}
                     </span>
                     <span className="font-bold text-zinc-900 dark:text-zinc-200">
                       {Math.round(foodComponent.calories * ratio)} kcal
@@ -138,7 +163,7 @@ export const EditFoodModal = ({
                           const rawValue = foodComponent[
                             macro as keyof Food
                           ] as number;
-                          if (macro === "sugar" && !rawValue) return null;
+                          if (!rawValue) return null;
                           const calculatedValue = (rawValue * ratio).toFixed(1);
 
                           return (
@@ -147,7 +172,7 @@ export const EditFoodModal = ({
                               className={`${MACRO_TAILWIND_THEME[macro].text} flex flex-row justify-between items-center flex-1`}
                             >
                               <span className="text-xs font-extrabold">
-                                {t(`editFoodModal.${translationKey}`)}
+                                {t(`${tBase}.${translationKey}`)}
                               </span>
                               <span className="text-zinc-600 dark:text-zinc-300 font-bold text-xs">
                                 {calculatedValue}g
@@ -163,7 +188,7 @@ export const EditFoodModal = ({
               <Input
                 ref={inputRef}
                 type="number"
-                label={t("editFoodModal.amountLabel")}
+                label={t(`${tBase}.amountLabel`)}
                 placeholder="0"
                 value={grams === 0 ? "" : grams.toString()}
                 onChange={(e) =>
@@ -188,7 +213,7 @@ export const EditFoodModal = ({
                 className="bg-zinc-200 text-zinc-700 hover:bg-zinc-300 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
                 onPress={() => setTimeout(() => onClose(), 10)}
               >
-                {t("editFoodModal.cancel")}
+                {t(`${tBase}.cancel`)}
               </Button>
               <Button
                 size="sm"
@@ -196,7 +221,7 @@ export const EditFoodModal = ({
                 className="bg-blue-600 text-white font-medium"
                 onPress={() => handleSave(onClose)}
               >
-                {t("editFoodModal.saveChanges")}
+                {t(`${tBase}.saveChanges`)}
               </Button>
             </ModalFooter>
           </>

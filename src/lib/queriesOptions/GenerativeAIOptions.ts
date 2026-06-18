@@ -17,4 +17,5 @@ export const GenerativeAIOptions = (savedFood: SavedFoodMonth) => ({
     if (!res.ok) throw new Error("Request failed");
     return res.json();
   },
+  staleTime: 1000 * 60 * 15,
 });

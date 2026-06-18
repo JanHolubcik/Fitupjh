@@ -21,6 +21,6 @@ export const LastMonthFoodOptions = (dateFrom: string, dateTo: string) =>
 
       return res.json() as Promise<Record<string, FoodType>>;
     },
-    staleTime: 600000,
+    staleTime: 1000 * 60 * 15,
     retry: 0,
   });

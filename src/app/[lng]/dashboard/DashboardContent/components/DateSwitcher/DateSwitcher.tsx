@@ -19,16 +19,19 @@ export const DateSwitcher = () => {
   const disabledButton =
     format(currentDate, "yyyy-MM-dd") === format(new Date(), "yyyy-MM-dd");
   return (
-    <CardUniversal id="tour-date" className="sm:w-56 w-80 ">
+    <CardUniversal
+      id="tour-date"
+      className="sm:w-56 w-[360px] sticky top-2 z-10"
+    >
       <CardBody className=" flex flex-row items-center justify-between gap-1 py-2">
         <Button
           size="sm"
           isIconOnly
           onPress={() => setNewDateAndFetchFood(-1)}
           aria-label={t("dateSwitcher.previousDay")}
-          className="w-7 h-7 min-w-7"
+          className="sm:w-7 sm:h-7 min-w-7"
         >
-          <FaArrowLeft size={10} />
+          <FaArrowLeft size={13} />
         </Button>
         <div className="flex items-center gap-1 text-xs font-semibold tracking-tight">
           <FaCalendarAlt className="text-default-500 flex-shrink-0" size={12} />
@@ -41,9 +44,9 @@ export const DateSwitcher = () => {
           isDisabled={disabledButton}
           onPress={() => setNewDateAndFetchFood(1)}
           aria-label={t("dateSwitcher.nextDay")}
-          className="w-7 h-7 min-w-7"
+          className="sm:w-7 sm:h-7 min-w-7"
         >
-          <FaArrowRight size={10} />
+          <FaArrowRight size={13} />
         </Button>
       </CardBody>
     </CardUniversal>

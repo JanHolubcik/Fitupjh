@@ -84,10 +84,11 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
               className="text-zinc-800 dark:text-zinc-200 font-medium min-w-min px-0 sm:px-2"
             >
               <Avatar
+                key={data?.user?.image}
                 isBordered
-                color="secondary"
+                color="primary"
                 size="sm"
-                src={data?.user?.image || imagepfp3.src}
+                src={data?.user?.image || ""}
                 className="cursor-pointer transition-transform hover:scale-105 shrink-0"
               />
             </Button>
@@ -262,10 +263,11 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
               }`}
             >
               <Avatar
+                key={data?.user?.image}
                 isBordered
                 color="primary"
                 size="sm"
-                src={data?.user?.image || imagepfp3.src}
+                src={data?.user?.image || ""}
                 className="cursor-pointer transition-transform hover:scale-105 shrink-0"
               />
               <span className="text-[10px] font-medium tracking-wide">

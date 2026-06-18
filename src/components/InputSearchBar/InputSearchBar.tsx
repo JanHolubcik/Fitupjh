@@ -18,12 +18,12 @@ import { useMutation } from "@tanstack/react-query";
 import { getSearchedFoodOptions } from "@/lib/queriesOptions/GetSearchedFoodOptions";
 
 import ImageFromURL from "../ImageFromURL/ImageFromURL";
-import { NewFoodRecordModal } from "../NewFoodRecordModal/NewFoodRecordModal";
 
 import { ModalCreateFood } from "../Findfood/components/ModalCreateFood";
 import { useT } from "next-i18next/client";
 import { ModalScanFood } from "../Findfood/components/ModalScanFood";
 import { usePathname } from "next/navigation";
+import { FoodRecordModal } from "../FoodRecordModal/FoodRecordModal";
 
 export const InputSearchBar = () => {
   const pathname = usePathname();
@@ -227,11 +227,12 @@ export const InputSearchBar = () => {
           </div>
         )}
       </ul>
-      <NewFoodRecordModal
+      <FoodRecordModal
         isOpen={isOpenNew}
         onOpenChange={onOpenChange}
         food={selectedFood}
         timeOfDay={getTimeOfDay()}
+        mode={"new"}
       />
       <ModalScanFood
         isOpen={isOpenBarScan}

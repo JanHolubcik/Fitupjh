@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   Avatar,
   Button,
@@ -17,20 +17,16 @@ import { useT } from "next-i18next/client";
 import { CardUniversal } from "@/components/common";
 import { useRouter } from "next/navigation";
 
-const fileToBase64 = (file: File): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = (error) => reject(error);
-  });
-};
+import imageCompression from "browser-image-compression";
+
 type User = typeof authClient.$Infer.Session.user;
 
 export default function AccountDetails({ user }: { user: User }) {
   const router = useRouter();
   const { t } = useT("profile");
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const handleAccountSubmit = async (values: {
     name: string;
@@ -71,9 +67,51 @@ export default function AccountDetails({ user }: { user: User }) {
 
       <Formik
         enableReinitialize
-        initialValues={{ name: user?.name || "", image: user?.image || "" }}
+        initialValues={{
+          name: user?.name || "",
+          image: user?.image || undefined,
+        }}
         onSubmit={async (values, { setSubmitting }) => {
-          await handleAccountSubmit(values);
+          let finalImageUrl = values.image;
+
+          if (selectedFile) {
+            try {
+              const compressedFile = await imageCompression(selectedFile, {
+                maxSizeMB: 0.2,
+                maxWidthOrHeight: 250,
+                useWebWorker: false,
+              });
+
+              const formData = new FormData();
+              formData.append("file", compressedFile);
+
+              const response = await fetch("/api/upload", {
+                method: "POST",
+                body: formData,
+              });
+
+              const data = await response.json();
+
+              if (data.imageUrl) {
+                finalImageUrl = data.imageUrl; // Reassign to the new Vercel URL
+              } else {
+                throw new Error("No image URL returned from Vercel");
+              }
+            } catch (error) {
+              console.error("Upload failed", error);
+              toast.error("Failed to upload image");
+              setSubmitting(false);
+              return;
+            }
+          }
+
+          if (finalImageUrl) {
+            await handleAccountSubmit({
+              name: values.name,
+              image: finalImageUrl,
+            });
+          }
+          setSelectedFile(null);
           setSubmitting(false);
         }}
       >
@@ -87,7 +125,11 @@ export default function AccountDetails({ user }: { user: User }) {
           <Form>
             <CardBody className="px-6 py-6 flex flex-col sm:flex-row gap-6 items-start">
               <div className="flex flex-col items-center gap-3 shrink-0 mx-auto sm:mx-0">
-                <Avatar src={values.image} className="w-20 h-20 text-large" />
+                <Avatar
+                  key={values.image}
+                  src={values.image}
+                  className="w-20 h-20 text-large"
+                />
                 <Button
                   size="sm"
                   variant="flat"
@@ -96,20 +138,19 @@ export default function AccountDetails({ user }: { user: User }) {
                 >
                   Change Picture
                 </Button>
-                <input
+                <Input
                   type="file"
                   ref={fileInputRef}
                   className="hidden"
                   accept="image/*"
-                  onChange={async (e) => {
+                  onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) {
-                      try {
-                        const base64 = await fileToBase64(file);
-                        setFieldValue("image", base64);
-                      } catch (err) {
-                        toast.error("Failed to process image");
-                      }
+                      // Save the file object to be uploaded on form submit
+                      setSelectedFile(file);
+
+                      const previewUrl = URL.createObjectURL(file);
+                      setFieldValue("image", previewUrl);
                     }
                   }}
                 />

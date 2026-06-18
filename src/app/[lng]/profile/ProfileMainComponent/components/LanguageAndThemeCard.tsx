@@ -2,9 +2,10 @@ import { CardUniversal } from "@/components/common";
 import { LanguagePicker } from "@/components/Navbar/components/LanguagePicker";
 import { ThemeSwitcher } from "@/components/Navbar/components/ThemeSwitcher";
 import { CardHeader, Divider, CardBody } from "@nextui-org/react";
-import { t } from "i18next";
+import { useT } from "next-i18next/client";
 
 export const LanguageAndThemeCard = () => {
+  const { t } = useT("profile");
   return (
     <CardUniversal className="flex sm:hidden shadow-md bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-zinc-200 dark:border-zinc-800">
       <CardHeader className="pb-2 pt-6 px-6">

@@ -19,10 +19,10 @@ import { getTimeOfDay, useIsSm } from "@/app/[lng]/constants/FunctionsHelper";
 
 import { useMutation } from "@tanstack/react-query";
 import { getSearchedFoodOptions } from "@/lib/queriesOptions/GetSearchedFoodOptions";
-import { NewFoodRecordModal } from "@/components/NewFoodRecordModal/NewFoodRecordModal";
 import { useT } from "next-i18next/client";
 import { ModalScanFood } from "./ModalScanFood";
 import { usePathname } from "next/navigation";
+import { FoodRecordModal } from "@/components/FoodRecordModal/FoodRecordModal";
 
 type props = {
   onOpenChange: () => void;
@@ -112,7 +112,7 @@ export const ModalFindFood = (props: props) => {
   return (
     <>
       <Modal
-        placement={sm ? "top" : "center"}
+        placement={"top"}
         hideCloseButton
         size="3xl"
         className="max-h-[335px]"
@@ -249,11 +249,12 @@ export const ModalFindFood = (props: props) => {
           )}
         </ModalContent>
       </Modal>
-      <NewFoodRecordModal
+      <FoodRecordModal
         isOpen={isOpenNew}
         onOpenChange={onOpenChangeNew}
         food={selectedFood}
         timeOfDay={props.timeOfDay ?? getTimeOfDay()}
+        mode="new"
       />
     </>
   );

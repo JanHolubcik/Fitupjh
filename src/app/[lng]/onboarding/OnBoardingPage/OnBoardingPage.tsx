@@ -139,7 +139,7 @@ export default function OnboardingPage() {
 
             return (
               <Form className="flex flex-col min-h-[300px]">
-                <div className="h-[420px] relative">
+                <div className="h-[410px] relative">
                   <AnimatePresence mode="wait">
                     {/* STEP 0: WELCOME */}
                     {step === 0 && (
@@ -149,54 +149,54 @@ export default function OnboardingPage() {
                         initial="hiddenRight"
                         animate="visible"
                         exit="exitLeft"
-                        className="flex flex-col items-center text-center gap-4 py-2"
+                        className="flex flex-col items-center text-center gap-3 w-full absolute top-0"
                       >
-                        <h2 className="text-3xl font-extrabold text-zinc-900 dark:text-white">
+                        <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white">
                           {t("welcome.title")}
                         </h2>
 
-                        <p className="text-zinc-500 dark:text-zinc-400 text-[15px] leading-relaxed max-w-sm mb-4">
+                        <p className="text-zinc-500 dark:text-zinc-400 text-sm sm:text-[15px] leading-relaxed max-w-sm mb-2 sm:mb-4">
                           {t("welcome.subtitle")}
                         </p>
 
                         <div className="w-full flex flex-col gap-3 mt-2">
-                          <div className="flex items-center gap-4 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 text-left transition-colors hover:border-blue-500/50">
-                            <div className="bg-blue-500/10 text-blue-500 w-12 h-12 rounded-full flex shrink-0 items-center justify-center text-xl">
+                          <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 text-left transition-colors">
+                            <div className="bg-blue-500/10 text-blue-500 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex shrink-0 items-center justify-center text-lg sm:text-xl">
                               <FaUtensilSpoon />
                             </div>
                             <div className="flex flex-col">
-                              <span className="font-bold text-zinc-900 dark:text-white">
+                              <span className="font-bold text-zinc-900 dark:text-white text-sm sm:text-base">
                                 {t("welcome.features.logging.title")}
                               </span>
-                              <span className="text-sm text-zinc-500 dark:text-zinc-400 leading-snug">
+                              <span className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 leading-snug">
                                 {t("welcome.features.logging.desc")}
                               </span>
                             </div>
                           </div>
 
-                          <div className="flex items-center gap-4 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 text-left transition-colors hover:border-blue-500/50">
-                            <div className="bg-blue-500/10 text-blue-500 w-12 h-12 rounded-full flex shrink-0 items-center justify-center text-xl">
+                          <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 text-left transition-colors">
+                            <div className="bg-blue-500/10 text-blue-500 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex shrink-0 items-center justify-center text-lg sm:text-xl">
                               <FaBarcode />
                             </div>
                             <div className="flex flex-col">
-                              <span className="font-bold text-zinc-900 dark:text-white">
+                              <span className="font-bold text-zinc-900 dark:text-white text-sm sm:text-base">
                                 {t("welcome.features.scanner.title")}
                               </span>
-                              <span className="text-sm text-zinc-500 dark:text-zinc-400 leading-snug">
+                              <span className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 leading-snug">
                                 {t("welcome.features.scanner.desc")}
                               </span>
                             </div>
                           </div>
 
-                          <div className="flex items-center gap-4 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 text-left transition-colors hover:border-blue-500/50">
-                            <div className="bg-blue-500/10 text-blue-500 w-12 h-12 rounded-full flex shrink-0 items-center justify-center text-xl">
+                          <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 text-left transition-colors">
+                            <div className="bg-blue-500/10 text-blue-500 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex shrink-0 items-center justify-center text-lg sm:text-xl">
                               <FaCamera />
                             </div>
                             <div className="flex flex-col">
-                              <span className="font-bold text-zinc-900 dark:text-white">
+                              <span className="font-bold text-zinc-900 dark:text-white text-sm sm:text-base">
                                 {t("welcome.features.ai.title")}
                               </span>
-                              <span className="text-sm text-zinc-500 dark:text-zinc-400 leading-snug">
+                              <span className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 leading-snug">
                                 {t("welcome.features.ai.desc")}
                               </span>
                             </div>
@@ -211,23 +211,27 @@ export default function OnboardingPage() {
                         initial="hiddenRight"
                         animate="visible"
                         exit="exitLeft"
-                        className="flex flex-col items-center justify-center h-full gap-6 text-center"
+                        className="flex flex-col justify-center h-full gap-6 text-center w-full absolute top-0 sm:top-auto"
                       >
-                        <h2 className="text-2xl font-extrabold">
+                        <h2 className="text-2xl font-extrabold mt-4 sm:mt-0">
                           {t("goal.title")}
                         </h2>
-                        <div className="grid grid-cols-3 gap-4 w-full">
+                        {/* Stacks vertically on mobile, horizontal on desktop */}
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 w-full">
                           <button
                             type="button"
                             onClick={() => setFieldValue("goal", "loseWeight")}
-                            className={`p-4 border-2 rounded-xl flex flex-col items-center gap-3 transition-colors ${
+                            className={`p-4 border-2 rounded-xl flex flex-row sm:flex-col items-center justify-start sm:justify-center gap-4 transition-all duration-200 active:scale-[0.98] ${
                               values.goal === "loseWeight"
-                                ? "border-blue-500 bg-blue-500/10 text-blue-500"
+                                ? "border-blue-500 bg-blue-500/10 text-blue-500 shadow-sm"
                                 : "border-zinc-200 dark:border-zinc-800 text-zinc-400 hover:border-zinc-300"
                             }`}
                           >
-                            <FaFire size={32} />
-                            <span className="font-bold text-zinc-900 dark:text-white">
+                            <FaFire
+                              size={28}
+                              className="sm:text-3xl shrink-0"
+                            />
+                            <span className="font-bold text-zinc-900 dark:text-white text-sm sm:text-base">
                               {t("goal.loseFat")}
                             </span>
                           </button>
@@ -237,14 +241,17 @@ export default function OnboardingPage() {
                             onClick={() =>
                               setFieldValue("goal", "maintainWeight")
                             }
-                            className={`p-4 border-2 rounded-xl flex flex-col items-center gap-3 transition-colors ${
+                            className={`p-4 border-2 rounded-xl flex flex-row sm:flex-col items-center justify-start sm:justify-center gap-4 transition-all duration-200 active:scale-[0.98] ${
                               values.goal === "maintainWeight"
-                                ? "border-blue-500 bg-blue-500/10 text-blue-500"
+                                ? "border-blue-500 bg-blue-500/10 text-blue-500 shadow-sm"
                                 : "border-zinc-200 dark:border-zinc-800 text-zinc-400 hover:border-zinc-300"
                             }`}
                           >
-                            <FaBalanceScale size={32} />
-                            <span className="font-bold text-zinc-900 dark:text-white">
+                            <FaBalanceScale
+                              size={28}
+                              className="sm:text-3xl shrink-0"
+                            />
+                            <span className="font-bold text-zinc-900 dark:text-white text-sm sm:text-base">
                               {t("goal.maintain")}
                             </span>
                           </button>
@@ -252,14 +259,17 @@ export default function OnboardingPage() {
                           <button
                             type="button"
                             onClick={() => setFieldValue("goal", "gainWeight")}
-                            className={`p-4 border-2 rounded-xl flex flex-col items-center gap-3 transition-colors ${
+                            className={`p-4 border-2 rounded-xl flex flex-row sm:flex-col items-center justify-start sm:justify-center gap-4 transition-all duration-200 active:scale-[0.98] ${
                               values.goal === "gainWeight"
-                                ? "border-blue-500 bg-blue-500/10 text-blue-500"
+                                ? "border-blue-500 bg-blue-500/10 text-blue-500 shadow-sm"
                                 : "border-zinc-200 dark:border-zinc-800 text-zinc-400 hover:border-zinc-300"
                             }`}
                           >
-                            <FaDumbbell size={32} />
-                            <span className="font-bold text-zinc-900 dark:text-white">
+                            <FaDumbbell
+                              size={28}
+                              className="sm:text-3xl shrink-0"
+                            />
+                            <span className="font-bold text-zinc-900 dark:text-white text-sm sm:text-base">
                               {t("goal.buildMuscle")}
                             </span>
                           </button>
