@@ -19,4 +19,5 @@ export const getSearchedFoodOptions = (
     if (!res.ok) throw new Error("Update failed");
     return res.json() as Promise<(FoodClass & { originalName?: string })[]>;
   },
+  staleTime: 1000 * 60 * 15,
 });

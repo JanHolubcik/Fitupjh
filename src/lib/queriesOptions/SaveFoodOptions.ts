@@ -25,4 +25,5 @@ export const SaveFoodOptions = () => ({
 
     return response.json().catch(() => ({}));
   },
+  staleTime: 1000 * 60 * 15,
 });

@@ -18,6 +18,6 @@ export const DailyIntakeOptions = (userId: string, date: string) =>
 
       return res.json();
     },
-    staleTime: 30_000,
+    staleTime: 1000 * 60 * 15,
     retry: 1,
   });
