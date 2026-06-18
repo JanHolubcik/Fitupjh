@@ -1,20 +1,18 @@
 "use client";
 
-import { Spinner } from "@nextui-org/react";
-
 import { authClient } from "@/lib/auth-client";
 import AccountDetails from "./components/AccountDetails";
 import { LanguageAndThemeCard } from "./components/LanguageAndThemeCard";
 import { BiometricAndGoals } from "./components/BiometricAndGoals";
 import { DeleteAccount } from "./components/DeteteAccount";
-
 import { ChangePassword } from "./components/ChangePassword";
+import { ProfileSkeleton } from "./components/ProfileSkeleton";
 
 export default function ProfileMainComponent() {
   const { data } = authClient.useSession();
   const user = data?.user;
 
-  if (!user) return <Spinner />;
+  if (!user) return <ProfileSkeleton />;
 
   return (
     <div className="w-full max-w-lg mx-auto flex flex-col">
