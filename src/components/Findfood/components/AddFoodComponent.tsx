@@ -38,8 +38,16 @@ const AddFoodComponent = (props: props) => {
 
   return (
     <div
-      className="flex flex-col  md:flex-row md:items-center justify-between gap-2 p-2 md:p-3 first:mt-0 rounded-xl my-1 md:my-2 dark:bg-zinc-900/20 border dark:border-white/5 backdrop-blur-sm hover:bg-zinc-800/20 hover:border-white/10 transition-all duration-200"
+      className="flex flex-col md:flex-row md:items-center justify-between gap-2 p-2 md:p-3 first:mt-0 rounded-xl my-1 md:my-2 dark:bg-zinc-900/20 border dark:border-white/5 backdrop-blur-sm hover:bg-zinc-800/30 hover:border-white/10 transition-all duration-200 cursor-pointer"
       key={props.macros.name}
+      onClick={() =>
+        props.AddFood(
+          props.id,
+          props.macros,
+          props.grams.toString(),
+          props.onClose,
+        )
+      }
     >
       <div className="flex items-center gap-2 md:gap-4 flex-1 min-w-0 w-full">
         <div className="flex-shrink-0 dark:bg-zinc-950/40 p-1 md:p-1.5 rounded-xl border border-white/5 shadow-inner">
@@ -101,7 +109,10 @@ const AddFoodComponent = (props: props) => {
         </div>
       </div>
 
-      <div className="flex items-center justify-between md:justify-end shrink-0 gap-1 pt-1 md:pt-0 border-t border-white/5 md:border-none">
+      <div 
+        className="flex items-center justify-between md:justify-end shrink-0 gap-1 pt-1 md:pt-0 border-t border-white/5 md:border-none"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="w-[85px] md:w-20">
           <Input
             label={t("addFood.portion")}

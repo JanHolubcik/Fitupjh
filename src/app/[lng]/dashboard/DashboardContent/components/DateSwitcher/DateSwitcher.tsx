@@ -21,7 +21,7 @@ export const DateSwitcher = () => {
   return (
     <CardUniversal
       id="tour-date"
-      className="w-full sm:w-64 sticky top-2 z-100 border-primary/30 dark:border-primary/20 shadow-xl"
+      className="w-full sm:w-64 sticky top-2 z-50 border-primary/30 dark:border-primary/20 shadow-xl"
     >
       <CardBody className="flex flex-row items-center justify-between gap-1 py-2">
         <Button
