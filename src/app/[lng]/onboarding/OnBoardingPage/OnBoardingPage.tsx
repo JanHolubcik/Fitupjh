@@ -15,6 +15,8 @@ import { Formik, Form } from "formik";
 import { toast } from "react-toastify";
 import { motion, AnimatePresence } from "framer-motion";
 import { useT } from "next-i18next/client";
+import { onboardingSchema } from "@/lib/validationShemas/userValidationSchema";
+import { z } from "zod";
 
 import {
   FaFire,
@@ -100,6 +102,41 @@ export default function OnboardingPage() {
             height: "",
             activityLevel: "lightlyActive",
           }}
+          validate={(values) => {
+            const errors: Record<string, string> = {};
+
+            if (!values.weight && values.weight !== "0") {
+              errors.weight = t("validation.weightRequired");
+            }
+            if (!values.height && values.height !== "0") {
+              errors.height = t("validation.heightRequired");
+            }
+
+            const result = onboardingSchema.safeParse(values);
+            if (!result.success) {
+              for (const issue of result.error.issues) {
+                const field = issue.path[0] as string;
+                if (field === "weight" && !errors.weight) {
+                  if (issue.code === z.ZodIssueCode.too_small) {
+                    errors.weight = t("validation.weightMin");
+                  } else if (issue.code === z.ZodIssueCode.too_big) {
+                    errors.weight = t("validation.weightMax");
+                  } else {
+                    errors.weight = t("validation.weightRequired");
+                  }
+                } else if (field === "height" && !errors.height) {
+                  if (issue.code === z.ZodIssueCode.too_small) {
+                    errors.height = t("validation.heightMin");
+                  } else if (issue.code === z.ZodIssueCode.too_big) {
+                    errors.height = t("validation.heightMax");
+                  } else {
+                    errors.height = t("validation.heightRequired");
+                  }
+                }
+              }
+            }
+            return errors;
+          }}
           onSubmit={async (values, { setSubmitting }) => {
             const { error } = await authClient.updateUser({
               goal: values.goal,
@@ -118,10 +155,13 @@ export default function OnboardingPage() {
         >
           {({
             values,
+            errors,
+            touched,
             handleChange,
             handleBlur,
             isSubmitting,
             setFieldValue,
+            setFieldTouched,
           }) => {
             // Helper objects to display user-friendly labels on the review screen
             const goalLabels: Record<string, string> = {
@@ -297,6 +337,8 @@ export default function OnboardingPage() {
                             value={String(values.weight)}
                             onChange={handleChange}
                             onBlur={handleBlur}
+                            isInvalid={!!errors.weight && touched.weight}
+                            errorMessage={errors.weight}
                             required
                             className="flex-1"
                           />
@@ -307,6 +349,8 @@ export default function OnboardingPage() {
                             value={String(values.height)}
                             onChange={handleChange}
                             onBlur={handleBlur}
+                            isInvalid={!!errors.height && touched.height}
+                            errorMessage={errors.height}
                             required
                             className="flex-1"
                           />
@@ -413,7 +457,20 @@ export default function OnboardingPage() {
                   {step < STEPS.length - 1 ? (
                     <Button
                       type="button"
-                      onPress={nextStep}
+                      onPress={() => {
+                        if (step === 2) {
+                          setFieldTouched("weight", true);
+                          setFieldTouched("height", true);
+
+                          const hasWeightError = !values.weight || isNaN(Number(values.weight)) || Number(values.weight) < 50 || Number(values.weight) > 300;
+                          const hasHeightError = !values.height || isNaN(Number(values.height)) || Number(values.height) < 50 || Number(values.height) > 300;
+
+                          if (hasWeightError || hasHeightError) {
+                            return;
+                          }
+                        }
+                        nextStep();
+                      }}
                       isDisabled={isAnimating}
                       className="bg-zinc-900 text-white dark:bg-white dark:text-black font-bold"
                     >
@@ -422,7 +479,7 @@ export default function OnboardingPage() {
                   ) : (
                     <Button
                       type="submit"
-                      disabled={isSubmitting || isAnimating}
+                      isDisabled={isSubmitting || isAnimating}
                       className="bg-blue-500 text-white font-bold hover:bg-blue-600 transition-colors"
                     >
                       {isSubmitting ? (
