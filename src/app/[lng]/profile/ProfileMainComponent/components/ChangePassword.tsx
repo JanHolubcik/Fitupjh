@@ -24,11 +24,11 @@ export const ChangePassword = () => {
     await toast.promise(
       res,
       {
-        pending: "Changing password...",
-        success: "Password changed successfully!",
+        pending: t("toast.passwordPending", "Changing password..."),
+        success: t("toast.passwordSuccess", "Password changed successfully!"),
         error: {
           render({ data }: any) {
-            return data?.message || "Failed to change password.";
+            return data?.message || t("toast.error", "Failed to change password.");
           },
         },
       },

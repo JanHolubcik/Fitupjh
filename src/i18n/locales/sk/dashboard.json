@@ -208,5 +208,28 @@
     "sugarShort": "Cukry",
     "cancel": "Zrušiť",
     "saveChanges": "Uložiť zmeny"
+  },
+  "newActivityModal": {
+    "toastNoActivity": "Prosím, vyberte aktivitu",
+    "toastBadValue": "Zadajte platné trvanie",
+    "title": "Zaznamenať novú aktivitu",
+    "subtitle": "Vyberte aktivitu a trvanie pre výpočet spálených kalórií",
+    "categoryLabel": "Typ aktivity",
+    "activityLabel": "Konkrétna aktivita",
+    "durationLabel": "Trvanie (minúty)",
+    "caloriesBurned": "Spálené kalórie",
+    "intensity": "Intenzita (MET)",
+    "cancel": "Zrušiť",
+    "saveChanges": "Uložiť aktivitu"
+  },
+  "toast": {
+    "pending": "Odosielam požiadavku...",
+    "success": "Jedlo bolo pridané!",
+    "error": "Pri aktualizácii vášho príjmu nastala chyba.",
+    "removed": "Jedlo bolo odstránené!",
+    "updated": "Jedlo bolo aktualizované!",
+    "activitySuccess": "Aktivita bola zaznamenaná!",
+    "activityError": "Pri zaznamenávaní aktivity nastala chyba.",
+    "activityRemoved": "Aktivita bola odstránená!"
   }
 }

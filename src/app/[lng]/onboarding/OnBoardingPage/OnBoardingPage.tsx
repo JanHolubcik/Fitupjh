@@ -109,7 +109,7 @@ export default function OnboardingPage() {
             });
 
             if (error) {
-              toast.error(error.message);
+              toast.error(t("toast.error", error.message || "Failed to update profile."));
               setSubmitting(false);
               return;
             }

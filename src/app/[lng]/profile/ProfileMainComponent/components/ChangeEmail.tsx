@@ -44,15 +44,15 @@ export const ChangeEmail = ({ user }: { user: User }) => {
           await toast.promise(
             res,
             {
-              pending: "Changing email...",
-              success: "Email change requested! Please check your inbox.",
+              pending: t("toast.emailPending", "Changing email..."),
+              success: t("toast.emailSuccess", "Email change requested! Please check your inbox."),
               error: {
                 render({ data }: any) {
-                  return data?.message || "Failed to change email.";
+                  return data?.message || t("toast.error", "Failed to change email.");
                 },
               },
             },
-            { theme: "dark", position: "bottom-left", autoClose: 4000 },
+            { position: "bottom-left", theme: "dark", autoClose: 3000 },
           );
 
           resetForm({

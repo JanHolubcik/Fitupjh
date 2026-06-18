@@ -43,5 +43,18 @@
   "changePasswordDesc": "Uistite sa, že váš účet používa dlhé a náhodné heslo pre zachovanie bezpečnosti.",
   "currentPassword": "Súčasné heslo",
   "newPassword": "Nové heslo",
-  "updatePassword": "Aktualizovať heslo"
+  "updatePassword": "Aktualizovať heslo",
+  "toast": {
+    "pending": "Aktualizuje sa profil...",
+    "success": "Profil bol úspešne aktualizovaný!",
+    "error": "Aktualizácia zlyhala.",
+    "uploadError": "Nepodarilo sa nahrať obrázok",
+    "passwordPending": "Aktualizuje sa heslo...",
+    "passwordSuccess": "Heslo bolo úspešne aktualizované!",
+    "emailPending": "Aktualizuje sa e-mail...",
+    "emailSuccess": "E-mail bol úspešne aktualizovaný!",
+    "deleteError": "Nepodarilo sa vymazať účet",
+    "biometricPending": "Aktualizuje sa biometria...",
+    "biometricSuccess": "Biometria bola úspešne aktualizovaná!"
+  }
 }

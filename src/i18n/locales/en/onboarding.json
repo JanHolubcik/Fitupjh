@@ -67,5 +67,8 @@
     "back": "Back",
     "continue": "Continue",
     "completeSetup": "Complete Setup"
+  },
+  "toast": {
+    "error": "Failed to update profile."
   }
 }

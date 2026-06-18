@@ -7,7 +7,7 @@ import AccountDetails from "./components/AccountDetails";
 import { LanguageAndThemeCard } from "./components/LanguageAndThemeCard";
 import { BiometricAndGoals } from "./components/BiometricAndGoals";
 import { DeleteAccount } from "./components/DeteteAccount";
-import { ChangeEmail } from "./components/ChangeEmail";
+
 import { ChangePassword } from "./components/ChangePassword";
 
 export default function ProfileMainComponent() {
@@ -21,7 +21,7 @@ export default function ProfileMainComponent() {
       <div className="md:col-span-8 flex flex-col gap-6">
         <LanguageAndThemeCard />
         <AccountDetails user={user} />
-        <ChangeEmail user={user} />
+        {/* <ChangeEmail user={user} /> */}
         <ChangePassword />
         <BiometricAndGoals user={user} />
         <DeleteAccount />

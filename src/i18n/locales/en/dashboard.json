@@ -208,5 +208,28 @@
     "fiberShort": "Fiber",
     "cancel": "Cancel",
     "saveChanges": "Save Changes"
+  },
+  "newActivityModal": {
+    "toastNoActivity": "Please select an activity",
+    "toastBadValue": "Please enter a valid duration",
+    "title": "Log New Activity",
+    "subtitle": "Select an activity and duration to calculate calories burned",
+    "categoryLabel": "Activity Type",
+    "activityLabel": "Specific Activity",
+    "durationLabel": "Duration (minutes)",
+    "caloriesBurned": "Calories Burned",
+    "intensity": "Intensity (MET)",
+    "cancel": "Cancel",
+    "saveChanges": "Save Activity"
+  },
+  "toast": {
+    "pending": "Sending request...",
+    "success": "Food was added!",
+    "error": "There was an error updating your intake.",
+    "removed": "Food was removed!",
+    "updated": "Food was updated!",
+    "activitySuccess": "Activity was logged!",
+    "activityError": "Error while logging activity.",
+    "activityRemoved": "Activity was removed!"
   }
 }

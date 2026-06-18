@@ -67,5 +67,8 @@
     "back": "Späť",
     "continue": "Pokračovať",
     "completeSetup": "Dokončiť nastavenie"
+  },
+  "toast": {
+    "error": "Nepodarilo sa aktualizovať profil."
   }
 }

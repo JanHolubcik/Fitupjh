@@ -33,11 +33,11 @@ export const BiometricAndGoals = ({ user }: { user: User }) => {
     await toast.promise(
       updatePromise,
       {
-        pending: "Updating profile...",
-        success: "Profile updated successfully!",
+        pending: t("toast.biometricPending", "Updating biometrics..."),
+        success: t("toast.biometricSuccess", "Biometrics updated successfully!"),
         error: {
           render({ data }: any) {
-            return data?.message || "Failed to update profile.";
+            return data?.message || t("toast.error", "Failed to update profile.");
           },
         },
       },

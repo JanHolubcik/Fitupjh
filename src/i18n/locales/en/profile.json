@@ -43,5 +43,18 @@
   "changePasswordDesc": "Ensure your account is using a long, random password to stay secure.",
   "currentPassword": "Current Password",
   "newPassword": "New Password",
-  "updatePassword": "Update Password"
+  "updatePassword": "Update Password",
+  "toast": {
+    "pending": "Updating profile...",
+    "success": "Profile updated successfully!",
+    "error": "Failed to update.",
+    "uploadError": "Failed to upload image",
+    "passwordPending": "Updating password...",
+    "passwordSuccess": "Password updated successfully!",
+    "emailPending": "Updating email...",
+    "emailSuccess": "Email updated successfully!",
+    "deleteError": "Failed to delete account",
+    "biometricPending": "Updating biometrics...",
+    "biometricSuccess": "Biometrics updated successfully!"
+  }
 }
