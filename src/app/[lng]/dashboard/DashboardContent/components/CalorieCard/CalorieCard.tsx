@@ -1,3 +1,4 @@
+"use client";
 import { useCalculateRecommendedCalories } from "@/hooks/useCalculateRecomendedCalories";
 import { CardUniversal } from "@/components/common";
 import { FoodType } from "@/types/Types";
@@ -36,7 +37,7 @@ export const CalorieCard = (props: props) => {
             label: "text-md   text-center ",
           }}
           size="lg"
-          value={caloriesSum}
+          value={caloriesSum || 0}
           color={color}
           label={label}
           maxValue={recommendedCaloriesValue}

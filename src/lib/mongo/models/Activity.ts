@@ -2,7 +2,6 @@ import {
   ModelOptions,
   Severity,
   getModelForClass,
-  index,
   post,
   prop,
 } from "@typegoose/typegoose";
@@ -25,7 +24,6 @@ import mongoose from "mongoose";
     allowMixed: Severity.ALLOW,
   },
 })
-@index({ name: 1 })
 class ActivityClass {
   @prop({ required: true, unique: true })
   name: string;

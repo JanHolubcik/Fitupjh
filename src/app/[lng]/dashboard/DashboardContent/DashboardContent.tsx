@@ -1,7 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
-import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { CalorieCard } from "./components/CalorieCard/CalorieCard";
 import useLoadSavedFood from "@/hooks/useLoadSavedFood";
@@ -24,13 +22,18 @@ import { authClient } from "@/lib/auth-client";
 import MyGraph from "@/components/ChartProgress/GraphProgressComponent";
 import useGuide from "@/hooks/useGuide";
 
-export const DashboardContent = () => {
+type props = {
+  today: string;
+  fromDate: string;
+};
+
+export const DashboardContent = ({ today, fromDate }: props) => {
   const { data: session } = authClient.useSession();
-  const { isFetched } = useLoadSavedFood({ daysAgo: 30 });
+  const { isFetching } = useLoadSavedFood({ today, fromDate });
   const { savedFood } = useYourIntakeOperations();
 
-  useGuide({ isFetched, user: session?.user || undefined });
-  if (!isFetched)
+  useGuide({ isFetched: !isFetching, user: session?.user || undefined });
+  if (isFetching)
     return (
       <div className="flex flex-col gap-3 mt-3 items-center max-w-2xl w-full ">
         <DateSwitcherSkeleton />

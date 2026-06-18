@@ -3,7 +3,11 @@ import { useDispatch } from "react-redux";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { LastMonthFoodOptions } from "@/lib/queriesOptions/LastMonthFoodOptions";
-import { setSavedFoodMonth } from "@/features/DashboardSlice/DashboardSlice";
+import {
+  setSavedActivityMonth,
+  setSavedFoodMonth,
+} from "@/features/DashboardSlice/DashboardSlice";
+import { LastMonthSavedActivities } from "@/lib/queriesOptions/LastMonthSavedActivitiesOptions";
 
 type props = {
   fromDate: string;
@@ -16,12 +20,18 @@ const useLoadSavedFood = ({ today, fromDate }: props) => {
   const { data: savedFoodData, isFetching: isFetchingFood } = useSuspenseQuery(
     LastMonthFoodOptions(fromDate, today),
   );
+  const { data: savedActivityData, isFetching: isFetchingActivity } =
+    useSuspenseQuery(LastMonthSavedActivities(fromDate, today));
+
+  useEffect(() => {
+    dispatch(setSavedActivityMonth(savedActivityData));
+  }, [savedActivityData, dispatch]);
 
   useEffect(() => {
     dispatch(setSavedFoodMonth(savedFoodData));
   }, [savedFoodData, dispatch]);
 
-  const isFetching = isFetchingFood;
+  const isFetching = isFetchingFood && isFetchingActivity;
 
   return { isFetching };
 };
