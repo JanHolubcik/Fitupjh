@@ -2,7 +2,6 @@ import {
   ModelOptions,
   Severity,
   getModelForClass,
-  post,
   prop,
 } from "@typegoose/typegoose";
 import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";

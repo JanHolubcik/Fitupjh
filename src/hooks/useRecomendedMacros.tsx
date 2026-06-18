@@ -1,5 +1,4 @@
 "use client";
-import { format } from "date-fns";
 
 import { calculateRecommendedMacros } from "../app/[lng]/constants/FunctionsHelper";
 
@@ -33,7 +32,6 @@ function transformReduxToApi(month: SavedFoodMonth): ClientSavedFood[] {
 }
 
 const useMacros = () => {
-  const date = format(new Date(), "yyyy-MM-dd");
   const { data } = authClient.useSession();
 
   const reduxSavedFood = useSelector((state: RootState) => state.savedFood);

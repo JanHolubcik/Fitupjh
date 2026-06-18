@@ -3,7 +3,6 @@
 import "driver.js/dist/driver.css";
 import { CalorieCard } from "./components/CalorieCard/CalorieCard";
 import useLoadSavedFood from "@/hooks/useLoadSavedFood";
-import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 import { AccordionTimeFrame } from "./components/AccordionTimeFrame/AccordionTimeFrame";
 import { TodayMacros } from "./components/TodayMacros/TodayMacros";
 

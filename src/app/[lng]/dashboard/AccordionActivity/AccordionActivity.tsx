@@ -1,5 +1,4 @@
 import {
-  Image,
   Accordion,
   AccordionItem,
   CardBody,
@@ -14,18 +13,18 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { ActivitiesOptions } from "@/lib/queriesOptions/ActivitiesOptions";
 import { useActivityOperations } from "@/hooks/useActivityOperations";
 
-import { NewActivityRecordModal } from "@/components/NewActivityRecordModal/NewActivityRecordModal";
 import {
-  FaBold,
-  FaBolt,
-  FaChartLine,
-  FaPlusCircle,
-  FaTimes,
-} from "react-icons/fa";
+  ActivityRecordModal,
+  ActivityRecord,
+} from "@/components/NewActivityRecordModal/ActivityRecordModal";
+import { FaBolt, FaPlusCircle, FaTimes } from "react-icons/fa";
 import { DynamicFaIcon } from "@/components/DynamicFaIcon/DynamicFaIcon";
 
 export const AccordionActivity = () => {
   const [selectedKeys, setSelectedKeys] = useState<Selection>("all");
+
+  const [recordToEdit, setRecordToEdit] = useState<ActivityRecord | null>(null);
+
   const { t } = useT("dashboard");
 
   const isKeyActive = (key: string) => {
@@ -50,6 +49,21 @@ export const AccordionActivity = () => {
 
   const active = isKeyActive("daily-activities");
   const itemCount = savedActivities.length;
+
+  const handleEditClick = (savedItem: any) => {
+    setRecordToEdit({
+      _id: savedItem.id || savedItem._id, //
+      activity: savedItem.activity,
+      durationMinutes: savedItem.durationMinutes,
+      caloriesBurned: savedItem.caloriesBurned,
+    });
+    onOpen();
+  };
+
+  const handleCreateNewClick = () => {
+    setRecordToEdit(null);
+    onOpen();
+  };
 
   return (
     <CardUniversal
@@ -76,7 +90,6 @@ export const AccordionActivity = () => {
                     : "font-bold"
                 }
               >
-                {/* Add this translation key to your i18n JSON files */}
                 {t("activity.dailyActivities", "Daily Activities")}
               </span>
             }
@@ -118,7 +131,7 @@ export const AccordionActivity = () => {
 
                   return (
                     <div
-                      onClick={() => {}}
+                      onClick={() => handleEditClick(savedItem)}
                       key={savedItem.id || index}
                       className="flex flex-row items-center first:rounded-t-xl last:rounded-b-xl justify-between gap-3 p-2 bg-zinc-200 dark:bg-zinc-900 border border-white/[0.02] hover:bg-white/[0.03] hover:border-white/5  transition-all duration-200 group hover:cursor-pointer"
                     >
@@ -139,7 +152,9 @@ export const AccordionActivity = () => {
                       </div>
                       <Button
                         size="sm"
-                        onPress={() => removeFromSavedActivity(savedItem.id)}
+                        onPress={() => {
+                          removeFromSavedActivity(savedItem.id);
+                        }}
                         isIconOnly
                         radius="lg"
                         variant="light"
@@ -152,7 +167,7 @@ export const AccordionActivity = () => {
                 })}
               </div>
               <Button
-                onPress={onOpen}
+                onPress={handleCreateNewClick}
                 isIconOnly
                 variant="flat"
                 className="w-8 h-8 min-w-8 self-center my-2 text-primary-300 light:bg-slate-300"
@@ -162,10 +177,12 @@ export const AccordionActivity = () => {
             </div>
           </AccordionItem>
         </Accordion>
-        <NewActivityRecordModal
+
+        <ActivityRecordModal
           isOpen={isOpen}
           onOpenChange={onOpenChange}
           activities={data}
+          existingRecord={recordToEdit}
         />
       </CardBody>
     </CardUniversal>

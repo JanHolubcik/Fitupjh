@@ -6,7 +6,6 @@ import {
   ACTIVITY_MULTIPLIERS,
   GOAL_MULTIPLIERS,
   Food,
-  FoodType,
   macros,
   timeOfDay,
   timeOfDayNumber,
@@ -34,26 +33,57 @@ export const TodayMacros = () => {
     "lightlyActive") as keyof typeof ACTIVITY_MULTIPLIERS;
   const goalKey = (user?.goal ||
     "maintainWeight") as keyof typeof GOAL_MULTIPLIERS;
-  const recommendedMacros = useMemo(
-    () =>
-      user
-        ? calculateRecommendedMacros(
-            user.weight ? user.weight : 0,
-            user.height ? user.height : 0,
-            ACTIVITY_MULTIPLIERS[activityKey],
-            GOAL_MULTIPLIERS[goalKey],
-          )
-        : {
-            calories: 0,
-            fat: 0,
-            protein: 0,
-            sugar: 0,
-            carbohydrates: 0,
-            fiber: 0,
-            salt: 0,
-          },
-    [user?.weight, user?.height],
-  );
+  const burnedCalories = useMemo(() => {
+    return savedActivities
+      ? savedActivities.reduce((sum, act) => sum + (act.caloriesBurned || 0), 0)
+      : 0;
+  }, [savedActivities]);
+
+  const recommendedMacros = useMemo(() => {
+    const baseline = user
+      ? calculateRecommendedMacros(
+          user.weight ? user.weight : 0,
+          user.height ? user.height : 0,
+          ACTIVITY_MULTIPLIERS[activityKey],
+          GOAL_MULTIPLIERS[goalKey],
+        )
+      : {
+          calories: 0,
+          fat: 0,
+          protein: 0,
+          sugar: 0,
+          carbohydrates: 0,
+          fiber: 0,
+          salt: 0,
+        };
+
+    if (burnedCalories === 0 || baseline.calories === 0) return baseline;
+
+    const baselineProteinKcal = baseline.protein * 4;
+    const baselineCarbsKcal = baseline.carbohydrates * 4;
+    const baselineFatKcal = baseline.fat * 9;
+    const totalMacroKcal =
+      baselineProteinKcal + baselineCarbsKcal + baselineFatKcal;
+
+    if (totalMacroKcal === 0) return baseline; // Safety fallback
+
+    const proteinRatio = baselineProteinKcal / totalMacroKcal;
+    const carbsRatio = baselineCarbsKcal / totalMacroKcal;
+    const fatRatio = baselineFatKcal / totalMacroKcal;
+
+    return {
+      ...baseline,
+      calories: Number((baseline.calories + burnedCalories).toFixed(2)),
+      protein: Number(
+        (baseline.protein + (burnedCalories * proteinRatio) / 4).toFixed(2),
+      ),
+      carbohydrates: Number(
+        (baseline.carbohydrates + (burnedCalories * carbsRatio) / 4).toFixed(2),
+      ),
+      fat: Number((baseline.fat + (burnedCalories * fatRatio) / 9).toFixed(2)),
+    };
+  }, [user?.weight, user?.height, activityKey, goalKey, burnedCalories]);
+
   const calculatedMacros = useMemo(() => {
     if (savedFood) {
       const savedMacros = {
@@ -65,6 +95,7 @@ export const TodayMacros = () => {
         salt: 0,
         sugar: 0,
       };
+
       timeOfDay.forEach((value) => {
         const timeInDaySavedMacro: macros = savedFood[
           value as timeOfDayNumber
@@ -95,23 +126,25 @@ export const TodayMacros = () => {
           savedMacros[keyT] += timeInDaySavedMacro[keyT];
         });
       });
-      //savedMacros.calories = Math.round;
+
       Object.keys(savedMacros).forEach((key) => {
         const keyT = key as keyof macros;
         savedMacros[keyT] = Number(savedMacros[keyT].toFixed(2));
       });
+
       return savedMacros;
     }
+
     return {
       calories: 0,
       carbohydrates: 0,
       fat: 0,
       fiber: 0,
       protein: 0,
-
+      salt: 0,
       sugar: 0,
     };
-  }, [user?.weight, user?.height, savedFood]);
+  }, [savedFood, burnedCalories]);
 
   return (
     <CardUniversal

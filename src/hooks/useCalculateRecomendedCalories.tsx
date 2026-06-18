@@ -46,7 +46,7 @@ export const useCalculateRecommendedCalories = (
     return (
       calculateCaloriesSum(savedFood) - calculateActivities(savedActivities)
     );
-  }, [savedFood]);
+  }, [savedFood, savedActivities]);
   return { recommendedCaloriesValue, caloriesSum };
 };
 //

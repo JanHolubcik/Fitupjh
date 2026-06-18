@@ -16,36 +16,61 @@ import { toast } from "react-toastify";
 import { ActivityClass } from "@/lib/mongo/models/Activity";
 import { useActivityOperations } from "@/hooks/useActivityOperations";
 
+export type ActivityRecord = {
+  _id: string;
+  activity: string;
+  durationMinutes: number;
+  caloriesBurned?: number;
+};
+
 type Props = {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
-  activities: ActivityClass[]; // Changed from a single activity to the full array
+  activities: ActivityClass[];
   userWeightKg?: number;
   onCloseAll?: () => void;
+  existingRecord?: ActivityRecord | null;
 };
 
-export const NewActivityRecordModal = ({
+export const ActivityRecordModal = ({
   isOpen,
   onOpenChange,
   activities = [],
   userWeightKg = 70,
   onCloseAll,
+  existingRecord = null,
 }: Props) => {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedActivityName, setSelectedActivityName] = useState<string>("");
   const [minutes, setMinutes] = useState<number>(30);
 
-  const { addActivityRecord } = useActivityOperations();
+  // Added updateActivityRecord (ensure this exists in your hook!)
+  const { addActivityRecord, updateActivity } = useActivityOperations();
   const { t } = useT("dashboard");
 
-  // Reset state every time the modal opens
+  const isEditMode = !!existingRecord;
+
+  // Pre-fill state if editing, or reset if creating new
   useEffect(() => {
     if (isOpen) {
-      setSelectedCategory("");
-      setSelectedActivityName("");
-      setMinutes(30);
+      if (isEditMode && existingRecord) {
+        // Find the base activity to get the category and name
+        const matchedActivity = activities.find(
+          (a) => a._id.toString() === existingRecord.activity,
+        );
+
+        if (matchedActivity) {
+          setSelectedCategory(matchedActivity.category || "General");
+          setSelectedActivityName(matchedActivity.name);
+        }
+        setMinutes(existingRecord.durationMinutes);
+      } else {
+        setSelectedCategory("");
+        setSelectedActivityName("");
+        setMinutes(30);
+      }
     }
-  }, [isOpen]);
+  }, [isOpen, isEditMode, existingRecord, activities]);
 
   const categories = useMemo(() => {
     const cats = activities.map((a) => a.category || "General");
@@ -83,12 +108,22 @@ export const NewActivityRecordModal = ({
       );
       return;
     }
+    const activityId = selectedActivity._id.toString();
 
-    addActivityRecord({
-      activity: selectedActivity.id,
+    const payload = {
+      activity: activityId,
       durationMinutes: minutes,
       caloriesBurned: caloriesBurned,
-    });
+    };
+
+    if (isEditMode && existingRecord) {
+      updateActivity({
+        id: existingRecord._id,
+        ...payload,
+      });
+    } else {
+      addActivityRecord(payload);
+    }
 
     onClose();
     onCloseAll && onCloseAll();
@@ -114,10 +149,20 @@ export const NewActivityRecordModal = ({
           <>
             <ModalHeader className="flex flex-col gap-1 font-semibold">
               <h3 className="text-lg font-bold capitalize text-zinc-900 dark:text-zinc-200">
-                {t("newActivityModal.title", "Log New Activity")}
+                {isEditMode
+                  ? t("editActivityModal.title", "Edit Activity")
+                  : t("newActivityModal.title", "Log New Activity")}
               </h3>
               <p className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
-                {t("newActivityModal.subtitle", "Select a type and duration")}
+                {isEditMode
+                  ? t(
+                      "editActivityModal.subtitle",
+                      "Update your activity details",
+                    )
+                  : t(
+                      "newActivityModal.subtitle",
+                      "Select a type and duration",
+                    )}
               </p>
             </ModalHeader>
 
@@ -157,7 +202,6 @@ export const NewActivityRecordModal = ({
               >
                 {filteredActivities.map((act) => (
                   <SelectItem key={act.name} value={act.name}>
-                    {/* Optionally use act.localizedNames here if you want localized display */}
                     {act.name}
                   </SelectItem>
                 ))}
@@ -221,7 +265,9 @@ export const NewActivityRecordModal = ({
                 isDisabled={!selectedActivity}
                 onPress={() => handleSave(onClose)}
               >
-                {t("newActivityModal.saveChanges", "Save Activity")}
+                {isEditMode
+                  ? t("editActivityModal.saveChanges", "Update Activity")
+                  : t("newActivityModal.saveChanges", "Save Activity")}
               </Button>
             </ModalFooter>
           </>

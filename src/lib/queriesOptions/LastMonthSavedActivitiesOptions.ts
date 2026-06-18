@@ -4,7 +4,7 @@ import { LoggedActivityType } from "@/features/DashboardSlice/DashboardSlice";
 export const LastMonthSavedActivities = (dateFrom: string, dateTo: string) =>
   queryOptions({
     queryKey: ["lastMonthSavedActivity", dateTo, dateFrom] as const,
-    queryFn: async ({ queryKey }) => {
+    queryFn: async () => {
       const isServer = typeof window === "undefined";
       let baseUrl = "";
       if (isServer) {

@@ -15,7 +15,7 @@ import { FaSearch } from "react-icons/fa";
 import { ModalCreateFood } from "./ModalCreateFood";
 import { Food, ReturnTypeFood } from "@/types/Types";
 import AddFoodComponent from "./AddFoodComponent";
-import { getTimeOfDay, useIsSm } from "@/app/[lng]/constants/FunctionsHelper";
+import { getTimeOfDay } from "@/app/[lng]/constants/FunctionsHelper";
 
 import { useMutation } from "@tanstack/react-query";
 import { getSearchedFoodOptions } from "@/lib/queriesOptions/GetSearchedFoodOptions";
@@ -108,7 +108,6 @@ export const ModalFindFood = (props: props) => {
     }
   }, [props.isOpen]);
 
-  const sm = useIsSm();
   return (
     <>
       <Modal

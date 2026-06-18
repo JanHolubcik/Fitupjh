@@ -107,7 +107,7 @@ export async function checkForSavedActivitiesMonth(
 
         activityMonth[dateStr] = rawActivities.map((act) => ({
           ...act,
-          _id: act._id?.toString(),
+          id: act._id?.toString(),
 
           activity: act.activity?.toString(),
         })) as LoggedActivityType[];

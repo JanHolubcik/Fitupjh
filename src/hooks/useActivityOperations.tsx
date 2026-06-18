@@ -12,9 +12,11 @@ import {
   LoggedActivityType,
   addActivityForDate,
   removeActivity,
+  editActivity,
 } from "@/features/DashboardSlice/DashboardSlice";
 
 import { SavedActivitiesOptions } from "@/lib/queriesOptions/SavedActivitiesOptions";
+import { useCallback } from "react";
 
 export const useActivityOperations = () => {
   const { data } = authClient.useSession();
@@ -94,6 +96,33 @@ export const useActivityOperations = () => {
     );
   };
 
+  const updateActivity = useCallback(
+    async (updatedActivity: LoggedActivityType) => {
+      dispatch(
+        editActivity({
+          date: format(currentDate, "yyyy-MM-dd"),
+          id: updatedActivity.id,
+          updatedActivity: updatedActivity,
+        }),
+      );
+
+      const fullUpdatedObject = [...savedActivities, updatedActivity];
+
+      const res = saveActivitiesToDB(fullUpdatedObject);
+
+      toast.promise(
+        res,
+        {
+          pending: t("toast.pending", "Sending request..."),
+          success: t("toast.updated", "Food was updated!"),
+          error: t("toast.error", "There was an error updating your intake."),
+        },
+        { theme: "dark", position: "bottom-left" },
+      );
+    },
+    [dispatch, currentDate, t],
+  );
+
   const removeFromSavedActivity = async (id: string | number) => {
     dispatch(
       removeActivity({
@@ -126,5 +155,6 @@ export const useActivityOperations = () => {
     savedActivities,
     addActivityRecord,
     removeFromSavedActivity,
+    updateActivity,
   };
 };

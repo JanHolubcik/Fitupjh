@@ -15,8 +15,6 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 
-import imagepfp3 from "../../../public/pfps/3.png";
-
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { InputSearchBar } from "../InputSearchBar/InputSearchBar";
 import { LanguagePicker } from "./components/LanguagePicker";

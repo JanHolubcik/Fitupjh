@@ -140,10 +140,8 @@ const useYourIntakeOperations = () => {
     [dispatch, dateString, savedFood, saveFood, t],
   );
 
-  // 4. Fixed the Thunk issue
   const updateFood = useCallback(
     async (updatedFoodItem: Food, timeOfDay: timeOfDay) => {
-      // Update Redux Localy (Change your thunk to just a standard action)
       dispatch(
         EditFood({
           date: dateString,
@@ -153,7 +151,6 @@ const useYourIntakeOperations = () => {
         }),
       );
 
-      // Calculate what the full state looks like now for the DB
       const updatedTimeOfDayArray = savedFood[timeOfDay].map((f) =>
         f.id === updatedFoodItem.id ? updatedFoodItem : f,
       );
@@ -163,7 +160,6 @@ const useYourIntakeOperations = () => {
         [timeOfDay]: updatedTimeOfDayArray,
       };
 
-      // Update Backend right here, NOT in the thunk
       const res = saveFood(fullUpdatedObject);
 
       toast.promise(

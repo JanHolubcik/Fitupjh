@@ -4,7 +4,7 @@ import { queryOptions } from "@tanstack/react-query";
 export const LastMonthFoodOptions = (dateFrom: string, dateTo: string) =>
   queryOptions({
     queryKey: ["lastMonthFood", dateTo, dateFrom] as const,
-    queryFn: async ({ queryKey }) => {
+    queryFn: async () => {
       const isServer = typeof window === "undefined";
       let baseUrl = "";
       if (isServer) {
