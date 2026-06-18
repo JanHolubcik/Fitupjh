@@ -195,7 +195,7 @@ export default function Signup() {
               className="w-full mt-4 font-bold text-lg h-12"
               type="submit"
               color="primary"
-              disabled={formik.isSubmitting}
+              isDisabled={formik.isSubmitting}
             >
               {formik.isSubmitting ? (
                 <div className="flex items-center gap-2">

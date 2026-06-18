@@ -88,7 +88,7 @@ export const ChangePassword = () => {
                 <Button
                   type="submit"
                   size="sm"
-                  disabled={isSubmitting}
+                  isDisabled={isSubmitting}
                   className="w-full sm:w-fit bg-primary font-bold"
                 >
                   {isSubmitting ? (

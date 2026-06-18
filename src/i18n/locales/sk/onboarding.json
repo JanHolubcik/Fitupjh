@@ -70,5 +70,13 @@
   },
   "toast": {
     "error": "Nepodarilo sa aktualizovať profil."
+  },
+  "validation": {
+    "weightRequired": "Hmotnosť je povinná",
+    "weightMin": "Hmotnosť musí byť aspoň 50 kg",
+    "weightMax": "Hmotnosť nemôže presiahnuť 300 kg",
+    "heightRequired": "Výška je povinná",
+    "heightMin": "Výška musí byť aspoň 50 cm",
+    "heightMax": "Výška nemôže presiahnuť 300 cm"
   }
 }

@@ -70,5 +70,13 @@
   },
   "toast": {
     "error": "Failed to update profile."
+  },
+  "validation": {
+    "weightRequired": "Weight is required",
+    "weightMin": "Weight must be at least 50 kg",
+    "weightMax": "Weight cannot exceed 300 kg",
+    "heightRequired": "Height is required",
+    "heightMin": "Height must be at least 50 cm",
+    "heightMax": "Height cannot exceed 300 cm"
   }
 }

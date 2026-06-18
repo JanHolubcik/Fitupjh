@@ -173,7 +173,7 @@ export default function AccountDetails({ user }: { user: User }) {
                   <Button
                     type="submit"
                     size="sm"
-                    disabled={isSubmitting}
+                    isDisabled={isSubmitting}
                     className="w-full sm:w-fit bg-primary font-bold"
                   >
                     {isSubmitting ? (

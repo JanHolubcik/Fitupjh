@@ -107,7 +107,7 @@ export default function Login() {
             <PulsingButton
               className="w-full mt-4 font-bold text-lg h-12 dark:text-white"
               type="submit"
-              disabled={formik.isSubmitting}
+              isDisabled={formik.isSubmitting}
               noPulsing
             >
               {formik.isSubmitting ? (
