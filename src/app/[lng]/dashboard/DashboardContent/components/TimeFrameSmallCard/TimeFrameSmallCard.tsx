@@ -8,7 +8,7 @@ import { FaPlusCircle, FaTimes } from "react-icons/fa";
 import ImageFromURL from "@/components/ImageFromURL/ImageFromURL";
 import { useState } from "react";
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
-import { EditFoodModal } from "@/components/EditFoodModal/EditFoodModal";
+import { FoodRecordModal } from "@/components/FoodRecordModal/FoodRecordModal";
 import {
   getMacroInfo,
   type MacroType,
@@ -134,7 +134,8 @@ export const TimeFrameSmallCard = (props: props) => {
           </div>
         ))}
       </div>
-      <EditFoodModal
+      <FoodRecordModal
+        mode="edit"
         isOpen={isEditOpen}
         onOpenChange={onEditOpenChange}
         food={selectedFood}

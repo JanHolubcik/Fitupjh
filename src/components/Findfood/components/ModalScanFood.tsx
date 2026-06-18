@@ -53,7 +53,7 @@ export const ModalScanFood = ({ isOpen, onOpenChange, onClose }: props) => {
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         hideCloseButton
-        placement="center"
+        placement="top"
         backdrop="blur"
         isDismissable={!isAnyChildOpen}
         isKeyboardDismissDisabled={isAnyChildOpen}

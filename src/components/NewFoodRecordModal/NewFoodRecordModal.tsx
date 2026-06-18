@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Modal,
   ModalContent,
@@ -34,6 +34,7 @@ export const NewFoodRecordModal = ({
   onCloseAll,
 }: props) => {
   const [grams, setGrams] = useState<number>(100);
+  const inputRef = useRef<HTMLInputElement>(null);
   const { addToFoodObject } = useYourIntakeOperations();
   const { t } = useT("dashboard");
 
@@ -50,6 +51,15 @@ export const NewFoodRecordModal = ({
   const ratio = grams / (initialGrams || 1);
 
   const handleSave = (onClose: () => void) => {
+    inputRef.current?.blur();
+
+    if (grams < 1) {
+      toast.error(t("modalCreateFood.toastBadValue"), {
+        position: "bottom-left",
+      });
+      return;
+    }
+
     if (grams < 1) {
       toast.error(t("modalCreateFood.toastBadValue"), {
         position: "bottom-left",
@@ -78,7 +88,7 @@ export const NewFoodRecordModal = ({
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       hideCloseButton
-      placement="center"
+      placement="top"
       backdrop="blur"
       classNames={{
         base: "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 max-w-md font-semibold mx-4",
@@ -92,7 +102,7 @@ export const NewFoodRecordModal = ({
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1 font-semibold">
-              <h3 className="text-lg font-bold capitalize text-zinc-900 dark:text-zinc-200">
+              <h3 className="text-sm  font-bold capitalize text-zinc-900 dark:text-zinc-200">
                 {t("newFoodModal.title", { name: food.name })}
               </h3>
               <p className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
@@ -156,6 +166,7 @@ export const NewFoodRecordModal = ({
               </div>
 
               <Input
+                ref={inputRef}
                 type="number"
                 label={t("newFoodModal.amountLabel")}
                 placeholder="0"

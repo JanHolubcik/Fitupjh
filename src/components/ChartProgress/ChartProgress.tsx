@@ -369,6 +369,7 @@ const ChartProgress = ({
         </CardBody>
       </CardUniversal>
       <Modal
+        placement="top"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         size="lg"

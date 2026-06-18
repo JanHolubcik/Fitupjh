@@ -25,6 +25,7 @@ import { getTimeOfDay } from "@/app/[lng]/constants/FunctionsHelper";
 import { useT } from "next-i18next/client";
 import { ModalCreateFood } from "./ModalCreateFood";
 import { NewFoodRecordModal } from "@/components/NewFoodRecordModal/NewFoodRecordModal";
+import { FoodRecordModal } from "@/components/FoodRecordModal/FoodRecordModal";
 
 type props = {
   onOpenChange: () => void;
@@ -316,12 +317,13 @@ export const ModalBarcodeScan = (props: props) => {
         onOpenChange={onOpenChangeNewFood}
         onCloseAll={props.onCloseAll}
       />
-      <NewFoodRecordModal
+      <FoodRecordModal
         isOpen={isOpenNewRecord}
         onOpenChange={onOpenChangeNewRecord}
         food={selectedFood}
         timeOfDay={props.timeOfDay ?? getTimeOfDay()}
         onCloseAll={props.onCloseAll}
+        mode={"new"}
       />
     </>
   );
