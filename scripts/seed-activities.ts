@@ -16,36 +16,42 @@ const activityData = [
     localized: "Chôdza (svižná)",
     metValue: 3.8,
     category: "Cardio",
+    icon: "FaWalking",
   },
   {
     name: "Running (Moderate)",
     localized: "Beh (stredné tempo)",
     metValue: 9.8,
     category: "Cardio",
+    icon: "FaRunning",
   },
   {
     name: "Cycling (Moderate)",
     localized: "Bicyklovanie (stredné)",
     metValue: 7.5,
     category: "Cardio",
+    icon: "FaBicycle",
   },
   {
     name: "Swimming (Freestyle)",
     localized: "Plávanie (kraul)",
     metValue: 5.8,
     category: "Cardio",
+    icon: "FaSwimmer",
   },
   {
     name: "Jump Rope",
     localized: "Skákanie cez švihadlo",
     metValue: 10.0,
     category: "Cardio",
+    icon: "FaHeartbeat", // Universal fallback for intense cardio
   },
   {
     name: "Rowing Machine",
     localized: "Veslovací trenažér",
     metValue: 6.0,
     category: "Cardio",
+    icon: "FaWater",
   },
 
   // --- STRENGTH & FLEXIBILITY ---
@@ -54,36 +60,42 @@ const activityData = [
     localized: "Posilňovanie (bežné)",
     metValue: 3.5,
     category: "Strength",
+    icon: "FaDumbbell",
   },
   {
     name: "Weightlifting (Vigorous)",
     localized: "Posilňovanie (intenzívne)",
     metValue: 6.0,
     category: "Strength",
+    icon: "FaDumbbell",
   },
   {
     name: "Bodyweight Exercises",
     localized: "Cvičenie s vlastnou váhou",
     metValue: 4.3,
     category: "Strength",
+    icon: "FaChild",
   },
   {
     name: "Yoga",
     localized: "Joga",
     metValue: 2.5,
     category: "Flexibility",
+    icon: "FaSpa",
   },
   {
     name: "Pilates",
     localized: "Pilates",
     metValue: 3.0,
     category: "Flexibility",
+    icon: "FaYinYang",
   },
   {
     name: "Stretching",
     localized: "Strečing",
     metValue: 2.3,
     category: "Flexibility",
+    icon: "FaChild",
   },
 
   // --- SPORTS & RECREATION ---
@@ -92,36 +104,42 @@ const activityData = [
     localized: "Futbal (zápas)",
     metValue: 10.0,
     category: "Sports",
+    icon: "FaFutbol",
   },
   {
     name: "Basketball (Game)",
     localized: "Basketbal (zápas)",
     metValue: 8.0,
     category: "Sports",
+    icon: "FaBasketballBall",
   },
   {
     name: "Tennis (Singles)",
     localized: "Tenis (dvojhra)",
     metValue: 8.0,
     category: "Sports",
+    icon: "FaTableTennis",
   },
   {
     name: "Hiking (Cross Country)",
     localized: "Turistika",
     metValue: 6.0,
     category: "Recreation",
+    icon: "FaMountain",
   },
   {
     name: "Dancing (General)",
     localized: "Tanec",
     metValue: 4.5,
     category: "Recreation",
+    icon: "FaMusic",
   },
   {
     name: "Boxing (Punching Bag)",
     localized: "Box (do vreca)",
     metValue: 5.5,
     category: "Sports",
+    icon: "FaFistRaised",
   },
 ];
 
@@ -137,9 +155,7 @@ const run = async () => {
     console.log("Connected successfully.");
     console.log(`Preparing to seed ${activityData.length} activity items...`);
 
-    // Prepare operations for the native driver
     const bulkOps = activityData.map((item) => {
-      // Build standard JS object for translations
       const localizedNames: Record<string, string> = {};
       if (item.localized) {
         localizedNames["sk"] = item.localized;
@@ -154,6 +170,7 @@ const run = async () => {
               localizedNames: localizedNames,
               metValue: item.metValue,
               category: item.category,
+              icon: item.icon, // <--- Add the icon string to the DB
               updatedAt: new Date(),
             },
             $setOnInsert: {

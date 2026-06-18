@@ -1,21 +1,20 @@
 "use client";
-import {
-  addFoodForDate,
-  editAndPersistFood,
-  removeFromFood,
-  setCurrentDate,
-} from "@/features/DashboardSlice/DashboardSlice";
-
+import { useCallback } from "react";
 import { format } from "date-fns";
-
-import { selectSavedFoodByDate } from "@/features/DashboardSlice/DashboardSlice";
-
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import { toast } from "react-toastify";
 import { useMutation } from "@tanstack/react-query";
-import { SaveFoodOptions } from "@/lib/queriesOptions/SaveFoodOptions";
+import { toast } from "react-toastify";
 import { useT } from "next-i18next/client";
+
+import {
+  addFoodForDate,
+  removeFromFood,
+  setCurrentDate,
+  selectSavedFoodByDate,
+  EditFood,
+} from "@/features/DashboardSlice/DashboardSlice";
+import { SaveFoodOptions } from "@/lib/queriesOptions/SaveFoodOptions";
 import { Food } from "@/types/Types";
 import { authClient } from "@/lib/auth-client";
 
@@ -23,7 +22,7 @@ type timeOfDay = "breakfast" | "lunch" | "dinner";
 
 const useYourIntakeOperations = () => {
   const { data } = authClient.useSession();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { t } = useT("dashboard");
 
   const saveFoodMutation = useMutation(SaveFoodOptions());
@@ -31,282 +30,167 @@ const useYourIntakeOperations = () => {
   const currentDate = useSelector(
     (state: RootState) => state.savedFood.currentDate,
   );
+  const dateString = format(currentDate, "yyyy-MM-dd");
+
   const savedFood = useSelector((state: RootState) =>
-    selectSavedFoodByDate(state, format(currentDate, "yyyy-MM-dd")),
+    selectSavedFoodByDate(state, dateString),
   );
 
-  const saveFood = async (
-    foodToSave?: typeof savedFood,
-    isLastItem: boolean = false,
-  ) => {
-    if (!data) return;
+  const saveFood = useCallback(
+    async (foodToSave?: typeof savedFood, isLastItem: boolean = false) => {
+      if (!data) return;
 
-    const food = foodToSave || savedFood;
+      const food = foodToSave || savedFood;
+      const hasAnyFood =
+        food.breakfast.length > 0 ||
+        food.lunch.length > 0 ||
+        food.dinner.length > 0;
 
-    const hasAnyFood =
-      food.breakfast.length > 0 ||
-      food.lunch.length > 0 ||
-      food.dinner.length > 0;
-    if (!hasAnyFood && !isLastItem) return;
+      if (!hasAnyFood && !isLastItem) return;
 
-    try {
-      await saveFoodMutation.mutateAsync({
-        date: format(currentDate, "yyyy-MM-dd"),
-        savedFood: food,
-        userID: data.user.id,
-      });
-    } catch (err) {
-      console.error("Error saving food:", err);
-      throw err;
-    }
-  };
+      try {
+        await saveFoodMutation.mutateAsync({
+          date: dateString,
+          savedFood: food,
+          userID: data.user.id,
+        });
+      } catch (err) {
+        console.error("Error saving food:", err);
+        throw err;
+      }
+    },
+    [data, savedFood, dateString, saveFoodMutation],
+  );
 
-  const addToFoodObject = async (food: Food, timeOfDay: timeOfDay) => {
-    const date = format(currentDate, "yyyy-MM-dd");
+  const addToFoodObject = useCallback(
+    async (food: Food, timeOfDay: timeOfDay) => {
+      const uniqueId = Date.now();
+      const coefficient = Number(food.amount) / 100;
 
-    const {
-      name,
-      calories,
-      amount,
-      fat,
-      protein,
-      sugar,
-      carbohydrates: carbs,
-      fiber,
-      salt,
-      imgUrl,
-      originalName,
-    } = food;
-    const uniqueId = Date.now();
-    const coefficient = Number(amount) / 100;
-    const saveFoodObject = {
-      ...savedFood,
-      [timeOfDay]: [
-        ...savedFood[timeOfDay],
+      const newFoodItem = {
+        id: uniqueId,
+        name: food.name,
+        calories: food.calories * coefficient,
+        amount: food.amount,
+        fat: food.fat * coefficient,
+        protein: food.protein * coefficient,
+        sugar: food.sugar * coefficient,
+        carbohydrates: food.carbohydrates * coefficient,
+        fiber: food.fiber * coefficient,
+        salt: food.salt * coefficient,
+        imgUrl: food.imgUrl,
+        originalName: food.originalName || "",
+      };
+
+      const saveFoodObject = {
+        ...savedFood,
+        [timeOfDay]: [...savedFood[timeOfDay], newFoodItem],
+      };
+
+      dispatch(
+        addFoodForDate({ date: dateString, timeOfDay, food: newFoodItem }),
+      );
+
+      const res = saveFood(saveFoodObject);
+
+      toast.promise(
+        res,
         {
-          id: uniqueId,
-          name,
-          calories: calories * coefficient,
-          amount: amount,
-          fat: fat * coefficient,
-          protein: protein * coefficient,
-          sugar: sugar * coefficient,
-          carbohydrates: carbs * coefficient,
-          fiber: fiber * coefficient,
-          salt: salt * coefficient,
-          imgUrl,
-          originalName,
+          pending: t("toast.pending", "Sending request..."),
+          success: t("toast.success", "Food was added!"),
+          error: t(
+            "toast.error",
+            "There was an error while adding new intake.",
+          ),
         },
-      ],
-    };
-    dispatch(
-      addFoodForDate({
-        date,
-        timeOfDay,
-        food: {
-          id: uniqueId,
-          name,
-          calories: calories * coefficient,
-          amount: amount,
-          fat: fat * coefficient,
-          protein: protein * coefficient,
-          sugar: sugar * coefficient,
-          carbohydrates: carbs * coefficient,
-          fiber: fiber * coefficient,
-          salt: salt * coefficient,
-          originalName: originalName ? originalName : "",
-          imgUrl,
-        },
-      }),
-    );
+        { theme: "dark", position: "bottom-left" },
+      );
+    },
+    [savedFood, dateString, dispatch, saveFood, t],
+  );
 
-    // Save immediately after adding
-    const res = saveFood(saveFoodObject);
+  const removeFromSavedFood = useCallback(
+    async (id: number, timeOfDay: timeOfDay) => {
+      // Update Redux
+      dispatch(removeFromFood({ date: dateString, timeOfDay, id }));
 
-    toast.promise(
-      res,
-      {
-        pending: t("toast.pending", "Sending request..."),
-        success: t("toast.success", "Food was added!"),
-        error: t("toast.error", "There was an error while adding new intake."),
-      },
-      {
-        position: "bottom-left",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      },
-    );
-  };
+      // Update Backend
+      const updatedFood = {
+        ...savedFood,
+        [timeOfDay]: savedFood[timeOfDay].filter((f) => f.id !== id),
+      };
 
-  const addToFood = async (
-    calories: number,
-    name: string,
-    timeOfDay: timeOfDay,
-    amount: string,
-    fat: number,
-    protein: number,
-    sugar: number,
-    carbs: number,
-    fiber: number,
-    salt: number,
-    imgUrl: string,
-  ) => {
-    const date = format(currentDate, "yyyy-MM-dd");
-    const uniqueId = Date.now();
-    const coefficient = Number(amount) / 100;
-    const saveFoodObject = {
-      ...savedFood,
-      [timeOfDay]: [
-        ...savedFood[timeOfDay],
+      const isLastItem =
+        updatedFood.breakfast.length === 0 &&
+        updatedFood.lunch.length === 0 &&
+        updatedFood.dinner.length === 0;
+
+      const res = saveFood(updatedFood, isLastItem);
+
+      toast.promise(
+        res,
         {
-          id: uniqueId,
-          name,
-          calories: calories * coefficient,
-          amount: amount,
-          fat: fat * coefficient,
-          protein: protein * coefficient,
-          sugar: sugar * coefficient,
-          carbohydrates: carbs * coefficient,
-          fiber: fiber * coefficient,
-          salt: salt * coefficient,
-          imgUrl,
+          pending: t("toast.pending", "Sending request..."),
+          success: t("toast.removed", "Food was removed!"),
+          error: t("toast.error", "There was an error updating your intake."),
         },
-      ],
-    };
-    dispatch(
-      addFoodForDate({
-        date,
-        timeOfDay,
-        food: {
-          id: uniqueId,
-          name,
-          calories: calories * coefficient,
-          amount: amount,
-          fat: fat * coefficient,
-          protein: protein * coefficient,
-          sugar: sugar * coefficient,
-          carbohydrates: carbs * coefficient,
-          fiber: fiber * coefficient,
-          salt: salt * coefficient,
-          imgUrl,
-        },
-      }),
-    );
+        { theme: "dark", position: "bottom-left" },
+      );
+    },
+    [dispatch, dateString, savedFood, saveFood, t],
+  );
 
-    // Save immediately after adding
-    const res = saveFood(saveFoodObject);
-
-    toast.promise(
-      res,
-      {
-        pending: t("toast.pending", "Sending request..."),
-        success: t("toast.success", "Food was added!"),
-        error: t("toast.error", "There was an error while adding new intake."),
-      },
-      {
-        position: "bottom-left",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      },
-    );
-  };
-
-  const removeFromSavedFood = async (id: number, timeOfDay: timeOfDay) => {
-    dispatch(
-      removeFromFood({
-        date: format(currentDate, "yyyy-MM-dd"),
-        timeOfDay,
-        id,
-      }),
-    );
-
-    // Save immediately after removing
-    const updatedFood = {
-      ...savedFood,
-      [timeOfDay]: savedFood[timeOfDay].filter((f) => f.id !== id),
-    };
-
-    const isLastItem =
-      updatedFood.breakfast.length === 0 &&
-      updatedFood.lunch.length === 0 &&
-      updatedFood.dinner.length === 0;
-    const res = saveFood(updatedFood, isLastItem);
-
-    toast.promise(
-      res,
-      {
-        pending: t("toast.pending", "Sending request..."),
-        success: t("toast.removed", "Food was removed!"),
-        error: t("toast.error", "There was an error updating your intake."),
-      },
-      {
-        position: "bottom-left",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      },
-    );
-  };
-
-  const setNewDateAndGetFood = (date: Date) => {
-    dispatch(setCurrentDate(format(date, "yyyy-MM-dd")));
-  };
-
-  const updateFood = async (updatedFood: Food, timeOfDay: timeOfDay) => {
-    const date = format(currentDate, "yyyy-MM-dd");
-
-    const res = (dispatch as AppDispatch)(
-      editAndPersistFood(
-        {
-          date,
+  // 4. Fixed the Thunk issue
+  const updateFood = useCallback(
+    async (updatedFoodItem: Food, timeOfDay: timeOfDay) => {
+      // Update Redux Localy (Change your thunk to just a standard action)
+      dispatch(
+        EditFood({
+          date: dateString,
           timeOfDay,
-          id: updatedFood.id,
-          updatedFood,
-        },
-        saveFood,
-      ),
-    );
+          id: updatedFoodItem.id,
+          updatedFood: updatedFoodItem,
+        }),
+      );
 
-    toast.promise(
-      res,
-      {
-        pending: t("toast.pending", "Sending request..."),
-        success: t("toast.updated", "Food was updated!"),
-        error: t("toast.error", "There was an error updating your intake."),
-      },
-      {
-        position: "bottom-left",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      },
-    );
-  };
+      // Calculate what the full state looks like now for the DB
+      const updatedTimeOfDayArray = savedFood[timeOfDay].map((f) =>
+        f.id === updatedFoodItem.id ? updatedFoodItem : f,
+      );
+
+      const fullUpdatedObject = {
+        ...savedFood,
+        [timeOfDay]: updatedTimeOfDayArray,
+      };
+
+      // Update Backend right here, NOT in the thunk
+      const res = saveFood(fullUpdatedObject);
+
+      toast.promise(
+        res,
+        {
+          pending: t("toast.pending", "Sending request..."),
+          success: t("toast.updated", "Food was updated!"),
+          error: t("toast.error", "There was an error updating your intake."),
+        },
+        { theme: "dark", position: "bottom-left" },
+      );
+    },
+    [dispatch, dateString, savedFood, saveFood, t],
+  );
+
+  const setNewDateAndGetFood = useCallback(
+    (date: Date) => {
+      dispatch(setCurrentDate(format(date, "yyyy-MM-dd")));
+    },
+    [dispatch],
+  );
 
   return {
     currentDate,
     savedFood,
     setNewDateAndGetFood,
     removeFromSavedFood,
-    addToFood,
     addToFoodObject,
     updateFood,
   };

@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { checkForSavedFoodMonth } from "@/lib/mongo/food-db";
 
-import { isValid, parseISO, subDays } from "date-fns";
+import { isValid, parseISO } from "date-fns";
 import { withAuth } from "../functions";
 import { auth } from "@/lib/auth";
+import { checkForSavedActivitiesMonth } from "@/lib/mongo/activity-db";
 
 export async function GET(req: NextRequest) {
   return withAuth(req, async () => {
@@ -29,20 +29,8 @@ export async function GET(req: NextRequest) {
       return new NextResponse("Invalid dateFrom format", { status: 400 });
     }
 
-    let dFrom: Date;
-
-    if (!dateFrom) {
-      dFrom = subDays(dTo, 30);
-    } else {
-      dFrom = parseISO(dateFrom);
-
-      if (!isValid(dTo)) {
-        return new NextResponse("Invalid dateTo format", { status: 400 });
-      }
-    }
-    const dateFromISO = dFrom.toISOString();
-    if (dateTo && userID && dateFromISO) {
-      const food = await checkForSavedFoodMonth(dateFromISO, dateTo, userID);
+    if (dateTo && userID && dateFrom) {
+      const food = await checkForSavedActivitiesMonth(dateFrom, dateTo, userID);
 
       return NextResponse.json(food);
     } else {

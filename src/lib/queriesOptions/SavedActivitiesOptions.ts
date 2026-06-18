@@ -10,12 +10,12 @@ export const SavedActivitiesOptions = () => ({
     savedActivity: LoggedActivityType[];
     userID: string;
   }) => {
-    const response = await fetch("/api/savedActivities", {
+    const response = await fetch("/api/savedActivity", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         date,
-        savedActivity,
+        activities: savedActivity,
         userID,
       }),
       credentials: "include",

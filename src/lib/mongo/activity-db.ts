@@ -103,8 +103,14 @@ export async function checkForSavedActivitiesMonth(
       const dateStr = format(currentParsedDate, "yyyy-MM-dd");
 
       if (recordMap.has(dateStr)) {
-        activityMonth[dateStr] = recordMap.get(dateStr)!
-          .activities as LoggedActivityType[];
+        const rawActivities = recordMap.get(dateStr)!.activities as any[];
+
+        activityMonth[dateStr] = rawActivities.map((act) => ({
+          ...act,
+          _id: act._id?.toString(),
+
+          activity: act.activity?.toString(),
+        })) as LoggedActivityType[];
       } else {
         activityMonth[dateStr] = [];
       }

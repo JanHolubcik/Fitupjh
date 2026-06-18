@@ -1,16 +1,16 @@
-"use client";
 import { useCalculateRecommendedCalories } from "@/hooks/useCalculateRecomendedCalories";
 import { CardUniversal } from "@/components/common";
-import { FoodType } from "@/types/Types";
+
 import { CardBody, CircularProgress } from "@nextui-org/react";
 import { useT } from "next-i18next/client";
+import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
+import { useActivityOperations } from "@/hooks/useActivityOperations";
 
-type props = {
-  intakeToday: FoodType | null;
-};
-export const CalorieCard = (props: props) => {
+export const CalorieCard = () => {
+  const { savedFood } = useYourIntakeOperations();
+  const { savedActivities } = useActivityOperations();
   const { recommendedCaloriesValue, caloriesSum } =
-    useCalculateRecommendedCalories(props.intakeToday);
+    useCalculateRecommendedCalories(savedFood, savedActivities);
   const { t } = useT("dashboard");
 
   const color = caloriesSum > recommendedCaloriesValue ? "danger" : "success";
@@ -37,7 +37,7 @@ export const CalorieCard = (props: props) => {
             label: "text-md   text-center ",
           }}
           size="lg"
-          value={caloriesSum || 0}
+          value={caloriesSum}
           color={color}
           label={label}
           maxValue={recommendedCaloriesValue}

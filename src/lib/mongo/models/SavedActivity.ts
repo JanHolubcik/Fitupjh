@@ -33,7 +33,7 @@ class LoggedActivity {
 })
 class SavedActivityClass {
   @prop({ required: true })
-  day: Date;
+  day: string;
 
   @prop({ type: () => [LoggedActivity], default: [] })
   activities: LoggedActivity[];

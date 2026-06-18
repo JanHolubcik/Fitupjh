@@ -1,4 +1,8 @@
-import { calculateCaloriesSum } from "@/app/[lng]/constants/FunctionsHelper";
+import {
+  calculateActivities,
+  calculateCaloriesSum,
+} from "@/app/[lng]/constants/FunctionsHelper";
+import { LoggedActivityType } from "@/features/DashboardSlice/DashboardSlice";
 import { authClient } from "@/lib/auth-client";
 
 import {
@@ -9,7 +13,10 @@ import {
 
 import { useMemo } from "react";
 
-export const useCalculateRecommendedCalories = (savedFood: FoodType | null) => {
+export const useCalculateRecommendedCalories = (
+  savedFood: FoodType | null,
+  savedActivities: LoggedActivityType[],
+) => {
   const { data } = authClient.useSession();
   const user = data?.user;
 
@@ -36,7 +43,9 @@ export const useCalculateRecommendedCalories = (savedFood: FoodType | null) => {
       savedFood.dinner.length === 0
     )
       return 0;
-    return calculateCaloriesSum(savedFood);
+    return (
+      calculateCaloriesSum(savedFood) - calculateActivities(savedActivities)
+    );
   }, [savedFood]);
   return { recommendedCaloriesValue, caloriesSum };
 };

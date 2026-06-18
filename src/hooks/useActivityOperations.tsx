@@ -13,7 +13,7 @@ import {
   addActivityForDate,
   removeActivity,
 } from "@/features/DashboardSlice/DashboardSlice";
-import { ActivityClass } from "@/lib/mongo/models/Activity";
+
 import { SavedActivitiesOptions } from "@/lib/queriesOptions/SavedActivitiesOptions";
 
 export const useActivityOperations = () => {
@@ -54,12 +54,12 @@ export const useActivityOperations = () => {
   };
 
   const addActivityRecord = async (payload: {
-    activity: ActivityClass;
+    activity: string;
     durationMinutes: number;
     caloriesBurned: number;
   }) => {
     const date = format(currentDate, "yyyy-MM-dd");
-    const uniqueId = Date.now(); // Generate unique ID for the frontend array
+    const uniqueId = Date.now();
 
     const newActivityRecord: LoggedActivityType = {
       id: uniqueId,

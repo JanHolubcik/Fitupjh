@@ -21,6 +21,7 @@ import { authClient } from "@/lib/auth-client";
 
 import MyGraph from "@/components/ChartProgress/GraphProgressComponent";
 import useGuide from "@/hooks/useGuide";
+import { AccordionActivity } from "../AccordionActivity/AccordionActivity";
 
 type props = {
   today: string;
@@ -28,12 +29,11 @@ type props = {
 };
 
 export const DashboardContent = ({ today, fromDate }: props) => {
-  const { data: session } = authClient.useSession();
+  const { data: session, isPending } = authClient.useSession();
   const { isFetching } = useLoadSavedFood({ today, fromDate });
-  const { savedFood } = useYourIntakeOperations();
 
   useGuide({ isFetched: !isFetching, user: session?.user || undefined });
-  if (isFetching)
+  if (isFetching || isPending)
     return (
       <div className="flex flex-col gap-3 mt-3 items-center max-w-2xl w-full ">
         <DateSwitcherSkeleton />
@@ -50,10 +50,12 @@ export const DashboardContent = ({ today, fromDate }: props) => {
     <div className="flex flex-col gap-3 mt-3 items-center max-w-2xl w-full font-bold">
       <DateSwitcher />
       <div className="flex sm:flex-row flex-col gap-3 sm:w-full">
-        <CalorieCard intakeToday={savedFood} />
-        <TodayMacros savedFood={savedFood} />
+        <CalorieCard />
+        <TodayMacros />
       </div>
-      <AccordionTimeFrame savedFood={savedFood} />
+
+      <AccordionTimeFrame />
+      <AccordionActivity />
       <MyGraph />
     </div>
   );

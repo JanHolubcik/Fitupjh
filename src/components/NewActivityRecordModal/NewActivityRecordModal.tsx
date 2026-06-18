@@ -47,13 +47,11 @@ export const NewActivityRecordModal = ({
     }
   }, [isOpen]);
 
-  // 1. Extract unique categories from the activities array
   const categories = useMemo(() => {
     const cats = activities.map((a) => a.category || "General");
     return Array.from(new Set(cats)).sort();
   }, [activities]);
 
-  // 2. Filter activities based on the selected category
   const filteredActivities = useMemo(() => {
     if (!selectedCategory) return [];
     return activities
@@ -61,7 +59,6 @@ export const NewActivityRecordModal = ({
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [activities, selectedCategory]);
 
-  // 3. Find the actual selected ActivityClass object
   const selectedActivity = useMemo(() => {
     return activities.find((a) => a.name === selectedActivityName) || null;
   }, [activities, selectedActivityName]);
@@ -88,7 +85,7 @@ export const NewActivityRecordModal = ({
     }
 
     addActivityRecord({
-      activity: selectedActivity,
+      activity: selectedActivity.id,
       durationMinutes: minutes,
       caloriesBurned: caloriesBurned,
     });
@@ -125,7 +122,6 @@ export const NewActivityRecordModal = ({
             </ModalHeader>
 
             <ModalBody className="py-4 gap-4 font-semibold">
-              {/* Category Dropdown */}
               <Select
                 label={t("newActivityModal.categoryLabel", "Activity Type")}
                 placeholder="e.g., Cardio, Strength..."
@@ -146,7 +142,6 @@ export const NewActivityRecordModal = ({
                 ))}
               </Select>
 
-              {/* Activity Dropdown */}
               <Select
                 label={t("newActivityModal.activityLabel", "Specific Activity")}
                 placeholder="e.g., Running, Cycling..."
@@ -168,7 +163,6 @@ export const NewActivityRecordModal = ({
                 ))}
               </Select>
 
-              {/* Duration Input */}
               <Input
                 type="number"
                 label={t("newActivityModal.durationLabel", "Duration")}
@@ -186,7 +180,6 @@ export const NewActivityRecordModal = ({
                 }}
               />
 
-              {/* Dynamic Stats Banner (Only shows when an activity is selected) */}
               {selectedActivity && (
                 <div className="bg-zinc-100 dark:bg-zinc-950/50 p-3 mt-2 rounded-xl border border-zinc-200 dark:border-white/5 space-y-2 animate-appearance-in">
                   <div className="flex justify-between text-sm">
@@ -225,7 +218,7 @@ export const NewActivityRecordModal = ({
                 size="sm"
                 color="primary"
                 className="bg-blue-600 text-white font-medium"
-                isDisabled={!selectedActivity} // Prevent saving if no activity is picked
+                isDisabled={!selectedActivity}
                 onPress={() => handleSave(onClose)}
               >
                 {t("newActivityModal.saveChanges", "Save Activity")}

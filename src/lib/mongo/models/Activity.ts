@@ -5,16 +5,13 @@ import {
   post,
   prop,
 } from "@typegoose/typegoose";
-import mongoose from "mongoose";
+import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
+import mongoose, { Types } from "mongoose";
 
 /**
  * Activity class represents a master catalog of exercises/movements.
  */
-@post<ActivityClass>("save", function (activity) {
-  if (activity) {
-    activity.id = activity._id.toString();
-  }
-})
+
 @ModelOptions({
   schemaOptions: {
     timestamps: true,
@@ -24,7 +21,9 @@ import mongoose from "mongoose";
     allowMixed: Severity.ALLOW,
   },
 })
-class ActivityClass {
+class ActivityClass extends TimeStamps {
+  public _id!: Types.ObjectId;
+  public id!: string;
   @prop({ required: true, unique: true })
   name: string;
   @prop({ required: false, type: () => String, default: new Map() })
@@ -34,6 +33,8 @@ class ActivityClass {
 
   @prop({ required: false })
   category?: string;
+  @prop({ required: false })
+  icon?: string;
 }
 
 const Activity =

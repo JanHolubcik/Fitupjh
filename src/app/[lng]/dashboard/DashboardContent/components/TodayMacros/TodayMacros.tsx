@@ -21,12 +21,12 @@ import {
 import { useT } from "next-i18next/client";
 import { CardUniversal } from "@/components/common";
 import { authClient } from "@/lib/auth-client";
+import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
+import { useActivityOperations } from "@/hooks/useActivityOperations";
 
-type props = {
-  savedFood: FoodType;
-};
-
-export const TodayMacros = ({ savedFood }: props) => {
+export const TodayMacros = () => {
+  const { savedFood } = useYourIntakeOperations();
+  const { savedActivities } = useActivityOperations();
   const { data } = authClient.useSession();
   const user = data?.user;
   const { t } = useT("dashboard");

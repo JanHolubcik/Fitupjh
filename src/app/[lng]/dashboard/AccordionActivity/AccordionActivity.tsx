@@ -4,6 +4,7 @@ import {
   AccordionItem,
   CardBody,
   useDisclosure,
+  Button,
 } from "@nextui-org/react";
 import type { Selection } from "@nextui-org/react";
 import { useState } from "react";
@@ -14,6 +15,14 @@ import { ActivitiesOptions } from "@/lib/queriesOptions/ActivitiesOptions";
 import { useActivityOperations } from "@/hooks/useActivityOperations";
 
 import { NewActivityRecordModal } from "@/components/NewActivityRecordModal/NewActivityRecordModal";
+import {
+  FaBold,
+  FaBolt,
+  FaChartLine,
+  FaPlusCircle,
+  FaTimes,
+} from "react-icons/fa";
+import { DynamicFaIcon } from "@/components/DynamicFaIcon/DynamicFaIcon";
 
 export const AccordionActivity = () => {
   const [selectedKeys, setSelectedKeys] = useState<Selection>("all");
@@ -26,7 +35,7 @@ export const AccordionActivity = () => {
 
   const { data } = useSuspenseQuery(ActivitiesOptions());
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const { savedActivities } = useActivityOperations();
+  const { savedActivities, removeFromSavedActivity } = useActivityOperations();
 
   const itemClasses = {
     base: "py-1 w-full border-none mb-1 last:mb-0",
@@ -92,36 +101,64 @@ export const AccordionActivity = () => {
                     : "bg-primary-100 dark:bg-default-100 text-default-500"
                 }`}
               >
-                <Image
-                  alt="Activity icon"
-                  src="../flame.svg" // Changed from cloche.svg to something active like a flame or dumbbell
-                  width={20}
-                  height={20}
-                  className={`object-contain transition-transform ${
-                    active ? "rotate-[6deg] scale-110" : ""
-                  }`}
-                />
+                <FaBolt color="white" width={20} height={20} />
               </div>
             }
           >
             <div className="flex flex-col p-2 bg-zinc-300 dark:bg-zinc-950 rounded-xl">
               <div className="flex flex-col rounded-xl">
-                {/* {savedActivities.map((key) => (
-                  <div
-                    onClick={() => {}}
-                    className="flex flex-row items-center first:rounded-t-xl last:rounded-b-xl justify-between gap-3 p-2 bg-zinc-200 dark:bg-zinc-900 border border-white/[0.02] hover:bg-white/[0.03] hover:border-white/5  transition-all duration-200 group hover:cursor-pointer"
-                    key={key.activity.name}
-                  >
-                    <div className="flex items-center gap-3 flex-1 min-w-0">
-                      <div className="flex-1 min-w-0 flex flex-col justify-center">
-                        <p className="font-bold text-xs sm:text-sm dark:text-zinc-200 capitalize whitespace-nowrap overflow-hidden text-ellipsis w-16 sm:w-36">
-                          {key.activity.name}
-                        </p>
+                {savedActivities.map((savedItem, index) => {
+                  const fullActivity = data?.find(
+                    (a: any) =>
+                      a._id === savedItem.activity ||
+                      a.id === savedItem.activity,
+                  );
+
+                  if (!fullActivity) return null;
+
+                  return (
+                    <div
+                      onClick={() => {}}
+                      key={savedItem.id || index}
+                      className="flex flex-row items-center first:rounded-t-xl last:rounded-b-xl justify-between gap-3 p-2 bg-zinc-200 dark:bg-zinc-900 border border-white/[0.02] hover:bg-white/[0.03] hover:border-white/5  transition-all duration-200 group hover:cursor-pointer"
+                    >
+                      <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-zinc-300 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 shrink-0">
+                        <DynamicFaIcon name={fullActivity.icon} size={16} />
                       </div>
+                      <div className="flex items-center gap-3 flex-1 min-w-0">
+                        <div className="flex-1 min-w-0 flex flex-col justify-center">
+                          <p className="font-bold text-xs sm:text-sm dark:text-zinc-200 capitalize whitespace-nowrap overflow-hidden text-ellipsis w-16 sm:w-36">
+                            {fullActivity.name}
+                          </p>
+
+                          <p className="text-[10px] text-zinc-500 capitalize">
+                            {fullActivity.category} •{" "}
+                            {savedItem.durationMinutes} min
+                          </p>
+                        </div>
+                      </div>
+                      <Button
+                        size="sm"
+                        onPress={() => removeFromSavedActivity(savedItem.id)}
+                        isIconOnly
+                        radius="lg"
+                        variant="light"
+                        className="w-8 h-8 min-w-8 m-1 bg-red-750"
+                      >
+                        <FaTimes size={12} />
+                      </Button>
                     </div>
-                  </div>
-                ))} */}
+                  );
+                })}
               </div>
+              <Button
+                onPress={onOpen}
+                isIconOnly
+                variant="flat"
+                className="w-8 h-8 min-w-8 self-center my-2 text-primary-300 light:bg-slate-300"
+              >
+                <FaPlusCircle size={16} />
+              </Button>
             </div>
           </AccordionItem>
         </Accordion>

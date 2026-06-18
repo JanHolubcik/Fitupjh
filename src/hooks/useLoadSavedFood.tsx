@@ -26,7 +26,7 @@ const useLoadSavedFood = ({ today, fromDate }: props) => {
   useEffect(() => {
     dispatch(setSavedActivityMonth(savedActivityData));
   }, [savedActivityData, dispatch]);
-
+  console.log(savedActivityData);
   useEffect(() => {
     dispatch(setSavedFoodMonth(savedFoodData));
   }, [savedFoodData, dispatch]);

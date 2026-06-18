@@ -1,3 +1,4 @@
+import { LoggedActivityType } from "@/features/DashboardSlice/DashboardSlice";
 import { FoodType, timeOfDay } from "@/types/Types";
 import { macros } from "@/types/Types";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
@@ -17,6 +18,16 @@ export const calculateCaloriesSum = (savedFood: FoodType): number => {
   });
 
   return calorieSum;
+};
+
+export const calculateActivities = (
+  savedActivities: LoggedActivityType[],
+): number => {
+  const activitySum = savedActivities.reduce((sum, activity) => {
+    return sum + (activity.caloriesBurned || 0);
+  }, 0);
+
+  return activitySum;
 };
 
 export const getTimeOfDay = () => {

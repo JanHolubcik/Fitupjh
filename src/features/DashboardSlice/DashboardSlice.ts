@@ -8,11 +8,10 @@ import {
 import { RootState } from "@/store/store";
 import { Food, FoodType, SavedFoodMonth } from "@/types/Types";
 import { format } from "date-fns";
-import { ActivityClass } from "@/lib/mongo/models/Activity";
 
 export type LoggedActivityType = {
   id: string | number;
-  activity: ActivityClass;
+  activity: string;
   durationMinutes: number;
   caloriesBurned: number;
 };

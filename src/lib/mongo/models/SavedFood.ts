@@ -23,7 +23,7 @@ import mongoose from "mongoose";
 })
 class SavedFoodClass {
   @prop({ required: true })
-  day: String;
+  day: string;
   @prop({ required: false }) // can be empty or not defined
   savedFood: FoodType;
   @prop({ required: true }) //false for now, when i figure out how to make users

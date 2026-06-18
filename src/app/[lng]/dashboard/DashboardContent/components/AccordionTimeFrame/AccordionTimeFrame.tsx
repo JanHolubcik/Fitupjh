@@ -5,13 +5,11 @@ import { TimeFrameSmallCard } from "../TimeFrameSmallCard/TimeFrameSmallCard";
 import { useState } from "react";
 import { useT } from "next-i18next/client";
 import { CardUniversal } from "@/components/common";
+import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 
-type props = {
-  savedFood: FoodType;
-};
-
-export const AccordionTimeFrame = ({ savedFood }: props) => {
+export const AccordionTimeFrame = () => {
   const [selectedKeys, setSelectedKeys] = useState<Selection>("all");
+  const { savedFood } = useYourIntakeOperations();
 
   const { t } = useT("dashboard");
 

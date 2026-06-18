@@ -55,7 +55,7 @@ export default async function Dashboard() {
       );
 
       const dayTo = format(addDays(new Date(), 1), "yyyy-MM-dd");
-      const dayFrom = format(addDays(new Date(), 30), "yyyy-MM-dd");
+      const dayFrom = format(subDays(new Date(), 30), "yyyy-MM-dd");
 
       const savedActivities = await checkForSavedActivitiesMonth(
         dayFrom,
