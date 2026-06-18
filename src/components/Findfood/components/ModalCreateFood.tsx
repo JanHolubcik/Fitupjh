@@ -85,7 +85,7 @@ export const ModalCreateFood = (props: props) => {
             {({ values, handleChange, handleBlur, isSubmitting }) => (
               <Form className="flex flex-col w-full h-full">
                 <ModalHeader className="flex flex-col gap-1">
-                  {t("modalCreateFood.title", "Add Custom Food")}
+                  {t("modalCreateFood.title")}
                 </ModalHeader>
 
                 <ModalBody className="pb-6">

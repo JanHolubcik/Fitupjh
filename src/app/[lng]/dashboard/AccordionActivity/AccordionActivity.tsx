@@ -90,7 +90,7 @@ export const AccordionActivity = () => {
                     : "font-bold"
                 }
               >
-                {t("activity.dailyActivities", "Daily Activities")}
+                {t("activity.dailyActivities")}
               </span>
             }
             subtitle={

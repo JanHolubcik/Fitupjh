@@ -59,7 +59,7 @@ export const FoodRecordModal = ({
     inputRef.current?.blur();
 
     if (grams < 1) {
-      toast.error(t("modalCreateFood.toastBadValue", "Amount must be at least 1g"), {
+      toast.error(t("modalCreateFood.toastBadValue"), {
         position: "bottom-left",
       });
       return;

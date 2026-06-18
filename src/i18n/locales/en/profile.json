@@ -29,6 +29,7 @@
   "dangerZone": "Danger Zone",
   "deleteAccount": "Delete Account",
   "deleteAccountNotice": "Permanently delete your account, biometrics, and all scanned food data. This cannot be undone.",
+  "deleteAccountConfirm": "Are you sure you want to delete your account?",
   "accountDetails": "Account Details",
   "accountDetailsDesc": "Update your avatar and display name.",
   "avatarUrl": "Avatar Image URL",

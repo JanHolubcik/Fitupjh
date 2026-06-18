@@ -171,6 +171,7 @@
     "energy": "Energy"
   },
   "modalCreateFood": {
+    "title": "Add Custom Food",
     "toastPending": "Sending request...",
     "toastSuccess": "New food was saved successfully!",
     "toastError": "There was an error while trying to save new food.",
@@ -221,6 +222,14 @@
     "intensity": "Intensity (MET)",
     "cancel": "Cancel",
     "saveChanges": "Save Activity"
+  },
+  "editActivityModal": {
+    "title": "Edit Activity",
+    "subtitle": "Update your activity details",
+    "saveChanges": "Update Activity"
+  },
+  "activity": {
+    "dailyActivities": "Daily Activities"
   },
   "toast": {
     "pending": "Sending request...",

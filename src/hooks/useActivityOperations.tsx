@@ -84,9 +84,9 @@ export const useActivityOperations = () => {
     toast.promise(
       res,
       {
-        pending: t("toast.pending", "Saving activity..."),
-        success: t("toast.activitySuccess", "Activity was logged!"),
-        error: t("toast.activityError", "Error while logging activity."),
+        pending: t("toast.pending"),
+        success: t("toast.activitySuccess"),
+        error: t("toast.activityError"),
       },
       {
         position: "bottom-left",
@@ -113,9 +113,9 @@ export const useActivityOperations = () => {
       toast.promise(
         res,
         {
-          pending: t("toast.pending", "Sending request..."),
-          success: t("toast.updated", "Food was updated!"),
-          error: t("toast.error", "There was an error updating your intake."),
+          pending: t("toast.pending"),
+          success: t("toast.updated"),
+          error: t("toast.error"),
         },
         { theme: "dark", position: "bottom-left" },
       );
@@ -139,9 +139,9 @@ export const useActivityOperations = () => {
     toast.promise(
       res,
       {
-        pending: t("toast.pending", "Removing activity..."),
-        success: t("toast.activityRemoved", "Activity was removed!"),
-        error: t("toast.error", "Error updating your activities."),
+        pending: t("toast.pending"),
+        success: t("toast.activityRemoved"),
+        error: t("toast.error"),
       },
       {
         position: "bottom-left",

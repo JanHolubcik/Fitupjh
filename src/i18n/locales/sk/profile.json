@@ -29,6 +29,7 @@
   "dangerZone": "Nebezpečná zóna",
   "deleteAccount": "Vymazať účet",
   "deleteAccountNotice": "Natrvalo vymazať váš účet, biometriu a všetky naskenované údaje o jedle. Tento krok sa nedá vrátiť späť.",
+  "deleteAccountConfirm": "Naozaj chcete vymazať svoj účet?",
   "accountDetails": "Detaily účtu",
   "accountDetailsDesc": "Zmeňte si avatar a meno.",
   "avatarUrl": "URL obrázka avatara",

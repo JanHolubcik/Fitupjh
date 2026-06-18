@@ -171,6 +171,7 @@
     "energy": "Energia"
   },
   "modalCreateFood": {
+    "title": "Pridať vlastné jedlo",
     "toastPending": "Odosielanie požiadavky...",
     "toastSuccess": "Nový záznam bolo úspešne uložené!",
     "toastError": "Pri ukladaní nového jedla sa vyskytla chyba.",
@@ -221,6 +222,14 @@
     "intensity": "Intenzita (MET)",
     "cancel": "Zrušiť",
     "saveChanges": "Uložiť aktivitu"
+  },
+  "editActivityModal": {
+    "title": "Upraviť aktivitu",
+    "subtitle": "Aktualizujte podrobnosti o vašej aktivite",
+    "saveChanges": "Aktualizovať aktivitu"
+  },
+  "activity": {
+    "dailyActivities": "Denné aktivity"
   },
   "toast": {
     "pending": "Odosielam požiadavku...",

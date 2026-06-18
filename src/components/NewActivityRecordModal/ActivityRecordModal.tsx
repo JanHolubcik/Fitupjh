@@ -95,7 +95,7 @@ export const ActivityRecordModal = ({
   const handleSave = (onClose: () => void) => {
     if (!selectedActivity) {
       toast.error(
-        t("newActivityModal.toastNoActivity", "Please select an activity"),
+        t("newActivityModal.toastNoActivity"),
         { position: "bottom-left" },
       );
       return;
@@ -103,7 +103,7 @@ export const ActivityRecordModal = ({
 
     if (minutes < 1) {
       toast.error(
-        t("newActivityModal.toastBadValue", "Please enter a valid duration"),
+        t("newActivityModal.toastBadValue"),
         { position: "bottom-left" },
       );
       return;
@@ -150,25 +150,23 @@ export const ActivityRecordModal = ({
             <ModalHeader className="flex flex-col gap-1 font-semibold">
               <h3 className="text-lg font-bold capitalize text-zinc-900 dark:text-zinc-200">
                 {isEditMode
-                  ? t("editActivityModal.title", "Edit Activity")
-                  : t("newActivityModal.title", "Log New Activity")}
+                  ? t("editActivityModal.title")
+                  : t("newActivityModal.title")}
               </h3>
               <p className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
                 {isEditMode
                   ? t(
                       "editActivityModal.subtitle",
-                      "Update your activity details",
                     )
                   : t(
                       "newActivityModal.subtitle",
-                      "Select a type and duration",
                     )}
               </p>
             </ModalHeader>
 
             <ModalBody className="py-4 gap-4 font-semibold">
               <Select
-                label={t("newActivityModal.categoryLabel", "Activity Type")}
+                label={t("newActivityModal.categoryLabel")}
                 placeholder="e.g., Cardio, Strength..."
                 selectedKeys={selectedCategory ? [selectedCategory] : []}
                 onChange={(e) => {
@@ -188,7 +186,7 @@ export const ActivityRecordModal = ({
               </Select>
 
               <Select
-                label={t("newActivityModal.activityLabel", "Specific Activity")}
+                label={t("newActivityModal.activityLabel")}
                 placeholder="e.g., Running, Cycling..."
                 isDisabled={!selectedCategory} // Locked until category is chosen
                 selectedKeys={
@@ -209,7 +207,7 @@ export const ActivityRecordModal = ({
 
               <Input
                 type="number"
-                label={t("newActivityModal.durationLabel", "Duration")}
+                label={t("newActivityModal.durationLabel")}
                 placeholder="0"
                 value={minutes === 0 ? "" : minutes.toString()}
                 onChange={(e) =>
@@ -228,7 +226,7 @@ export const ActivityRecordModal = ({
                 <div className="bg-zinc-100 dark:bg-zinc-950/50 p-3 mt-2 rounded-xl border border-zinc-200 dark:border-white/5 space-y-2 animate-appearance-in">
                   <div className="flex justify-between text-sm">
                     <span className="text-zinc-600 dark:text-zinc-400">
-                      {t("newActivityModal.caloriesBurned", "Calories Burned")}
+                      {t("newActivityModal.caloriesBurned")}
                     </span>
                     <span className="font-bold text-primary-500">
                       {caloriesBurned} kcal
@@ -239,7 +237,7 @@ export const ActivityRecordModal = ({
 
                   <div className="flex flex-row justify-between items-center py-1">
                     <span className="text-xs font-extrabold text-zinc-500">
-                      {t("newActivityModal.intensity", "Intensity (MET)")}
+                      {t("newActivityModal.intensity")}
                     </span>
                     <span className="text-zinc-700 dark:text-zinc-300 font-bold text-xs">
                       {selectedActivity.metValue}
@@ -256,7 +254,7 @@ export const ActivityRecordModal = ({
                 className="bg-zinc-200 text-zinc-700 hover:bg-zinc-300 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
                 onPress={() => setTimeout(() => onClose(), 10)}
               >
-                {t("newActivityModal.cancel", "Cancel")}
+                {t("newActivityModal.cancel")}
               </Button>
               <Button
                 size="sm"
@@ -266,8 +264,8 @@ export const ActivityRecordModal = ({
                 onPress={() => handleSave(onClose)}
               >
                 {isEditMode
-                  ? t("editActivityModal.saveChanges", "Update Activity")
-                  : t("newActivityModal.saveChanges", "Save Activity")}
+                  ? t("editActivityModal.saveChanges")
+                  : t("newActivityModal.saveChanges")}
               </Button>
             </ModalFooter>
           </>

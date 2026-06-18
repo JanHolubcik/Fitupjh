@@ -40,11 +40,11 @@ export default function AccountDetails({ user }: { user: User }) {
     await toast.promise(
       res,
       {
-        pending: t("toast.pending", "Updating profile..."),
-        success: t("toast.success", "Profile updated successfully!"),
+        pending: t("toast.pending"),
+        success: t("toast.success"),
         error: {
           render({ data }: any) {
-            return data?.message || t("toast.error", "Failed to update.");
+            return data?.message || t("toast.error");
           },
         },
       },
@@ -99,7 +99,7 @@ export default function AccountDetails({ user }: { user: User }) {
               }
             } catch (error) {
               console.error("Upload failed", error);
-              toast.error(t("toast.uploadError", "Failed to upload image"));
+              toast.error(t("toast.uploadError"));
               setSubmitting(false);
               return;
             }

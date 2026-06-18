@@ -7,9 +7,9 @@ import { toast } from "react-toastify";
 export const DeleteAccount = () => {
   const { t } = useT("profile");
   const handleDeleteAccount = async () => {
-    if (!confirm(t("deleteAccountConfirm", "Are you sure you want to delete your account?"))) return;
+    if (!confirm(t("deleteAccountConfirm"))) return;
     const { error } = await authClient.deleteUser({ callbackURL: "/" });
-    if (error) toast.error(error.message || t("toast.deleteError", "Failed to delete account"));
+    if (error) toast.error(error.message || t("toast.deleteError"));
   };
   return (
     <CardUniversal className="shadow-md bg-red-50 dark:bg-zinc-900/80 backdrop-blur-md border border-red-200 dark:border-red-500/30">

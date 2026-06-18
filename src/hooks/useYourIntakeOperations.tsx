@@ -96,12 +96,9 @@ const useYourIntakeOperations = () => {
       toast.promise(
         res,
         {
-          pending: t("toast.pending", "Sending request..."),
-          success: t("toast.success", "Food was added!"),
-          error: t(
-            "toast.error",
-            "There was an error while adding new intake.",
-          ),
+          pending: t("toast.pending"),
+          success: t("toast.success"),
+          error: t("toast.error"),
         },
         { theme: "dark", position: "bottom-left" },
       );
@@ -130,9 +127,9 @@ const useYourIntakeOperations = () => {
       toast.promise(
         res,
         {
-          pending: t("toast.pending", "Sending request..."),
-          success: t("toast.removed", "Food was removed!"),
-          error: t("toast.error", "There was an error updating your intake."),
+          pending: t("toast.pending"),
+          success: t("toast.removed"),
+          error: t("toast.error"),
         },
         { theme: "dark", position: "bottom-left" },
       );
@@ -165,9 +162,9 @@ const useYourIntakeOperations = () => {
       toast.promise(
         res,
         {
-          pending: t("toast.pending", "Sending request..."),
-          success: t("toast.updated", "Food was updated!"),
-          error: t("toast.error", "There was an error updating your intake."),
+          pending: t("toast.pending"),
+          success: t("toast.updated"),
+          error: t("toast.error"),
         },
         { theme: "dark", position: "bottom-left" },
       );

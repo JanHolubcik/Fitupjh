@@ -44,11 +44,11 @@ export const ChangeEmail = ({ user }: { user: User }) => {
           await toast.promise(
             res,
             {
-              pending: t("toast.emailPending", "Changing email..."),
-              success: t("toast.emailSuccess", "Email change requested! Please check your inbox."),
+              pending: t("toast.emailPending"),
+              success: t("toast.emailSuccess"),
               error: {
                 render({ data }: any) {
-                  return data?.message || t("toast.error", "Failed to change email.");
+                  return data?.message || t("toast.error");
                 },
               },
             },

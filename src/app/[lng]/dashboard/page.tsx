@@ -40,15 +40,19 @@ export default async function Dashboard() {
         today,
         session.user.id,
       );
+      // Here we are using JSON.parse(JSON.stringify(food)) to convert the food to a plain object.
+      // We need to make sure that the type of food is matching with function response from 
+      // earlier, so we need to try if setQueryData won't throw typescript error before parsing food.
+      const plainFood = JSON.parse(JSON.stringify(food));
 
       queryClient.setQueryData(
         LastMonthFoodOptions(fromDate, today).queryKey,
-        food as Record<string, FoodType>,
+        plainFood as Record<string, FoodType>,
       );
 
       const activities = await getActivity();
       const plainActivities = JSON.parse(JSON.stringify(activities));
-
+      // Same here as before with food.
       queryClient.setQueryData(
         ActivitiesOptions().queryKey,
         plainActivities as ActivityClass[],
@@ -62,10 +66,11 @@ export default async function Dashboard() {
         dayTo,
         session.user.id,
       );
-
+      const plainSavedActivities = JSON.parse(JSON.stringify(savedActivities));
+      // Same here as before with food.
       queryClient.setQueryData(
         LastMonthSavedActivities(dayFrom, dayTo).queryKey,
-        savedActivities as Record<string, LoggedActivityType[]>,
+        plainSavedActivities as Record<string, LoggedActivityType[]>,
       );
     } catch (error) {
       console.error("Failed to prefetch user data", error);
