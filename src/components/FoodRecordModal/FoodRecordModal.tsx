@@ -36,14 +36,20 @@ export const FoodRecordModal = ({
   onCloseAll,
 }: FoodRecordModalProps) => {
   const [grams, setGrams] = useState<number>(100);
+  const [isSaving, setIsSaving] = useState(false);
+  const isSavingRef = useRef(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const { updateFood, addToFoodObject } = useYourIntakeOperations();
   const { t } = useT("dashboard");
 
   useEffect(() => {
-    if (food) {
-      const initialGrams = parseFloat(food.amount) || 100;
-      setGrams(initialGrams);
+    if (isOpen) {
+      setIsSaving(false);
+      isSavingRef.current = false;
+      if (food) {
+        const initialGrams = parseFloat(food.amount) || 100;
+        setGrams(initialGrams);
+      }
     }
   }, [food, isOpen]);
 
@@ -56,6 +62,9 @@ export const FoodRecordModal = ({
   const tBase = mode === "edit" ? "editFoodModal" : "newFoodModal";
 
   const handleSave = (onClose: () => void) => {
+    if (isSavingRef.current) return;
+    isSavingRef.current = true;
+    setIsSaving(true);
     inputRef.current?.blur();
 
     if (grams < 1) {
@@ -183,6 +192,11 @@ export const FoodRecordModal = ({
                 onChange={(e) =>
                   setGrams(Math.max(0, parseFloat(e.target.value) || 0))
                 }
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleSave(onClose);
+                  }
+                }}
                 endContent={<span className="text-zinc-500 text-sm">g</span>}
                 variant="bordered"
                 autoFocus
@@ -200,6 +214,7 @@ export const FoodRecordModal = ({
                 size="sm"
                 variant="flat"
                 className="bg-zinc-200 text-zinc-700 hover:bg-zinc-300 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                isDisabled={isSaving}
                 onPress={() => setTimeout(() => onClose(), 10)}
               >
                 {t(`${tBase}.cancel`)}
@@ -208,7 +223,9 @@ export const FoodRecordModal = ({
                 size="sm"
                 color="primary"
                 className="bg-blue-600 text-white font-medium"
-                onPress={() => handleSave(onClose)}
+                isLoading={isSaving}
+                isDisabled={isSaving}
+                onPressStart={() => handleSave(onClose)}
               >
                 {t(`${tBase}.saveChanges`)}
               </Button>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   Button,
   Modal,
@@ -58,6 +58,15 @@ export const ModalTakePicture = ({
 
   const [image, setImage] = useState<any | null>(null);
   const [result, setResult] = useState<any>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const isSavingRef = useRef(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsSaving(false);
+      isSavingRef.current = false;
+    }
+  }, [isOpen]);
 
   const analyzeImageMutation = useMutation(FoodImageAIOptions());
 
@@ -87,7 +96,9 @@ export const ModalTakePicture = ({
   };
 
   const handleAddFood = () => {
-    if (!result) return;
+    if (!result || isSavingRef.current) return;
+    isSavingRef.current = true;
+    setIsSaving(true);
 
     const weight = result.ProductWeight || 100;
 

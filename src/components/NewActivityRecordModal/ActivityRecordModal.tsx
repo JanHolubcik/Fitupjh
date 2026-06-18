@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import {
   Modal,
   ModalContent,
@@ -43,6 +43,8 @@ export const ActivityRecordModal = ({
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedActivityName, setSelectedActivityName] = useState<string>("");
   const [minutes, setMinutes] = useState<number>(30);
+  const [isSaving, setIsSaving] = useState(false);
+  const isSavingRef = useRef(false);
 
   // Added updateActivityRecord (ensure this exists in your hook!)
   const { addActivityRecord, updateActivity } = useActivityOperations();
@@ -53,6 +55,8 @@ export const ActivityRecordModal = ({
   // Pre-fill state if editing, or reset if creating new
   useEffect(() => {
     if (isOpen) {
+      setIsSaving(false);
+      isSavingRef.current = false;
       if (isEditMode && existingRecord) {
         // Find the base activity to get the category and name
         const matchedActivity = activities.find(
@@ -93,6 +97,10 @@ export const ActivityRecordModal = ({
     : 0;
 
   const handleSave = (onClose: () => void) => {
+    if (isSavingRef.current) return;
+    isSavingRef.current = true;
+    setIsSaving(true);
+
     if (!selectedActivity) {
       toast.error(
         t("newActivityModal.toastNoActivity"),
@@ -213,6 +221,11 @@ export const ActivityRecordModal = ({
                 onChange={(e) =>
                   setMinutes(Math.max(0, parseInt(e.target.value) || 0))
                 }
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleSave(onClose);
+                  }
+                }}
                 endContent={<span className="text-zinc-500 text-sm">min</span>}
                 variant="bordered"
                 classNames={{
@@ -252,6 +265,7 @@ export const ActivityRecordModal = ({
                 size="sm"
                 variant="flat"
                 className="bg-zinc-200 text-zinc-700 hover:bg-zinc-300 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                isDisabled={isSaving}
                 onPress={() => setTimeout(() => onClose(), 10)}
               >
                 {t("newActivityModal.cancel")}
@@ -260,8 +274,9 @@ export const ActivityRecordModal = ({
                 size="sm"
                 color="primary"
                 className="bg-blue-600 text-white font-medium"
-                isDisabled={!selectedActivity}
-                onPress={() => handleSave(onClose)}
+                isLoading={isSaving}
+                isDisabled={isSaving || !selectedActivity}
+                onPressStart={() => handleSave(onClose)}
               >
                 {isEditMode
                   ? t("editActivityModal.saveChanges")
