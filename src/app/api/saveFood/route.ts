@@ -1,9 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 import { FoodType } from "@/types/Types";
 import { isValid, parseISO } from "date-fns";
 import { withAuth } from "../functions";
 import { checkForSavedFood, saveFoodInDay } from "@/lib/mongo/food-db";
+import { ApiSuccess, ApiError } from "@/lib/api-response";
+import { logger } from "@/lib/logger";
 
 type SaveFoodRequest = {
   date: string;
@@ -17,31 +19,36 @@ export async function GET(req: NextRequest) {
     const userID = req.nextUrl.searchParams.get("user_id");
 
     if (!date) {
-      return new NextResponse("Missing or invalid date", { status: 400 });
+      return ApiError("Missing or invalid date", 400);
     }
 
     const parsed = parseISO(date);
     if (!isValid(parsed)) {
-      return new NextResponse("Invalid date format", { status: 400 });
+      return ApiError("Invalid date format", 400);
     }
 
     if (!userID || typeof userID !== "string") {
-      return new NextResponse("Missing or invalid userID", { status: 400 });
+      return ApiError("Missing or invalid userID", 400);
     }
     const isoDate = parsed.toISOString();
 
-    const food = await checkForSavedFood(isoDate, userID).then((res) => {
-      if (!res.savedFood) {
-        return {
-          breakfast: [],
-          lunch: [],
-          dinner: [],
-        };
-      }
-      return res.savedFood;
-    });
+    try {
+      const food = await checkForSavedFood(isoDate, userID).then((res) => {
+        if (!res.savedFood) {
+          return {
+            breakfast: [],
+            lunch: [],
+            dinner: [],
+          };
+        }
+        return res.savedFood;
+      });
 
-    return NextResponse.json(food);
+      return ApiSuccess(food);
+    } catch (error) {
+      logger.error("Error checking for saved food", error);
+      return ApiError("Internal server error", 500);
+    }
   });
 }
 
@@ -50,7 +57,7 @@ export async function POST(req: NextRequest) {
     const { date, savedFood, userID } = (await req.json()) as SaveFoodRequest;
 
     if (!date) {
-      return new NextResponse("Missing or invalid date", { status: 400 });
+      return ApiError("Missing or invalid date", 400);
     }
 
     if (
@@ -60,18 +67,19 @@ export async function POST(req: NextRequest) {
       !Array.isArray(savedFood.lunch) ||
       !Array.isArray(savedFood.dinner)
     ) {
-      return new NextResponse("Missing or invalid savedFood", { status: 400 });
+      return ApiError("Missing or invalid savedFood", 400);
     }
 
     if (!userID || typeof userID !== "string") {
-      return new NextResponse("Missing or invalid userID", { status: 400 });
+      return ApiError("Missing or invalid userID", 400);
     }
 
-    await saveFoodInDay(date, savedFood, userID).catch(() => {
-      return new NextResponse("There was an error while sending data to db", {
-        status: 500,
-      });
-    });
-    return new NextResponse("Successfully saved to db", { status: 201 });
+    try {
+      await saveFoodInDay(date, savedFood, userID);
+      return ApiSuccess("Successfully saved to db", 201);
+    } catch (error) {
+      logger.error("Error saving food", error);
+      return ApiError("There was an error while sending data to db", 500);
+    }
   });
 }

@@ -13,9 +13,13 @@ export const GenerativeAIOptions = (savedFood: SavedFoodMonth) => ({
       method: "POST",
       headers: { "Content-Type": "application/json" },
     });
-    console.log("AI response status:", res);
-    if (!res.ok) throw new Error("Request failed");
-    return res.json();
+
+    const result = await res.json().catch(() => ({}));
+    if (!res.ok || !result.success) {
+      throw new Error(result.error || "Request failed");
+    }
+
+    return result.data;
   },
   staleTime: 1000 * 60 * 15,
 });

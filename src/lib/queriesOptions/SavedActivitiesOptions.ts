@@ -21,10 +21,11 @@ export const SavedActivitiesOptions = () => ({
       credentials: "include",
     });
 
-    if (!response.ok) {
-      throw new Error("Failed to save food");
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.success) {
+      throw new Error(result.error || "Failed to save activities");
     }
 
-    return response.json().catch(() => ({}));
+    return result.data;
   },
 });

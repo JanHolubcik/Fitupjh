@@ -14,10 +14,13 @@ export const LastWeekFoodOptions = (dateFrom: string, dateTo: string) =>
         { cache: "no-store", credentials: "include" },
       );
 
-      if (!res.ok) throw new Error("Failed to fetch food");
+      const result = await res.json().catch(() => ({}));
+      if (!res.ok || !result.success) {
+        throw new Error(result.error || "Failed to fetch food");
+      }
 
       // Tell TypeScript this returns an array of SavedFoodClass
-      return res.json() as Promise<SavedFoodClass[]>;
+      return result.data as SavedFoodClass[];
     },
     staleTime: 1000 * 60 * 15,
     retry: 0,

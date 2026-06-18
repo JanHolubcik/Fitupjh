@@ -1,36 +1,39 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { checkForSavedFoodMonth } from "@/lib/mongo/food-db";
-
 import { withAuth } from "../functions";
 import { auth } from "@/lib/auth";
+import { ApiSuccess, ApiError } from "@/lib/api-response";
+import { logger } from "@/lib/logger";
 
 export async function GET(req: NextRequest) {
   return withAuth(req, async () => {
-    const dateTo = req.nextUrl.searchParams.get("dateTo");
-    const dateFrom = req.nextUrl.searchParams.get("dateFrom");
+    try {
+      const dateTo = req.nextUrl.searchParams.get("dateTo");
+      const dateFrom = req.nextUrl.searchParams.get("dateFrom");
 
-    const authData = await auth.api.getSession({
-      headers: req.headers,
-    });
-
-    const userID = authData?.user.id;
-
-    if (!userID || typeof userID !== "string") {
-      return new NextResponse("Missing or invalid userID", { status: 400 });
-    }
-
-    if (!dateTo) {
-      return new NextResponse("Missing or invalid dateTo", { status: 400 });
-    }
-
-    if (dateTo && userID && dateFrom) {
-      const food = await checkForSavedFoodMonth(dateFrom, dateTo, userID);
-
-      return NextResponse.json(food);
-    } else {
-      return new NextResponse("Error getting saved food from user", {
-        status: 500,
+      const authData = await auth.api.getSession({
+        headers: req.headers,
       });
+
+      const userID = authData?.user.id;
+
+      if (!userID || typeof userID !== "string") {
+        return ApiError("Missing or invalid userID", 400);
+      }
+
+      if (!dateFrom) {
+        return ApiError("Missing or invalid dateFrom", 400);
+      }
+
+      if (!dateTo) {
+        return ApiError("Missing or invalid dateTo", 400);
+      }
+
+      const food = await checkForSavedFoodMonth(dateFrom, dateTo, userID);
+      return ApiSuccess(food);
+    } catch (error) {
+      logger.error("Error in GET /api/lastMonthFood:", error);
+      return ApiError("Error getting saved food from user", 500);
     }
   });
 }

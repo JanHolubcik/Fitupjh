@@ -1,42 +1,50 @@
-import { NextRequest, NextResponse } from "next/server";
-
+import { NextRequest } from "next/server";
 import { isValid, parseISO } from "date-fns";
 import { withAuth } from "../functions";
 import { auth } from "@/lib/auth";
 import { checkForSavedActivitiesMonth } from "@/lib/mongo/activity-db";
+import { ApiSuccess, ApiError } from "@/lib/api-response";
+import { logger } from "@/lib/logger";
 
 export async function GET(req: NextRequest) {
   return withAuth(req, async () => {
-    const dateTo = req.nextUrl.searchParams.get("dateTo");
-    const dateFrom = req.nextUrl.searchParams.get("dateFrom");
+    try {
+      const dateTo = req.nextUrl.searchParams.get("dateTo");
+      const dateFrom = req.nextUrl.searchParams.get("dateFrom");
 
-    const authData = await auth.api.getSession({
-      headers: req.headers,
-    });
-
-    const userID = authData?.user.id;
-
-    if (!userID || typeof userID !== "string") {
-      return new NextResponse("Missing or invalid userID", { status: 400 });
-    }
-
-    if (!dateTo) {
-      return new NextResponse("Missing or invalid dateTo", { status: 400 });
-    }
-
-    const dTo = parseISO(dateTo);
-    if (!isValid(dTo)) {
-      return new NextResponse("Invalid dateFrom format", { status: 400 });
-    }
-
-    if (dateTo && userID && dateFrom) {
-      const food = await checkForSavedActivitiesMonth(dateFrom, dateTo, userID);
-
-      return NextResponse.json(food);
-    } else {
-      return new NextResponse("Error getting saved food from user", {
-        status: 500,
+      const authData = await auth.api.getSession({
+        headers: req.headers,
       });
+
+      const userID = authData?.user.id;
+
+      if (!userID || typeof userID !== "string") {
+        return ApiError("Missing or invalid userID", 400);
+      }
+
+      if (!dateFrom) {
+        return ApiError("Missing or invalid dateFrom", 400);
+      }
+
+      if (!dateTo) {
+        return ApiError("Missing or invalid dateTo", 400);
+      }
+
+      const dFrom = parseISO(dateFrom);
+      if (!isValid(dFrom)) {
+        return ApiError("Invalid dateFrom format", 400);
+      }
+
+      const dTo = parseISO(dateTo);
+      if (!isValid(dTo)) {
+        return ApiError("Invalid dateTo format", 400);
+      }
+
+      const activities = await checkForSavedActivitiesMonth(dateFrom, dateTo, userID);
+      return ApiSuccess(activities);
+    } catch (error) {
+      logger.error("Error in GET /api/lastMonthSavedActivity:", error);
+      return ApiError("Error getting saved activities from user", 500);
     }
   });
 }

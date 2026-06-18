@@ -14,9 +14,12 @@ export const DailyIntakeOptions = (userId: string, date: string) =>
         { cache: "no-store", credentials: "include" },
       );
 
-      if (!res.ok) throw new Error("Failed to fetch food");
+      const result = await res.json().catch(() => ({}));
+      if (!res.ok || !result.success) {
+        throw new Error(result.error || "Failed to fetch food");
+      }
 
-      return res.json();
+      return result.data;
     },
     staleTime: 1000 * 60 * 15,
     retry: 1,

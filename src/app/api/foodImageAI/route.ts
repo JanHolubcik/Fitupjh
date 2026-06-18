@@ -1,6 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { withAuth } from "../functions";
 import { GoogleGenAI } from "@google/genai";
+import { ApiSuccess, ApiError } from "@/lib/api-response";
+import { logger } from "@/lib/logger";
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
@@ -11,7 +13,7 @@ export async function POST(req: NextRequest) {
       const { imageBase64 } = await req.json();
 
       if (!imageBase64) {
-        return new NextResponse("Missing or invalid image", { status: 400 });
+        return ApiError("Missing or invalid image", 400);
       }
 
       // Extract the actual base64 data from the data URI if necessary
@@ -48,13 +50,10 @@ export async function POST(req: NextRequest) {
 
       const result = JSON.parse(responseText);
 
-      return NextResponse.json(result);
+      return ApiSuccess(result);
     } catch (error) {
-      console.error("AI Image Analysis Error:", error);
-      return NextResponse.json(
-        { error: "Failed to analyze image" },
-        { status: 500 },
-      );
+      logger.error("AI Image Analysis Error:", error);
+      return ApiError("Failed to analyze image", 500);
     }
   });
 }

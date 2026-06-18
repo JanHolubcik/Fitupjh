@@ -19,11 +19,12 @@ export const SaveFoodOptions = () => ({
       credentials: "include",
     });
 
-    if (!response.ok) {
-      throw new Error("Failed to save food");
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.success) {
+      throw new Error(result.error || "Failed to save food");
     }
 
-    return response.json().catch(() => ({}));
+    return result.data;
   },
   staleTime: 1000 * 60 * 15,
 });

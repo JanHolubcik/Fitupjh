@@ -16,9 +16,10 @@ export const ActivitiesOptions = () =>
         method: "GET",
       });
 
-      if (!res.ok) throw new Error("Failed to fetch user");
+      const result = await res.json();
+      if (!res.ok || !result.success) throw new Error(result.error || "Failed to fetch activities");
 
-      return res.json() as Promise<ActivityClass[]>;
+      return result.data as ActivityClass[];
     },
     staleTime: 30_000,
     retry: 1,

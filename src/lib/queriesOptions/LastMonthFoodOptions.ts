@@ -19,7 +19,12 @@ export const LastMonthFoodOptions = (dateFrom: string, dateTo: string) =>
         { cache: "no-store", credentials: "include" },
       );
 
-      return res.json() as Promise<Record<string, FoodType>>;
+      const result = await res.json().catch(() => ({}));
+      if (!res.ok || !result.success) {
+        throw new Error(result.error || "Failed to fetch last month food");
+      }
+
+      return result.data as Record<string, FoodType>;
     },
     staleTime: 1000 * 60 * 15,
     retry: 0,

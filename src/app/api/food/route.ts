@@ -1,7 +1,9 @@
 import { addNewFood, getFood } from "@/lib/mongo/food-db";
 import { FoodSchema } from "@/lib/validationShemas/foodValidationSchema";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { withAuth } from "../functions";
+import { ApiSuccess, ApiError } from "@/lib/api-response";
+import { logger } from "@/lib/logger";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -12,20 +14,21 @@ export async function POST(req: NextRequest) {
     const result = FoodSchema.safeParse(rawData);
 
     if (!result.success) {
-      return NextResponse.json({ errors: result.error }, { status: 400 });
+      return ApiError(result.error, 400);
     }
     const validatedData = result.data;
 
     if (validatedData) {
-      const res = await addNewFood(validatedData).catch(() => {
-        return new NextResponse("There was an error while sending data to db", {
-          status: 500,
-        });
-      });
-      return NextResponse.json({ res });
+      try {
+        const res = await addNewFood(validatedData);
+        return ApiSuccess({ res });
+      } catch (error) {
+        logger.error("Failed to add new food", error);
+        return ApiError("There was an error while sending data to db", 500);
+      }
     }
 
-    return NextResponse.json({ error: "Invalid data" }, { status: 400 });
+    return ApiError("Invalid data", 400);
   });
 }
 
@@ -37,13 +40,10 @@ export async function GET(req: NextRequest) {
 
     try {
       const foodData = await getFood(searchTerm, language);
-
-      return NextResponse.json(foodData.food, { status: 200 });
+      return ApiSuccess(foodData.food, 200);
     } catch (error) {
-      console.error("Database error:", error);
-      return new NextResponse("There was an error while sending data to db", {
-        status: 500,
-      });
+      logger.error("Database error in GET /api/food", error);
+      return ApiError("There was an error while sending data to db", 500);
     }
   });
 }

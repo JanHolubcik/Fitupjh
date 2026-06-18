@@ -19,7 +19,12 @@ export const LastMonthSavedActivities = (dateFrom: string, dateTo: string) =>
         { cache: "no-store", credentials: "include" },
       );
 
-      return res.json() as Promise<Record<string, LoggedActivityType[]>>;
+      const result = await res.json().catch(() => ({}));
+      if (!res.ok || !result.success) {
+        throw new Error(result.error || "Failed to fetch last month saved activities");
+      }
+
+      return result.data as Record<string, LoggedActivityType[]>;
     },
     staleTime: 600000,
     retry: 0,

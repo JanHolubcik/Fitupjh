@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 import {
   checkForSavedActivities,
@@ -7,6 +7,8 @@ import {
 import { isValid, parse } from "date-fns";
 import { withAuth } from "../functions";
 import { LoggedActivityType } from "@/features/DashboardSlice/DashboardSlice";
+import { ApiSuccess, ApiError } from "@/lib/api-response";
+import { logger } from "@/lib/logger";
 
 type SaveActivityRequest = {
   date: string; // "yyyy-MM-dd"
@@ -16,64 +18,65 @@ type SaveActivityRequest = {
 
 export async function GET(req: NextRequest) {
   return withAuth(req, async () => {
-    const date = req.nextUrl.searchParams.get("date");
-    const userID = req.nextUrl.searchParams.get("user_id");
+    try {
+      const date = req.nextUrl.searchParams.get("date");
+      const userID = req.nextUrl.searchParams.get("user_id");
 
-    if (!date) {
-      return new NextResponse("Missing or invalid date", { status: 400 });
+      if (!date) {
+        return ApiError("Missing or invalid date", 400);
+      }
+
+      const parsedDate = parse(date, "yyyy-MM-dd", new Date());
+      if (!isValid(parsedDate)) {
+        return ApiError("Invalid date format", 400);
+      }
+
+      if (!userID || typeof userID !== "string") {
+        return ApiError("Missing or invalid userID", 400);
+      }
+
+      const res = await checkForSavedActivities(date, userID);
+
+      if (!res || !res.activities) {
+        return ApiSuccess([]);
+      }
+
+      return ApiSuccess(res.activities);
+    } catch (error) {
+      logger.error("Error in GET /api/savedActivity:", error);
+      return ApiError("There was an error while retrieving activities", 500);
     }
-
-    const parsedDate = parse(date, "yyyy-MM-dd", new Date());
-    if (!isValid(parsedDate)) {
-      return new NextResponse("Invalid date format", { status: 400 });
-    }
-
-    if (!userID || typeof userID !== "string") {
-      return new NextResponse("Missing or invalid userID", { status: 400 });
-    }
-
-    const res = await checkForSavedActivities(date, userID);
-
-    if (!res || !res.activities) {
-      return NextResponse.json([]);
-    }
-
-    return NextResponse.json(res.activities);
   });
 }
 
 export async function POST(req: NextRequest) {
   return withAuth(req, async () => {
-    const { date, activities, userID } =
-      (await req.json()) as SaveActivityRequest;
-
-    if (!date) {
-      return new NextResponse("Missing or invalid date", { status: 400 });
-    }
-
-    if (!activities || !Array.isArray(activities)) {
-      return new NextResponse("Missing or invalid activities array", {
-        status: 400,
-      });
-    }
-
-    if (!userID || typeof userID !== "string") {
-      return new NextResponse("Missing or invalid userID", { status: 400 });
-    }
-
-    const parsedDate = parse(date, "yyyy-MM-dd", new Date());
-    if (!isValid(parsedDate)) {
-      return new NextResponse("Invalid date format", { status: 400 });
-    }
-
     try {
+      const { date, activities, userID } =
+        (await req.json()) as SaveActivityRequest;
+
+      if (!date) {
+        return ApiError("Missing or invalid date", 400);
+      }
+
+      if (!activities || !Array.isArray(activities)) {
+        return ApiError("Missing or invalid activities array", 400);
+      }
+
+      if (!userID || typeof userID !== "string") {
+        return ApiError("Missing or invalid userID", 400);
+      }
+
+      const parsedDate = parse(date, "yyyy-MM-dd", new Date());
+      if (!isValid(parsedDate)) {
+        return ApiError("Invalid date format", 400);
+      }
+
       await saveActivitiesInDay(date, activities, userID);
-      return new NextResponse("Successfully saved to db", { status: 201 });
+      return ApiSuccess("Successfully saved to db", 201);
     } catch (error) {
-      console.error("Database save error:", error);
-      return new NextResponse("There was an error while sending data to db", {
-        status: 500,
-      });
+      logger.error("Database save error in POST /api/savedActivity:", error);
+      return ApiError("There was an error while sending data to db", 500);
     }
   });
 }

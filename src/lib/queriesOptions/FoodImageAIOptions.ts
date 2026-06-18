@@ -8,11 +8,12 @@ export const FoodImageAIOptions = () => ({
       body: JSON.stringify({ imageBase64 }),
     });
 
-    if (!response.ok) {
-      throw new Error("Failed to analyze image");
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.success) {
+      throw new Error(result.error || "Failed to analyze image");
     }
 
-    return response.json();
+    return result.data;
   },
   staleTime: 1000 * 60 * 15,
 });

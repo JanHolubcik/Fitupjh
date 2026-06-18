@@ -1,5 +1,7 @@
 import { put } from "@vercel/blob";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
+import { ApiSuccess, ApiError } from "@/lib/api-response";
+import { logger } from "@/lib/logger";
 
 export async function POST(request: NextRequest) {
   try {
@@ -7,7 +9,7 @@ export async function POST(request: NextRequest) {
     const file = form.get("file") as File;
 
     if (!file) {
-      return NextResponse.json({ error: "No file provided" }, { status: 400 });
+      return ApiError("No file provided", 400);
     }
 
     const blob = await put(file.name, file, {
@@ -16,9 +18,9 @@ export async function POST(request: NextRequest) {
       contentType: file.type,
     });
 
-    return NextResponse.json({ imageUrl: blob.url });
+    return ApiSuccess({ imageUrl: blob.url });
   } catch (error) {
-    console.error("Upload Error:", error);
-    return NextResponse.json({ error: "Upload failed" }, { status: 500 });
+    logger.error("Upload Error:", error);
+    return ApiError("Upload failed", 500);
   }
 }

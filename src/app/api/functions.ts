@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { ApiError } from "@/lib/api-response";
+import { logger } from "@/lib/logger";
 
 import type { Session, User } from "better-auth";
 
@@ -32,9 +34,7 @@ export const withAuth = async (
     const authData = await validate(req);
     return await handler(req, authData);
   } catch (error) {
-    return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Unauthorized" },
-      { status: 401 },
-    );
+    logger.warn("Authentication failed in API route", { error: error instanceof Error ? error.message : "Unknown" });
+    return ApiError(error instanceof Error ? error.message : "Unauthorized", 401);
   }
 };

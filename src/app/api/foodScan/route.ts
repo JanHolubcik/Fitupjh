@@ -1,25 +1,25 @@
 import { addNewFood, getFoodByBarcode } from "@/lib/mongo/food-db";
 
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { withAuth } from "../functions";
+import { ApiSuccess, ApiError } from "@/lib/api-response";
+import { logger } from "@/lib/logger";
 
 export async function POST(req: NextRequest) {
   return withAuth(req, async () => {
     const QRCode = req.nextUrl.searchParams.get("QRCode");
 
     if (!QRCode) {
-      return new NextResponse("Missing or invalid QRCode", { status: 400 });
+      return ApiError("Missing or invalid QRCode", 400);
     }
     try {
       const localFood = await getFoodByBarcode(QRCode);
 
       if (localFood.error !== "Food not found") {
-        return NextResponse.json(localFood);
+        return ApiSuccess(localFood);
       }
 
-      console.log(
-        `Barcode ${QRCode} not found in local database. Fetching from Open Food Facts API...`,
-      );
+      logger.info(`Barcode ${QRCode} not found in local database. Fetching from Open Food Facts API...`);
 
       const apiResponse = await fetch(
         `https://world.openfoodfacts.org/api/v3/product/${QRCode}`,
@@ -32,24 +32,15 @@ export async function POST(req: NextRequest) {
 
       if (!apiResponse.ok) {
         if (apiResponse.status === 404) {
-          return NextResponse.json(
-            { notFound: true, barcode: QRCode },
-            { status: 200 },
-          );
+          return ApiSuccess({ notFound: true, barcode: QRCode }, 200);
         }
-        return NextResponse.json(
-          { error: "External product lookup registry down" },
-          { status: 502 },
-        );
+        return ApiError("External product lookup registry down", 502);
       }
 
       const apiData = await apiResponse.json();
 
       if (!apiData.product || apiData.status === 0) {
-        return NextResponse.json(
-          { error: "Product not found locally or globally" },
-          { status: 404 },
-        );
+        return ApiError("Product not found locally or globally", 404);
       }
 
       const targetProduct = apiData.product;
@@ -77,25 +68,23 @@ export async function POST(req: NextRequest) {
         ProductWeight: parseInt(targetProduct.quantity) || undefined,
       };
 
-      await addNewFood(newlyMappedFood).catch(() => {
-        return new NextResponse("There was an error while sending data to db", {
-          status: 500,
-        });
-      });
+      try {
+        await addNewFood(newlyMappedFood);
+      } catch (error) {
+        logger.error("Failed to add new food from scanner", error);
+        return ApiError("There was an error while sending data to db", 500);
+      }
 
-      return NextResponse.json({
+      return ApiSuccess({
         ...newlyMappedFood,
       });
     } catch (error) {
-      console.error("Critical Internal Server Error in GET Route:", error);
-      return NextResponse.json(
-        {
-          error:
-            error instanceof Error
-              ? error.message
-              : "Database connection lost or internal crash.",
-        },
-        { status: 500 },
+      logger.error("Critical Internal Server Error in POST /api/foodScan:", error);
+      return ApiError(
+        error instanceof Error
+          ? error.message
+          : "Database connection lost or internal crash.",
+        500,
       );
     }
   });
