@@ -15,5 +15,4 @@ export const FoodImageAIOptions = () => ({
 
     return result.data;
   },
-  staleTime: 1000 * 60 * 15,
 });

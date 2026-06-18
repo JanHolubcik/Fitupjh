@@ -10,31 +10,23 @@ import { addDays, format, parse } from "date-fns";
  * @returns All activities.
  */
 export async function getActivity() {
-  try {
-    await connectDB();
+  await connectDB();
 
-    const activity = await Activity.find({}).lean().exec();
+  const activity = await Activity.find({}).lean().exec();
 
-    return activity;
-  } catch (error) {
-    return { error };
-  }
+  return activity;
 }
 
 export async function checkForSavedActivities(date: string, user_id: string) {
-  try {
-    await connectDB();
+  await connectDB();
 
-    const existingRecord = await SavedActivity.findOne({
-      day: date,
-      user_id: new mongoose.Types.ObjectId(user_id),
-    });
+  const existingRecord = await SavedActivity.findOne({
+    day: date,
+    user_id: new mongoose.Types.ObjectId(user_id),
+  });
 
-    // Matches the check in your GET route: if (!res || !res.activities)
-    return existingRecord ? { activities: existingRecord.activities } : {};
-  } catch (error) {
-    return { error };
-  }
+  // Matches the check in your GET route: if (!res || !res.activities)
+  return existingRecord ? { activities: existingRecord.activities } : {};
 }
 
 /**
@@ -49,31 +41,27 @@ export async function saveActivitiesInDay(
   activities: LoggedActivityType[],
   _id: mongoose.Types.ObjectId | string,
 ) {
-  try {
-    await connectDB();
+  await connectDB();
 
-    // findOneAndUpdate with upsert handles both creating new records and updating existing ones
-    const existingRecord = await SavedActivity.findOneAndUpdate(
-      {
+  // findOneAndUpdate with upsert handles both creating new records and updating existing ones
+  const existingRecord = await SavedActivity.findOneAndUpdate(
+    {
+      day: date,
+      user_id: new mongoose.Types.ObjectId(_id),
+    },
+    {
+      $set: {
+        activities: activities,
+      },
+      $setOnInsert: {
         day: date,
         user_id: new mongoose.Types.ObjectId(_id),
       },
-      {
-        $set: {
-          activities: activities,
-        },
-        $setOnInsert: {
-          day: date,
-          user_id: new mongoose.Types.ObjectId(_id),
-        },
-      },
-      { upsert: true, new: true },
-    );
+    },
+    { upsert: true, new: true },
+  );
 
-    return existingRecord;
-  } catch (error) {
-    return { error };
-  }
+  return existingRecord;
 }
 
 export async function checkForSavedActivitiesMonth(
@@ -81,46 +69,42 @@ export async function checkForSavedActivitiesMonth(
   dateTo: string, // e.g., "2023-10-31"
   user_id: string,
 ) {
-  try {
-    await connectDB();
+  await connectDB();
 
-    const existingRecords = await SavedActivity.find({
-      user_id: new mongoose.Types.ObjectId(user_id),
-      day: { $gte: dateFrom, $lte: dateTo },
-    }).lean();
+  const existingRecords = await SavedActivity.find({
+    user_id: new mongoose.Types.ObjectId(user_id),
+    day: { $gte: dateFrom, $lte: dateTo },
+  }).lean();
 
-    const recordMap = new Map<string, any>();
-    existingRecords.forEach((record) => {
-      recordMap.set(record.day, record);
-    });
+  const recordMap = new Map<string, any>();
+  existingRecords.forEach((record) => {
+    recordMap.set(record.day, record);
+  });
 
-    const activityMonth: Record<string, LoggedActivityType[]> = {};
+  const activityMonth: Record<string, LoggedActivityType[]> = {};
 
-    let currentParsedDate = parse(dateFrom, "yyyy-MM-dd", new Date());
-    const endParsedDate = parse(dateTo, "yyyy-MM-dd", new Date());
+  let currentParsedDate = parse(dateFrom, "yyyy-MM-dd", new Date());
+  const endParsedDate = parse(dateTo, "yyyy-MM-dd", new Date());
 
-    while (currentParsedDate <= endParsedDate) {
-      const dateStr = format(currentParsedDate, "yyyy-MM-dd");
+  while (currentParsedDate <= endParsedDate) {
+    const dateStr = format(currentParsedDate, "yyyy-MM-dd");
 
-      if (recordMap.has(dateStr)) {
-        const rawActivities = recordMap.get(dateStr)!.activities as any[];
+    if (recordMap.has(dateStr)) {
+      const rawActivities = recordMap.get(dateStr)!.activities as any[];
 
-        activityMonth[dateStr] = rawActivities.map((act) => ({
-          ...act,
-          id: act._id?.toString(),
+      activityMonth[dateStr] = rawActivities.map((act) => ({
+        ...act,
+        id: act._id?.toString(),
 
-          activity: act.activity?.toString(),
-        })) as LoggedActivityType[];
-      } else {
-        activityMonth[dateStr] = [];
-      }
-
-      currentParsedDate = addDays(currentParsedDate, 1);
+        activity: act.activity?.toString(),
+      })) as LoggedActivityType[];
+    } else {
+      activityMonth[dateStr] = [];
     }
 
-    return activityMonth;
-  } catch (error) {
-    console.error("Error in checkForSavedActivitiesMonth:", error);
-    return { error };
+    currentParsedDate = addDays(currentParsedDate, 1);
   }
+
+  return activityMonth;
 }
+

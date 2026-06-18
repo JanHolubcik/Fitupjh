@@ -21,5 +21,4 @@ export const GenerativeAIOptions = (savedFood: SavedFoodMonth) => ({
 
     return result.data;
   },
-  staleTime: 1000 * 60 * 15,
 });

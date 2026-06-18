@@ -143,7 +143,7 @@ export const NewFoodRecordModal = ({
                             ? "carbsShort"
                             : `${macro}Short`;
                         const rawValue = food[macro as keyof Food] as number;
-                        if (!rawValue) return null;
+                        if (rawValue === undefined || rawValue === null) return null;
                         const calculatedValue = (rawValue * ratio).toFixed(1);
 
                         return (
