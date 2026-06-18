@@ -17,10 +17,10 @@ type SaveActivityRequest = {
 };
 
 export async function GET(req: NextRequest) {
-  return withAuth(req, async () => {
+  return withAuth(req, async (req, authData) => {
     try {
       const date = req.nextUrl.searchParams.get("date");
-      const userID = req.nextUrl.searchParams.get("user_id");
+      const userID = authData.user.id;
 
       if (!date) {
         return ApiError("Missing or invalid date", 400);
@@ -29,10 +29,6 @@ export async function GET(req: NextRequest) {
       const parsedDate = parse(date, "yyyy-MM-dd", new Date());
       if (!isValid(parsedDate)) {
         return ApiError("Invalid date format", 400);
-      }
-
-      if (!userID || typeof userID !== "string") {
-        return ApiError("Missing or invalid userID", 400);
       }
 
       const res = await checkForSavedActivities(date, userID);
@@ -50,10 +46,11 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  return withAuth(req, async () => {
+  return withAuth(req, async (req, authData) => {
     try {
-      const { date, activities, userID } =
-        (await req.json()) as SaveActivityRequest;
+      const { date, activities } =
+        (await req.json()) as Omit<SaveActivityRequest, "userID">;
+      const userID = authData.user.id;
 
       if (!date) {
         return ApiError("Missing or invalid date", 400);
@@ -61,10 +58,6 @@ export async function POST(req: NextRequest) {
 
       if (!activities || !Array.isArray(activities)) {
         return ApiError("Missing or invalid activities array", 400);
-      }
-
-      if (!userID || typeof userID !== "string") {
-        return ApiError("Missing or invalid userID", 400);
       }
 
       const parsedDate = parse(date, "yyyy-MM-dd", new Date());

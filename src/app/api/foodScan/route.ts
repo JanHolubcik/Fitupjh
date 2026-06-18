@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     try {
       const localFood = await getFoodByBarcode(QRCode);
 
-      if (localFood.error !== "Food not found") {
+      if (localFood) {
         return ApiSuccess(localFood);
       }
 

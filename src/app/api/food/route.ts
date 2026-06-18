@@ -21,7 +21,10 @@ export async function POST(req: NextRequest) {
     if (validatedData) {
       try {
         const res = await addNewFood(validatedData);
-        return ApiSuccess({ res });
+        if (!res.success) {
+          return ApiError(res.error, 400);
+        }
+        return ApiSuccess(res.data, 201);
       } catch (error) {
         logger.error("Failed to add new food", error);
         return ApiError("There was an error while sending data to db", 500);

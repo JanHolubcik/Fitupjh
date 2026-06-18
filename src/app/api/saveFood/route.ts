@@ -14,9 +14,9 @@ type SaveFoodRequest = {
 };
 
 export async function GET(req: NextRequest) {
-  return withAuth(req, async () => {
+  return withAuth(req, async (req, authData) => {
     const date = req.nextUrl.searchParams.get("date");
-    const userID = req.nextUrl.searchParams.get("user_id");
+    const userID = authData.user.id;
 
     if (!date) {
       return ApiError("Missing or invalid date", 400);
@@ -27,9 +27,6 @@ export async function GET(req: NextRequest) {
       return ApiError("Invalid date format", 400);
     }
 
-    if (!userID || typeof userID !== "string") {
-      return ApiError("Missing or invalid userID", 400);
-    }
     const isoDate = parsed.toISOString();
 
     try {
@@ -53,8 +50,9 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  return withAuth(req, async () => {
-    const { date, savedFood, userID } = (await req.json()) as SaveFoodRequest;
+  return withAuth(req, async (req, authData) => {
+    const { date, savedFood } = (await req.json()) as Omit<SaveFoodRequest, "userID">;
+    const userID = authData.user.id;
 
     if (!date) {
       return ApiError("Missing or invalid date", 400);
@@ -68,10 +66,6 @@ export async function POST(req: NextRequest) {
       !Array.isArray(savedFood.dinner)
     ) {
       return ApiError("Missing or invalid savedFood", 400);
-    }
-
-    if (!userID || typeof userID !== "string") {
-      return ApiError("Missing or invalid userID", 400);
     }
 
     try {

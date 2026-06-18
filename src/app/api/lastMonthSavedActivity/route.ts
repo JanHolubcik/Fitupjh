@@ -7,20 +7,12 @@ import { ApiSuccess, ApiError } from "@/lib/api-response";
 import { logger } from "@/lib/logger";
 
 export async function GET(req: NextRequest) {
-  return withAuth(req, async () => {
+  return withAuth(req, async (req, authData) => {
     try {
       const dateTo = req.nextUrl.searchParams.get("dateTo");
       const dateFrom = req.nextUrl.searchParams.get("dateFrom");
 
-      const authData = await auth.api.getSession({
-        headers: req.headers,
-      });
-
-      const userID = authData?.user.id;
-
-      if (!userID || typeof userID !== "string") {
-        return ApiError("Missing or invalid userID", 400);
-      }
+      const userID = authData.user.id;
 
       if (!dateFrom) {
         return ApiError("Missing or invalid dateFrom", 400);
