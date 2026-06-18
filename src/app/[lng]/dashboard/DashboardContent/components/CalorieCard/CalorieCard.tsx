@@ -27,7 +27,7 @@ export const CalorieCard = () => {
   return (
     <CardUniversal
       id={"tour-calories"}
-      className="flex h-auto items-center justify-center w-full sm:flex-1"
+      className="flex h-auto items-center justify-center  "
     >
       <CardBody className="flex justify-center items-center ">
         <CircularProgress

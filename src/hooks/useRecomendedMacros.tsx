@@ -8,6 +8,7 @@ import { Food, FoodType, SavedFoodMonth } from "@/types/Types";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { authClient } from "@/lib/auth-client";
+import { format, parseISO } from "date-fns";
 const calculateAverage = (array: number[]) => {
   if (array.length === 0) return 0;
 
@@ -41,16 +42,38 @@ const useMacros = () => {
   const isArray = Array.isArray(savedFood);
   const isEmpty = !isArray || savedFood.length === 0;
 
-  const sortedFood = savedFood;
+  // Sort all days chronologically (keys are yyyy-MM-dd strings, so lexicographic sort works)
+  const allSorted = [...savedFood].sort((a, b) => a.day.localeCompare(b.day));
+
+  // Calculate calories per day so we can detect "empty" days
+  const getTotalCalories = (entry: (typeof allSorted)[number]): number => {
+    const meals = ["breakfast", "lunch", "dinner"] as const;
+    return meals.reduce((sum, meal) => {
+      return (
+        sum +
+        (entry.savedFood[meal]?.reduce(
+          (s: number, f: Food) => s + f.calories,
+          0,
+        ) ?? 0)
+      );
+    }, 0);
+  };
+
+  // Find the first index that has at least some calories logged
+  const firstNonZeroIdx = allSorted.findIndex(
+    (entry) => getTotalCalories(entry) > 0,
+  );
+
+  const activeWindow =
+    firstNonZeroIdx === -1 ? [] : allSorted.slice(firstNonZeroIdx);
+
+  // Keep only the last 10 entries from the active window
+  const sortedFood = activeWindow.slice(-10);
 
   const labels = isEmpty
     ? []
-    : sortedFood.map((item) => {
-        const dateObj = item.day;
-        // "EEE" outputs Mon, Tue, Wed...
-        // "dd-MM" outputs 30-04, 01-05...
-        return dateObj;
-      });
+    : sortedFood.map((item) => format(parseISO(item.day), "d.M"));
+
 
   const RecommendedMacros = data?.user
     ? calculateRecommendedMacros(

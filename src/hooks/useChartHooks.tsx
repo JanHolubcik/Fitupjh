@@ -151,11 +151,16 @@ export const useChartsHooks = ({
   const options: ChartOptions<"bar" | "line"> = {
     responsive: true,
     maintainAspectRatio: false,
+    // On mobile disable all pointer/touch events so the tooltip never appears
+    events: isSmallScreen
+      ? []
+      : ["mousemove", "mouseout", "click", "touchstart", "touchmove"],
     interaction: { mode: "index" as const, intersect: false },
     plugins: {
       legend: { display: false },
       title: { display: false },
       tooltip: {
+        enabled: !isSmallScreen,
         backgroundColor: "rgba(15, 23, 42, 0.95)",
         titleColor: "#f8fafc",
         bodyColor: "#94a3b8",
