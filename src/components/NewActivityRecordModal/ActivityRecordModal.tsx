@@ -15,6 +15,7 @@ import { useT } from "next-i18next/client";
 import { toast } from "react-toastify";
 import { ActivityClass } from "@/lib/mongo/models/Activity";
 import { useActivityOperations } from "@/hooks/useActivityOperations";
+import { usePathname } from "next/navigation";
 
 export type ActivityRecord = {
   _id: string;
@@ -49,6 +50,18 @@ export const ActivityRecordModal = ({
   // Added updateActivityRecord (ensure this exists in your hook!)
   const { addActivityRecord, updateActivity } = useActivityOperations();
   const { t } = useT("dashboard");
+  const pathname = usePathname();
+  const currentLocale = pathname.split("/")[1] || "en";
+
+  // Reads the DB-stored localizedNames (e.g. { sk: "Beh (stredné tempo)" })
+  // Falls back to the English name if no translation exists for the current locale.
+  const getLocalizedName = (act: ActivityClass): string => {
+    const map = act.localizedNames;
+    if (!map) return act.name;
+    return (
+      (map as unknown as Record<string, string>)[currentLocale] || act.name
+    );
+  };
 
   const isEditMode = !!existingRecord;
 
@@ -102,18 +115,16 @@ export const ActivityRecordModal = ({
     setIsSaving(true);
 
     if (!selectedActivity) {
-      toast.error(
-        t("newActivityModal.toastNoActivity"),
-        { position: "bottom-left" },
-      );
+      toast.error(t("newActivityModal.toastNoActivity"), {
+        position: "bottom-left",
+      });
       return;
     }
 
     if (minutes < 1) {
-      toast.error(
-        t("newActivityModal.toastBadValue"),
-        { position: "bottom-left" },
-      );
+      toast.error(t("newActivityModal.toastBadValue"), {
+        position: "bottom-left",
+      });
       return;
     }
     const activityId = selectedActivity._id.toString();
@@ -142,7 +153,7 @@ export const ActivityRecordModal = ({
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       hideCloseButton
-      placement="center"
+      placement="top"
       backdrop="blur"
       classNames={{
         base: "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 max-w-md font-semibold mx-4",
@@ -163,19 +174,15 @@ export const ActivityRecordModal = ({
               </h3>
               <p className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
                 {isEditMode
-                  ? t(
-                      "editActivityModal.subtitle",
-                    )
-                  : t(
-                      "newActivityModal.subtitle",
-                    )}
+                  ? t("editActivityModal.subtitle")
+                  : t("newActivityModal.subtitle")}
               </p>
             </ModalHeader>
 
             <ModalBody className="py-4 gap-4 font-semibold">
               <Select
                 label={t("newActivityModal.categoryLabel")}
-                placeholder="e.g., Cardio, Strength..."
+                placeholder={t("newActivityModal.categoryPlaceholder")}
                 selectedKeys={selectedCategory ? [selectedCategory] : []}
                 onChange={(e) => {
                   setSelectedCategory(e.target.value);
@@ -188,14 +195,14 @@ export const ActivityRecordModal = ({
               >
                 {categories.map((cat) => (
                   <SelectItem key={cat} value={cat}>
-                    {cat}
+                    {t(`activity.categories.${cat}`)}
                   </SelectItem>
                 ))}
               </Select>
 
               <Select
                 label={t("newActivityModal.activityLabel")}
-                placeholder="e.g., Running, Cycling..."
+                placeholder={t("newActivityModal.activityPlaceholder")}
                 isDisabled={!selectedCategory} // Locked until category is chosen
                 selectedKeys={
                   selectedActivityName ? [selectedActivityName] : []
@@ -208,7 +215,7 @@ export const ActivityRecordModal = ({
               >
                 {filteredActivities.map((act) => (
                   <SelectItem key={act.name} value={act.name}>
-                    {act.name}
+                    {getLocalizedName(act)}
                   </SelectItem>
                 ))}
               </Select>

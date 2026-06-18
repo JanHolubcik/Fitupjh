@@ -31,6 +31,10 @@
     "smartScanning": {
       "title": "Smart Scanning & AI",
       "description": "Too tired to type? Scan a product's barcode or just snap a photo of your plate, and let our AI do the heavy lifting!"
+    },
+    "activity": {
+      "title": "Daily Activities",
+      "description": "Log your workouts here - choose an activity, set the duration, and we'll calculate the calories burned for you."
     }
   },
   "searchPlaceholder": "Search food...",
@@ -216,7 +220,9 @@
     "title": "Log New Activity",
     "subtitle": "Select an activity and duration to calculate calories burned",
     "categoryLabel": "Activity Type",
+    "categoryPlaceholder": "e.g., Cardio, Strength...",
     "activityLabel": "Specific Activity",
+    "activityPlaceholder": "e.g., Running, Cycling...",
     "durationLabel": "Duration (minutes)",
     "caloriesBurned": "Calories Burned",
     "intensity": "Intensity (MET)",
@@ -229,7 +235,15 @@
     "saveChanges": "Update Activity"
   },
   "activity": {
-    "dailyActivities": "Daily Activities"
+    "dailyActivities": "Daily Activities",
+    "categories": {
+      "Cardio": "Cardio",
+      "Strength": "Strength",
+      "Flexibility": "Flexibility",
+      "Sports": "Sports",
+      "Recreation": "Recreation",
+      "General": "General"
+    }
   },
   "toast": {
     "pending": "Sending request...",

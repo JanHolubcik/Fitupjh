@@ -12,6 +12,7 @@ import { CardUniversal } from "@/components/common";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ActivitiesOptions } from "@/lib/queriesOptions/ActivitiesOptions";
 import { useActivityOperations } from "@/hooks/useActivityOperations";
+import { usePathname } from "next/navigation";
 
 import {
   ActivityRecordModal,
@@ -26,6 +27,18 @@ export const AccordionActivity = () => {
   const [recordToEdit, setRecordToEdit] = useState<ActivityRecord | null>(null);
 
   const { t } = useT("dashboard");
+  const pathname = usePathname();
+  const currentLocale = pathname.split("/")[1] || "en";
+
+  const getLocalizedName = (act: {
+    name: string;
+    localizedNames?: any;
+  }): string => {
+    const map = act.localizedNames;
+    if (!map) return act.name;
+    // After JSON serialization from MongoDB, localizedNames is a plain object
+    return (map as Record<string, string>)[currentLocale] || act.name;
+  };
 
   const isKeyActive = (key: string) => {
     if (selectedKeys === "all") return true;
@@ -67,7 +80,7 @@ export const AccordionActivity = () => {
 
   return (
     <CardUniversal
-      id={"tour-activities"}
+      id={"tour-activity"}
       className="w-full sm:max-w-2xl self-center"
     >
       <CardBody className="p-3 sm:p-5 max-w-2xl">
@@ -141,12 +154,19 @@ export const AccordionActivity = () => {
                       <div className="flex items-center gap-3 flex-1 min-w-0">
                         <div className="flex-1 min-w-0 flex flex-col justify-center">
                           <p className="font-bold text-xs sm:text-sm dark:text-zinc-200 capitalize whitespace-nowrap overflow-hidden text-ellipsis w-16 sm:w-36">
-                            {fullActivity.name}
+                            {getLocalizedName(fullActivity)}
                           </p>
 
-                          <p className="text-[10px] text-zinc-500 capitalize">
-                            {fullActivity.category} •{" "}
-                            {savedItem.durationMinutes} min
+                          <p className="flex items-center gap-1.5 text-xs text-zinc-500">
+                            <span className="capitalize">
+                              {t(
+                                `activity.categories.${fullActivity.category}`,
+                              )}
+                            </span>
+                            <span>&middot;</span>
+                            <span>{savedItem.durationMinutes} min</span>
+                            <span>&middot;</span>
+                            <span>{savedItem.caloriesBurned} kcal</span>
                           </p>
                         </div>
                       </div>

@@ -56,6 +56,15 @@ const useGuide = ({ isFetched, user }: props) => {
               align: "start",
             },
           },
+                    {
+            element: "#tour-activity",
+            popover: {
+              title: t("tour.activity.title"),
+              description: t("tour.activity.description"),
+              side: "top",
+              align: "start",
+            },
+          },
           {
             element: "#tour-chart",
             popover: {

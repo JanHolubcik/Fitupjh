@@ -30,7 +30,7 @@ export const AccordionTimeFrame = () => {
   };
 
   return (
-    <CardUniversal className="w-full sm:max-w-2xl self-center">
+    <CardUniversal id="tour-meals" className="w-full sm:max-w-2xl self-center">
       <CardBody className="p-3 sm:p-5 max-w-2xl">
         <Accordion
           variant="light"
