@@ -1,10 +1,11 @@
 import { queryOptions } from "@tanstack/react-query";
 import { LoggedActivityType } from "@/features/DashboardSlice/DashboardSlice";
+import { ApiResponse } from "@/lib/api-response";
 
 export const LastMonthSavedActivities = (dateFrom: string, dateTo: string) =>
   queryOptions({
     queryKey: ["lastMonthSavedActivity", dateTo, dateFrom] as const,
-    queryFn: async () => {
+    queryFn: async (): Promise<Record<string, LoggedActivityType[]>> => {
       const isServer = typeof window === "undefined";
       let baseUrl = "";
       if (isServer) {
@@ -19,7 +20,9 @@ export const LastMonthSavedActivities = (dateFrom: string, dateTo: string) =>
         { cache: "no-store", credentials: "include" },
       );
 
-      const result = await res.json().catch(() => ({}));
+      const result = (await res.json().catch(() => ({}))) as ApiResponse<
+        Record<string, LoggedActivityType[]>
+      >;
       if (!res.ok || !result.success) {
         throw new Error(result.error || "Failed to fetch last month saved activities");
       }
@@ -30,3 +33,4 @@ export const LastMonthSavedActivities = (dateFrom: string, dateTo: string) =>
     retry: 0,
     refetchOnWindowFocus: false,
   });
+

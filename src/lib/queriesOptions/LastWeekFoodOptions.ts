@@ -1,10 +1,11 @@
 import { SavedFoodClass } from "@/lib/mongo/models/SavedFood";
+import { ApiResponse } from "@/lib/api-response";
 import { queryOptions } from "@tanstack/react-query";
 
 export const LastWeekFoodOptions = (dateFrom: string, dateTo: string) =>
   queryOptions({
     queryKey: ["lastWeekFood", dateTo, dateFrom] as const,
-    queryFn: async ({ queryKey }) => {
+    queryFn: async ({ queryKey }): Promise<SavedFoodClass[]> => {
       const [, dateTo, dateFrom] = queryKey;
       const isServer = typeof window === "undefined";
       const baseUrl = isServer ? process.env.NEXTAUTH_URL : "";
@@ -14,7 +15,7 @@ export const LastWeekFoodOptions = (dateFrom: string, dateTo: string) =>
         { cache: "no-store", credentials: "include" },
       );
 
-      const result = await res.json().catch(() => ({}));
+      const result = (await res.json().catch(() => ({}))) as ApiResponse<SavedFoodClass[]>;
       if (!res.ok || !result.success) {
         throw new Error(result.error || "Failed to fetch food");
       }
@@ -25,3 +26,4 @@ export const LastWeekFoodOptions = (dateFrom: string, dateTo: string) =>
     staleTime: 1000 * 60 * 15,
     retry: 0,
   });
+

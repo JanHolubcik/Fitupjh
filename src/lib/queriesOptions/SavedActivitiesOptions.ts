@@ -1,4 +1,5 @@
 import { LoggedActivityType } from "@/features/DashboardSlice/DashboardSlice";
+import { ApiResponse } from "@/lib/api-response";
 
 export const SavedActivitiesOptions = () => ({
   mutationFn: async ({
@@ -9,7 +10,7 @@ export const SavedActivitiesOptions = () => ({
     date: string;
     savedActivity: LoggedActivityType[];
     userID: string;
-  }) => {
+  }): Promise<string> => {
     const response = await fetch("/api/savedActivity", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -21,11 +22,12 @@ export const SavedActivitiesOptions = () => ({
       credentials: "include",
     });
 
-    const result = await response.json().catch(() => ({}));
+    const result = (await response.json().catch(() => ({}))) as ApiResponse<string>;
     if (!response.ok || !result.success) {
       throw new Error(result.error || "Failed to save activities");
     }
 
-    return result.data;
+    return result.data as string;
   },
 });
+

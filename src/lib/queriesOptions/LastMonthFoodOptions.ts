@@ -1,10 +1,11 @@
 import { FoodType } from "@/types/Types";
+import { ApiResponse } from "@/lib/api-response";
 import { queryOptions } from "@tanstack/react-query";
 
 export const LastMonthFoodOptions = (dateFrom: string, dateTo: string) =>
   queryOptions({
     queryKey: ["lastMonthFood", dateTo, dateFrom] as const,
-    queryFn: async () => {
+    queryFn: async (): Promise<Record<string, FoodType>> => {
       const isServer = typeof window === "undefined";
       let baseUrl = "";
       if (isServer) {
@@ -19,7 +20,7 @@ export const LastMonthFoodOptions = (dateFrom: string, dateTo: string) =>
         { cache: "no-store", credentials: "include" },
       );
 
-      const result = await res.json().catch(() => ({}));
+      const result = (await res.json().catch(() => ({}))) as ApiResponse<Record<string, FoodType>>;
       if (!res.ok || !result.success) {
         throw new Error(result.error || "Failed to fetch last month food");
       }
@@ -29,3 +30,4 @@ export const LastMonthFoodOptions = (dateFrom: string, dateTo: string) =>
     staleTime: 1000 * 60 * 15,
     retry: 0,
   });
+

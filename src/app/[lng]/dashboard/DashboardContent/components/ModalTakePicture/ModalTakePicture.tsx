@@ -65,6 +65,7 @@ const ModalTakePicture = ({
     if (isOpen) {
       setIsSaving(false);
       isSavingRef.current = false;
+      analyzeImageMutation.reset();
     }
   }, [isOpen]);
 
@@ -78,6 +79,7 @@ const ModalTakePicture = ({
 
       setImage(photoBase64);
       setResult(null);
+      analyzeImageMutation.reset();
 
       try {
         const data = await analyzeImageMutation.mutateAsync(
@@ -93,6 +95,7 @@ const ModalTakePicture = ({
   const handleReset = () => {
     setImage(null);
     setResult(null);
+    analyzeImageMutation.reset();
   };
 
   const handleAddFood = () => {
@@ -204,6 +207,13 @@ const ModalTakePicture = ({
                       </p>
                     </div>
                   )}
+
+                  {analyzeImageMutation.isError && (
+                    <div className="bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 p-4 rounded-xl w-full max-w-[340px] border border-red-200 dark:border-red-800 text-center text-sm font-semibold my-4">
+                      {analyzeImageMutation.error?.message || "Failed to analyze image"}
+                    </div>
+                  )}
+
 
                   {result && (
                     <div className="bg-slate-50 dark:bg-zinc-900/50 p-5 rounded-xl w-full max-w-[340px] border border-zinc-100 dark:border-zinc-800 shadow-sm">

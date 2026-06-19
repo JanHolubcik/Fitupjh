@@ -71,3 +71,20 @@ export const timeOfDay = ["breakfast", "lunch", "dinner"] as const;
 
 export type TimeOfDay = (typeof timeOfDay)[number];
 export type timeOfDayNumber = TimeOfDay;
+
+export type AIFoodAnalysis = {
+  isFood: boolean;
+  error?: string;
+  name?: string;
+  calories_per_100g?: number;
+  calories?: number;
+  fat?: number;
+  protein?: number;
+  sugar?: number;
+  carbohydrates?: number;
+  fiber?: number;
+  salt?: number;
+  ProductWeight?: number;
+  imgUrl?: string;
+};
+
