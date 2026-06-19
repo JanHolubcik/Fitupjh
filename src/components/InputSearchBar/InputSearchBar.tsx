@@ -1,12 +1,6 @@
 "use client";
 import { FaSearch } from "react-icons/fa";
-import {
-  Button,
-  Input,
-  Spinner,
-  useDisclosure,
-  Image,
-} from "@heroui/react";
+import { Button, Input, Spinner, useDisclosure, Image } from "@heroui/react";
 import { useEffect, useRef, useState } from "react";
 import { Food, ReturnTypeFood } from "@/types/Types";
 import React from "react";
@@ -212,7 +206,7 @@ const InputSearchBar = () => {
               </div>
             </li>
           ))}
-        {debouncedSearchTerm.length > 0 && food?.length === 0 && (
+        {debouncedSearchTerm.length > 0 && food?.length === 0 && !loading && (
           <div className="flex flex-col items-center gap-3 p-5">
             <p className="text-sm text-center text-zinc-600 dark:text-zinc-400">
               {t("recordNotFound")}
@@ -250,4 +244,3 @@ const InputSearchBar = () => {
 };
 
 export default InputSearchBar;
-
