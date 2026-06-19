@@ -1,6 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
+import NextLink from "next/link";
 import {
   Button,
   CardBody,
@@ -212,6 +213,7 @@ export default function Signup() {
                 {t("hasAccountText")}
               </span>
               <Link
+                as={NextLink}
                 href={`/${lng}/login`}
                 className="text-sm font-semibold text-primary hover:text-primary/80 transition-colors"
               >

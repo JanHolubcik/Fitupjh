@@ -1,7 +1,8 @@
 "use client";
 
 import { authClient } from "@/lib/auth-client";
-import { Image, Link, Button } from "@heroui/react";
+import { Image, Button } from "@heroui/react";
+import NextLink from "next/link";
 
 import { useT } from "next-i18next/client";
 import { useParams } from "next/navigation";
@@ -65,7 +66,7 @@ export default function Home() {
               {t("start")}
             </h2>
             <Button
-              as={Link}
+              as={NextLink}
               href={data?.user?.id ? `/${lng}/dashboard` : `/${lng}/signup`}
               className="w-full sm:w-auto bg-[#00FFAA] text-black font-bold px-10 py-6 text-lg rounded-2xl shadow-[0_0_15px_rgba(0,255,170,0.2)] hover:shadow-[0_0_30px_rgba(0,255,170,0.5)] transition-all hover:-translate-y-1"
             >

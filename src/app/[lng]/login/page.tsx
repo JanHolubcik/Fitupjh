@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter, useParams } from "next/navigation";
+import NextLink from "next/link";
 import { Link, Input, Spinner, CardHeader, CardBody } from "@heroui/react";
 
 import PulsingButton from "@/components/PulsingButton/PulsingButton";
@@ -125,6 +126,7 @@ export default function Login() {
                 {t("noAccountText")}
               </span>
               <Link
+                as={NextLink}
                 href={`/${lng}/signup`}
                 className="text-sm font-bold text-primary hover:text-primary/80 transition-colors"
               >

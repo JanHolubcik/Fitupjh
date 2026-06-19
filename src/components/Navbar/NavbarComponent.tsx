@@ -16,6 +16,7 @@ import {
 } from "@heroui/react";
 
 import { useParams, usePathname, useRouter } from "next/navigation";
+import NextLink from "next/link";
 import InputSearchBar from "../InputSearchBar/InputSearchBar";
 import LanguagePicker from "./components/LanguagePicker";
 import ThemeSwitcher from "./components/ThemeSwitcher";
@@ -116,6 +117,7 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
 
     return (
       <Link
+        as={NextLink}
         href={`/${lng}/login`}
         size="sm"
         className="hidden sm:flex font-medium border-2 text-xs  dark:text-white border-zinc-600 rounded-lg p-[6px]"
@@ -137,7 +139,7 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
           className={data ? "hidden sm:flex flex-grow-0" : "flex flex-grow-0"}
         >
           <NavbarBrand className="gap-5">
-            <Link href="/" className="gap-2 flex">
+            <Link as={NextLink} href="/" className="gap-2 flex">
               <p className="font-black text-xl text-black dark:text-white tracking-wider bg-gradient-to-r from-black dark:from-white to-zinc-600 dark:to-zinc-400 bg-clip-text text-transparent">
                 FitUp
               </p>
@@ -151,6 +153,7 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
                   isActive={pathname === item.href}
                 >
                   <Link
+                    as={NextLink}
                     href={item.href}
                     className={`text-[15px] font-extrabold dark:font-bold transition-colors ${
                       pathname === item.href
@@ -181,7 +184,7 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
 
             {!data && (
               <Link
-                as={Link}
+                as={NextLink}
                 href={`/${lng}/signup`}
                 color="primary"
                 size="sm"
@@ -252,6 +255,7 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
             )}
 
             <Link
+              as={NextLink}
               href={`/${lng}/dashboard`}
               className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
                 pathname === `/${lng}/dashboard`
@@ -267,6 +271,7 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
 
             <Link
               id="tour-profile-mobile"
+              as={NextLink}
               href={`/${lng}/profile`}
               className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
                 pathname === `/${lng}/profile`
@@ -304,6 +309,7 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
         <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/70 dark:bg-zinc-950/70 backdrop-blur-lg border-t border-black/10 dark:border-white/10 pb-[env(safe-area-inset-bottom)]">
           <div className="flex flex-row items-center h-16">
             <Link
+              as={NextLink}
               href="/"
               className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
                 pathname === "/"
@@ -318,6 +324,7 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
             </Link>
 
             <Link
+              as={NextLink}
               href={`/${lng}/login`}
               className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
                 pathname === "/login"
@@ -332,6 +339,7 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
             </Link>
 
             <Link
+              as={NextLink}
               href={`/${lng}/signup`}
               className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
                 pathname === "/signup"

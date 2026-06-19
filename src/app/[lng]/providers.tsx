@@ -19,7 +19,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   return (
-    <HeroUIProvider navigate={router.push}>
+    <HeroUIProvider navigate={(path, options) => router.push(path, options)}>
       <NextThemesProvider attribute="class" defaultTheme="dark">
         <StoreProvider>
           <QueryClientProvider client={queryClient}>
