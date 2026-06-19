@@ -258,10 +258,9 @@ export default function OnboardingPage() {
                         </h2>
                         {/* Stacks vertically on mobile, horizontal on desktop */}
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 w-full">
-                          <button
-                            type="button"
-                            onClick={() => setFieldValue("goal", "loseWeight")}
-                            className={`p-4 border-2 rounded-xl flex flex-row sm:flex-col items-center justify-start sm:justify-center gap-4 transition-all duration-200 active:scale-[0.98] ${
+                          <Button
+                            onPress={() => setFieldValue("goal", "loseWeight")}
+                            className={`p-4 border-2 sm:h-20 rounded-xl flex flex-row sm:flex-col items-center justify-start sm:justify-center gap-4 transition-all duration-200 active:scale-[0.98] ${
                               values.goal === "loseWeight"
                                 ? "border-blue-500 bg-blue-500/10 text-blue-500 shadow-sm"
                                 : "border-zinc-200 dark:border-zinc-800 text-zinc-400 hover:border-zinc-300"
@@ -274,14 +273,13 @@ export default function OnboardingPage() {
                             <span className="font-bold text-zinc-900 dark:text-white text-sm sm:text-base">
                               {t("goal.loseFat")}
                             </span>
-                          </button>
+                          </Button>
 
-                          <button
-                            type="button"
-                            onClick={() =>
+                          <Button
+                            onPress={() =>
                               setFieldValue("goal", "maintainWeight")
                             }
-                            className={`p-4 border-2 rounded-xl flex flex-row sm:flex-col items-center justify-start sm:justify-center gap-4 transition-all duration-200 active:scale-[0.98] ${
+                            className={`p-4 border-2 rounded-xl flex flex-row  sm:h-20  sm:flex-col items-center justify-start sm:justify-center gap-4 transition-all duration-200 active:scale-[0.98] ${
                               values.goal === "maintainWeight"
                                 ? "border-blue-500 bg-blue-500/10 text-blue-500 shadow-sm"
                                 : "border-zinc-200 dark:border-zinc-800 text-zinc-400 hover:border-zinc-300"
@@ -294,12 +292,11 @@ export default function OnboardingPage() {
                             <span className="font-bold text-zinc-900 dark:text-white text-sm sm:text-base">
                               {t("goal.maintain")}
                             </span>
-                          </button>
+                          </Button>
 
-                          <button
-                            type="button"
-                            onClick={() => setFieldValue("goal", "gainWeight")}
-                            className={`p-4 border-2 rounded-xl flex flex-row sm:flex-col items-center justify-start sm:justify-center gap-4 transition-all duration-200 active:scale-[0.98] ${
+                          <Button
+                            onPress={() => setFieldValue("goal", "gainWeight")}
+                            className={`p-4 border-2 rounded-xl flex  sm:h-20  flex-row sm:flex-col items-center justify-start sm:justify-center gap-4 transition-all duration-200 active:scale-[0.98] ${
                               values.goal === "gainWeight"
                                 ? "border-blue-500 bg-blue-500/10 text-blue-500 shadow-sm"
                                 : "border-zinc-200 dark:border-zinc-800 text-zinc-400 hover:border-zinc-300"
@@ -312,7 +309,7 @@ export default function OnboardingPage() {
                             <span className="font-bold text-zinc-900 dark:text-white text-sm sm:text-base">
                               {t("goal.buildMuscle")}
                             </span>
-                          </button>
+                          </Button>
                         </div>
                       </motion.div>
                     )}
@@ -462,8 +459,16 @@ export default function OnboardingPage() {
                           setFieldTouched("weight", true);
                           setFieldTouched("height", true);
 
-                          const hasWeightError = !values.weight || isNaN(Number(values.weight)) || Number(values.weight) < 50 || Number(values.weight) > 300;
-                          const hasHeightError = !values.height || isNaN(Number(values.height)) || Number(values.height) < 50 || Number(values.height) > 300;
+                          const hasWeightError =
+                            !values.weight ||
+                            isNaN(Number(values.weight)) ||
+                            Number(values.weight) < 50 ||
+                            Number(values.weight) > 300;
+                          const hasHeightError =
+                            !values.height ||
+                            isNaN(Number(values.height)) ||
+                            Number(values.height) < 50 ||
+                            Number(values.height) > 300;
 
                           if (hasWeightError || hasHeightError) {
                             return;
