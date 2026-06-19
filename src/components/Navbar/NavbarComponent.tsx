@@ -185,7 +185,7 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
                 href={`/${lng}/signup`}
                 color="primary"
                 size="sm"
-                className="hidden sm:flex bg-primary font-medium  text-xs text-white  rounded-lg w-22 p-[7px]"
+                className="hidden sm:flex bg-primary font-medium  text-xs text-white  rounded-lg  p-[7px]"
               >
                 {t("signUp")}
               </Link>
