@@ -14,7 +14,7 @@ const MyGraph = () => {
     useState<keyof typeof macroDatasets>("protein");
   const { t } = useT("dashboard");
 
-  if (labels.length < 1) {
+  if (labels.length < 3) {
     return (
       <CardUniversal
         id="tour-chart"
