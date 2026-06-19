@@ -186,7 +186,6 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
     );
   }
 
-  // Render native video element with custom aesthetic overlays
   return (
     <div className="relative w-full h-full overflow-hidden bg-slate-950 flex items-center justify-center">
       <video
@@ -206,25 +205,7 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
         <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-primary rounded-tr-2xl" />
         <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-primary rounded-bl-2xl" />
         <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-primary rounded-br-2xl" />
-
-        {/* Pulse Scanner Laser Animation */}
-        <div className="w-full h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent shadow-[0_0_8px_rgba(var(--nextui-primary-opacity),0.8)] absolute top-0 animate-[scan_2s_infinite_linear]" />
       </div>
-
-      {/* Add custom CSS to global context if needed for the custom animation, or use standard CSS */}
-      <style jsx global>{`
-        @keyframes scan {
-          0% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(256px);
-          }
-          100% {
-            transform: translateY(0);
-          }
-        }
-      `}</style>
     </div>
   );
 };
