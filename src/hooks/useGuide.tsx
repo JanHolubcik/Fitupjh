@@ -14,9 +14,13 @@ type props = {
 const useGuide = ({ isFetched, user }: props) => {
   const { t } = useT("dashboard");
   const isMobile = !useIsSm();
+
   useEffect(() => {
+    let driverObj: any = null;
+    let isCleanup = false;
+
     if (isFetched && user && user.guideSeen === false) {
-      const driverObj = driver({
+      driverObj = driver({
         showProgress: true,
         steps: [
           {
@@ -56,7 +60,7 @@ const useGuide = ({ isFetched, user }: props) => {
               align: "start",
             },
           },
-                    {
+          {
             element: "#tour-activity",
             popover: {
               title: t("tour.activity.title"),
@@ -107,17 +111,27 @@ const useGuide = ({ isFetched, user }: props) => {
         onDestroyStarted: async () => {
           driverObj.destroy();
 
-          // Update the database so they never see it again
-          try {
-            await authClient.updateUser({ guideSeen: true });
-          } catch (error) {
-            console.error("Failed to update guide status:", error);
+          if (!isCleanup) {
+            // Update the database so they never see it again
+            try {
+              await authClient.updateUser({ guideSeen: true });
+            } catch (error) {
+              console.error("Failed to update guide status:", error);
+            }
           }
         },
       });
 
-      setTimeout(() => driverObj.drive(), 200);
+      const timer = setTimeout(() => driverObj.drive(), 200);
+
+      return () => {
+        isCleanup = true;
+        clearTimeout(timer);
+        if (driverObj) {
+          driverObj.destroy();
+        }
+      };
     }
-  }, [isFetched, user]);
+  }, [isFetched, user, isMobile, t]);
 };
 export default useGuide;

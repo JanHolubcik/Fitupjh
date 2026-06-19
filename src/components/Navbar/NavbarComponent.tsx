@@ -148,11 +148,11 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
             <div className="hidden sm:flex gap-5">
               {navigationProperties.map((item) => (
                 <NavbarItem
-                  id={item.id === 2 ? "tour-profile-desktop" : ""}
                   key={`desktop-${item.href}`}
                   isActive={pathname === item.href}
                 >
                   <Link
+                    id={item.id === 2 ? "tour-profile-desktop" : undefined}
                     as={NextLink}
                     href={item.href}
                     className={`text-[15px] font-extrabold dark:font-bold transition-colors ${
