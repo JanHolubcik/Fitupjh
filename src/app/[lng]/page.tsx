@@ -15,15 +15,15 @@ export default function Home() {
   const lng = params?.lng || "en";
 
   return (
-    <main className="dark min-h-[calc(100vh-100px)] flex flex-col items-center justify-center sm:p-6 p-4 relative overflow-hidden">
-      <div className="max-w-[480px] w-full bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl">
+    <main className="min-h-[calc(100vh-100px)] flex flex-col items-center justify-center sm:p-6 p-4 relative overflow-hidden bg-background text-foreground transition-colors duration-200">
+      <div className="max-w-[480px] w-full bg-white/70 dark:bg-white/5 backdrop-blur-xl border border-zinc-200/50 dark:border-white/10 rounded-3xl p-6 sm:p-8 shadow-xl dark:shadow-2xl">
         <div className="flex flex-col items-center gap-5 text-center">
-          <div className="w-16 h-16 rounded-2xl from-[#006FEE]/15 to-[#38bdf8]/15 flex items-center justify-center border border-white/10  ">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-500/10 to-sky-400/10 dark:from-[#006FEE]/15 dark:to-[#38bdf8]/15 flex items-center justify-center border border-zinc-200/30 dark:border-white/10">
             <FaHeartbeat className="text-3xl text-primary" />
           </div>
 
           <div className="flex flex-col items-center gap-1">
-            <h1 className="text-3xl sm:text-4xl font-black text-primary bg-clip-text  ">
+            <h1 className="text-3xl sm:text-4xl font-black text-primary bg-clip-text">
               FitUp
             </h1>
             <p className="text-base sm:text-lg font-semibold text-foreground/90">
@@ -37,7 +37,7 @@ export default function Home() {
           </p>
 
           <div className="grid grid-cols-1 gap-3 w-full">
-            <div className=" p-4 rounded-xl border border-white/5 text-left flex items-start gap-3">
+            <div className="bg-zinc-50/50 dark:bg-white/[0.02] p-4 rounded-xl border border-zinc-200/50 dark:border-white/5 text-left flex items-start gap-3">
               <div className="w-2 h-2 rounded-full bg-primary mt-1.5 shrink-0" />
               <div>
                 <h3 className="font-bold text-sm text-foreground mb-0.5">
@@ -48,8 +48,8 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <div className="p-4 rounded-xl border border-white/5 text-left flex items-start gap-3">
-              <div className="w-2 h-2 rounded-full bg-primary  mt-1.5 shrink-0" />
+            <div className="bg-zinc-50/50 dark:bg-white/[0.02] p-4 rounded-xl border border-zinc-200/50 dark:border-white/5 text-left flex items-start gap-3">
+              <div className="w-2 h-2 rounded-full bg-primary mt-1.5 shrink-0" />
               <div>
                 <h3 className="font-bold text-sm text-foreground mb-0.5">
                   {t("deepInsights.title")}
