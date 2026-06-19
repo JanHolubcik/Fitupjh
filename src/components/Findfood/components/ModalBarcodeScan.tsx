@@ -12,11 +12,8 @@ import {
 import React, { Dispatch, useEffect, useState } from "react";
 
 import { Food } from "@/types/Types";
-import {
-  IScannerError,
-  Scanner,
-  prepareZXingModule,
-} from "@yudiel/react-qr-scanner";
+import { IScannerError, prepareZXingModule } from "@yudiel/react-qr-scanner";
+import { BarcodeScanner } from "./BarcodeScanner";
 import { useScanProduct } from "./useScanProduct";
 import { FoodClass } from "@/lib/mongo/models/Food";
 import { useDispatch } from "react-redux";
@@ -43,35 +40,19 @@ const onError = (
 ) => {
   switch (error.kind) {
     case "permission-denied":
-      setError(
-        t("modalBarcodeScan.cameraDenied"),
-      );
+      setError(t("modalBarcodeScan.cameraDenied"));
       break;
     case "no-camera":
-      setError(
-        t("modalBarcodeScan.noCamera"),
-      );
+      setError(t("modalBarcodeScan.noCamera"));
       break;
     case "in-use":
-      setError(
-        t(
-          "modalBarcodeScan.cameraInUse",
-        ),
-      );
+      setError(t("modalBarcodeScan.cameraInUse"));
       break;
     case "unsupported":
-      setError(
-        t(
-          "modalBarcodeScan.cameraUnsupported",
-        ),
-      );
+      setError(t("modalBarcodeScan.cameraUnsupported"));
       break;
     default:
-      setError(
-        t(
-          "modalBarcodeScan.cameraError",
-        ) + error.message,
-      );
+      setError(t("modalBarcodeScan.cameraError") + error.message);
   }
 };
 
@@ -116,6 +97,7 @@ export const ModalBarcodeScan = (props: props) => {
   const isChromeMobile = /Chrome/i.test(ua) && /Android|iPhone|iPad/i.test(ua);
 
   useEffect(() => {
+    console.log(data);
     if (data) {
       if (!data.name) {
         return;
@@ -181,22 +163,14 @@ export const ModalBarcodeScan = (props: props) => {
                   {t("modalBarcodeScan.title")}
                 </h3>
                 <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
-                  {t(
-                    "modalBarcodeScan.subtitle",
-                  )}
+                  {t("modalBarcodeScan.subtitle")}
                 </p>
               </ModalHeader>
 
               <ModalBody className="flex flex-col items-center gap-6">
                 <div className="relative w-full aspect-square max-w-[340px] overflow-hidden rounded-2xl dark:border-zinc-800 bg-slate-950 shadow-inner flex items-center justify-center">
-                  <Scanner
+                  <BarcodeScanner
                     onScan={handleScan}
-                    components={{
-                      onOff: true,
-                      torch: true,
-                      zoom: true,
-                      finder: true,
-                    }}
                     onError={(error: IScannerError) =>
                       onError(error, setISErrorScan, t)
                     }
@@ -205,8 +179,6 @@ export const ModalBarcodeScan = (props: props) => {
                       aspectRatio: 1,
                     }}
                     formats={["ean_13", "ean_8", "upc_a"]}
-                    scanDelay={800}
-                    retryDelay={250}
                   />
                 </div>
 
@@ -221,29 +193,19 @@ export const ModalBarcodeScan = (props: props) => {
                   {isPending ? (
                     <>
                       <p className="text-sm font-medium">
-                        {t(
-                          "modalBarcodeScan.detectedWait",
-                        )}
+                        {t("modalBarcodeScan.detectedWait")}
                       </p>
                       <Spinner />
                     </>
                   ) : (
                     <div className="space-y-1">
                       <h4 className="text-sm font-semibold text-slate-800 dark:text-zinc-200">
-                        {t(
-                          "modalBarcodeScan.autoFetch",
-                        )}
+                        {t("modalBarcodeScan.autoFetch")}
                       </h4>
                       {isChromeMobile && (
                         <p className="text-xs text-slate-500 dark:text-zinc-400 mt-2">
-                          <strong>
-                            {t(
-                              "modalBarcodeScan.chromeUsers",
-                            )}
-                          </strong>{" "}
-                           {t(
-                            "modalBarcodeScan.chromeBug",
-                          )}
+                          <strong>{t("modalBarcodeScan.chromeUsers")}</strong>{" "}
+                          {t("modalBarcodeScan.chromeBug")}
                         </p>
                       )}
                     </div>
@@ -280,11 +242,7 @@ export const ModalBarcodeScan = (props: props) => {
                 {t("modalBarcodeScan.addNewFood")}
               </ModalHeader>
               <ModalBody>
-                <p>
-                  {t(
-                    "modalBarcodeScan.notFoundPrompt",
-                  )}
-                </p>
+                <p>{t("modalBarcodeScan.notFoundPrompt")}</p>
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>

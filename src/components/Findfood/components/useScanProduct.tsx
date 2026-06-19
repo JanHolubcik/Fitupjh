@@ -1,14 +1,7 @@
-import { FoodClass } from "@/lib/mongo/models/Food";
 import { useMutation } from "@tanstack/react-query";
 
-type ScanResponse = FoodClass & {
-  notFound?: boolean;
-  barcode?: string;
-  originalName?: string;
-};
-
 export const useScanProduct = (onProductNotFound: () => void) => {
-  return useMutation<ScanResponse, Error, string>({
+  return useMutation({
     mutationFn: async (qrCode: string) => {
       const response = await fetch(
         `/api/foodScan?QRCode=${encodeURIComponent(qrCode)}`,
@@ -26,7 +19,7 @@ export const useScanProduct = (onProductNotFound: () => void) => {
     },
     onSuccess: (data) => {
       {
-        if (data.notFound) {
+        if (data.success) {
           console.warn(
             "Product not found in database. Prompting manual entry.",
           );
