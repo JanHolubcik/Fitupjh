@@ -9,7 +9,7 @@ import {
   Input,
 } from "@nextui-org/react";
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
-import { Food } from "@/types/Types";
+import { Food, TimeOfDay } from "@/types/Types";
 import { useT } from "next-i18next/client";
 import {
   MACRO_TAILWIND_THEME,
@@ -18,16 +18,16 @@ import {
 import ImageFromURL from "../ImageFromURL/ImageFromURL";
 import { toast } from "react-toastify";
 
-interface FoodRecordModalProps {
+type FoodRecordModalProps = {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
   food: Food | null | undefined;
-  timeOfDay: "breakfast" | "lunch" | "dinner";
+  timeOfDay: TimeOfDay;
   mode: "edit" | "new";
   onCloseAll?: () => void;
-}
+};
 
-export const FoodRecordModal = ({
+const FoodRecordModal = ({
   isOpen,
   onOpenChange,
   food,
@@ -236,3 +236,5 @@ export const FoodRecordModal = ({
     </Modal>
   );
 };
+
+export default FoodRecordModal;

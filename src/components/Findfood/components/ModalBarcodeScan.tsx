@@ -11,23 +11,23 @@ import {
 } from "@nextui-org/react";
 import React, { Dispatch, useEffect, useState } from "react";
 
-import { Food } from "@/types/Types";
+import { Food, TimeOfDay } from "@/types/Types";
 import { IScannerError, prepareZXingModule } from "@yudiel/react-qr-scanner";
-import { BarcodeScanner } from "./BarcodeScanner";
-import { useScanProduct } from "./useScanProduct";
+import BarcodeScanner from "./BarcodeScanner";
+import useScanProduct from "./useScanProduct";
 import { FoodClass } from "@/lib/mongo/models/Food";
 import { useDispatch } from "react-redux";
 import { setNewFoodBarCode } from "@/features/DashboardSlice/DashboardSlice";
 import { getTimeOfDay } from "@/app/[lng]/constants/FunctionsHelper";
 import { useT } from "next-i18next/client";
-import { ModalCreateFood } from "./ModalCreateFood";
+import ModalCreateFood from "./ModalCreateFood";
 
-import { FoodRecordModal } from "@/components/FoodRecordModal/FoodRecordModal";
+import FoodRecordModal from "@/components/FoodRecordModal/FoodRecordModal";
 
 type props = {
   onOpenChange: () => void;
   isOpen: boolean | undefined;
-  timeOfDay?: "breakfast" | "lunch" | "dinner";
+  timeOfDay?: TimeOfDay;
   onClose?: () => void;
   onOpenNewFood: () => void;
   onCloseAll: () => void;
@@ -56,7 +56,7 @@ const onError = (
   }
 };
 
-export const ModalBarcodeScan = (props: props) => {
+const ModalBarcodeScan = (props: props) => {
   const dispatch = useDispatch();
   const [selectedFood, setSelectedFood] = useState<Food>();
   const [isErrorScan, setISErrorScan] = useState("");
@@ -277,3 +277,6 @@ export const ModalBarcodeScan = (props: props) => {
     </>
   );
 };
+
+export default ModalBarcodeScan;
+

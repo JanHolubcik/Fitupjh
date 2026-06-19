@@ -10,7 +10,7 @@ type props = {
   colorName?: string;
 };
 
-export const MacroProgressBar = ({
+const MacroProgressBar = ({
   label,
   current,
   target,
@@ -46,3 +46,6 @@ export const MacroProgressBar = ({
     </div>
   );
 };
+
+export default MacroProgressBar;
+

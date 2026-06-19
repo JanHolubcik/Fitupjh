@@ -12,22 +12,22 @@ import {
 } from "@nextui-org/react";
 import React, { Dispatch, useEffect, useRef, useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import { ModalCreateFood } from "./ModalCreateFood";
-import { Food, ReturnTypeFood } from "@/types/Types";
+import ModalCreateFood from "./ModalCreateFood";
+import { Food, ReturnTypeFood, TimeOfDay } from "@/types/Types";
 import AddFoodComponent from "./AddFoodComponent";
 import { getTimeOfDay } from "@/app/[lng]/constants/FunctionsHelper";
 
 import { useMutation } from "@tanstack/react-query";
 import { getSearchedFoodOptions } from "@/lib/queriesOptions/GetSearchedFoodOptions";
 import { useT } from "next-i18next/client";
-import { ModalScanFood } from "./ModalScanFood";
+import ModalScanFood from "./ModalScanFood";
 import { usePathname } from "next/navigation";
-import { FoodRecordModal } from "@/components/FoodRecordModal/FoodRecordModal";
+import FoodRecordModal from "@/components/FoodRecordModal/FoodRecordModal";
 
 type props = {
   onOpenChange: () => void;
   isOpen: boolean | undefined;
-  timeOfDay?: "breakfast" | "lunch" | "dinner";
+  timeOfDay?: TimeOfDay;
 };
 
 function useDebounce<T>(
@@ -46,7 +46,7 @@ function useDebounce<T>(
   return debouncedValue;
 }
 
-export const ModalFindFood = (props: props) => {
+const ModalFindFood = (props: props) => {
   const pathname = usePathname();
   const currentLocale = pathname.split("/")[1] || "en";
   const { t } = useT("dashboard");
@@ -258,3 +258,6 @@ export const ModalFindFood = (props: props) => {
     </>
   );
 };
+
+export default ModalFindFood;
+

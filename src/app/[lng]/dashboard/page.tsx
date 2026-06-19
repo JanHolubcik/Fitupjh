@@ -2,7 +2,7 @@ import { getQueryClient } from "@/get-query-client";
 
 import { headers } from "next/headers";
 
-import { DashboardContent } from "./DashboardContent/DashboardContent";
+import DashboardContent from "./DashboardContent/DashboardContent";
 import { auth } from "@/lib/auth";
 import { LastMonthFoodOptions } from "@/lib/queriesOptions/LastMonthFoodOptions";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";

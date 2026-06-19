@@ -1,14 +1,14 @@
 import { Button, useDisclosure } from "@nextui-org/react";
 
-import { ModalFindFood } from "@/components/Findfood/components/ModalFindFood";
-import { ModalCreateFood } from "@/components/Findfood/components/ModalCreateFood";
+import ModalFindFood from "@/components/Findfood/components/ModalFindFood";
+import ModalCreateFood from "@/components/Findfood/components/ModalCreateFood";
 
-import { Food } from "@/types/Types";
+import { Food, TimeOfDay } from "@/types/Types";
 import { FaPlusCircle, FaTimes } from "react-icons/fa";
 import ImageFromURL from "@/components/ImageFromURL/ImageFromURL";
 import { useState } from "react";
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
-import { FoodRecordModal } from "@/components/FoodRecordModal/FoodRecordModal";
+import FoodRecordModal from "@/components/FoodRecordModal/FoodRecordModal";
 import {
   getMacroInfo,
   type MacroType,
@@ -18,14 +18,14 @@ import {
   capitalizeFirstLetter,
   getTimeOfDay,
 } from "@/app/[lng]/constants/FunctionsHelper";
-import { ModalScanFood } from "@/components/Findfood/components/ModalScanFood";
+import ModalScanFood from "@/components/Findfood/components/ModalScanFood";
 
 type props = {
-  timeFrame: "breakfast" | "dinner" | "lunch";
+  timeFrame: TimeOfDay;
   foodItems: Food[];
 };
 
-export const TimeFrameSmallCard = (props: props) => {
+const TimeFrameSmallCard = (props: props) => {
   const { foodItems } = props;
   const { removeFromSavedFood } = useYourIntakeOperations();
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
@@ -168,3 +168,5 @@ export const TimeFrameSmallCard = (props: props) => {
     </div>
   );
 };
+
+export default TimeFrameSmallCard;

@@ -13,7 +13,7 @@ import {
 
 import { useMemo } from "react";
 
-export const useCalculateRecommendedCalories = (
+const useCalculateRecommendedCalories = (
   savedFood: FoodType | null,
   savedActivities: LoggedActivityType[],
 ) => {
@@ -49,4 +49,6 @@ export const useCalculateRecommendedCalories = (
   }, [savedFood, savedActivities]);
   return { recommendedCaloriesValue, caloriesSum };
 };
-//
+
+export default useCalculateRecommendedCalories;
+

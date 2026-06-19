@@ -3,7 +3,7 @@ import { Button } from "@nextui-org/react";
 
 import { useDisclosure } from "@nextui-org/react";
 
-import { ModalFindFood } from "./components/ModalFindFood";
+import ModalFindFood from "./components/ModalFindFood";
 
 import { FaPlusCircle } from "react-icons/fa";
 

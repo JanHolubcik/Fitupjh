@@ -39,7 +39,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { GenerativeAIOptions } from "@/lib/queriesOptions/GenerativeAIOptions";
-import { useChartsHooks } from "../../hooks/useChartHooks";
+import useChartsHooks from "../../hooks/useChartHooks";
 import { capitalizeFirstLetter } from "../../app/[lng]/constants/FunctionsHelper";
 import { MACRO_TAILWIND_THEME } from "../../app/[lng]/constants/MacrosHelper";
 import { useT } from "next-i18next/client";

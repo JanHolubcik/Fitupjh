@@ -16,9 +16,9 @@ import {
 } from "@nextui-org/react";
 
 import { useParams, usePathname, useRouter } from "next/navigation";
-import { InputSearchBar } from "../InputSearchBar/InputSearchBar";
-import { LanguagePicker } from "./components/LanguagePicker";
-import { ThemeSwitcher } from "./components/ThemeSwitcher";
+import InputSearchBar from "../InputSearchBar/InputSearchBar";
+import LanguagePicker from "./components/LanguagePicker";
+import ThemeSwitcher from "./components/ThemeSwitcher";
 import { useT } from "next-i18next/client";
 import {
   FaChartArea,
@@ -30,10 +30,10 @@ import {
   FaSearch,
   FaCameraRetro,
 } from "react-icons/fa";
-import { ModalFindFood } from "../Findfood/components/ModalFindFood";
+import ModalFindFood from "../Findfood/components/ModalFindFood";
 import { authClient } from "@/lib/auth-client";
 import { AuthSessionData } from "@/lib/auth";
-import { ModalScanFood } from "../Findfood/components/ModalScanFood";
+import ModalScanFood from "../Findfood/components/ModalScanFood";
 import { getTimeOfDay } from "@/app/[lng]/constants/FunctionsHelper";
 
 const NavbarComponent = ({ data }: { data: AuthSessionData }) => {

@@ -8,7 +8,7 @@ type DynamicFaIconProps = {
   size?: number;
 };
 
-export const DynamicFaIcon = ({
+const DynamicFaIcon = ({
   name,
   className,
   size = 20,
@@ -22,3 +22,6 @@ export const DynamicFaIcon = ({
 
   return <IconComponent className={className} size={size} />;
 };
+
+export default DynamicFaIcon;
+

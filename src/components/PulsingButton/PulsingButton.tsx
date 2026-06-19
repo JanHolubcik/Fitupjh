@@ -1,10 +1,10 @@
 import { Button, ButtonProps } from "@nextui-org/react";
 import React from "react";
 
-interface CustomButtonProps extends ButtonProps {
+type CustomButtonProps = ButtonProps & {
   className?: string;
   noPulsing?: boolean;
-}
+};
 
 const PulsingButton: React.FC<CustomButtonProps> = ({
   className = "",

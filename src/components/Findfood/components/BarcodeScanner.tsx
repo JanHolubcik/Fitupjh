@@ -31,7 +31,7 @@ const extendedWindow =
     ? (window as unknown as ExtendedWindow)
     : undefined;
 
-export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
+const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
   onScan,
   onError,
   constraints = { facingMode: "environment" },
@@ -209,3 +209,6 @@ export const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
     </div>
   );
 };
+
+export default BarcodeScanner;
+

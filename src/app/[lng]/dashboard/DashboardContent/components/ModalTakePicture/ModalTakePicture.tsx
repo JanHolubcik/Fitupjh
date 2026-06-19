@@ -17,7 +17,7 @@ import { useT } from "next-i18next/client";
 
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 import { getTimeOfDay } from "@/app/[lng]/constants/FunctionsHelper";
-import { Food } from "@/types/Types";
+import { Food, TimeOfDay } from "@/types/Types";
 
 /**
  * Converts a File object to a Base64 string
@@ -39,13 +39,13 @@ const fileToBase64 = (file: any) => {
 type props = {
   onOpenChange: () => void;
   isOpen: boolean | undefined;
-  timeOfDay?: "breakfast" | "lunch" | "dinner";
+  timeOfDay?: TimeOfDay;
   onClose?: () => void;
   onOpenNewFood: () => void;
   onCloseAll: () => void;
 };
 
-export const ModalTakePicture = ({
+const ModalTakePicture = ({
   isOpen,
   onOpenChange,
   timeOfDay,
@@ -335,3 +335,6 @@ export const ModalTakePicture = ({
     </Modal>
   );
 };
+
+export default ModalTakePicture;
+

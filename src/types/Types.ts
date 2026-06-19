@@ -69,5 +69,5 @@ export type SavedFoodMonth = Record<string, FoodType>;
 export const timeOfDay = ["breakfast", "lunch", "dinner"] as const;
 //as const freezes the array so i cannot push anything to it
 
-export type timeOfDayNumber = (typeof timeOfDay)[number];
-//type timeOfDay = "breakfast" | "lunch" | "dinner";
+export type TimeOfDay = (typeof timeOfDay)[number];
+export type timeOfDayNumber = TimeOfDay;

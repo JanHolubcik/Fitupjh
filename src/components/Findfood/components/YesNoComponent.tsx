@@ -25,7 +25,7 @@ type YesNoToggleProps = {
   size?: "sm" | "md" | "lg";
 };
 
-export const YesNoToggle = ({
+const YesNoToggle = ({
   yesPress,
   noPress,
   yesLabel = "Yes",
@@ -57,3 +57,6 @@ export const YesNoToggle = ({
     </div>
   );
 };
+
+export default YesNoToggle;
+

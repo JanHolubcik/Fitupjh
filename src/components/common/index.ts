@@ -1,1 +1,1 @@
-export { CardUniversal } from "./CardUniversal";
+export { default as CardUniversal } from "./CardUniversal";

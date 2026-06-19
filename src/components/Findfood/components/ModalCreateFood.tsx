@@ -23,7 +23,7 @@ type props = {
   onCloseAll?: () => void;
 };
 
-export const ModalCreateFood = (props: props) => {
+const ModalCreateFood = (props: props) => {
   const { addToFoodObject } = useYourIntakeOperations();
   const dispatch = useDispatch();
   const newFoodBarCode = useSelector(
@@ -224,3 +224,6 @@ export const ModalCreateFood = (props: props) => {
     </Modal>
   );
 };
+
+export default ModalCreateFood;
+

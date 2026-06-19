@@ -18,7 +18,7 @@ import {
 import { SavedActivitiesOptions } from "@/lib/queriesOptions/SavedActivitiesOptions";
 import { useCallback } from "react";
 
-export const useActivityOperations = () => {
+const useActivityOperations = () => {
   const { data } = authClient.useSession();
   const dispatch = useDispatch<AppDispatch>();
   const { t } = useT("dashboard");
@@ -158,3 +158,6 @@ export const useActivityOperations = () => {
     updateActivity,
   };
 };
+
+export default useActivityOperations;
+

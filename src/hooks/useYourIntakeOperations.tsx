@@ -15,10 +15,8 @@ import {
   EditFood,
 } from "@/features/DashboardSlice/DashboardSlice";
 import { SaveFoodOptions } from "@/lib/queriesOptions/SaveFoodOptions";
-import { Food } from "@/types/Types";
+import { Food, TimeOfDay } from "@/types/Types";
 import { authClient } from "@/lib/auth-client";
-
-type timeOfDay = "breakfast" | "lunch" | "dinner";
 
 const useYourIntakeOperations = () => {
   const { data } = authClient.useSession();
@@ -63,7 +61,7 @@ const useYourIntakeOperations = () => {
   );
 
   const addToFoodObject = useCallback(
-    async (food: Food, timeOfDay: timeOfDay) => {
+    async (food: Food, timeOfDay: TimeOfDay) => {
       const uniqueId = Date.now();
       const coefficient = Number(food.amount) / 100;
 
@@ -107,7 +105,7 @@ const useYourIntakeOperations = () => {
   );
 
   const removeFromSavedFood = useCallback(
-    async (id: number, timeOfDay: timeOfDay) => {
+    async (id: number, timeOfDay: TimeOfDay) => {
       // Update Redux
       dispatch(removeFromFood({ date: dateString, timeOfDay, id }));
 
@@ -138,7 +136,7 @@ const useYourIntakeOperations = () => {
   );
 
   const updateFood = useCallback(
-    async (foodItem: Food, newGrams: number, timeOfDay: timeOfDay) => {
+    async (foodItem: Food, newGrams: number, timeOfDay: TimeOfDay) => {
       const initialGrams = parseFloat(foodItem.amount) || 100;
       const ratio = newGrams / (initialGrams || 1);
 

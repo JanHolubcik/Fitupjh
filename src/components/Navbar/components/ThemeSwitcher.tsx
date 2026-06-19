@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@nextui-org/react";
 import { FaSun, FaMoon } from "react-icons/fa";
 
-export function ThemeSwitcher() {
+function ThemeSwitcher() {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
@@ -27,3 +27,6 @@ export function ThemeSwitcher() {
     </Button>
   );
 }
+
+export default ThemeSwitcher;
+

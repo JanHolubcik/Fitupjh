@@ -11,17 +11,16 @@ import { useT } from "next-i18next/client";
 import { CardUniversal } from "@/components/common";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ActivitiesOptions } from "@/lib/queriesOptions/ActivitiesOptions";
-import { useActivityOperations } from "@/hooks/useActivityOperations";
+import useActivityOperations from "@/hooks/useActivityOperations";
 import { usePathname } from "next/navigation";
 
-import {
-  ActivityRecordModal,
+import ActivityRecordModal, {
   ActivityRecord,
 } from "@/components/NewActivityRecordModal/ActivityRecordModal";
 import { FaBolt, FaPlusCircle, FaTimes } from "react-icons/fa";
-import { DynamicFaIcon } from "@/components/DynamicFaIcon/DynamicFaIcon";
+import DynamicFaIcon from "@/components/DynamicFaIcon/DynamicFaIcon";
 
-export const AccordionActivity = () => {
+const AccordionActivity = () => {
   const [selectedKeys, setSelectedKeys] = useState<Selection>("all");
 
   const [recordToEdit, setRecordToEdit] = useState<ActivityRecord | null>(null);
@@ -208,3 +207,6 @@ export const AccordionActivity = () => {
     </CardUniversal>
   );
 };
+
+export default AccordionActivity;
+

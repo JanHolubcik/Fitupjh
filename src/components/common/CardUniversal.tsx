@@ -5,7 +5,7 @@ type CardUniversalProps = {
   children: ReactNode;
 } & CardProps;
 
-export const CardUniversal = ({
+const CardUniversal = ({
   children,
   className,
   ...props
@@ -22,3 +22,6 @@ export const CardUniversal = ({
     </Card>
   );
 };
+
+export default CardUniversal;
+

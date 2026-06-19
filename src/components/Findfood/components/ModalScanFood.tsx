@@ -8,19 +8,20 @@ import {
   useDisclosure,
   ModalFooter,
 } from "@nextui-org/react";
-import { ModalBarcodeScan } from "./ModalBarcodeScan";
+import ModalBarcodeScan from "./ModalBarcodeScan";
 
 import { useT } from "next-i18next/client";
-import { ModalTakePicture } from "@/app/[lng]/dashboard/DashboardContent/components/ModalTakePicture/ModalTakePicture";
+import ModalTakePicture from "@/app/[lng]/dashboard/DashboardContent/components/ModalTakePicture/ModalTakePicture";
+import { TimeOfDay } from "@/types/Types";
 
 type props = {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
   onClose: () => void;
-  timeOfDay: "breakfast" | "lunch" | "dinner";
+  timeOfDay: TimeOfDay;
 };
 
-export const ModalScanFood = ({ isOpen, onOpenChange, onClose }: props) => {
+const ModalScanFood = ({ isOpen, onOpenChange, onClose }: props) => {
   const { t } = useT("dashboard");
 
   const {
@@ -129,3 +130,5 @@ export const ModalScanFood = ({ isOpen, onOpenChange, onClose }: props) => {
     </>
   );
 };
+
+export default ModalScanFood;

@@ -14,7 +14,7 @@ import {
 import { useT } from "next-i18next/client";
 import { toast } from "react-toastify";
 import { ActivityClass } from "@/lib/mongo/models/Activity";
-import { useActivityOperations } from "@/hooks/useActivityOperations";
+import useActivityOperations from "@/hooks/useActivityOperations";
 import { usePathname } from "next/navigation";
 
 export type ActivityRecord = {
@@ -33,7 +33,7 @@ type Props = {
   existingRecord?: ActivityRecord | null;
 };
 
-export const ActivityRecordModal = ({
+const ActivityRecordModal = ({
   isOpen,
   onOpenChange,
   activities = [],
@@ -296,3 +296,6 @@ export const ActivityRecordModal = ({
     </Modal>
   );
 };
+
+export default ActivityRecordModal;
+

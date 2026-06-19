@@ -11,7 +11,7 @@ type props = {
   selectedMacro: string;
 };
 
-export const getMacroColor = (macro: string) => {
+const getMacroColor = (macro: string) => {
   const lower = macro.toLowerCase();
   if (lower.includes("calor")) return { bar: "#f97316", over: "#f43f5e" };
   if (lower.includes("protein")) return { bar: "#3b82f6", over: "#f43f5e" };
@@ -29,7 +29,7 @@ const getUnit = (macro: string) => {
   return "g";
 };
 
-export const useChartsHooks = ({
+const useChartsHooks = ({
   labels,
   dataValues,
   recommendedValue,
@@ -203,3 +203,6 @@ export const useChartsHooks = ({
     unit,
   };
 };
+
+export default useChartsHooks;
+

@@ -5,7 +5,7 @@ import { FaArrowLeft, FaArrowRight, FaCalendarAlt } from "react-icons/fa";
 import { useT } from "next-i18next/client";
 import { CardUniversal } from "@/components/common";
 
-export const DateSwitcher = () => {
+const DateSwitcher = () => {
   const { currentDate, setNewDateAndGetFood } = useYourIntakeOperations();
   const { t } = useT("dashboard");
 
@@ -56,3 +56,6 @@ export const DateSwitcher = () => {
     </CardUniversal>
   );
 };
+
+export default DateSwitcher;
+

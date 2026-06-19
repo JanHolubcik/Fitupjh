@@ -17,7 +17,7 @@ const supportedLngs = [
   { code: "sk", name: "Slovensky", flag: "/flags/sk.svg" },
 ];
 
-export const LanguagePicker = () => {
+const LanguagePicker = () => {
   const pathname = usePathname();
   const router = useRouter();
   const currentLocale = pathname.split("/")[1] || "en";
@@ -82,3 +82,6 @@ export const LanguagePicker = () => {
     </Dropdown>
   );
 };
+
+export default LanguagePicker;
+

@@ -1,12 +1,12 @@
 "use client";
 
 import "driver.js/dist/driver.css";
-import { CalorieCard } from "./components/CalorieCard/CalorieCard";
+import CalorieCard from "./components/CalorieCard/CalorieCard";
 import useLoadSavedFood from "@/hooks/useLoadSavedFood";
-import { AccordionTimeFrame } from "./components/AccordionTimeFrame/AccordionTimeFrame";
-import { TodayMacros } from "./components/TodayMacros/TodayMacros";
+import AccordionTimeFrame from "./components/AccordionTimeFrame/AccordionTimeFrame";
+import TodayMacros from "./components/TodayMacros/TodayMacros";
 
-import { DateSwitcher } from "./components/DateSwitcher/DateSwitcher";
+import DateSwitcher from "./components/DateSwitcher/DateSwitcher";
 
 import {
   DateSwitcherSkeleton,
@@ -20,14 +20,14 @@ import { authClient } from "@/lib/auth-client";
 
 import MyGraph from "@/components/ChartProgress/GraphProgressComponent";
 import useGuide from "@/hooks/useGuide";
-import { AccordionActivity } from "../AccordionActivity/AccordionActivity";
+import AccordionActivity from "../AccordionActivity/AccordionActivity";
 
 type props = {
   dateTo: string;
   dateFrom: string;
 };
 
-export const DashboardContent = ({ dateTo, dateFrom }: props) => {
+const DashboardContent = ({ dateTo, dateFrom }: props) => {
   const { data: session, isPending } = authClient.useSession();
   const { isFetching } = useLoadSavedFood({ dateTo, dateFrom });
 
@@ -59,3 +59,6 @@ export const DashboardContent = ({ dateTo, dateFrom }: props) => {
     </div>
   );
 };
+
+export default DashboardContent;
+

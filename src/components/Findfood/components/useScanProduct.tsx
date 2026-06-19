@@ -8,7 +8,7 @@ export type ScanResponse = FoodClass & {
   originalName?: string;
 };
 
-export const useScanProduct = (onProductNotFound: () => void) => {
+const useScanProduct = (onProductNotFound: () => void) => {
   return useMutation<ScanResponse, Error, string>({
     mutationFn: async (qrCode: string): Promise<ScanResponse> => {
       const response = await fetch(
@@ -50,3 +50,6 @@ export const useScanProduct = (onProductNotFound: () => void) => {
     },
   });
 };
+
+export default useScanProduct;
+

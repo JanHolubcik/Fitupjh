@@ -7,7 +7,7 @@ import PulsingButton from "@/components/PulsingButton/PulsingButton";
 import { useT } from "next-i18next/client";
 import { CardUniversal } from "@/components/common";
 import { useFormik } from "formik";
-import { LanguagePicker } from "@/components/Navbar/components/LanguagePicker";
+import LanguagePicker from "@/components/Navbar/components/LanguagePicker";
 import { authClient } from "@/lib/auth-client";
 import SignOAuth from "@/components/SignOAuth/SignOauth";
 

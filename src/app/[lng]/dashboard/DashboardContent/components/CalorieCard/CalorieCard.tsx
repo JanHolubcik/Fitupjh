@@ -1,12 +1,12 @@
-import { useCalculateRecommendedCalories } from "@/hooks/useCalculateRecomendedCalories";
+import useCalculateRecommendedCalories from "@/hooks/useCalculateRecomendedCalories";
 import { CardUniversal } from "@/components/common";
 
 import { CardBody, CircularProgress } from "@nextui-org/react";
 import { useT } from "next-i18next/client";
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
-import { useActivityOperations } from "@/hooks/useActivityOperations";
+import useActivityOperations from "@/hooks/useActivityOperations";
 
-export const CalorieCard = () => {
+const CalorieCard = () => {
   const { savedFood } = useYourIntakeOperations();
   const { savedActivities } = useActivityOperations();
   const { recommendedCaloriesValue, caloriesSum } =
@@ -47,3 +47,6 @@ export const CalorieCard = () => {
     </CardUniversal>
   );
 };
+
+export default CalorieCard;
+

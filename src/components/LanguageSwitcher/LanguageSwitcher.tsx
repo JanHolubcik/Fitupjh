@@ -2,7 +2,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { DropdownItem, Button } from "@nextui-org/react"; // Assuming NextUI based on your classNames
 import Image from "next/image";
 
-export const LanguageSwitcher = () => {
+const LanguageSwitcher = () => {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -53,3 +53,6 @@ export const LanguageSwitcher = () => {
     </DropdownItem>
   );
 };
+
+export default LanguageSwitcher;
+

@@ -1,13 +1,13 @@
 import { Image, Accordion, AccordionItem, CardBody } from "@nextui-org/react";
 import type { Selection } from "@nextui-org/react";
 import { FoodType, timeOfDay } from "@/types/Types";
-import { TimeFrameSmallCard } from "../TimeFrameSmallCard/TimeFrameSmallCard";
+import TimeFrameSmallCard from "../TimeFrameSmallCard/TimeFrameSmallCard";
 import { useState } from "react";
 import { useT } from "next-i18next/client";
 import { CardUniversal } from "@/components/common";
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 
-export const AccordionTimeFrame = () => {
+const AccordionTimeFrame = () => {
   const [selectedKeys, setSelectedKeys] = useState<Selection>("all");
   const { savedFood } = useYourIntakeOperations();
 
@@ -102,3 +102,6 @@ export const AccordionTimeFrame = () => {
     </CardUniversal>
   );
 };
+
+export default AccordionTimeFrame;
+

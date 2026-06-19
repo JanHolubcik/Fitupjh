@@ -19,13 +19,13 @@ import { getSearchedFoodOptions } from "@/lib/queriesOptions/GetSearchedFoodOpti
 
 import ImageFromURL from "../ImageFromURL/ImageFromURL";
 
-import { ModalCreateFood } from "../Findfood/components/ModalCreateFood";
+import ModalCreateFood from "../Findfood/components/ModalCreateFood";
 import { useT } from "next-i18next/client";
-import { ModalScanFood } from "../Findfood/components/ModalScanFood";
+import ModalScanFood from "../Findfood/components/ModalScanFood";
 import { usePathname } from "next/navigation";
-import { FoodRecordModal } from "../FoodRecordModal/FoodRecordModal";
+import FoodRecordModal from "../FoodRecordModal/FoodRecordModal";
 
-export const InputSearchBar = () => {
+const InputSearchBar = () => {
   const pathname = usePathname();
   const currentLocale = pathname.split("/")[1] || "en";
   const [searchTerm, setSearchTerm] = useState("");
@@ -248,3 +248,6 @@ export const InputSearchBar = () => {
     </div>
   );
 };
+
+export default InputSearchBar;
+
