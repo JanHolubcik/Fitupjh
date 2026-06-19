@@ -31,12 +31,12 @@ const extendedWindow =
     ? (window as unknown as ExtendedWindow)
     : undefined;
 
-const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
+const BarcodeScanner = ({
   onScan,
   onError,
   constraints = { facingMode: "environment" },
   formats = ["ean_13", "ean_8", "upc_a"],
-}) => {
+}: BarcodeScannerProps) => {
   const [useNative, setUseNative] = useState<boolean | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -211,4 +211,3 @@ const BarcodeScanner: React.FC<BarcodeScannerProps> = ({
 };
 
 export default BarcodeScanner;
-
