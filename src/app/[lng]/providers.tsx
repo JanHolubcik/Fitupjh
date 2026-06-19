@@ -2,6 +2,7 @@
 
 import { HeroUIProvider } from "@heroui/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { useRouter } from "next/navigation";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -12,11 +13,13 @@ import StoreProvider from "@/StoreProvider";
 import { ToastContainer } from "react-toastify";
 import React from "react";
 
+
 export default function Providers({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
+  const router = useRouter();
 
   return (
-    <HeroUIProvider>
+    <HeroUIProvider navigate={router.push}>
       <NextThemesProvider attribute="class" defaultTheme="dark">
         <StoreProvider>
           <QueryClientProvider client={queryClient}>
