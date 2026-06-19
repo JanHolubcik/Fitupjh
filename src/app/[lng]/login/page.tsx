@@ -62,7 +62,7 @@ export default function Login() {
   });
 
   return (
-    <main className=" flex flex-col items-center justify-center min-h-screen sm:p-10 p-6">
+    <main className=" flex flex-col items-center justify-center min-h-[calc(100vh-100px)] sm:p-10 p-6">
       <CardUniversal className="w-full max-w-[450px] p-4 font-semibold ">
         <CardHeader className="flex flex-col items-center justify-center pt-6 pb-2">
           <h1 className="text-3xl font-extrabold tracking-tight ">
