@@ -1,6 +1,6 @@
 import { CardUniversal } from "@/components/common";
 import { authClient } from "@/lib/auth-client";
-import { CardHeader, Divider, CardBody, Button } from "@nextui-org/react";
+import { CardHeader, Divider, CardBody, Button } from "@heroui/react";
 import { useT } from "next-i18next/client";
 import { toast } from "react-toastify";
 

@@ -1,5 +1,5 @@
 import { CardUniversal } from "@/components/common";
-import { CardBody, Skeleton } from "@nextui-org/react";
+import { CardBody, Skeleton } from "@heroui/react";
 
 export const TodayMacrosSkeleton = () => {
   return (

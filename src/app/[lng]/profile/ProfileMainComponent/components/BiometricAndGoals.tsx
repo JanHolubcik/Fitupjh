@@ -9,7 +9,7 @@ import {
   Button,
   Spinner,
   Input,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { Formik, Form } from "formik";
 
 import { useT } from "next-i18next/client";
@@ -120,16 +120,16 @@ export const BiometricAndGoals = ({ user }: { user: User }) => {
                   variant="faded"
                   isDisabled={isSubmitting}
                 >
-                  <SelectItem key="sedentary" value="sedentary">
+                  <SelectItem key="sedentary">
                     {t("sedentary")}
                   </SelectItem>
-                  <SelectItem key="lightlyActive" value="lightlyActive">
+                  <SelectItem key="lightlyActive">
                     {t("lightlyActive")}
                   </SelectItem>
-                  <SelectItem key="mediumActive" value="mediumActive">
+                  <SelectItem key="mediumActive">
                     {t("moderatelyActive")}
                   </SelectItem>
-                  <SelectItem key="highlyActive" value="highlyActive">
+                  <SelectItem key="highlyActive">
                     {t("veryActive")}
                   </SelectItem>
                 </Select>
@@ -142,13 +142,13 @@ export const BiometricAndGoals = ({ user }: { user: User }) => {
                   variant="faded"
                   isDisabled={isSubmitting}
                 >
-                  <SelectItem key="loseWeight" value="loseWeight">
+                  <SelectItem key="loseWeight">
                     {t("loseFat")}
                   </SelectItem>
-                  <SelectItem key="maintainWeight" value="maintainWeight">
+                  <SelectItem key="maintainWeight">
                     {t("maintainWeight")}
                   </SelectItem>
-                  <SelectItem key="gainWeight" value="gainWeight">
+                  <SelectItem key="gainWeight">
                     {t("buildMuscle")}
                   </SelectItem>
                 </Select>

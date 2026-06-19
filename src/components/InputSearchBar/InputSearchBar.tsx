@@ -6,7 +6,7 @@ import {
   Spinner,
   useDisclosure,
   Image,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useEffect, useRef, useState } from "react";
 import { Food, ReturnTypeFood } from "@/types/Types";
 import React from "react";

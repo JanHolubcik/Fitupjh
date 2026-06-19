@@ -1,7 +1,7 @@
 "use client";
 
 import { authClient } from "@/lib/auth-client";
-import { Image, Link, Button } from "@nextui-org/react";
+import { Image, Link, Button } from "@heroui/react";
 
 import { useT } from "next-i18next/client";
 import { useParams } from "next/navigation";

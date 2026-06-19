@@ -10,7 +10,7 @@ import {
   Progress,
   Select,
   SelectItem,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { Formik, Form } from "formik";
 import { toast } from "react-toastify";
 import { motion, AnimatePresence } from "framer-motion";
@@ -364,16 +364,16 @@ export default function OnboardingPage() {
                           variant="faded"
                           className="w-full"
                         >
-                          <SelectItem key="sedentary" value="sedentary">
+                          <SelectItem key="sedentary">
                             {t("details.activity.sedentary")}
                           </SelectItem>
-                          <SelectItem key="lightlyActive" value="lightlyActive">
+                          <SelectItem key="lightlyActive">
                             {t("details.activity.lightlyActive")}
                           </SelectItem>
-                          <SelectItem key="mediumActive" value="mediumActive">
+                          <SelectItem key="mediumActive">
                             {t("details.activity.mediumActive")}
                           </SelectItem>
-                          <SelectItem key="highlyActive" value="highlyActive">
+                          <SelectItem key="highlyActive">
                             {t("details.activity.highlyActive")}
                           </SelectItem>
                         </Select>

@@ -1,7 +1,7 @@
 import { CardUniversal } from "@/components/common";
 import LanguagePicker from "@/components/Navbar/components/LanguagePicker";
 import ThemeSwitcher from "@/components/Navbar/components/ThemeSwitcher";
-import { CardHeader, Divider, CardBody } from "@nextui-org/react";
+import { CardHeader, Divider, CardBody } from "@heroui/react";
 import { useT } from "next-i18next/client";
 
 export const LanguageAndThemeCard = () => {

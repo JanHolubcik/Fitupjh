@@ -6,7 +6,7 @@ import {
   Button,
   DropdownMenu,
   DropdownItem,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { usePathname, useRouter } from "next/navigation";
 import { useMemo } from "react";
 import Image from "next/image";

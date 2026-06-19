@@ -7,7 +7,7 @@ import {
   Button,
   Spinner,
   Input,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { Formik, Form } from "formik";
 import { useT } from "next-i18next/client";
 import { toast } from "react-toastify";

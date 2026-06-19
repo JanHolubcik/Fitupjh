@@ -1,5 +1,5 @@
 import { usePathname, useRouter } from "next/navigation";
-import { DropdownItem, Button } from "@nextui-org/react"; // Assuming NextUI based on your classNames
+import { DropdownItem, Button } from "@heroui/react"; // Assuming NextUI based on your classNames
 import Image from "next/image";
 
 const LanguageSwitcher = () => {

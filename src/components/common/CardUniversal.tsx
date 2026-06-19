@@ -1,4 +1,4 @@
-import { CardProps, Card } from "@nextui-org/react";
+import { CardProps, Card } from "@heroui/react";
 import { ReactNode } from "react";
 
 type CardUniversalProps = {

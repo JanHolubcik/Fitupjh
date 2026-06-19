@@ -1,5 +1,5 @@
 import { CardUniversal } from "@/components/common";
-import { Skeleton } from "@nextui-org/react";
+import { Skeleton } from "@heroui/react";
 
 export const AccordionTimeFrameSkeleton = () => {
   return (

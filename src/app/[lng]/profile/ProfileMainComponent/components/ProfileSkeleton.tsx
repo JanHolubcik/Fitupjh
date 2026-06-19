@@ -1,7 +1,7 @@
 "use client";
 
 import { CardUniversal } from "@/components/common";
-import { CardBody, CardHeader, Divider, Skeleton } from "@nextui-org/react";
+import { CardBody, CardHeader, Divider, Skeleton } from "@heroui/react";
 
 export const ProfileSkeleton = () => {
   return (

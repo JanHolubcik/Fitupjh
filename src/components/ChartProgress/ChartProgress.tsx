@@ -16,7 +16,7 @@ import {
   ModalHeader,
   Spinner,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import {
   Chart as ChartJS,
   CategoryScale,

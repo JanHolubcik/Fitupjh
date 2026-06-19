@@ -8,7 +8,7 @@ import {
   ModalHeader,
   ModalFooter,
   Spinner,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 import { WebCamera } from "@shivantra/react-web-camera";
 import { useMutation } from "@tanstack/react-query";

@@ -7,7 +7,7 @@ import {
   ButtonGroup,
   useDisclosure,
   ModalFooter,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import ModalBarcodeScan from "./ModalBarcodeScan";
 
 import { useT } from "next-i18next/client";

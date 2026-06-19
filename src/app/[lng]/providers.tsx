@@ -1,6 +1,6 @@
 "use client";
 
-import { NextUIProvider } from "@nextui-org/react";
+import { HeroUIProvider } from "@heroui/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -16,7 +16,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
 
   return (
-    <NextUIProvider>
+    <HeroUIProvider>
       <NextThemesProvider attribute="class" defaultTheme="dark">
         <StoreProvider>
           <QueryClientProvider client={queryClient}>
@@ -38,6 +38,6 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           </QueryClientProvider>
         </StoreProvider>
       </NextThemesProvider>
-    </NextUIProvider>
+    </HeroUIProvider>
   );
 }

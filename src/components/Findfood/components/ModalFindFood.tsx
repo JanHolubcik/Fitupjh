@@ -9,7 +9,7 @@ import {
   Spinner,
   useDisclosure,
   Image,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import React, { Dispatch, useEffect, useRef, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import ModalCreateFood from "./ModalCreateFood";

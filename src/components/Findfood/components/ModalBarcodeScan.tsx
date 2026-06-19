@@ -8,7 +8,7 @@ import {
   ModalHeader,
   ModalFooter,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import React, { Dispatch, useEffect, useState } from "react";
 
 import { Food, TimeOfDay } from "@/types/Types";

@@ -4,8 +4,8 @@ import {
   CardBody,
   useDisclosure,
   Button,
-} from "@nextui-org/react";
-import type { Selection } from "@nextui-org/react";
+} from "@heroui/react";
+import type { Selection } from "@heroui/react";
 import { useState } from "react";
 import { useT } from "next-i18next/client";
 import { CardUniversal } from "@/components/common";

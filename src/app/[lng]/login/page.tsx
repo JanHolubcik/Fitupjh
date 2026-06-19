@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useParams } from "next/navigation";
-import { Link, Input, Spinner, CardHeader, CardBody } from "@nextui-org/react";
+import { Link, Input, Spinner, CardHeader, CardBody } from "@heroui/react";
 
 import PulsingButton from "@/components/PulsingButton/PulsingButton";
 import { useT } from "next-i18next/client";

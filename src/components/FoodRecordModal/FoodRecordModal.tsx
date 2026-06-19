@@ -7,7 +7,7 @@ import {
   ModalFooter,
   Button,
   Input,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 import { Food, TimeOfDay } from "@/types/Types";
 import { useT } from "next-i18next/client";

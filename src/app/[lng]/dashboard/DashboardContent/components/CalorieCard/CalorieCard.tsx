@@ -1,7 +1,7 @@
 import useCalculateRecommendedCalories from "@/hooks/useCalculateRecomendedCalories";
 import { CardUniversal } from "@/components/common";
 
-import { CardBody, CircularProgress } from "@nextui-org/react";
+import { CardBody, CircularProgress } from "@heroui/react";
 import { useT } from "next-i18next/client";
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 import useActivityOperations from "@/hooks/useActivityOperations";

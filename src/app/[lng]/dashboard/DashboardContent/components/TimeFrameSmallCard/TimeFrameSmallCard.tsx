@@ -1,4 +1,4 @@
-import { Button, useDisclosure } from "@nextui-org/react";
+import { Button, useDisclosure } from "@heroui/react";
 
 import ModalFindFood from "@/components/Findfood/components/ModalFindFood";
 import ModalCreateFood from "@/components/Findfood/components/ModalCreateFood";

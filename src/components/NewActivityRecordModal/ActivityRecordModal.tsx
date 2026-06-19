@@ -9,7 +9,7 @@ import {
   Input,
   Select,
   SelectItem,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 import { useT } from "next-i18next/client";
 import { toast } from "react-toastify";
@@ -194,7 +194,7 @@ const ActivityRecordModal = ({
                 }}
               >
                 {categories.map((cat) => (
-                  <SelectItem key={cat} value={cat}>
+                  <SelectItem key={cat}>
                     {t(`activity.categories.${cat}`)}
                   </SelectItem>
                 ))}
@@ -214,7 +214,7 @@ const ActivityRecordModal = ({
                 }}
               >
                 {filteredActivities.map((act) => (
-                  <SelectItem key={act.name} value={act.name}>
+                  <SelectItem key={act.name}>
                     {getLocalizedName(act)}
                   </SelectItem>
                 ))}

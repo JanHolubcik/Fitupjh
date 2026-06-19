@@ -1,5 +1,5 @@
-import { Image, Accordion, AccordionItem, CardBody } from "@nextui-org/react";
-import type { Selection } from "@nextui-org/react";
+import { Image, Accordion, AccordionItem, CardBody } from "@heroui/react";
+import type { Selection } from "@heroui/react";
 import { FoodType, timeOfDay } from "@/types/Types";
 import TimeFrameSmallCard from "../TimeFrameSmallCard/TimeFrameSmallCard";
 import { useState } from "react";

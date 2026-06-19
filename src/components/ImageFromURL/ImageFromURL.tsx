@@ -1,4 +1,4 @@
-import { Image } from "@nextui-org/react";
+import { Image } from "@heroui/react";
 import placeholder from "../../../public/foodPlaceholder.svg";
 
 const ImageFromURL = ({

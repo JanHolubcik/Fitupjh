@@ -9,7 +9,7 @@ import {
   Divider,
   Input,
   Spinner,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { Formik, Form } from "formik";
 import { toast } from "react-toastify";
 import { authClient } from "@/lib/auth-client";

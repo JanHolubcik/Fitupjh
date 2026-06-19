@@ -12,7 +12,7 @@ import {
 } from "@/types/Types";
 import { useMemo } from "react";
 import MacroProgressBar from "../MacrosProgressBarDashboard/MacrosProgressBarDashboard";
-import { CardBody } from "@nextui-org/react";
+import { CardBody } from "@heroui/react";
 import {
   MACRO_TAILWIND_THEME,
   MacroArray,

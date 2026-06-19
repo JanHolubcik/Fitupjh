@@ -13,7 +13,7 @@ import {
   DropdownItem,
   Button,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 import { useParams, usePathname, useRouter } from "next/navigation";
 import InputSearchBar from "../InputSearchBar/InputSearchBar";

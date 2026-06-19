@@ -1,5 +1,5 @@
 import { authClient } from "@/lib/auth-client";
-import { ButtonGroup, Button } from "@nextui-org/react";
+import { ButtonGroup, Button } from "@heroui/react";
 
 import { FaGoogle, FaDiscord, FaGithub } from "react-icons/fa";
 

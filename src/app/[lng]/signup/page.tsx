@@ -8,7 +8,7 @@ import {
   Input,
   Link,
   Spinner,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 import { signupSchema } from "@/lib/validationShemas/signupValidationSchema";
 import { useT } from "next-i18next/client";

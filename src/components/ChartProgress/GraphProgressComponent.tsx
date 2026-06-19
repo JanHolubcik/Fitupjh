@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import useMacros from "../../hooks/useRecomendedMacros";
-import { CardBody } from "@nextui-org/react";
+import { CardBody } from "@heroui/react";
 import ChartProgress from "./ChartProgress";
 import { CardUniversal } from "../common";
 import { FaChartLine } from "react-icons/fa";

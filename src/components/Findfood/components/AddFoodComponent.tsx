@@ -1,5 +1,5 @@
 import ImageFromURL from "@/components/ImageFromURL/ImageFromURL";
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input } from "@heroui/react";
 import { FaPlusCircle } from "react-icons/fa";
 import React from "react";
 import { useT } from "next-i18next/client";
