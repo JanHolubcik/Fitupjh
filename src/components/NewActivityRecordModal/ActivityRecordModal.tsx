@@ -7,8 +7,6 @@ import {
   ModalFooter,
   Button,
   Input,
-  Select,
-  SelectItem,
 } from "@heroui/react";
 
 import { useT } from "next-i18next/client";
@@ -47,14 +45,14 @@ const ActivityRecordModal = ({
   const [isSaving, setIsSaving] = useState(false);
   const isSavingRef = useRef(false);
 
-  // Added updateActivityRecord (ensure this exists in your hook!)
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const [isActivityOpen, setIsActivityOpen] = useState(false);
+
   const { addActivityRecord, updateActivity } = useActivityOperations();
   const { t } = useT("dashboard");
   const pathname = usePathname();
   const currentLocale = pathname.split("/")[1] || "en";
 
-  // Reads the DB-stored localizedNames (e.g. { sk: "Beh (stredné tempo)" })
-  // Falls back to the English name if no translation exists for the current locale.
   const getLocalizedName = (act: ActivityClass): string => {
     const map = act.localizedNames;
     if (!map) return act.name;
@@ -70,6 +68,8 @@ const ActivityRecordModal = ({
     if (isOpen) {
       setIsSaving(false);
       isSavingRef.current = false;
+      setIsCategoryOpen(false);
+      setIsActivityOpen(false);
       if (isEditMode && existingRecord) {
         // Find the base activity to get the category and name
         const matchedActivity = activities.find(
@@ -180,45 +180,163 @@ const ActivityRecordModal = ({
             </ModalHeader>
 
             <ModalBody className="py-4 gap-4 font-semibold">
-              <Select
-                label={t("newActivityModal.categoryLabel")}
-                placeholder={t("newActivityModal.categoryPlaceholder")}
-                selectedKeys={selectedCategory ? [selectedCategory] : []}
-                onChange={(e) => {
-                  setSelectedCategory(e.target.value);
-                  setSelectedActivityName(""); // Reset specific activity when category changes
-                }}
-                variant="bordered"
-                classNames={{
-                  trigger: "border-zinc-300 dark:border-zinc-700",
-                }}
-              >
-                {categories.map((cat) => (
-                  <SelectItem key={cat}>
-                    {t(`activity.categories.${cat}`)}
-                  </SelectItem>
-                ))}
-              </Select>
+              <div className="relative w-full">
+                <button
+                  type="button"
+                  onClick={() => setIsCategoryOpen(!isCategoryOpen)}
+                  className={`w-full flex flex-col justify-center px-3 py-1.5 min-h-[56px] rounded-xl border-2 transition-colors duration-150 bg-transparent text-left relative focus:outline-none ${
+                    isCategoryOpen
+                      ? "border-zinc-500 dark:border-zinc-400"
+                      : "border-zinc-300 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-600"
+                  }`}
+                >
+                  <span className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 select-none mb-0.5">
+                    {t("newActivityModal.categoryLabel")}
+                  </span>
+                  <span
+                    className={`text-sm font-semibold ${
+                      selectedCategory
+                        ? "text-zinc-900 dark:text-zinc-100"
+                        : "text-zinc-400 dark:text-zinc-500"
+                    }`}
+                  >
+                    {selectedCategory
+                      ? t(`activity.categories.${selectedCategory}`)
+                      : t("newActivityModal.categoryPlaceholder")}
+                  </span>
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 dark:text-zinc-400">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={2.5}
+                      stroke="currentColor"
+                      className="w-4 h-4 transition-transform duration-200"
+                      style={{
+                        transform: isCategoryOpen
+                          ? "rotate(180deg)"
+                          : "rotate(0deg)",
+                      }}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                      />
+                    </svg>
+                  </div>
+                </button>
 
-              <Select
-                label={t("newActivityModal.activityLabel")}
-                placeholder={t("newActivityModal.activityPlaceholder")}
-                isDisabled={!selectedCategory} // Locked until category is chosen
-                selectedKeys={
-                  selectedActivityName ? [selectedActivityName] : []
-                }
-                onChange={(e) => setSelectedActivityName(e.target.value)}
-                variant="bordered"
-                classNames={{
-                  trigger: "border-zinc-300 dark:border-zinc-700",
-                }}
-              >
-                {filteredActivities.map((act) => (
-                  <SelectItem key={act.name}>
-                    {getLocalizedName(act)}
-                  </SelectItem>
-                ))}
-              </Select>
+                {isCategoryOpen && (
+                  <>
+                    <div
+                      className="fixed inset-0 z-40 cursor-default"
+                      onClick={() => setIsCategoryOpen(false)}
+                    />
+                    <div className="absolute left-0 right-0 mt-2 z-50 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl max-h-60 overflow-y-auto py-1 animate-appearance-in">
+                      {categories.map((cat) => (
+                        <button
+                          key={cat}
+                          type="button"
+                          onClick={() => {
+                            setSelectedCategory(cat);
+                            setSelectedActivityName("");
+                            setIsCategoryOpen(false);
+                          }}
+                          className={`w-full text-left px-4 py-2.5 text-sm font-semibold transition-colors duration-150
+                            ${
+                              selectedCategory === cat
+                                ? "bg-blue-600 text-white"
+                                : "text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                            }`}
+                        >
+                          {t(`activity.categories.${cat}`)}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+
+              <div className="relative w-full">
+                <button
+                  type="button"
+                  disabled={!selectedCategory}
+                  onClick={() => setIsActivityOpen(!isActivityOpen)}
+                  className={`w-full flex flex-col justify-center px-3 py-1.5 min-h-[56px] rounded-xl border-2 transition-colors duration-150 bg-transparent text-left relative focus:outline-none ${
+                    !selectedCategory
+                      ? "border-zinc-200 dark:border-zinc-800/60 opacity-50 cursor-not-allowed bg-zinc-100/50 dark:bg-zinc-800/20"
+                      : isActivityOpen
+                        ? "border-zinc-500 dark:border-zinc-400"
+                        : "border-zinc-300 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-600"
+                  }`}
+                >
+                  <span className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400 select-none mb-0.5">
+                    {t("newActivityModal.activityLabel")}
+                  </span>
+                  <span
+                    className={`text-sm font-semibold ${
+                      selectedActivityName
+                        ? "text-zinc-900 dark:text-zinc-100"
+                        : "text-zinc-400 dark:text-zinc-500"
+                    }`}
+                  >
+                    {selectedActivityName && selectedActivity
+                      ? getLocalizedName(selectedActivity)
+                      : t("newActivityModal.activityPlaceholder")}
+                  </span>
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 dark:text-zinc-400">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={2.5}
+                      stroke="currentColor"
+                      className="w-4 h-4 transition-transform duration-200"
+                      style={{
+                        transform: isActivityOpen
+                          ? "rotate(180deg)"
+                          : "rotate(0deg)",
+                      }}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                      />
+                    </svg>
+                  </div>
+                </button>
+
+                {isActivityOpen && (
+                  <>
+                    <div
+                      className="fixed inset-0 z-40 cursor-default"
+                      onClick={() => setIsActivityOpen(false)}
+                    />
+                    <div className="absolute left-0 right-0 mt-2 z-50 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl max-h-60 overflow-y-auto py-1 animate-appearance-in">
+                      {filteredActivities.map((act) => (
+                        <button
+                          key={act.name}
+                          type="button"
+                          onClick={() => {
+                            setSelectedActivityName(act.name);
+                            setIsActivityOpen(false);
+                          }}
+                          className={`w-full text-left px-4 py-2.5 text-sm font-semibold transition-colors duration-150
+                            ${
+                              selectedActivityName === act.name
+                                ? "bg-blue-600 text-white"
+                                : "text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                            }`}
+                        >
+                          {getLocalizedName(act)}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
 
               <Input
                 type="number"
@@ -298,4 +416,3 @@ const ActivityRecordModal = ({
 };
 
 export default ActivityRecordModal;
-
