@@ -21,7 +21,13 @@ type User = typeof authClient.$Infer.Session.user;
 export const BiometricAndGoals = ({ user }: { user: User }) => {
   const router = useRouter();
   const { t } = useT("profile");
-  const handleManualSubmit = async (values: any) => {
+  const handleManualSubmit = async (values: {
+    weight: number | string;
+    weightGoal: number | string;
+    height: number | string;
+    activityLevel: string;
+    goal: string;
+  }) => {
     const updatePromise = authClient.updateUser({
       weight: Number(values.weight),
       weightGoal: Number(values.weightGoal),
@@ -36,7 +42,7 @@ export const BiometricAndGoals = ({ user }: { user: User }) => {
         pending: t("toast.biometricPending"),
         success: t("toast.biometricSuccess"),
         error: {
-          render({ data }: any) {
+          render({ data }: { data?: { message?: string } }) {
             return data?.message || t("toast.error");
           },
         },

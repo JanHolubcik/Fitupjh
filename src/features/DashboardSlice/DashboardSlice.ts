@@ -198,7 +198,7 @@ export const editAndPersistFood = (
     id: number;
     updatedFood: Food;
   },
-  saveFn: (state: any) => Promise<void>,
+  saveFn: (state: FoodType) => Promise<void>,
 ): ThunkAction<Promise<void>, RootState, unknown, UnknownAction> => {
   return async (dispatch, getState) => {
     dispatch(EditFood(payload));
@@ -214,7 +214,7 @@ export const editAndPersistActivity = (
     id: string | number;
     updatedActivity: LoggedActivityType;
   },
-  saveFn: (state: any) => Promise<void>,
+  saveFn: (state: LoggedActivityType[]) => Promise<void>,
 ): ThunkAction<Promise<void>, RootState, unknown, UnknownAction> => {
   return async (dispatch, getState) => {
     dispatch(editActivity(payload));

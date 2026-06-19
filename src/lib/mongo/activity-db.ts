@@ -76,7 +76,7 @@ export async function checkForSavedActivitiesMonth(
     day: { $gte: dateFrom, $lte: dateTo },
   }).lean();
 
-  const recordMap = new Map<string, any>();
+  const recordMap = new Map<string, (typeof existingRecords)[number]>();
   existingRecords.forEach((record) => {
     recordMap.set(record.day, record);
   });
@@ -90,14 +90,23 @@ export async function checkForSavedActivitiesMonth(
     const dateStr = format(currentParsedDate, "yyyy-MM-dd");
 
     if (recordMap.has(dateStr)) {
-      const rawActivities = recordMap.get(dateStr)!.activities as any[];
+      const rawActivities = recordMap.get(dateStr)!.activities;
 
-      activityMonth[dateStr] = rawActivities.map((act) => ({
-        ...act,
-        id: act._id?.toString(),
-
-        activity: act.activity?.toString(),
-      })) as LoggedActivityType[];
+      activityMonth[dateStr] = (rawActivities as unknown[]).map((act) => {
+        const rawAct = act as {
+          _id?: mongoose.Types.ObjectId | string;
+          activity?: mongoose.Types.ObjectId | string;
+          durationMinutes: number;
+          caloriesBurned: number;
+        };
+        return {
+          ...rawAct,
+          id: rawAct._id?.toString() || "",
+          activity: rawAct.activity?.toString() || "",
+          durationMinutes: rawAct.durationMinutes,
+          caloriesBurned: rawAct.caloriesBurned,
+        };
+      });
     } else {
       activityMonth[dateStr] = [];
     }

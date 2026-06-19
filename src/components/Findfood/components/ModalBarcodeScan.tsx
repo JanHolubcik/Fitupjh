@@ -36,7 +36,7 @@ type props = {
 const onError = (
   error: IScannerError,
   setError: Dispatch<React.SetStateAction<string>>,
-  t: any,
+  t: (key: string) => string,
 ) => {
   switch (error.kind) {
     case "permission-denied":
@@ -81,7 +81,7 @@ const ModalBarcodeScan = (props: props) => {
     onOpenNewFood();
   };
 
-  const handleScan = async (detectedCodes: any) => {
+  const handleScan = async (detectedCodes: { rawValue: string }[]) => {
     if (!detectedCodes || detectedCodes.length === 0) return;
     if (isPending) return;
 

@@ -15,7 +15,10 @@ import { toast } from "react-toastify";
 export const ChangePassword = () => {
   const { t } = useT("profile");
 
-  const handlePasswordSubmit = async (values: any, resetForm: () => void) => {
+  const handlePasswordSubmit = async (
+    values: Record<"currentPassword" | "newPassword", string>,
+    resetForm: () => void,
+  ) => {
     const res = authClient.changePassword({
       newPassword: values.newPassword,
       currentPassword: values.currentPassword,
@@ -27,7 +30,7 @@ export const ChangePassword = () => {
         pending: t("toast.passwordPending"),
         success: t("toast.passwordSuccess"),
         error: {
-          render({ data }: any) {
+          render({ data }: { data?: { message?: string } }) {
             return data?.message || t("toast.error");
           },
         },

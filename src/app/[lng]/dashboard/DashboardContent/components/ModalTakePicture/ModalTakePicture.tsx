@@ -10,28 +10,28 @@ import {
   Spinner,
 } from "@heroui/react";
 
-import { WebCamera } from "@shivantra/react-web-camera";
+import { WebCamera, WebCameraHandler } from "@shivantra/react-web-camera";
 import { useMutation } from "@tanstack/react-query";
 import { FoodImageAIOptions } from "@/lib/queriesOptions/FoodImageAIOptions";
 import { useT } from "next-i18next/client";
 
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 import { getTimeOfDay } from "@/app/[lng]/constants/FunctionsHelper";
-import { Food, TimeOfDay } from "@/types/Types";
+import { Food, TimeOfDay, AIFoodAnalysis } from "@/types/Types";
 
 /**
  * Converts a File object to a Base64 string
  * @param {File} file - The file object from an input element
  * @returns {Promise<string>} - A promise that resolves with the Base64 string
  */
-const fileToBase64 = (file: any) => {
+const fileToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
     // Read the file as a Data URL (Base64 string)
     reader.readAsDataURL(file);
 
-    reader.onload = () => resolve(reader.result);
+    reader.onload = () => resolve(reader.result as string);
     reader.onerror = (error) => reject(error);
   });
 };
@@ -51,13 +51,13 @@ const ModalTakePicture = ({
   timeOfDay,
   onCloseAll,
 }: props) => {
-  const cameraRef = useRef<any>(null);
+  const cameraRef = useRef<WebCameraHandler | null>(null);
   const { t } = useT("dashboard");
 
   const { addToFoodObject } = useYourIntakeOperations();
 
-  const [image, setImage] = useState<any | null>(null);
-  const [result, setResult] = useState<any>(null);
+  const [image, setImage] = useState<string | undefined>(undefined);
+  const [result, setResult] = useState<AIFoodAnalysis | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const isSavingRef = useRef(false);
 
@@ -74,6 +74,7 @@ const ModalTakePicture = ({
   const handleCaptureAndAnalyze = async () => {
     if (cameraRef.current) {
       const file = await cameraRef.current.capture();
+      if (!file) return;
       const photoBase64 = await fileToBase64(file);
       if (!photoBase64) return;
 
@@ -93,7 +94,7 @@ const ModalTakePicture = ({
   };
 
   const handleReset = () => {
-    setImage(null);
+    setImage(undefined);
     setResult(null);
     analyzeImageMutation.reset();
   };

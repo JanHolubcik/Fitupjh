@@ -2,7 +2,7 @@ import {
   capitalizeFirstLetter,
   useIsSm,
 } from "../app/[lng]/constants/FunctionsHelper";
-import { ChartOptions, ChartData } from "chart.js";
+import { ChartOptions, ChartData, ScriptableContext } from "chart.js";
 
 type props = {
   labels: String[];
@@ -69,7 +69,7 @@ const useChartsHooks = ({
         data: displayDataValues,
 
         // 1. Dynamic Fill Color (Red above limit, Macro color below)
-        backgroundColor: (context: any) => {
+        backgroundColor: (context: ScriptableContext<"line">) => {
           const chart = context.chart;
           const { ctx, chartArea, scales } = chart;
           if (!chartArea) return theme.bar + "80"; // Fallback before render
@@ -98,7 +98,7 @@ const useChartsHooks = ({
         },
 
         // 2. Dynamic Line Color (Matches the fill logic)
-        borderColor: (context: any) => {
+        borderColor: (context: ScriptableContext<"line">) => {
           const chart = context.chart;
           const { ctx, chartArea, scales } = chart;
           if (!chartArea) return theme.bar;

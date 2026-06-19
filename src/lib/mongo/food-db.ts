@@ -26,7 +26,7 @@ export async function getFood(substring: string, language?: string) {
   const regexString = ".*" + escapedSubstring + ".*";
   const regexPattern = new RegExp(regexString, "i");
 
-  let pipeline: any[] = [];
+  let pipeline: mongoose.PipelineStage[] = [];
 
   if (language) {
     const localizedKey = `localizedNames.${language}`;
@@ -218,7 +218,7 @@ export async function checkForSavedFoodMonth(
     day: { $gte: dateFrom, $lte: dateTo },
   }).lean();
 
-  const recordMap = new Map<string, any>();
+  const recordMap = new Map<string, (typeof existingRecords)[number]>();
   existingRecords.forEach((record) => {
     recordMap.set(record.day.toString(), record);
   });

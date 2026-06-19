@@ -43,7 +43,7 @@ export default function AccountDetails({ user }: { user: User }) {
         pending: t("toast.pending"),
         success: t("toast.success"),
         error: {
-          render({ data }: any) {
+          render({ data }: { data?: { message?: string } }) {
             return data?.message || t("toast.error");
           },
         },

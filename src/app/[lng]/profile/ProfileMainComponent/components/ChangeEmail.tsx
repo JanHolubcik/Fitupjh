@@ -47,7 +47,7 @@ export const ChangeEmail = ({ user }: { user: User }) => {
               pending: t("toast.emailPending"),
               success: t("toast.emailSuccess"),
               error: {
-                render({ data }: any) {
+                render({ data }: { data?: { message?: string } }) {
                   return data?.message || t("toast.error");
                 },
               },

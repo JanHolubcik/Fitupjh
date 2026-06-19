@@ -13,6 +13,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { ActivitiesOptions } from "@/lib/queriesOptions/ActivitiesOptions";
 import useActivityOperations from "@/hooks/useActivityOperations";
 import { usePathname } from "next/navigation";
+import { LoggedActivityType } from "@/features/DashboardSlice/DashboardSlice";
 
 import ActivityRecordModal, {
   ActivityRecord,
@@ -31,11 +32,13 @@ const AccordionActivity = () => {
 
   const getLocalizedName = (act: {
     name: string;
-    localizedNames?: any;
+    localizedNames?: Record<string, string> | Map<string, string>;
   }): string => {
     const map = act.localizedNames;
     if (!map) return act.name;
-    // After JSON serialization from MongoDB, localizedNames is a plain object
+    if (map instanceof Map) {
+      return map.get(currentLocale) || act.name;
+    }
     return (map as Record<string, string>)[currentLocale] || act.name;
   };
 
@@ -62,9 +65,9 @@ const AccordionActivity = () => {
   const active = isKeyActive("daily-activities");
   const itemCount = savedActivities.length;
 
-  const handleEditClick = (savedItem: any) => {
+  const handleEditClick = (savedItem: LoggedActivityType) => {
     setRecordToEdit({
-      _id: savedItem.id || savedItem._id, //
+      _id: savedItem.id.toString(), //
       activity: savedItem.activity,
       durationMinutes: savedItem.durationMinutes,
       caloriesBurned: savedItem.caloriesBurned,
@@ -134,8 +137,8 @@ const AccordionActivity = () => {
               <div className="flex flex-col rounded-xl">
                 {savedActivities.map((savedItem, index) => {
                   const fullActivity = data?.find(
-                    (a: any) =>
-                      a._id === savedItem.activity ||
+                    (a) =>
+                      a._id?.toString() === savedItem.activity ||
                       a.id === savedItem.activity,
                   );
 

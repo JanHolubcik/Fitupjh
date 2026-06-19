@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 
-export type ApiResponse<T = any> = {
+export type ApiResponse<T = unknown> = {
   success: boolean;
   data?: T;
-  error?: string | any;
+  error?: string;
 };
 
 /**
@@ -24,10 +24,11 @@ export function ApiSuccess<T>(data: T, status: number = 200) {
  * @param error The error message or object.
  * @param status The HTTP status code (default: 400).
  */
-export function ApiError(error: string | any, status: number = 400) {
+export function ApiError(error: unknown, status: number = 400) {
   const response: ApiResponse<never> = {
     success: false,
-    error: error instanceof Error ? error.message : error,
+    error: error instanceof Error ? error.message : String(error),
   };
   return NextResponse.json(response, { status });
 }
+
