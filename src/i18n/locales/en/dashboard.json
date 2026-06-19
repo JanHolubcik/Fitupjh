@@ -40,6 +40,7 @@
   "searchPlaceholder": "Search food...",
   "close": "Close",
   "recordNotFound": " If you didn't find your food, you can add it here or try scanning.",
+  "addManually": "Add manually",
   "calorieCard": {
     "kcalRemaining": "{{amount}} Kcal remaining",
     "noRecords": "No records yet",
