@@ -23,6 +23,7 @@ import { useT } from "next-i18next/client";
 import ModalScanFood from "./ModalScanFood";
 import { usePathname } from "next/navigation";
 import FoodRecordModal from "@/components/FoodRecordModal/FoodRecordModal";
+import { useModalBackButton } from "@/hooks/useModalBackButton";
 
 type props = {
   onOpenChange: () => void;
@@ -47,6 +48,7 @@ function useDebounce<T>(
 }
 
 const ModalFindFood = (props: props) => {
+  useModalBackButton(!!props.isOpen, props.onOpenChange);
   const pathname = usePathname();
   const currentLocale = pathname.split("/")[1] || "en";
   const { t } = useT("dashboard");

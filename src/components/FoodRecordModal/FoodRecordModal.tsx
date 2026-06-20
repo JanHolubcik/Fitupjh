@@ -9,6 +9,7 @@ import {
   Input,
 } from "@heroui/react";
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
+import { useModalBackButton } from "@/hooks/useModalBackButton";
 import { Food, TimeOfDay } from "@/types/Types";
 import { useT } from "next-i18next/client";
 import {
@@ -35,6 +36,7 @@ const FoodRecordModal = ({
   mode,
   onCloseAll,
 }: FoodRecordModalProps) => {
+  useModalBackButton(isOpen, () => onOpenChange(false));
   const [grams, setGrams] = useState<number>(100);
   const [isSaving, setIsSaving] = useState(false);
   const isSavingRef = useRef(false);

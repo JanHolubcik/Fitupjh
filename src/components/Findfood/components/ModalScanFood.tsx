@@ -13,6 +13,7 @@ import ModalBarcodeScan from "./ModalBarcodeScan";
 import { useT } from "next-i18next/client";
 import ModalTakePicture from "@/app/[lng]/dashboard/DashboardContent/components/ModalTakePicture/ModalTakePicture";
 import { TimeOfDay } from "@/types/Types";
+import { useModalBackButton } from "@/hooks/useModalBackButton";
 
 type props = {
   isOpen: boolean;
@@ -22,6 +23,7 @@ type props = {
 };
 
 const ModalScanFood = ({ isOpen, onOpenChange, onClose }: props) => {
+  useModalBackButton(isOpen, onClose);
   const { t } = useT("dashboard");
 
   const {

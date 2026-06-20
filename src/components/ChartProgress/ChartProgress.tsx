@@ -45,6 +45,7 @@ import { MACRO_TAILWIND_THEME } from "../../app/[lng]/constants/MacrosHelper";
 import { useT } from "next-i18next/client";
 import { TFunction } from "i18next";
 import { CardUniversal } from "@/components/common";
+import { useModalBackButton } from "../../hooks/useModalBackButton";
 
 ChartJS.register(
   CategoryScale,
@@ -151,7 +152,8 @@ const ChartProgress = ({
   setSelectedMacro,
   emptyDays,
 }: ChartProps) => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  useModalBackButton(isOpen, onClose);
   const { t } = useT("dashboard");
   const {
     capitalizedMacro,

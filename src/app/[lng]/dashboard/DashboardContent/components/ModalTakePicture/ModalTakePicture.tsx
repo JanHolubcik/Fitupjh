@@ -18,6 +18,7 @@ import { useT } from "next-i18next/client";
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 import { getTimeOfDay } from "@/app/[lng]/constants/FunctionsHelper";
 import { Food, TimeOfDay, AIFoodAnalysis } from "@/types/Types";
+import { useModalBackButton } from "@/hooks/useModalBackButton";
 
 /**
  * Converts a File object to a Base64 string
@@ -51,6 +52,7 @@ const ModalTakePicture = ({
   timeOfDay,
   onCloseAll,
 }: props) => {
+  useModalBackButton(!!isOpen, onCloseAll);
   const cameraRef = useRef<WebCameraHandler | null>(null);
   const { t } = useT("dashboard");
 

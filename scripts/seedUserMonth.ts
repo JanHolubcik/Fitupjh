@@ -10,7 +10,7 @@ const DB_NAME = "fitup";
 const SAVED_FOOD_COLLECTION = "savedFood";
 const FOOD_COLLECTION = "food";
 
-const USER_ID = "672d160ac4d5fdaecae73afb";
+const USER_ID = "6a35d45e975a255637c7a9a8";
 const DAYS_TO_GENERATE = 30;
 
 type FoodItem = {

@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import { ActivityClass } from "@/lib/mongo/models/Activity";
 import useActivityOperations from "@/hooks/useActivityOperations";
 import { usePathname } from "next/navigation";
+import { useModalBackButton } from "@/hooks/useModalBackButton";
 
 export type ActivityRecord = {
   _id: string;
@@ -39,6 +40,7 @@ const ActivityRecordModal = ({
   onCloseAll,
   existingRecord = null,
 }: Props) => {
+  useModalBackButton(isOpen, () => onOpenChange(false));
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedActivityName, setSelectedActivityName] = useState<string>("");
   const [minutes, setMinutes] = useState<number>(30);

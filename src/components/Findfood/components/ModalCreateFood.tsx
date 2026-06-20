@@ -16,6 +16,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useT } from "next-i18next/client";
 import { Formik, Form } from "formik";
+import { useModalBackButton } from "@/hooks/useModalBackButton";
 
 type props = {
   onOpenChange: () => void;
@@ -24,6 +25,7 @@ type props = {
 };
 
 const ModalCreateFood = (props: props) => {
+  useModalBackButton(!!props.isOpen, props.onOpenChange);
   const { addToFoodObject } = useYourIntakeOperations();
   const dispatch = useDispatch();
   const newFoodBarCode = useSelector(

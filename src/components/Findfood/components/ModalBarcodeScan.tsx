@@ -23,6 +23,7 @@ import { useT } from "next-i18next/client";
 import ModalCreateFood from "./ModalCreateFood";
 
 import FoodRecordModal from "@/components/FoodRecordModal/FoodRecordModal";
+import { useModalBackButton } from "@/hooks/useModalBackButton";
 
 type props = {
   onOpenChange: () => void;
@@ -64,7 +65,18 @@ const ModalBarcodeScan = (props: props) => {
 
   prepareZXingModule({ fireImmediately: true });
 
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+
+  const closeScanner = () => {
+    if (props.onClose) {
+      props.onClose();
+    } else {
+      props.onOpenChange();
+    }
+  };
+
+  useModalBackButton(!!props.isOpen, closeScanner);
+  useModalBackButton(isOpen, onClose);
   const { isOpen: isOpenNewRecord, onOpenChange: onOpenChangeNewRecord } =
     useDisclosure();
 
