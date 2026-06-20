@@ -176,8 +176,10 @@
   },
   "modalCreateFood": {
     "title": "Pridať vlastné jedlo",
+    "subtitle": "Zadajte údaje o jedle na 100g pre vytvorenie vlastného záznamu",
+    "uploadImage": "Nahrať obrázok",
     "toastPending": "Odosielanie požiadavky...",
-    "toastSuccess": "Nový záznam bolo úspešne uložené!",
+    "toastSuccess": "Nový záznam bol úspešne uložený!",
     "toastError": "Pri ukladaní nového jedla sa vyskytla chyba.",
     "toastBadValue": "Záznam nie je možné uložit, gramy by nemali byť menšie ako 1.",
     "barcodeLabel": "Čiarový kód",

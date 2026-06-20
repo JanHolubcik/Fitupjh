@@ -177,6 +177,8 @@
   },
   "modalCreateFood": {
     "title": "Add Custom Food",
+    "subtitle": "Enter food details per 100g to create custom record",
+    "uploadImage": "Upload image",
     "toastPending": "Sending request...",
     "toastSuccess": "New food was saved successfully!",
     "toastError": "There was an error while trying to save new food.",
