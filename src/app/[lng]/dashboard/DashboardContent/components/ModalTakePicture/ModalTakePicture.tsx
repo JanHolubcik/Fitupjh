@@ -21,6 +21,7 @@ import { Food, TimeOfDay, AIFoodAnalysis } from "@/types/Types";
 import { useModalBackButton } from "@/hooks/useModalBackButton";
 import imageCompression from "browser-image-compression";
 import { ApiResponse } from "@/lib/api-response";
+import { usePathname } from "next/navigation";
 
 /**
  * Converts a File object to a Base64 string
@@ -59,7 +60,8 @@ const ModalTakePicture = ({
   const { t } = useT("dashboard");
 
   const { addToFoodObject } = useYourIntakeOperations();
-
+  const pathname = usePathname();
+  const currentLocale = pathname.split("/")[1] || "en";
   const [image, setImage] = useState<File>();
   const [image64, setImageUrl64] = useState<string | undefined>(undefined);
   const [result, setResult] = useState<AIFoodAnalysis | null>(null);
@@ -74,7 +76,7 @@ const ModalTakePicture = ({
     }
   }, [isOpen]);
 
-  const analyzeImageMutation = useMutation(FoodImageAIOptions());
+  const analyzeImageMutation = useMutation(FoodImageAIOptions(currentLocale));
 
   const handleCaptureAndAnalyze = async () => {
     if (cameraRef.current) {

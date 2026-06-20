@@ -1,14 +1,14 @@
 import { AIFoodAnalysis } from "@/types/Types";
 import { ApiResponse } from "@/lib/api-response";
 
-export const FoodImageAIOptions = () => ({
+export const FoodImageAIOptions = (localization:string) => ({
   mutationFn: async (imageBase64: string): Promise<AIFoodAnalysis> => {
     const response = await fetch("/api/foodImageAI", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ imageBase64 }),
+      body: JSON.stringify({ imageBase64,localization }),
     });
 
     const result = (await response.json().catch(() => ({}))) as ApiResponse<AIFoodAnalysis>;

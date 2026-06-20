@@ -10,7 +10,7 @@ const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 export async function POST(req: NextRequest) {
   return withAuth(req, async () => {
     try {
-      const { imageBase64 } = await req.json();
+      const { imageBase64,localization } = await req.json();
 
       if (!imageBase64) {
         return ApiError("Missing or invalid image", 400);
@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
               {
                 text:
                   "Analyze this image of food and estimate its macros. " +
+                  "Use language from parameter here: "+localization+ "Only translate error and name, everything else needs to be in english." +
                   "Return ONLY a valid JSON object. If the image contains a food item, set the 'isFood' field to true and estimate its macros. If the image does NOT contain food, or if the food cannot be recognized, set the 'isFood' field to false and include an 'error' field with a descriptive message explaining what is wrong (e.g. \"The image does not contain any food\", \"The image is too blurry\", etc.).\n" +
                   "Format for food:\n" +
                   "{\n" +
