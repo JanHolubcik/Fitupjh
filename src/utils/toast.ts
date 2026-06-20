@@ -3,8 +3,8 @@ import { ReactNode } from "react";
 
 const defaultOptions: ToastOptions<any> = {
   position: "bottom-left",
-  autoClose: 4000,
-  hideProgressBar: true,
+  autoClose: 2500,
+  hideProgressBar: false,
   closeOnClick: true,
   pauseOnHover: true,
   draggable: true,
