@@ -10,7 +10,7 @@ import {
 } from "@heroui/react";
 
 import { useT } from "next-i18next/client";
-import { toast } from "react-toastify";
+import { showToast } from "@/utils/toast";
 import { ActivityClass } from "@/lib/mongo/models/Activity";
 import useActivityOperations from "@/hooks/useActivityOperations";
 import { usePathname } from "next/navigation";
@@ -117,16 +117,12 @@ const ActivityRecordModal = ({
     setIsSaving(true);
 
     if (!selectedActivity) {
-      toast.error(t("newActivityModal.toastNoActivity"), {
-        position: "bottom-left",
-      });
+      showToast.error(t("newActivityModal.toastNoActivity"));
       return;
     }
 
     if (minutes < 1) {
-      toast.error(t("newActivityModal.toastBadValue"), {
-        position: "bottom-left",
-      });
+      showToast.error(t("newActivityModal.toastBadValue"));
       return;
     }
     const activityId = selectedActivity._id.toString();

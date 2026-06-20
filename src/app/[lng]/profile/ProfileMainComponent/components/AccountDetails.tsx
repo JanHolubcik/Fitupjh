@@ -11,7 +11,7 @@ import {
   Spinner,
 } from "@heroui/react";
 import { Formik, Form } from "formik";
-import { toast } from "react-toastify";
+import { showToast } from "@/utils/toast";
 import { authClient } from "@/lib/auth-client";
 import { useT } from "next-i18next/client";
 import { CardUniversal } from "@/components/common";
@@ -38,7 +38,7 @@ export default function AccountDetails({ user }: { user: User }) {
       image: values.image,
     });
 
-    await toast.promise(
+    await showToast.promise(
       res,
       {
         pending: t("toast.pending"),
@@ -49,7 +49,6 @@ export default function AccountDetails({ user }: { user: User }) {
           },
         },
       },
-      { theme: "dark", position: "bottom-left", autoClose: 3000 },
     );
     router.refresh();
   };
@@ -104,7 +103,7 @@ export default function AccountDetails({ user }: { user: User }) {
               }
             } catch (error) {
               console.error("Upload failed", error);
-              toast.error(t("toast.uploadError"));
+              showToast.error(t("toast.uploadError"));
               setSubmitting(false);
               return;
             }

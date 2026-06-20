@@ -1,5 +1,6 @@
 // scripts/seedUserMonth.ts
 // Run with: npx tsx scripts/seedUserMonth.ts
+import { format, subDays } from "date-fns";
 import dotenv from "dotenv";
 dotenv.config({ path: ".env.local" });
 
@@ -10,7 +11,7 @@ const DB_NAME = "fitup";
 const SAVED_FOOD_COLLECTION = "savedFood";
 const FOOD_COLLECTION = "food";
 
-const USER_ID = "6a35d45e975a255637c7a9a8";
+const USER_ID = "";
 const DAYS_TO_GENERATE = 30;
 
 type FoodItem = {
@@ -25,6 +26,7 @@ type FoodItem = {
   fiber: number;
   salt: number;
   imgUrl?: string;
+  originalName?: string;
 };
 
 type SavedFood = {
@@ -55,7 +57,41 @@ const mapToFoodItem = (dbFood: any): FoodItem => {
     fiber: Math.round((dbFood.fiber ?? 0) * factor * 10) / 10,
     salt: Math.round((dbFood.salt ?? 0) * factor * 10) / 10,
     imgUrl: dbFood.imgUrl ?? "",
+    originalName: dbFood.originalName,
   };
+};
+
+const isVegetableOrFruitOrAllowed = (name: string): boolean => {
+  const lowercaseName = name.toLowerCase();
+  
+  // Explicit allowed items
+  const allowedItems = ["tuna", "salmon", "chicken thigh"];
+  if (allowedItems.some(item => lowercaseName.includes(item))) {
+    return true;
+  }
+
+  // Fruit names/keywords (case insensitive, sub-strings)
+  const fruits = [
+    "banana", "orange", "strawberry", "strawberries", "pineapple", "blueberry", "blueberries",
+    "apple", "avocado", "grape", "grapes", "lemon", "peach", "pear", "raspberry", "raspberries",
+    "watermelon", "kiwi", "mango", "plum", "cherry", "cherries", "apricot", "grapefruit", "melon",
+    "cranberries"
+  ];
+  if (fruits.some(fruit => lowercaseName.includes(fruit))) {
+    return true;
+  }
+
+  // Vegetable names/keywords
+  const vegetables = [
+    "cucumber", "spinach", "broccoli", "tomato", "tomatoes", "carrot", "carrots",
+    "zucchini", "potato", "potatoes", "onion", "garlic", "bell pepper", "pepper", "cauliflower",
+    "cabbage", "mushroom", "mushrooms", "sweet corn", "corn", "peas", "pumpkin"
+  ];
+  if (vegetables.some(veg => lowercaseName.includes(veg))) {
+    return true;
+  }
+
+  return false;
 };
 
 const generateMeal = (foods: any[], count: number): FoodItem[] =>
@@ -64,18 +100,21 @@ const generateMeal = (foods: any[], count: number): FoodItem[] =>
 const generateDayDocument = (
   indexFromToday: number,
   foods: any[],
-): { day: Date; savedFood: SavedFood; user_id: ObjectId } => {
-  const day = new Date();
-  day.setUTCHours(0, 0, 0, 0);
-  day.setUTCDate(day.getUTCDate() - indexFromToday);
+): { day: string; savedFood: SavedFood; user_id: ObjectId } => {
+  const day = format(subDays(new Date(), indexFromToday), "yyyy-MM-dd");
+
+  let availableFoods = foods;
+  if (indexFromToday < 4) {
+    availableFoods = foods.filter((f) => isVegetableOrFruitOrAllowed(f.name));
+  }
 
   return {
     day,
     user_id: new ObjectId(USER_ID),
     savedFood: {
-      breakfast: generateMeal(foods, randomInt(0, 2)),
-      lunch: generateMeal(foods, randomInt(1, 3)),
-      dinner: generateMeal(foods, randomInt(1, 3)),
+      breakfast: generateMeal(availableFoods, randomInt(0, 2)),
+      lunch: generateMeal(availableFoods, randomInt(1, 3)),
+      dinner: generateMeal(availableFoods, randomInt(1, 3)),
     },
   };
 };

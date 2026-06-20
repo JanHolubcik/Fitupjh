@@ -17,7 +17,7 @@ import {
   MacroArray,
 } from "@/app/[lng]/constants/MacrosHelper";
 import ImageFromURL from "../ImageFromURL/ImageFromURL";
-import { toast } from "react-toastify";
+import { showToast } from "@/utils/toast";
 
 type FoodRecordModalProps = {
   isOpen: boolean;
@@ -70,9 +70,7 @@ const FoodRecordModal = ({
     inputRef.current?.blur();
 
     if (grams < 1) {
-      toast.error(t("modalCreateFood.toastBadValue"), {
-        position: "bottom-left",
-      });
+      showToast.error(t("modalCreateFood.toastBadValue"));
       return;
     }
 

@@ -14,7 +14,7 @@ import { Formik, Form } from "formik";
 
 import { useT } from "next-i18next/client";
 import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
+import { showToast } from "@/utils/toast";
 
 type User = typeof authClient.$Infer.Session.user;
 
@@ -36,7 +36,7 @@ export const BiometricAndGoals = ({ user }: { user: User }) => {
       goal: values.goal,
     });
 
-    await toast.promise(
+    await showToast.promise(
       updatePromise,
       {
         pending: t("toast.biometricPending"),
@@ -47,7 +47,6 @@ export const BiometricAndGoals = ({ user }: { user: User }) => {
           },
         },
       },
-      { position: "bottom-left", autoClose: 3000, theme: "dark" },
     );
     router.refresh();
   };

@@ -9,7 +9,7 @@ import {
   useDisclosure,
 } from "@heroui/react";
 import { useT } from "next-i18next/client";
-import { toast } from "react-toastify";
+import { showToast } from "@/utils/toast";
 import { useRouter, useParams } from "next/navigation";
 
 export const DeleteAccount = () => {
@@ -26,13 +26,13 @@ export const DeleteAccount = () => {
     try {
       const { error } = await authClient.deleteUser();
       if (error) {
-        toast.error(error.message || t("toast.deleteError"));
+        showToast.error(error.message || t("toast.deleteError"));
         setIsDeleting(false);
       } else {
         await authClient.signOut({
           fetchOptions: {
             onSuccess: () => {
-              toast.success(t("toast.deleteSuccess"));
+              showToast.success(t("toast.deleteSuccess"));
               onClose();
               router.refresh();
               router.push(`/${currentLocale}`);
@@ -42,7 +42,7 @@ export const DeleteAccount = () => {
                 "Sign out error after account deletion:",
                 ctx.error,
               );
-              toast.success(t("toast.deleteSuccess"));
+              showToast.success(t("toast.deleteSuccess"));
               onClose();
               router.refresh();
               router.push(`/${currentLocale}`);
@@ -51,7 +51,7 @@ export const DeleteAccount = () => {
         });
       }
     } catch (err: any) {
-      toast.error(err.message || "An unexpected error occurred.");
+      showToast.error(err.message || "An unexpected error occurred.");
       setIsDeleting(false);
     }
   };

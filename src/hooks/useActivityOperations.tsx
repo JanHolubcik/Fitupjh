@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { format } from "date-fns";
-import { toast } from "react-toastify";
+import { showToast } from "@/utils/toast";
 import { useMutation } from "@tanstack/react-query"; // Adjust if you use TRPC instead
 import { useT } from "next-i18next/client";
 
@@ -81,17 +81,12 @@ const useActivityOperations = () => {
 
     const res = saveActivitiesToDB(updatedActivities);
 
-    toast.promise(
+    showToast.promise(
       res,
       {
         pending: t("toast.pending"),
         success: t("toast.activitySuccess"),
         error: t("toast.activityError"),
-      },
-      {
-        position: "bottom-left",
-        autoClose: 5000,
-        theme: "dark",
       },
     );
   };
@@ -110,14 +105,13 @@ const useActivityOperations = () => {
 
       const res = saveActivitiesToDB(fullUpdatedObject);
 
-      toast.promise(
+      showToast.promise(
         res,
         {
           pending: t("toast.pending"),
           success: t("toast.updated"),
           error: t("toast.error"),
         },
-        { theme: "dark", position: "bottom-left" },
       );
     },
     [dispatch, currentDate, t],
@@ -136,17 +130,12 @@ const useActivityOperations = () => {
 
     const res = saveActivitiesToDB(updatedActivities, isLastItem);
 
-    toast.promise(
+    showToast.promise(
       res,
       {
         pending: t("toast.pending"),
         success: t("toast.activityRemoved"),
         error: t("toast.error"),
-      },
-      {
-        position: "bottom-left",
-        autoClose: 5000,
-        theme: "dark",
       },
     );
   };

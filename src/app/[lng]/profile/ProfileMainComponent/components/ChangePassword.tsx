@@ -10,7 +10,7 @@ import {
 } from "@heroui/react";
 import { Formik, Form } from "formik";
 import { useT } from "next-i18next/client";
-import { toast } from "react-toastify";
+import { showToast } from "@/utils/toast";
 
 export const ChangePassword = () => {
   const { t } = useT("profile");
@@ -24,7 +24,7 @@ export const ChangePassword = () => {
       currentPassword: values.currentPassword,
       revokeOtherSessions: true,
     });
-    await toast.promise(
+    await showToast.promise(
       res,
       {
         pending: t("toast.passwordPending"),
@@ -35,7 +35,6 @@ export const ChangePassword = () => {
           },
         },
       },
-      { theme: "dark", position: "bottom-left", autoClose: 3000 },
     );
 
     resetForm();

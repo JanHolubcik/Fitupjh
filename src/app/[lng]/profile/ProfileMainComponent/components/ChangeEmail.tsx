@@ -10,7 +10,7 @@ import {
 } from "@heroui/react";
 import { Formik, Form } from "formik";
 import { useT } from "next-i18next/client";
-import { toast } from "react-toastify";
+import { showToast } from "@/utils/toast";
 
 type User = typeof authClient.$Infer.Session.user;
 
@@ -41,7 +41,7 @@ export const ChangeEmail = ({ user }: { user: User }) => {
             callbackURL: "/",
           });
 
-          await toast.promise(
+          await showToast.promise(
             res,
             {
               pending: t("toast.emailPending"),
@@ -52,7 +52,6 @@ export const ChangeEmail = ({ user }: { user: User }) => {
                 },
               },
             },
-            { position: "bottom-left", theme: "dark", autoClose: 3000 },
           );
 
           resetForm({

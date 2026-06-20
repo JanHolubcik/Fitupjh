@@ -12,7 +12,25 @@ import StoreProvider from "@/StoreProvider";
 
 import { ToastContainer } from "react-toastify";
 import React from "react";
+import { useTheme } from "next-themes";
 
+function AppToastContainer() {
+  const { theme } = useTheme();
+  return (
+    <ToastContainer
+      position="bottom-left"
+      autoClose={4000}
+      hideProgressBar={true}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme={theme === "dark" ? "dark" : "light"}
+    />
+  );
+}
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
@@ -26,18 +44,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
             <SpeedInsights />
 
             {children}
-            <ToastContainer
-              position="bottom-right"
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              theme="colored"
-            />
+            <AppToastContainer />
           </QueryClientProvider>
         </StoreProvider>
       </NextThemesProvider>

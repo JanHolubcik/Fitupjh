@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { useMutation } from "@tanstack/react-query";
-import { toast } from "react-toastify";
+import { showToast } from "@/utils/toast";
 import { useT } from "next-i18next/client";
 
 import {
@@ -91,14 +91,13 @@ const useYourIntakeOperations = () => {
 
       const res = saveFood(saveFoodObject);
 
-      toast.promise(
+      showToast.promise(
         res,
         {
           pending: t("toast.pending"),
           success: t("toast.success"),
           error: t("toast.error"),
         },
-        { theme: "dark", position: "bottom-left" },
       );
     },
     [savedFood, dateString, dispatch, saveFood, t],
@@ -122,14 +121,13 @@ const useYourIntakeOperations = () => {
 
       const res = saveFood(updatedFood, isLastItem);
 
-      toast.promise(
+      showToast.promise(
         res,
         {
           pending: t("toast.pending"),
           success: t("toast.removed"),
           error: t("toast.error"),
         },
-        { theme: "dark", position: "bottom-left" },
       );
     },
     [dispatch, dateString, savedFood, saveFood, t],
@@ -172,14 +170,13 @@ const useYourIntakeOperations = () => {
 
       const res = saveFood(fullUpdatedObject);
 
-      toast.promise(
+      showToast.promise(
         res,
         {
           pending: t("toast.pending"),
           success: t("toast.updated"),
           error: t("toast.error"),
         },
-        { theme: "dark", position: "bottom-left" },
       );
     },
     [dispatch, dateString, savedFood, saveFood, t],

@@ -12,7 +12,7 @@ import {
   SelectItem,
 } from "@heroui/react";
 import { Formik, Form } from "formik";
-import { toast } from "react-toastify";
+import { showToast } from "@/utils/toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { useT } from "next-i18next/client";
 import { onboardingSchema } from "@/lib/validationShemas/userValidationSchema";
@@ -146,7 +146,7 @@ export default function OnboardingPage() {
             });
 
             if (error) {
-              toast.error(error.message || t("toast.error"));
+              showToast.error(error.message || t("toast.error"));
               setSubmitting(false);
               return;
             }
