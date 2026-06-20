@@ -61,6 +61,7 @@ const ModalTakePicture = ({
   const { addToFoodObject } = useYourIntakeOperations();
 
   const [image, setImage] = useState<File>();
+  const [image64, setImageUrl64] = useState<string | undefined>(undefined);
   const [result, setResult] = useState<AIFoodAnalysis | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const isSavingRef = useRef(false);
@@ -88,7 +89,7 @@ const ModalTakePicture = ({
 
       const photoBase64 = await fileToBase64(compressedFile);
       if (!photoBase64) return;
-
+      setImageUrl64(photoBase64);
       setImage(compressedFile);
       setResult(null);
       analyzeImageMutation.reset();
@@ -185,13 +186,13 @@ const ModalTakePicture = ({
                 {t("takePictureModal.takePictureTitle")}
               </h3>
               <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
-                {!image
+                {!image64
                   ? t("takePictureModal.takePictureDesc")
                   : t("takePictureModal.reviewDesc")}
               </p>
             </ModalHeader>
             <ModalBody className="flex flex-col items-center gap-4">
-              {!image ? (
+              {!image64 ? (
                 <>
                   <div className="relative w-full max-w-[340px] overflow-hidden rounded-2xl dark:border-zinc-800 bg-slate-950 shadow-inner flex items-center justify-center">
                     <WebCamera
@@ -218,7 +219,7 @@ const ModalTakePicture = ({
                 <div className="flex flex-col items-center gap-4 w-full">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={image}
+                    src={image64}
                     alt="Captured"
                     className="rounded-xl shadow-md max-w-[340px] w-full border border-zinc-200 dark:border-zinc-800"
                   />
@@ -309,7 +310,7 @@ const ModalTakePicture = ({
             </ModalBody>
 
             <ModalFooter className="flex-col w-full items-center justify-center gap-2">
-              {!image ? (
+              {!image64 ? (
                 <>
                   <Button
                     color="primary"
@@ -338,7 +339,11 @@ const ModalTakePicture = ({
                       size="lg"
                       onPress={handleAddFood}
                     >
-                      {t("takePictureModal.addToIntake")}
+                      {!isSaving ? (
+                        t("takePictureModal.addToIntake")
+                      ) : (
+                        <Spinner />
+                      )}
                     </Button>
                   )}
 
