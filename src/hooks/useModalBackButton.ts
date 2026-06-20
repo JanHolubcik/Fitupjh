@@ -1,11 +1,11 @@
 import { useEffect, useRef } from "react";
 
 // Global stack of currently open modal refs
-const modalStack: React.MutableRefObject<() => void>[] = [];
+const modalStack: { current: () => void }[] = [];
 
 let popStateListenerAdded = false;
 
-const handlePopState = (event: PopStateEvent) => {
+const handlePopState = () => {
   if (modalStack.length > 0) {
     const topModalRef = modalStack.pop();
     if (topModalRef && topModalRef.current) {

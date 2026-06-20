@@ -19,6 +19,8 @@ import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
 import { getTimeOfDay } from "@/app/[lng]/constants/FunctionsHelper";
 import { Food, TimeOfDay, AIFoodAnalysis } from "@/types/Types";
 import { useModalBackButton } from "@/hooks/useModalBackButton";
+import imageCompression from "browser-image-compression";
+import { ApiResponse } from "@/lib/api-response";
 
 /**
  * Converts a File object to a Base64 string
@@ -58,7 +60,7 @@ const ModalTakePicture = ({
 
   const { addToFoodObject } = useYourIntakeOperations();
 
-  const [image, setImage] = useState<string | undefined>(undefined);
+  const [image, setImage] = useState<File>();
   const [result, setResult] = useState<AIFoodAnalysis | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const isSavingRef = useRef(false);
@@ -77,10 +79,17 @@ const ModalTakePicture = ({
     if (cameraRef.current) {
       const file = await cameraRef.current.capture();
       if (!file) return;
-      const photoBase64 = await fileToBase64(file);
+
+      const compressedFile = await imageCompression(file, {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 500,
+        useWebWorker: false,
+      });
+
+      const photoBase64 = await fileToBase64(compressedFile);
       if (!photoBase64) return;
 
-      setImage(photoBase64);
+      setImage(compressedFile);
       setResult(null);
       analyzeImageMutation.reset();
 
@@ -101,12 +110,24 @@ const ModalTakePicture = ({
     analyzeImageMutation.reset();
   };
 
-  const handleAddFood = () => {
+  const handleAddFood = async () => {
     if (!result || isSavingRef.current) return;
     isSavingRef.current = true;
     setIsSaving(true);
 
     const weight = result.ProductWeight || 100;
+
+    const formData = new FormData();
+    formData.append("file", image as File);
+
+    const response = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = (await response.json().catch(() => ({}))) as ApiResponse<{
+      imageUrl: string;
+    }>;
 
     const parsedFood: Food = {
       id: Date.now(),
@@ -119,7 +140,7 @@ const ModalTakePicture = ({
       carbohydrates: Number(result.carbohydrates || 0),
       fiber: Number(result.fiber || 0),
       salt: Number(result.salt || 0),
-      imgUrl: result.imgUrl || image,
+      imgUrl: data.data?.imageUrl || "",
     };
 
     addToFoodObject(parsedFood, timeOfDay || getTimeOfDay());
@@ -213,10 +234,10 @@ const ModalTakePicture = ({
 
                   {analyzeImageMutation.isError && (
                     <div className="bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 p-4 rounded-xl w-full max-w-[340px] border border-red-200 dark:border-red-800 text-center text-sm font-semibold my-4">
-                      {analyzeImageMutation.error?.message || "Failed to analyze image"}
+                      {analyzeImageMutation.error?.message ||
+                        "Failed to analyze image"}
                     </div>
                   )}
-
 
                   {result && (
                     <div className="bg-slate-50 dark:bg-zinc-900/50 p-5 rounded-xl w-full max-w-[340px] border border-zinc-100 dark:border-zinc-800 shadow-sm">
@@ -350,4 +371,3 @@ const ModalTakePicture = ({
 };
 
 export default ModalTakePicture;
-

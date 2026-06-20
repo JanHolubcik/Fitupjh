@@ -18,6 +18,7 @@ import { CardUniversal } from "@/components/common";
 import { useRouter } from "next/navigation";
 
 import imageCompression from "browser-image-compression";
+import { ApiResponse } from "@/lib/api-response";
 
 type User = typeof authClient.$Infer.Session.user;
 
@@ -90,10 +91,14 @@ export default function AccountDetails({ user }: { user: User }) {
                 body: formData,
               });
 
-              const data = await response.json();
+              const data = (await response
+                .json()
+                .catch(() => ({}))) as ApiResponse<{
+                imageUrl: string;
+              }>;
 
-              if (data.imageUrl) {
-                finalImageUrl = data.imageUrl; // Reassign to the new Vercel URL
+              if (data.data?.imageUrl) {
+                finalImageUrl = data.data.imageUrl; // Reassign to the new Vercel URL
               } else {
                 throw new Error("No image URL returned from Vercel");
               }

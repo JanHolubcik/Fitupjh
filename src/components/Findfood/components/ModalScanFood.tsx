@@ -93,10 +93,16 @@ const ModalScanFood = ({ isOpen, onOpenChange, onClose }: props) => {
                   color="primary"
                   size="lg"
                 >
-                  <Button className="w-1/2 font-bold" onPress={onOpenBarCode}>
+                  <Button
+                    className="w-1/2 font-bold text-sm"
+                    onPress={onOpenBarCode}
+                  >
                     {t("modalScanFood.scanBarcodeBtn")}
                   </Button>
-                  <Button onPress={onOpenChangeAI} className="w-1/2  font-bold">
+                  <Button
+                    onPress={onOpenChangeAI}
+                    className="w-1/2 text-sm font-bold"
+                  >
                     {t("modalScanFood.useAIBtn")}
                   </Button>
                 </ButtonGroup>
