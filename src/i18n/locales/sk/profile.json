@@ -45,6 +45,7 @@
   "currentPassword": "Súčasné heslo",
   "newPassword": "Nové heslo",
   "updatePassword": "Aktualizovať heslo",
+  "cancel": "Zrušiť",
   "toast": {
     "pending": "Aktualizuje sa profil...",
     "success": "Profil bol úspešne aktualizovaný!",
@@ -55,6 +56,7 @@
     "emailPending": "Aktualizuje sa e-mail...",
     "emailSuccess": "E-mail bol úspešne aktualizovaný!",
     "deleteError": "Nepodarilo sa vymazať účet",
+    "deleteSuccess": "Účet bol úspešne vymazaný!",
     "biometricPending": "Aktualizuje sa biometria...",
     "biometricSuccess": "Biometria bola úspešne aktualizovaná!"
   }

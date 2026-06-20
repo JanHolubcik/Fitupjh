@@ -137,7 +137,7 @@ export default function OnboardingPage() {
             }
             return errors;
           }}
-          onSubmit={async (values, { setSubmitting }) => {
+          onSubmit={async (values, { setSubmitting, setStatus }) => {
             const { error } = await authClient.updateUser({
               goal: values.goal,
               weight: Number(values.weight),
@@ -150,6 +150,7 @@ export default function OnboardingPage() {
               setSubmitting(false);
               return;
             }
+            setStatus({ success: true });
             router.push("/dashboard");
           }}
         >
@@ -160,8 +161,10 @@ export default function OnboardingPage() {
             handleChange,
             handleBlur,
             isSubmitting,
+
             setFieldValue,
             setFieldTouched,
+            status,
           }) => {
             // Helper objects to display user-friendly labels on the review screen
             const goalLabels: Record<string, string> = {
@@ -484,11 +487,19 @@ export default function OnboardingPage() {
                   ) : (
                     <Button
                       type="submit"
-                      isDisabled={isSubmitting || isAnimating}
-                      className="bg-blue-500 text-white font-bold hover:bg-blue-600 transition-colors"
+                      isDisabled={
+                        isSubmitting || status?.success || isAnimating
+                      }
+                      className={`font-bold transition-all duration-200 text-white ${
+                        status?.success
+                          ? "bg-emerald-500 dark:bg-emerald-600 cursor-default"
+                          : "bg-blue-500 hover:bg-blue-600"
+                      }`}
                     >
                       {isSubmitting ? (
                         <Spinner size="sm" color="white" />
+                      ) : status?.success ? (
+                        <span>✓ {t("buttons.success") || "Done!"}</span>
                       ) : (
                         t("buttons.completeSetup")
                       )}

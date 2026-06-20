@@ -66,7 +66,8 @@
   "buttons": {
     "back": "Späť",
     "continue": "Pokračovať",
-    "completeSetup": "Dokončiť nastavenie"
+    "completeSetup": "Dokončiť nastavenie",
+    "success": "Hotovo!"
   },
   "toast": {
     "error": "Nepodarilo sa aktualizovať profil."

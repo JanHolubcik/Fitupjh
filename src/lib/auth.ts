@@ -10,6 +10,9 @@ export const auth = betterAuth({
     changeEmail: {
       enabled: true,
     },
+    deleteUser: {
+      enabled: true,
+    },
     additionalFields: {
       goal: { type: "string", required: false, defaultValue: "maintainWeight" },
       weight: { type: "number", required: false },
