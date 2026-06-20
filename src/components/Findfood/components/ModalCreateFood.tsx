@@ -85,6 +85,32 @@ const ModalCreateFood = (props: props) => {
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               let uploadedImgUrl = "";
 
+              if (selectedFile) {
+                try {
+                  const compressedFile = await imageCompression(selectedFile, {
+                    maxSizeMB: 0.2,
+                    maxWidthOrHeight: 250,
+                    useWebWorker: false,
+                  });
+
+                  const formData = new FormData();
+                  formData.append("file", compressedFile);
+
+                  const response = await fetch("/api/upload", {
+                    method: "POST",
+                    body: formData,
+                  });
+
+                  const data = await response.json().catch(() => ({}));
+
+                  if (data.data?.imageUrl) {
+                    uploadedImgUrl = data.data.imageUrl;
+                  }
+                } catch (error) {
+                  console.error("Upload failed", error);
+                }
+              }
+
               try {
                 const newDbFood = await addFoodMutation.mutateAsync({
                   name: values.name,
@@ -134,34 +160,6 @@ const ModalCreateFood = (props: props) => {
                   err?.message || t("modalCreateFood.toastError"),
                 );
               } finally {
-                if (selectedFile) {
-                  try {
-                    const compressedFile = await imageCompression(
-                      selectedFile,
-                      {
-                        maxSizeMB: 0.2,
-                        maxWidthOrHeight: 250,
-                        useWebWorker: false,
-                      },
-                    );
-
-                    const formData = new FormData();
-                    formData.append("file", compressedFile);
-
-                    const response = await fetch("/api/upload", {
-                      method: "POST",
-                      body: formData,
-                    });
-
-                    const data = await response.json().catch(() => ({}));
-
-                    if (data.data?.imageUrl) {
-                      uploadedImgUrl = data.data.imageUrl;
-                    }
-                  } catch (error) {
-                    console.error("Upload failed", error);
-                  }
-                }
                 setSubmitting(false);
               }
             }}
@@ -178,6 +176,7 @@ const ModalCreateFood = (props: props) => {
                 </ModalHeader>
 
                 <ModalBody className="py-3 gap-3 font-semibold">
+                  {/* Name and Image upload Row */}
                   <div className="flex gap-3 items-center w-full">
                     <div
                       onClick={() =>
