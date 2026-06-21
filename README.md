@@ -1,58 +1,142 @@
-Finished application should resemble [https://kaloricketabulky.sk/]. This is my own personal project for learning Next.js.
+# 🥗 Fitup (Next.js Calorie Tracker)
 
+[![Next.js](https://img.shields.io/badge/Next.js-16.1.1-black?logo=next.js&style=flat-square)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19.2.3-blue?logo=react&style=flat-square)](https://react.dev/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-6.5.0-green?logo=mongodb&style=flat-square)](https://www.mongodb.com/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.0.0-38B2AC?logo=tailwind-css&style=flat-square)](https://tailwindcss.com/)
+[![BetterAuth](https://img.shields.io/badge/Better--Auth-1.6.19-orange?style=flat-square)](https://better-auth.com/)
+[![Gemini AI](https://img.shields.io/badge/Gemini--AI-2.5--flash-7B1FA2?logo=google-gemini&style=flat-square)](https://deepmind.google/technologies/gemini/)
 
+Fitup is a modern, full-featured **Calorie & Physical Activity Tracker** built with Next.js 16 (App Router) and React 19. It is designed to help users log their dietary intake, track physical exercises, and gain insights into their health goals using advanced Gemini AI integrations.
 
-Project uses mongodb on localhost or you can also livehost it trough mongo.
+**Check out the Live Application:** [https://fitupjh.vercel.app/](https://fitupjh.vercel.app/)
 
-## LIVEHOSTING YOU CAN CHECK APP HERE
+> Finished application resembles the functionality of [Kalorické Tabuľky](https://kaloricketabulky.sk/).
 
-[https://fitupjh.vercel.app/]
+---
 
-## Set up your env file
+## 📷 Application showcase
 
-When cloning this repo we need to create file .env.local.
+Here is a showcase video of application:
 
-Having a mongo account and cluster is highy recomended
+[![Watch the video](https://img.youtube.com/vi/4AGnYZbm_gM/maxresdefault.jpg)](https://www.youtube.com/watch?v=4AGnYZbm_gM)
 
-1. Create env file (.env.local) and inside file add following line:
+---
 
-```bash
-MONGODB_URI=mongodb://(yourmongodblocalhost)/fitup
+## Features
+
+- **Calorie & Macro Logging Dashboard**: Keep track of daily meals classified by category (Breakfast, Lunch, Dinner, Snacks). Track total protein, carbs, fats, fiber, sugar, and salt against personalized daily targets.
+- **Gemini AI Integration**:
+  - **AI Food Intake Analyzer**: Evaluates daily meals to praise healthy habits, issue warnings, and suggest healthier food alternatives (up to 250 words, using structured markup).
+  - **AI Food Image Recognition**: Snap or upload a photo of your meal to have the AI identify the dish and estimate its nutritional macros per 100g.
+- **Hybrid Barcode Scanner**:
+  - Uses the browser's native **BarcodeDetector API** for high performance with a fallback to the **ZXing WebAssembly scanner** (`@yudiel/react-qr-scanner`).
+  - Supports EAN-13, EAN-8, and UPC-A formats.
+  - Queries local database catalog first; if not found, it calls the **Open Food Facts API**, maps nutritional data, seeds it locally, and logs it.
+- **Physical Activity & Exercise Tracker**: Log activities (Cardio, Strength, Flexibility, Sports) with MET (Metabolic Equivalent of Task) values to automatically calculate active calorie burn based on user weight.
+- **Interactive Onboarding Tour**: Powered by `driver.js` to guide new users step-by-step through the application dashboard.
+- **Internationalization (i18n)**: Fully supports dynamic locale routing (`[lng]`) for **English** and **Slovak** (`sk`). -**Secure Authentication**: Implemented via **Better-Auth** supporting email/password and social OAuth providers (Google, GitHub, Discord).
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 16 (App Router), React 19, TypeScript
+- **Styling**: Tailwind CSS v4, Framer Motion, HeroUI (`@heroui/react`), React Icons
+- **State & Data Fetching**: Redux Toolkit, TanStack React Query (v5)
+- **Database**: MongoDB with Mongoose & Typegoose
+- **Authentication**: Better-Auth (using MongoDB Adapter)
+- **AI Integration**: `@google/genai` (Gemini 2.5 Flash)
+- **Data Visualization**: Chart.js (`react-chartjs-2`)
+- **Assets & Performance**: Vercel Blob, Vercel Speed Insights
+
+---
+
+## 📁 Project Structure
+
+```text
+├── public/                 # Static assets, flags, icons, and base food JSON
+├── scripts/                # Database seeding scripts (TypeScript)
+│   ├── seed-foods.ts       # Seeds USDA foods catalog
+│   ├── seed-activities.ts  # Seeds physical activities catalog
+│   └── seedUserMonth.ts    # Seeds a 30-day history for demo purposes
+└── src/
+    ├── app/                # Next.js App Router
+    │   ├── [lng]/          # Locale-specific routing pages (Dashboard, Profile, Login)
+    │   └── api/            # API endpoints (AI analyzer, barcode scanner, logs)
+    ├── components/         # Reusable global React components (Navbar, Modals, Scanner)
+    ├── features/           # Redux slices
+    ├── hooks/              # Custom React hooks
+    ├── i18n/               # Localization settings
+    ├── lib/                # Database connections, logger, API wrappers, and auth config
+    ├── store/              # Redux store configuration
+    └── types/              # TypeScript type definitions
 ```
 
-Database should create automatically after running npm run dev, if not create new database with name "fitup".
+---
 
-2. Create collection with name "food". And insert json file content in public folder.
+## 🚀 Getting Started
 
-## Some pictures showing the demo
-<img width="1406" height="934" alt="obrázok" src="https://github.com/user-attachments/assets/4042094f-2ebf-4cf3-85d8-e1b01c7cc9c5" />
-<img width="1263" height="936" alt="obrázok" src="https://github.com/user-attachments/assets/a5db4fe2-7bab-47ae-8aa1-32e879f877fd" />
-<img width="1298" height="760" alt="obrázok" src="https://github.com/user-attachments/assets/207459ca-b186-4a5a-8493-ecd4680e29b8" />
+Follow these steps to run the application locally:
 
-
-
-## Getting Started
-
-If you want to run the application, first u need to:
-
-1. Download the repo.
-
-2. Open project in your favorite editor and install and run.
+### 1. Clone the Repository
 
 ```bash
-npm i
+git clone https://github.com/janho/Fitupjh.git
+cd Fitupjh
 ```
 
-Then, run the development server:
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Environment Setup
+
+Create a `.env.local` file in the root directory and add the following configuration:
+
+```env
+# MongoDB Connection
+MONGODB_URI=mongodb://localhost:27017/fitup
+
+# Better Auth Secret (Generate a strong random string)
+BETTER_AUTH_SECRET=your_better_auth_secret_here
+BETTER_AUTH_URL=http://localhost:3000
+
+# Google Gemini API Key
+GEMINI_API_KEY=your_gemini_api_key_here
+
+# Social Authentication Providers (Optional)
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+
+GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret
+
+DISCORD_CLIENT_ID=your_discord_client_id
+DISCORD_CLIENT_SECRET=your_discord_client_secret
+```
+
+### 4. Seed the Database
+
+Populate your database with the USDA food database, physical activity metadata, and optional historical data:
+
+```bash
+# Seed the core food database
+npx tsx scripts/seed-foods.ts
+
+# Seed physical activities
+npx tsx scripts/seed-activities.ts
+
+# Seed 30-day historical log data for local testing
+npx tsx scripts/seedUserMonth.ts
+```
+
+### 5. Run the Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the application running.
