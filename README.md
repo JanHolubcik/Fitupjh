@@ -19,6 +19,8 @@ Fitup is a modern, full-featured **Calorie & Physical Activity Tracker** built w
 
 Here is a showcase video of application:
 
+**[Watch the Fitup Showcase Video on YouTube](https://www.youtube.com/watch?v=4AGnYZbm_gM)**
+
 [![Watch the video](https://img.youtube.com/vi/4AGnYZbm_gM/maxresdefault.jpg)](https://www.youtube.com/watch?v=4AGnYZbm_gM)
 
 ---
@@ -27,8 +29,8 @@ Here is a showcase video of application:
 
 - **Calorie & Macro Logging Dashboard**: Keep track of daily meals classified by category (Breakfast, Lunch, Dinner, Snacks). Track total protein, carbs, fats, fiber, sugar, and salt against personalized daily targets.
 - **Gemini AI Integration**:
-  - **AI Food Intake Analyzer**: Evaluates daily meals to praise healthy habits, issue warnings, and suggest healthier food alternatives (up to 250 words, using structured markup).
-  - **AI Food Image Recognition**: Snap or upload a photo of your meal to have the AI identify the dish and estimate its nutritional macros per 100g.
+  - **AI Food Intake Analyzer**: Evaluates daily meals to praise healthy habits, issue warnings, and suggest healthier food alternatives (using structured markup).
+  - **AI Food Image Recognition**: Snap or upload a photo of your meal to have the AI identify the dish and estimate its nutritional macro.
 - **Hybrid Barcode Scanner**:
   - Uses the browser's native **BarcodeDetector API** for high performance with a fallback to the **ZXing WebAssembly scanner** (`@yudiel/react-qr-scanner`).
   - Supports EAN-13, EAN-8, and UPC-A formats.
@@ -49,29 +51,6 @@ Here is a showcase video of application:
 - **AI Integration**: `@google/genai` (Gemini 2.5 Flash)
 - **Data Visualization**: Chart.js (`react-chartjs-2`)
 - **Assets & Performance**: Vercel Blob, Vercel Speed Insights
-
----
-
-## 📁 Project Structure
-
-```text
-├── public/                 # Static assets, flags, icons, and base food JSON
-├── scripts/                # Database seeding scripts (TypeScript)
-│   ├── seed-foods.ts       # Seeds USDA foods catalog
-│   ├── seed-activities.ts  # Seeds physical activities catalog
-│   └── seedUserMonth.ts    # Seeds a 30-day history for demo purposes
-└── src/
-    ├── app/                # Next.js App Router
-    │   ├── [lng]/          # Locale-specific routing pages (Dashboard, Profile, Login)
-    │   └── api/            # API endpoints (AI analyzer, barcode scanner, logs)
-    ├── components/         # Reusable global React components (Navbar, Modals, Scanner)
-    ├── features/           # Redux slices
-    ├── hooks/              # Custom React hooks
-    ├── i18n/               # Localization settings
-    ├── lib/                # Database connections, logger, API wrappers, and auth config
-    ├── store/              # Redux store configuration
-    └── types/              # TypeScript type definitions
-```
 
 ---
 
@@ -100,7 +79,7 @@ Create a `.env.local` file in the root directory and add the following configura
 # MongoDB Connection
 MONGODB_URI=mongodb://localhost:27017/fitup
 
-# Better Auth Secret (Generate a strong random string)
+# Better Auth Secret
 BETTER_AUTH_SECRET=your_better_auth_secret_here
 BETTER_AUTH_URL=http://localhost:3000
 
@@ -129,7 +108,7 @@ npx tsx scripts/seed-foods.ts
 # Seed physical activities
 npx tsx scripts/seed-activities.ts
 
-# Seed 30-day historical log data for local testing
+# Seed 30-day historical log data for local testing (don't forget to set userID inside this script)
 npx tsx scripts/seedUserMonth.ts
 ```
 
