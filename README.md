@@ -15,7 +15,7 @@ Fitup is a modern, full-featured **Calorie & Physical Activity Tracker** built w
 
 ---
 
-## 📷 Application showcase
+## Application showcase
 
 Here is a showcase video of application:
 
@@ -41,7 +41,7 @@ Here is a showcase video of application:
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework**: Next.js 16 (App Router), React 19, TypeScript
 - **Styling**: Tailwind CSS v4, Framer Motion, HeroUI (`@heroui/react`), React Icons
@@ -54,7 +54,7 @@ Here is a showcase video of application:
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 Follow these steps to run the application locally:
 
