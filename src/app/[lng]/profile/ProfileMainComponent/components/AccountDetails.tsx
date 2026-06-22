@@ -38,18 +38,15 @@ export default function AccountDetails({ user }: { user: User }) {
       image: values.image,
     });
 
-    await showToast.promise(
-      res,
-      {
-        pending: t("toast.pending"),
-        success: t("toast.success"),
-        error: {
-          render({ data }: { data?: { message?: string } }) {
-            return data?.message || t("toast.error");
-          },
+    await showToast.promise(res, {
+      pending: t("toast.pending"),
+      success: t("toast.success"),
+      error: {
+        render({ data }: { data?: { message?: string } }) {
+          return data?.message || t("toast.error");
         },
       },
-    );
+    });
     router.refresh();
   };
 
@@ -88,6 +85,7 @@ export default function AccountDetails({ user }: { user: User }) {
               const response = await fetch("/api/upload", {
                 method: "POST",
                 body: formData,
+                credentials: "include",
               });
 
               const data = (await response

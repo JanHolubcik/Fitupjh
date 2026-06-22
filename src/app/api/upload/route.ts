@@ -2,8 +2,12 @@ import { put } from "@vercel/blob";
 import { NextRequest } from "next/server";
 import { ApiSuccess, ApiError } from "@/lib/api-response";
 import { logger } from "@/lib/logger";
+import { withAuth } from "../functions";
 
 export async function POST(request: NextRequest) {
+    return withAuth(request, async () => {
+
+
   try {
     const form = await request.formData();
     const file = form.get("file") as File;
@@ -23,4 +27,5 @@ export async function POST(request: NextRequest) {
     logger.error("Upload Error:", error);
     return ApiError("Upload failed", 500);
   }
+  });
 }
