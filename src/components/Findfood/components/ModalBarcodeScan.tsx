@@ -105,9 +105,6 @@ const ModalBarcodeScan = (props: props) => {
     await scanProduct(rawValue);
   };
 
-  const ua = navigator.userAgent;
-  const isChromeMobile = /Chrome/i.test(ua) && /Android|iPhone|iPad/i.test(ua);
-
   useEffect(() => {
     console.log(data);
     if (data) {
@@ -214,12 +211,6 @@ const ModalBarcodeScan = (props: props) => {
                       <h4 className="text-sm font-semibold text-slate-800 dark:text-zinc-200">
                         {t("modalBarcodeScan.autoFetch")}
                       </h4>
-                      {isChromeMobile && (
-                        <p className="text-xs text-slate-500 dark:text-zinc-400 mt-2">
-                          <strong>{t("modalBarcodeScan.chromeUsers")}</strong>{" "}
-                          {t("modalBarcodeScan.chromeBug")}
-                        </p>
-                      )}
                     </div>
                   )}
                   {isErrorScan && (
@@ -291,4 +282,3 @@ const ModalBarcodeScan = (props: props) => {
 };
 
 export default ModalBarcodeScan;
-

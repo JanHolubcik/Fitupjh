@@ -75,15 +75,13 @@
   text-shadow: none !important;
 }
 
-/* Primary "Next/Done" button styling to match your blue */
 .driver-popover-footer .driver-popover-next-btn {
   background-color: #3b82f6 !important; /* Tailwind blue-500 */
   color: white !important;
   border: none !important;
 }
 
-/* Dark Mode Overrides */
-/* Assuming you use the standard `<html class="dark">` for Tailwind */
+
 .dark .driver-popover {
   background-color: #18181b !important; /* Tailwind zinc-900 */
   color: #ffffff !important;
@@ -98,7 +96,7 @@
   color: #a1a1aa !important; /* Tailwind zinc-400 */
 }
 
-/* Dark mode secondary buttons (Prev/Close) */
+
 .dark .driver-popover-footer .driver-popover-prev-btn,
 .dark .driver-popover-footer .driver-popover-close-btn {
   color: #d4d4d8 !important; /* zinc-300 */
@@ -112,7 +110,6 @@
   bottom: 24px !important;
 }
 
-/* Base Toast item override */
 .Toastify__toast {
   border-radius: 14px !important;
   padding: 12px 16px !important;
@@ -123,7 +120,7 @@
   -webkit-backdrop-filter: blur(12px) !important;
 }
 
-/* Light Mode specific overrides */
+
 .Toastify__toast-theme--light {
   background-color: rgba(255, 255, 255, 0.85) !important;
   color: #18181b !important; /* zinc-900 */
@@ -131,7 +128,7 @@
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05) !important;
 }
 
-/* Dark Mode specific overrides */
+
 .dark .Toastify__toast,
 .Toastify__toast-theme--dark {
   background-color: rgba(24, 24, 27, 0.85) !important; /* zinc-900 */
@@ -140,7 +137,7 @@
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3) !important;
 }
 
-/* Close Button overrides */
+
 .Toastify__close-button {
   color: inherit !important;
   opacity: 0.5 !important;
