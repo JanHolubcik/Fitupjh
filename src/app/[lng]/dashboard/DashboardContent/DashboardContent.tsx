@@ -21,6 +21,7 @@ import { authClient } from "@/lib/auth-client";
 import MyGraph from "@/components/ChartProgress/GraphProgressComponent";
 import useGuide from "@/hooks/useGuide";
 import AccordionActivity from "../AccordionActivity/AccordionActivity";
+import { useEffect, useState } from "react";
 
 type props = {
   dateTo: string;
@@ -28,11 +29,16 @@ type props = {
 };
 
 const DashboardContent = ({ dateTo, dateFrom }: props) => {
+  const [mounted, setMounted] = useState(false);
   const { data: session, isPending } = authClient.useSession();
   const { isFetching } = useLoadSavedFood({ dateTo, dateFrom });
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useGuide({ isFetched: !isFetching, user: session?.user || undefined });
-  if (isFetching || isPending)
+  if (!mounted || isFetching || isPending)
     return (
       <div className="flex flex-col gap-3 mt-3 items-center max-w-2xl w-full ">
         <DateSwitcherSkeleton />
@@ -61,4 +67,3 @@ const DashboardContent = ({ dateTo, dateFrom }: props) => {
 };
 
 export default DashboardContent;
-

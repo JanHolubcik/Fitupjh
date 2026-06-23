@@ -29,6 +29,7 @@ import {
   Legend,
   BarController,
   LineController,
+  Filler,
 } from "chart.js";
 import { Dispatch, SetStateAction } from "react";
 import { Chart as ReactChart } from "react-chartjs-2";
@@ -58,6 +59,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
+  Filler,
 );
 
 const tableData = (
