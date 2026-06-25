@@ -1,6 +1,7 @@
 name: Sync shared files to fitup-native
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
