@@ -3,7 +3,7 @@ name: Sync shared files to fitup-native
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - "src/lib/queriesOptions/**"
       - "src/i18n/locales/**"
