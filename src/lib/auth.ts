@@ -1,8 +1,10 @@
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "@better-auth/mongo-adapter";
+import { expo } from "@better-auth/expo";
 import client from "./mongo/mongodb";
 
 export const auth = betterAuth({
+  plugins: [expo()],
   database: mongodbAdapter(client.db(), {
     client,
   }),

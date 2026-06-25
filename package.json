@@ -9,6 +9,7 @@
     "lint": "eslint . --config eslint.config.mjs"
   },
   "dependencies": {
+    "@better-auth/expo": "^1.6.20",
     "@better-auth/mongo-adapter": "^1.6.19",
     "@google/genai": "^2.8.0",
     "@heroicons/react": "^2.2.0",
@@ -21,7 +22,7 @@
     "@vercel/speed-insights": "^1.1.0",
     "@yudiel/react-qr-scanner": "^2.6.0",
     "bcrypt": "^5.1.1",
-    "better-auth": "^1.6.19",
+    "better-auth": "^1.6.20",
     "browser-image-compression": "^2.0.2",
     "date-fns": "^4.1.0",
     "dotenv": "^17.2.3",
@@ -46,11 +47,11 @@
   },
   "devDependencies": {
     "@netlify/plugin-nextjs": "^5.8.1",
+    "@tailwindcss/postcss": "^4.0.0",
     "@types/bcrypt": "^5.0.2",
     "@types/node": "^20",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
-    "@tailwindcss/postcss": "^4.0.0",
     "baseline-browser-mapping": "^2.9.12",
     "eslint": "^9.9.0",
     "eslint-config-next": "16.1.1",

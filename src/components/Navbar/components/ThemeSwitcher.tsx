@@ -29,4 +29,3 @@ function ThemeSwitcher() {
 }
 
 export default ThemeSwitcher;
-
