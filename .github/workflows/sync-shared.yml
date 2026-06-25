@@ -1,0 +1,58 @@
+name: Sync shared files to fitup-native
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/lib/queriesOptions/**"
+      - "src/i18n/locales/**"
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Next.js repo (source)
+        uses: actions/checkout@v4
+        with:
+          path: nextjs
+
+      - name: Checkout React Native repo (target)
+        uses: actions/checkout@v4
+        with:
+          repository: JanHolubcik/fitup-native
+          token: ${{ secrets.PAT_TOKEN }}
+          path: rn
+
+      # ── Locales ───────────────────────────────────────────────────────────────
+      - name: Sync locales
+        run: |
+          rm -rf rn/src/i18n/locales
+          cp -r nextjs/src/i18n/locales rn/src/i18n/locales
+
+      # ── Query options ─────────────────────────────────────────────────────────
+      - name: Sync queriesOptions
+        run: |
+          rm -rf rn/src/app/lib/queriesOptions
+          mkdir -p rn/src/app/lib/queriesOptions
+          cp -r nextjs/src/lib/queriesOptions/. rn/src/app/lib/queriesOptions/
+
+      # ── Open a PR in the RN repo ──────────────────────────────────────────────
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
+          path: rn
+          commit-message: "chore: sync shared files from Fitupjh"
+          branch: "sync/shared-from-nextjs"
+          delete-branch: true
+          title: "chore: sync shared files from Next.js"
+          body: |
+            Automated sync triggered by a push to `main` in [Fitupjh](https://github.com/JanHolubcik/Fitupjh).
+
+            **Changed directories:**
+            - `src/i18n/locales` → `src/i18n/locales`
+            - `src/lib/queriesOptions` → `src/app/lib/queriesOptions`
+
+            Review the diff and merge when ready.
+          labels: "sync,automated"
