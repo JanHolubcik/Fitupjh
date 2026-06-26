@@ -32,6 +32,7 @@ export const auth = betterAuth({
       targetSugar: { type: "number", required: false },
       manualOverride: { type: "boolean", required: false },
       guideSeen: { type: "boolean", defaultValue: false },
+      termsAccepted: { type: "boolean", defaultValue: false },
     },
   },
   experimental: { joins: true },

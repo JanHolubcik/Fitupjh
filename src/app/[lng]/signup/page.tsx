@@ -9,6 +9,7 @@ import {
   Input,
   Link,
   Spinner,
+  Checkbox,
 } from "@heroui/react";
 
 import { signupSchema } from "@/lib/validationShemas/signupValidationSchema";
@@ -40,6 +41,7 @@ export default function Signup() {
       password: "",
       height: "",
       weight: "",
+      termsAccepted: false,
     },
 
     validate: (values) => {
@@ -75,6 +77,7 @@ export default function Signup() {
             callbackURL: "/dashboard", // A URL to redirect to after the user verifies their email (optional)
             weight: Number(values.weight),
             height: Number(values.height),
+            termsAccepted: values.termsAccepted,
           },
           {
             onRequest: (ctx) => {
@@ -192,11 +195,41 @@ export default function Signup() {
               </div>
             )}
 
+            <Checkbox
+              isSelected={formik.values.termsAccepted}
+              onValueChange={(isSelected) =>
+                formik.setFieldValue("termsAccepted", isSelected)
+              }
+              className="w-full"
+              classNames={{
+                label:
+                  "text-xs font-normal text-zinc-500 dark:text-zinc-400 select-none",
+              }}
+            >
+              <span>{t("agreeText")}</span>
+              <Link
+                as={NextLink}
+                href={`/${lng}/terms-of-use`}
+                className="text-xs font-semibold text-primary hover:underline cursor-pointer  inline-block"
+              >
+                {t("termsOfUseLinkText")}
+              </Link>
+              <span className="">{t("andText")}</span>
+              <Link
+                as={NextLink}
+                href={`/${lng}/privacy-policy`}
+                className="text-xs font-semibold text-primary hover:underline cursor-pointer inline-block"
+              >
+                {t("privacyPolicyLinkText")}
+              </Link>
+              <span>{t("agreePeriod")}</span>
+            </Checkbox>
+
             <Button
               className="w-full mt-4 font-bold text-lg h-12"
               type="submit"
               color="primary"
-              isDisabled={formik.isSubmitting}
+              isDisabled={formik.isSubmitting || !formik.values.termsAccepted}
             >
               {formik.isSubmitting ? (
                 <div className="flex items-center gap-2">
@@ -219,26 +252,7 @@ export default function Signup() {
               >
                 {t("logInLink")}
               </Link>
-              <SignOAuth />
-              <div className="mt-6 text-center text-xs font-normal text-zinc-500 dark:text-zinc-400">
-                {t("agreeText")}
-                <Link
-                  as={NextLink}
-                  href={`/${lng}/terms-of-use`}
-                  className="text-xs font-semibold text-primary hover:underline cursor-pointer"
-                >
-                  {t("termsOfUseLinkText")}
-                </Link>
-                {t("andText")}
-                <Link
-                  as={NextLink}
-                  href={`/${lng}/privacy-policy`}
-                  className="text-xs font-semibold text-primary hover:underline cursor-pointer"
-                >
-                  {t("privacyPolicyLinkText")}
-                </Link>
-                {t("agreePeriod")}
-              </div>
+              <SignOAuth disabled={!formik.values.termsAccepted} />
             </div>
           </form>
         </CardBody>
