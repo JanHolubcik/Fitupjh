@@ -72,11 +72,19 @@ export default function Home() {
             </Button>
           </div>
 
-          <div className="mt-2 text-center">
+          <div className="mt-3 flex flex-row items-center justify-center gap-3 text-[11px] font-medium text-default-400">
+            <Link
+              as={NextLink}
+              href={`/${lng}/terms-of-use`}
+              className="text-[11px] text-default-400 hover:text-primary transition-colors cursor-pointer"
+            >
+              {lng === "sk" ? "Podmienky používania" : "Terms of Use"}
+            </Link>
+            <span>•</span>
             <Link
               as={NextLink}
               href={`/${lng}/privacy-policy`}
-              className="text-[11px] font-medium text-default-400 hover:text-primary transition-colors cursor-pointer"
+              className="text-[11px] text-default-400 hover:text-primary transition-colors cursor-pointer"
             >
               {lng === "sk" ? "Zásady ochrany osobných údajov" : "Privacy Policy"}
             </Link>

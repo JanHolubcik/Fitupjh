@@ -1,0 +1,50 @@
+{
+  "title": "Terms of Use",
+  "lastUpdated": "Last updated: June 27, 2026",
+  "backBtn": "Go Back",
+  "intro": "Welcome to FitUp. By accessing or using our website and services, you agree to be bound by these Terms of Use. If you do not agree to these terms, please do not use our services.",
+  "sections": [
+    {
+      "title": "1. Use of Service",
+      "items": [
+        "You must use the service only in compliance with these Terms and all applicable laws.",
+        "You are responsible for maintaining the confidentiality of your account credentials."
+      ]
+    },
+    {
+      "title": "2. Health and Fitness Content",
+      "items": [
+        "FitUp provides calorie tracking and general nutrition information for informational purposes only.",
+        "We do not provide medical or professional health advice. Please consult a qualified healthcare professional before making significant changes to your diet or exercise routine."
+      ]
+    },
+    {
+      "title": "3. User Generated Content",
+      "items": [
+        "You retain ownership of the data and logs you input into the application.",
+        "You grant us a license to process and store this content solely for the purpose of providing the tracking service to you."
+      ]
+    },
+    {
+      "title": "4. Limitation of Liability",
+      "items": [
+        "FitUp is provided 'as is' and 'as available'. We do not guarantee uninterrupted or error-free operation.",
+        "To the maximum extent permitted by law, we shall not be liable for any indirect, incidental, or consequential damages."
+      ]
+    },
+    {
+      "title": "5. Termination",
+      "items": [
+        "We reserve the right to suspend or terminate your access to our services if you violate these Terms.",
+        "You can terminate your relationship with us at any time by deleting your account."
+      ]
+    },
+    {
+      "title": "6. Changes to Terms",
+      "items": [
+        "We may update these Terms of Use from time to time. Your continued use of the service after changes are made constitutes acceptance of the new terms.",
+        "For any inquiries regarding these Terms, contact us at jan.holubcik1@gmail.com."
+      ]
+    }
+  ]
+}

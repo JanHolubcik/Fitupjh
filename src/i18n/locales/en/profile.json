@@ -64,6 +64,8 @@
     "title": "Legal & Privacy",
     "privacyPolicy": "Privacy Policy",
     "privacyPolicyDesc": "Read our privacy policy to understand how we collect, process, and protect your data.",
+    "termsOfUse": "Terms of Use",
+    "termsOfUseDesc": "Read our terms of use to understand your rights and responsibilities.",
     "view": "View"
   }
 }

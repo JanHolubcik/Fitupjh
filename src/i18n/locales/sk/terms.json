@@ -1,0 +1,50 @@
+{
+  "title": "Podmienky používania",
+  "lastUpdated": "Posledná aktualizácia: 27. júna 2026",
+  "backBtn": "Späť",
+  "intro": "Vitajte vo FitUp. Prístupom k našim službám alebo ich používaním súhlasíte s týmito Podmienkami používania. Ak s týmito podmienkami nesúhlasíte, nepoužívajte prosím naše služby.",
+  "sections": [
+    {
+      "title": "1. Používanie služieb",
+      "items": [
+        "Naše služby musíte používať v súlade s týmito Podmienkami a všetkými platnými zákonmi.",
+        "Zodpovedáte za uchovanie dôvernosti prihlasovacích údajov k vášmu účtu."
+      ]
+    },
+    {
+      "title": "2. Informácie o zdraví a fitness",
+      "items": [
+        "FitUp poskytuje sledovanie kalórií a všeobecné informácie o výžive výhradne na informačné účely.",
+        "Neposkytujeme lekársku ani profesionálnu zdravotnú starostlivosť. Pred akoukoľvek významnou zmenou vašej stravy alebo cvičebného plánu sa poraďte s kvalifikovaným lekárom."
+      ]
+    },
+    {
+      "title": "3. Používateľský obsah",
+      "items": [
+        "Vlastníte všetky údaje a záznamy, ktoré vložíte do aplikácie.",
+        "Udeľujete nám právo na spracovanie a ukladanie tohto obsahu výlučne na účely poskytovania sledovacích služieb pre vás."
+      ]
+    },
+    {
+      "title": "4. Obmedzenie zodpovednosti",
+      "items": [
+        "Služba FitUp je poskytovaná v stave 'ako stojí a leží' a 'ako je k dispozícii'. Nezaručujeme nepretržitú ani bezchybnú prevádzku.",
+        "V maximálnej miere povolenej zákonom nezodpovedáme za žiadne nepriame, náhodné ani následné škody."
+      ]
+    },
+    {
+      "title": "5. Ukončenie používania",
+      "items": [
+        "Vyhradzujeme si právo pozastaviť alebo zrušiť váš prístup k našim službám, ak porušíte tieto Podmienky.",
+        "Vzťah s nami môžete kedykoľvek ukončiť vymazaním svojho účtu."
+      ]
+    },
+    {
+      "title": "6. Zmeny podmienok",
+      "items": [
+        "Tieto Podmienky používania môžeme z času na čas aktualizovať. Vaše ďalšie používanie služby po vykonaní zmien znamená súhlas s novými podmienkami.",
+        "V prípade akýchkoľvek otázok ohľadom týchto podmienok nás kontaktujte na jan.holubcik1@gmail.com."
+      ]
+    }
+  ]
+}

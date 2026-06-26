@@ -13,6 +13,8 @@
   "hasAccountText": "Už máte účet? ",
   "logInLink": "Prihlásiť sa",
   "agreeText": "Registráciou súhlasíte s našimi ",
+  "termsOfUseLinkText": "Podmienkami používania",
+  "andText": " a ",
   "privacyPolicyLinkText": "Zásadami ochrany osobných údajov",
   "agreePeriod": ".",
   "errors": {

@@ -20,8 +20,8 @@ export const LegalCard = () => {
         </h3>
       </CardHeader>
       <Divider className="bg-zinc-200 dark:bg-zinc-800" />
-      <CardBody className="px-6 py-4 flex flex-col gap-4">
-        <div className="flex flex-row justify-between items-center py-2">
+      <CardBody className="px-6 py-2 flex flex-col gap-0">
+        <div className="flex flex-row justify-between items-center py-4 border-b border-zinc-100 dark:border-zinc-800/50">
           <div className="flex flex-col gap-0.5 pr-4">
             <span className="text-sm font-bold text-zinc-900 dark:text-white">
               {t("legal.privacyPolicy")}
@@ -33,6 +33,25 @@ export const LegalCard = () => {
           <Link
             as={NextLink}
             href={`/${lng}/privacy-policy`}
+            color="primary"
+            className="text-sm font-semibold hover:underline shrink-0"
+          >
+            {t("legal.view")} →
+          </Link>
+        </div>
+
+        <div className="flex flex-row justify-between items-center py-4">
+          <div className="flex flex-col gap-0.5 pr-4">
+            <span className="text-sm font-bold text-zinc-900 dark:text-white">
+              {t("legal.termsOfUse")}
+            </span>
+            <span className="text-xs text-zinc-500 dark:text-zinc-400">
+              {t("legal.termsOfUseDesc")}
+            </span>
+          </div>
+          <Link
+            as={NextLink}
+            href={`/${lng}/terms-of-use`}
             color="primary"
             className="text-sm font-semibold hover:underline shrink-0"
           >

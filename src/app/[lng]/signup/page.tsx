@@ -224,12 +224,20 @@ export default function Signup() {
                 {t("agreeText")}
                 <Link
                   as={NextLink}
+                  href={`/${lng}/terms-of-use`}
+                  className="text-xs font-semibold text-primary hover:underline cursor-pointer"
+                >
+                  {t("termsOfUseLinkText")}
+                </Link>
+                {t("andText")}
+                <Link
+                  as={NextLink}
                   href={`/${lng}/privacy-policy`}
                   className="text-xs font-semibold text-primary hover:underline cursor-pointer"
                 >
                   {t("privacyPolicyLinkText")}
                 </Link>
-                .
+                {t("agreePeriod")}
               </div>
             </div>
           </form>

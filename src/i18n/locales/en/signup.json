@@ -13,7 +13,10 @@
   "hasAccountText": "Already have an account? ",
   "logInLink": "Log in",
   "agreeText": "By signing up, you agree to our ",
+  "termsOfUseLinkText": "Terms of Use",
+  "andText": " and ",
   "privacyPolicyLinkText": "Privacy Policy",
+  "agreePeriod": ".",
   "errors": {
     "missingFields": "Missing required fields.",
     "usernameTooShort": "Username is too short.",
