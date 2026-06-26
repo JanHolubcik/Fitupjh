@@ -1,7 +1,7 @@
 "use client";
 
 import { authClient } from "@/lib/auth-client";
-import { Button } from "@heroui/react";
+import { Button, Link } from "@heroui/react";
 import NextLink from "next/link";
 import { FaHeartbeat } from "react-icons/fa";
 
@@ -70,6 +70,16 @@ export default function Home() {
             >
               {t("button")}
             </Button>
+          </div>
+
+          <div className="mt-2 text-center">
+            <Link
+              as={NextLink}
+              href={`/${lng}/privacy-policy`}
+              className="text-[11px] font-medium text-default-400 hover:text-primary transition-colors cursor-pointer"
+            >
+              {lng === "sk" ? "Zásady ochrany osobných údajov" : "Privacy Policy"}
+            </Link>
           </div>
         </div>
       </div>

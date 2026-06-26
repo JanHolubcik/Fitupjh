@@ -7,6 +7,7 @@ import { BiometricAndGoals } from "./components/BiometricAndGoals";
 import { DeleteAccount } from "./components/DeteteAccount";
 import { ChangePassword } from "./components/ChangePassword";
 import { ProfileSkeleton } from "./components/ProfileSkeleton";
+import { LegalCard } from "./components/LegalCard";
 
 export default function ProfileMainComponent() {
   const { data } = authClient.useSession();
@@ -22,6 +23,7 @@ export default function ProfileMainComponent() {
         {/* <ChangeEmail user={user} /> */}
         <ChangePassword />
         <BiometricAndGoals user={user} />
+        <LegalCard />
         <DeleteAccount />
       </div>
     </div>

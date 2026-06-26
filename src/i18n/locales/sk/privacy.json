@@ -1,0 +1,52 @@
+{
+  "title": "Zásady ochrany osobných údajov",
+  "lastUpdated": "Posledná aktualizácia: 27. júna 2026",
+  "backBtn": "Späť",
+  "intro": "Vitajte vo FitUp. Rešpektujeme vaše súkromie a zaväzujeme sa chrániť vaše osobné údaje. Tieto zásady ochrany osobných údajov vysvetľujú, ako zhromažďujeme, používame a chránime vaše informácie pri používaní našej webovej stránky a služieb.",
+  "sections": [
+    {
+      "title": "1. Údaje, ktoré zhromažďujeme",
+      "items": [
+        "Údaje o účte: Pri registrácii zhromažďujeme vašu e-mailovú adresu, zobrazované meno a profilový obrázok (ak ho poskytnete).",
+        "Biometrické údaje a ciele: Pre výpočet kalorických odporúčaní zhromažďujeme vašu výšku, hmotnosť, úroveň aktivity a fitness ciele.",
+        "Záznamy o jedle a aktivitách: Ukladáme vaše záznamy o jedle, cvičeniach a príjme kalórií/makroživín, aby ste mohli sledovať svoj progres.",
+        "Zariadenie a médiá: Ak používate funkciu fotenia alebo skenovania jedla, aplikácia pristupuje k fotoaparátu/galérii vášho zariadenia. Obrázky sa spracovávajú prostredníctvom rozhrania API s cieľom identifikovať potraviny a ukladajú sa na našich serveroch."
+      ]
+    },
+    {
+      "title": "2. Ako používame vaše údaje",
+      "items": [
+        "Na poskytovanie, udržiavanie a zlepšovanie funkcií FitUp.",
+        "Na výpočet a aktualizáciu vašich denných potrieb kalórií a makroživín.",
+        "Na zobrazenie štatistík, grafov histórie a detailov záznamov vo vašom prehľade."
+      ]
+    },
+    {
+      "title": "3. Zdieľanie a uchovávanie údajov",
+      "items": [
+        "Vaše osobné údaje nepredávame, neprenajímame ani s nimi neobchodujeme s tretími stranami.",
+        "Na ukladanie informácií o vašom účte používame štandardné a bezpečné databázy a overovacie služby tretích strán.",
+        "Vaše údaje uchovávame dovtedy, kým máte aktívny účet."
+      ]
+    },
+    {
+      "title": "4. Vymazanie údajov",
+      "items": [
+        "Máte plnú kontrolu nad svojimi údajmi. Svoj účet môžete kedykoľvek natrvalo vymazať v nastaveniach profilu.",
+        "Výberom možnosti „Vymazať účet“ sa okamžite a nezvratne vymažú všetky vaše osobné údaje, biometrické záznamy a história stravovania/aktivít z našich databáz."
+      ]
+    },
+    {
+      "title": "5. Súbory cookies",
+      "items": [
+        "Používame nevyhnutné súbory cookies na udržiavanie relácií overovania používateľov a zapamätanie si predvolieb používateľa (téma, jazyk)."
+      ]
+    },
+    {
+      "title": "6. Kontaktujte nás",
+      "items": [
+        "Ak máte akékoľvek otázky týkajúce sa týchto Zásad ochrany osobných údajov, kontaktujte nás na adrese jan.holubcik1@gmail.com."
+      ]
+    }
+  ]
+}

@@ -59,5 +59,11 @@
     "deleteSuccess": "Account deleted successfully!",
     "biometricPending": "Updating biometrics...",
     "biometricSuccess": "Biometrics updated successfully!"
+  },
+  "legal": {
+    "title": "Legal & Privacy",
+    "privacyPolicy": "Privacy Policy",
+    "privacyPolicyDesc": "Read our privacy policy to understand how we collect, process, and protect your data.",
+    "view": "View"
   }
 }

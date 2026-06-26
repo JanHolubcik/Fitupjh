@@ -12,6 +12,9 @@
   "signUpButton": "Zaregistrovať sa",
   "hasAccountText": "Už máte účet? ",
   "logInLink": "Prihlásiť sa",
+  "agreeText": "Registráciou súhlasíte s našimi ",
+  "privacyPolicyLinkText": "Zásadami ochrany osobných údajov",
+  "agreePeriod": ".",
   "errors": {
     "missingFields": "Chýbajú povinné údaje.",
     "usernameTooShort": "Používateľské meno je príliš krátke.",

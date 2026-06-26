@@ -12,6 +12,8 @@
   "signUpButton": "Sign Up",
   "hasAccountText": "Already have an account? ",
   "logInLink": "Log in",
+  "agreeText": "By signing up, you agree to our ",
+  "privacyPolicyLinkText": "Privacy Policy",
   "errors": {
     "missingFields": "Missing required fields.",
     "usernameTooShort": "Username is too short.",

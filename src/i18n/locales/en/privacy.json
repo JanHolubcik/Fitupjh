@@ -1,0 +1,52 @@
+{
+  "title": "Privacy Policy",
+  "lastUpdated": "Last updated: June 27, 2026",
+  "backBtn": "Go Back",
+  "intro": "Welcome to FitUp. We respect your privacy and are committed to protecting your personal data. This privacy policy explains how we collect, use, and protect your information when you use our website and services.",
+  "sections": [
+    {
+      "title": "1. Information We Collect",
+      "items": [
+        "Account Data: When you sign up, we collect your email address, display name, and profile picture (if provided).",
+        "Biometrics & Health Goals: To calculate personalized calorie recommendations, we collect your height, weight, activity level, and fitness goals.",
+        "Usage & Logging Data: We store your food logging records, activity records, and calorie/macronutrient intakes to track your progress over time.",
+        "Device & Media: If you use the food scanning or camera features, the application accesses your device camera/gallery. Images are processed via API for the purpose of identifying food items and are stored on our servers."
+      ]
+    },
+    {
+      "title": "2. How We Use Your Data",
+      "items": [
+        "To provide, maintain, and improve the FitUp features.",
+        "To calculate and update your daily calorie and macronutrient requirements.",
+        "To display insights, history graphs, and log details in your dashboard."
+      ]
+    },
+    {
+      "title": "3. Data Sharing & Retention",
+      "items": [
+        "We do not sell, rent, or trade your personal data with third parties.",
+        "We use standard and secure third-party databases and authentication services to store your account information.",
+        "Your data is stored as long as you have an active account."
+      ]
+    },
+    {
+      "title": "4. Data Deletion",
+      "items": [
+        "You have complete control over your data. You can permanently delete your account at any time via the Profile settings page.",
+        "Selecting \"Delete Account\" will immediately and irreversibly erase all your personal details, biometric records, and nutrition/activity history from our databases."
+      ]
+    },
+    {
+      "title": "5. Cookies",
+      "items": [
+        "We use essential cookies to maintain user authentication sessions and remember user preferences (theme, language)."
+      ]
+    },
+    {
+      "title": "6. Contact Us",
+      "items": [
+        "If you have any questions about this Privacy Policy, please contact us at jan.holubcik1@gmail.com."
+      ]
+    }
+  ]
+}

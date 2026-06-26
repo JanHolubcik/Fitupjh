@@ -220,6 +220,17 @@ export default function Signup() {
                 {t("logInLink")}
               </Link>
               <SignOAuth />
+              <div className="mt-6 text-center text-xs font-normal text-zinc-500 dark:text-zinc-400">
+                {t("agreeText")}
+                <Link
+                  as={NextLink}
+                  href={`/${lng}/privacy-policy`}
+                  className="text-xs font-semibold text-primary hover:underline cursor-pointer"
+                >
+                  {t("privacyPolicyLinkText")}
+                </Link>
+                .
+              </div>
             </div>
           </form>
         </CardBody>
