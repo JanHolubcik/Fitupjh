@@ -7,5 +7,9 @@
   "signInButton": "Sign In",
   "noAccountText": "Don't have an account? ",
   "signUpLink": "Sign up",
-  "invalidEmailPassword": "Invalid email or password."
+  "invalidEmailPassword": "Invalid email or password.",
+  "signInWithGoogle": "Continue with Google",
+  "signInWithGitHub": "Continue with GitHub",
+  "signInWithDiscord": "Continue with Discord",
+  "orText": "or"
 }

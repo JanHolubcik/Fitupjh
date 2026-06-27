@@ -44,10 +44,10 @@ jobs:
         with:
           token: ${{ secrets.PAT_TOKEN }}
           path: rn
-          commit-message: "chore: sync shared files from Fitupjh"
+          commit-message: "chore: Sync shared files from Fitupjh"
           branch: "sync/shared-from-nextjs"
           delete-branch: true
-          title: "chore: sync shared files from Next.js"
+          title: "chore: Sync shared files from Next.js"
           body: |
             Automated sync triggered by a push to `main` in [Fitupjh](https://github.com/JanHolubcik/Fitupjh).
 

@@ -7,5 +7,9 @@
   "signInButton": "Prihlásiť sa",
   "noAccountText": "Nemáte ešte účet? ",
   "signUpLink": "Zaregistrovať sa",
-  "invalidEmailPassword": "Email alebo heslo je nesprávne."
+  "invalidEmailPassword": "Email alebo heslo je nesprávne.",
+  "signInWithGoogle": "Pokračovať cez Google",
+  "signInWithGitHub": "Pokračovať cez GitHub",
+  "signInWithDiscord": "Pokračovať cez Discord",
+  "orText": "alebo"
 }
