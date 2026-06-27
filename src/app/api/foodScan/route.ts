@@ -85,12 +85,7 @@ export async function POST(req: NextRequest) {
       });
     } catch (error) {
       logger.error("Critical Internal Server Error in POST /api/foodScan:", error);
-      return ApiError(
-        error instanceof Error
-          ? error.message
-          : "Database connection lost or internal crash.",
-        500,
-      );
+      return ApiError("Internal server error", 500);
     }
   });
 }

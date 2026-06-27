@@ -58,6 +58,11 @@ export async function POST(req: NextRequest) {
       return ApiError("Missing or invalid date", 400);
     }
 
+    const parsed = parseISO(date);
+    if (!isValid(parsed)) {
+      return ApiError("Invalid date format", 400);
+    }
+
     if (
       !savedFood ||
       typeof savedFood !== "object" ||
@@ -66,6 +71,25 @@ export async function POST(req: NextRequest) {
       !Array.isArray(savedFood.dinner)
     ) {
       return ApiError("Missing or invalid savedFood", 400);
+    }
+
+    // Validate meal items have expected numeric fields
+    const isValidFoodItem = (item: Record<string, unknown>): boolean =>
+      typeof item === "object" &&
+      item !== null &&
+      typeof item.name === "string" &&
+      typeof item.calories === "number" &&
+      typeof item.fat === "number" &&
+      typeof item.protein === "number";
+
+    const allItems = [
+      ...savedFood.breakfast,
+      ...savedFood.lunch,
+      ...savedFood.dinner,
+    ];
+
+    if (allItems.length > 0 && !allItems.every(isValidFoodItem)) {
+      return ApiError("Invalid food item in meal data", 400);
     }
 
     try {
