@@ -75,5 +75,13 @@
     "termsOfUse": "Terms of Use",
     "termsOfUseDesc": "Read our terms of use to understand your rights and responsibilities.",
     "view": "View"
+  },
+  "validation": {
+    "weightMin": "Weight must be at least 50 kg",
+    "weightMax": "Weight cannot exceed 300 kg",
+    "heightMin": "Height must be at least 50 cm",
+    "heightMax": "Height cannot exceed 300 cm",
+    "weightGoalMin": "Goal weight must be at least 50 kg",
+    "weightGoalMax": "Goal weight cannot exceed 300 kg"
   }
 }

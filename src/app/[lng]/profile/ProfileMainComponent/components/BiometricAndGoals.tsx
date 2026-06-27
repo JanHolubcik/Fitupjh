@@ -15,6 +15,7 @@ import { Formik, Form } from "formik";
 import { useT } from "next-i18next/client";
 import { useRouter } from "next/navigation";
 import { showToast } from "@/utils/toast";
+import { updateUserSchema } from "@/lib/validationShemas/userValidationSchema";
 
 type User = typeof authClient.$Infer.Session.user;
 
@@ -43,7 +44,7 @@ export const BiometricAndGoals = ({ user }: { user: User }) => {
         success: t("toast.biometricSuccess"),
         error: {
           render({ data }: { data?: { message?: string } }) {
-            return data?.message || t("toast.error");
+            return data?.message ? t(data.message) : t("toast.error");
           },
         },
       },
@@ -67,16 +68,26 @@ export const BiometricAndGoals = ({ user }: { user: User }) => {
           activityLevel: user?.activityLevel || "sedentary",
           goal: user?.goal || "loseWeight",
         }}
+        validate={(values) => {
+          const errors: Record<string, string> = {};
+          const result = updateUserSchema.safeParse(values);
+          if (!result.success) {
+            for (const issue of result.error.issues) {
+              const field = issue.path[0] as string;
+              errors[field] = t(issue.message);
+            }
+          }
+          return errors;
+        }}
         onSubmit={async (values, { setSubmitting }) => {
           await handleManualSubmit(values);
           setSubmitting(false);
         }}
       >
-        {({ values, handleChange, handleBlur, isSubmitting }) => (
+        {({ values, handleChange, handleBlur, isSubmitting, errors, touched }) => (
           <Form>
             <CardBody className="px-6 py-6 flex flex-col gap-5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Added size="sm" to all inputs here */}
                 <Input
                   size="sm"
                   name="weight"
@@ -87,8 +98,8 @@ export const BiometricAndGoals = ({ user }: { user: User }) => {
                   onBlur={handleBlur}
                   variant="faded"
                   isDisabled={isSubmitting}
-                  min={50}
-                  max={300}
+                  isInvalid={touched.weight && !!errors.weight}
+                  errorMessage={touched.weight && errors.weight}
                 />
                 <Input
                   size="sm"
@@ -100,8 +111,8 @@ export const BiometricAndGoals = ({ user }: { user: User }) => {
                   onBlur={handleBlur}
                   variant="faded"
                   isDisabled={isSubmitting}
-                  min={50}
-                  max={300}
+                  isInvalid={touched.weightGoal && !!errors.weightGoal}
+                  errorMessage={touched.weightGoal && errors.weightGoal}
                 />
                 <Input
                   size="sm"
@@ -113,8 +124,8 @@ export const BiometricAndGoals = ({ user }: { user: User }) => {
                   onBlur={handleBlur}
                   variant="faded"
                   isDisabled={isSubmitting}
-                  min={50}
-                  max={300}
+                  isInvalid={touched.height && !!errors.height}
+                  errorMessage={touched.height && errors.height}
                 />
                 <Select
                   size="sm"
