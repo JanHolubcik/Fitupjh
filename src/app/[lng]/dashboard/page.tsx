@@ -14,7 +14,7 @@ import {
   getActivity,
 } from "@/lib/mongo/activity-db";
 import { ActivitiesOptions } from "@/lib/queriesOptions/ActivitiesOptions";
-import { ActivityClass } from "@/lib/mongo/models/Activity";
+import { ActivityClass } from "@/types/Types";
 
 import { LastMonthSavedActivities } from "@/lib/queriesOptions/LastMonthSavedActivitiesOptions";
 import { LoggedActivityType } from "@/features/DashboardSlice/DashboardSlice";

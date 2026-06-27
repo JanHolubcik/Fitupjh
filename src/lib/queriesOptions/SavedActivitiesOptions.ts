@@ -1,5 +1,4 @@
-import { LoggedActivityType } from "@/features/DashboardSlice/DashboardSlice";
-import { ApiResponse } from "@/lib/api-response";
+import { LoggedActivityType, ApiResponse } from "@/types/Types";
 
 export const SavedActivitiesOptions = () => ({
   mutationFn: async ({

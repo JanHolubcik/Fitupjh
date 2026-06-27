@@ -1,6 +1,5 @@
 import { queryOptions } from "@tanstack/react-query";
-import { LoggedActivityType } from "@/features/DashboardSlice/DashboardSlice";
-import { ApiResponse } from "@/lib/api-response";
+import { LoggedActivityType, ApiResponse } from "@/types/Types";
 
 export const LastMonthSavedActivities = (dateFrom: string, dateTo: string) =>
   queryOptions({

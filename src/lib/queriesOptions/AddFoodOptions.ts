@@ -1,6 +1,4 @@
-import { FoodInput } from "@/lib/validationShemas/foodValidationSchema";
-import { ApiResponse } from "@/lib/api-response";
-import { FoodClass } from "@/lib/mongo/models/Food";
+import { FoodInput, ApiResponse, FoodClass } from "@/types/Types";
 
 export const AddFoodOptions = () => ({
   mutationFn: async (foodData: FoodInput): Promise<FoodClass> => {

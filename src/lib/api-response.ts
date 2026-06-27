@@ -1,10 +1,8 @@
 import { NextResponse } from "next/server";
+import { ApiResponse } from "@/types/Types";
 
-export type ApiResponse<T = unknown> = {
-  success: boolean;
-  data?: T;
-  error?: string;
-};
+export type { ApiResponse };
+
 
 /**
  * Returns a standardized JSON success response.

@@ -13,7 +13,7 @@ type macrosLocal = {
   carbohydrates: number;
   fiber: number;
   salt: number;
-  imgUrl: string;
+  imgUrl?: string;
   originalName?: string;
 };
 

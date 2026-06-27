@@ -11,7 +11,7 @@ import {
 
 import { useT } from "next-i18next/client";
 import { showToast } from "@/utils/toast";
-import { ActivityClass } from "@/lib/mongo/models/Activity";
+import { ActivityClass } from "@/types/Types";
 import useActivityOperations from "@/hooks/useActivityOperations";
 import { usePathname } from "next/navigation";
 import { useModalBackButton } from "@/hooks/useModalBackButton";

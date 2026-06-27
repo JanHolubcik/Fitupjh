@@ -1,4 +1,71 @@
-import { FoodClass } from "@/lib/mongo/models/Food";
+export type FoodClass = {
+  _id?: string;
+  id?: string;
+  name: string;
+  localizedNames?: Record<string, string>;
+  calories_per_100g: number;
+  fat: number;
+  protein: number;
+  sugar: number;
+  carbohydrates: number;
+  fiber: number;
+  salt: number;
+  ProductWeight?: number;
+  QRcode?: string;
+  imgUrl?: string;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+export type ActivityClass = {
+  _id: string;
+  id?: string;
+  name: string;
+  localizedNames?: Record<string, string>;
+  metValue: number;
+  category?: string;
+  icon?: string;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+export type SavedFoodClass = {
+  _id?: string;
+  day: string;
+  savedFood?: FoodType;
+  user_id?: string;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+export type LoggedActivityType = {
+  id: string | number;
+  activity: string;
+  durationMinutes: number;
+  caloriesBurned: number;
+};
+
+
+export type ApiResponse<T = never> = {
+  success: boolean;
+  data?: T;
+  error?: string;
+};
+
+export type FoodInput = {
+  name: string;
+  calories_per_100g: number;
+  fat: number;
+  protein: number;
+  sugar: number;
+  carbohydrates: number;
+  fiber: number;
+  salt: number;
+  barcode?: string;
+  imgUrl?: string;
+  ProductWeight?: number;
+};
+
 
 export type ReturnTypeFood =
   | (FoodClass & { originalName?: string })[]

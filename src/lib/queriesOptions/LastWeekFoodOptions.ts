@@ -1,5 +1,4 @@
-import { SavedFoodClass } from "@/lib/mongo/models/SavedFood";
-import { ApiResponse } from "@/lib/api-response";
+import { SavedFoodClass, ApiResponse } from "@/types/Types";
 import { queryOptions } from "@tanstack/react-query";
 
 export const LastWeekFoodOptions = (dateFrom: string, dateTo: string) =>

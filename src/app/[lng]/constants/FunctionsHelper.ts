@@ -1,6 +1,4 @@
-import { LoggedActivityType } from "@/features/DashboardSlice/DashboardSlice";
-import { FoodType, timeOfDay } from "@/types/Types";
-import { macros } from "@/types/Types";
+import { FoodType, timeOfDay, macros, LoggedActivityType } from "@/types/Types";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 //readonly[("breakfast", "lunch", "dinner")];
 export const capitalizeFirstLetter = (string: string) => {
@@ -103,7 +101,7 @@ export const useIsSm = () => {
 
     setIsSm(media.matches);
 
-    const listener = (e: any) => setIsSm(e.matches);
+    const listener = (e: MediaQueryListEvent) => setIsSm(e.matches);
     media.addEventListener("change", listener);
 
     return () => media.removeEventListener("change", listener);
@@ -121,7 +119,7 @@ export const useIsMd = () => {
 
     setIsMd(media.matches);
 
-    const listener = (e: any) => setIsMd(e.matches);
+    const listener = (e: MediaQueryListEvent) => setIsMd(e.matches);
     media.addEventListener("change", listener);
 
     return () => media.removeEventListener("change", listener);

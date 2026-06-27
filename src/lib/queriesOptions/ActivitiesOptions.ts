@@ -1,6 +1,5 @@
 import { queryOptions } from "@tanstack/react-query";
-import { ActivityClass } from "../mongo/models/Activity";
-import { ApiResponse } from "@/lib/api-response";
+import { ActivityClass, ApiResponse } from "@/types/Types";
 
 export const ActivitiesOptions = () =>
   queryOptions({

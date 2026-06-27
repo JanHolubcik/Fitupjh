@@ -1,5 +1,4 @@
-import { FoodClass } from "@/lib/mongo/models/Food";
-import { ApiResponse } from "@/lib/api-response";
+import { FoodClass, ApiResponse } from "@/types/Types";
 
 export const getSearchedFoodOptions = (
   searchTerm: string,

@@ -6,15 +6,11 @@ import {
 } from "@reduxjs/toolkit";
 
 import { RootState } from "@/store/store";
-import { Food, FoodType, SavedFoodMonth } from "@/types/Types";
+import { Food, FoodType, SavedFoodMonth, LoggedActivityType } from "@/types/Types";
 import { format } from "date-fns";
 
-export type LoggedActivityType = {
-  id: string | number;
-  activity: string;
-  durationMinutes: number;
-  caloriesBurned: number;
-};
+export type { LoggedActivityType };
+
 
 type SavedFoodState = {
   currentDate: string; // yyyy-MM-dd
