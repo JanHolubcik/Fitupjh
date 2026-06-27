@@ -8,6 +8,9 @@ on:
     paths:
       - "src/lib/queriesOptions/**"
       - "src/i18n/locales/**"
+      - "src/types/Types.ts"
+      - "src/app/[lng]/constants/MacrosHelper.ts"
+      - "src/app/[lng]/constants/FunctionsHelper.ts"
 
 jobs:
   sync:
@@ -38,6 +41,21 @@ jobs:
           mkdir -p rn/src/app/lib/queriesOptions
           cp -r nextjs/src/lib/queriesOptions/. rn/src/app/lib/queriesOptions/
 
+      # ── Types ─────────────────────────────────────────────────────────────────
+      - name: Sync types
+        run: |
+          rm -f rn/src/types/Types.ts
+          mkdir -p rn/src/types
+          cp nextjs/src/types/Types.ts rn/src/types/Types.ts
+
+      # ── Helpers ───────────────────────────────────────────────────────────────
+      - name: Sync helpers
+        run: |
+          rm -f rn/src/utils/MacrosHelper.ts rn/src/utils/FunctionsHelper.ts
+          mkdir -p rn/src/utils
+          cp nextjs/src/app/[lng]/constants/MacrosHelper.ts rn/src/utils/MacrosHelper.ts
+          cp nextjs/src/app/[lng]/constants/FunctionsHelper.ts rn/src/utils/FunctionsHelper.ts
+
       # ── Open a PR in the RN repo ──────────────────────────────────────────────
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
@@ -49,11 +67,14 @@ jobs:
           delete-branch: true
           title: "chore: Sync shared files from Next.js"
           body: |
-            Automated sync triggered by a push to `main` in [Fitupjh](https://github.com/JanHolubcik/Fitupjh).
+            Automated sync triggered by a push to `master` in [Fitupjh](https://github.com/JanHolubcik/Fitupjh).
 
             **Changed directories:**
             - `src/i18n/locales` → `src/i18n/locales`
             - `src/lib/queriesOptions` → `src/app/lib/queriesOptions`
+            - `src/types/Types.ts` → `src/types/Types.ts`
+            - `src/app/[lng]/constants/*Helper.ts` → `src/utils/*Helper.ts`
 
             Review the diff and merge when ready.
           labels: "sync,automated"
+
