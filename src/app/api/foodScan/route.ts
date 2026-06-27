@@ -12,6 +12,11 @@ export async function POST(req: NextRequest) {
     if (!QRCode) {
       return ApiError("Missing or invalid QRCode", 400);
     }
+
+    // Validate barcode format (8-14 digits) to prevent SSRF / path traversal
+    if (!/^\d{8,14}$/.test(QRCode)) {
+      return ApiError("Invalid barcode format", 400);
+    }
     try {
       const localFood = await getFoodByBarcode(QRCode);
 
