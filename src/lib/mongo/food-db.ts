@@ -166,9 +166,10 @@ export async function saveFoodInDay(
 
 export async function addNewFood(newFood: FoodInput) {
   await connectDB();
-
+  //escapes characters which could be interpreted as regex
+  const escapedName = newFood.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const existingRecord = await Food.findOne({
-    name: { $regex: new RegExp(`^${newFood.name}$`, "i") }, //handling use case sensitivity
+    name: { $regex: new RegExp(`^${escapedName}$`, "i") }, //handling use case sensitivity
   });
 
   if (existingRecord) {
