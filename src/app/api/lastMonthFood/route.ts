@@ -3,6 +3,7 @@ import { checkForSavedFoodMonth } from "@/lib/mongo/food-db";
 import { withAuth } from "../functions";
 import { ApiSuccess, ApiError } from "@/lib/api-response";
 import { logger } from "@/lib/logger";
+import { isValid, parseISO } from "date-fns";
 
 export async function GET(req: NextRequest) {
   return withAuth(req, async (req, authData) => {
@@ -18,6 +19,15 @@ export async function GET(req: NextRequest) {
 
       if (!dateTo) {
         return ApiError("Missing or invalid dateTo", 400);
+      }
+      const dFrom = parseISO(dateFrom);
+      if (!isValid(dFrom)) {
+        return ApiError("Invalid dateFrom format", 400);
+      }
+
+      const dTo = parseISO(dateTo);
+      if (!isValid(dTo)) {
+        return ApiError("Invalid dateTo format", 400);
       }
 
       const food = await checkForSavedFoodMonth(dateFrom, dateTo, userID);
