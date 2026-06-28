@@ -76,12 +76,17 @@
     "termsOfUseDesc": "Prečítajte si naše podmienky používania a zistite svoje práva a povinnosti.",
     "view": "Zobraziť"
   },
+  "confirmNewPassword": "Potvrdiť nové heslo",
   "validation": {
     "weightMin": "Hmotnosť musí byť aspoň 50 kg",
     "weightMax": "Hmotnosť nemôže presiahnuť 300 kg",
     "heightMin": "Výška musí byť aspoň 50 cm",
     "heightMax": "Výška nemôže presiahnuť 300 cm",
     "weightGoalMin": "Cieľová hmotnosť musí byť aspoň 50 kg",
-    "weightGoalMax": "Cieľová hmotnosť nemôže presiahnuť 300 kg"
+    "weightGoalMax": "Cieľová hmotnosť nemôže presiahnuť 300 kg",
+    "currentPasswordRequired": "Súčasné heslo je povinné",
+    "newPasswordRequired": "Nové heslo je povinné",
+    "passwordsMustMatch": "Heslá sa musia zhodovať",
+    "passwordMin": "Heslo musí mať aspoň 6 znakov"
   }
 }

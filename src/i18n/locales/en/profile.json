@@ -76,12 +76,17 @@
     "termsOfUseDesc": "Read our terms of use to understand your rights and responsibilities.",
     "view": "View"
   },
+  "confirmNewPassword": "Confirm New Password",
   "validation": {
     "weightMin": "Weight must be at least 50 kg",
     "weightMax": "Weight cannot exceed 300 kg",
     "heightMin": "Height must be at least 50 cm",
     "heightMax": "Height cannot exceed 300 cm",
     "weightGoalMin": "Goal weight must be at least 50 kg",
-    "weightGoalMax": "Goal weight cannot exceed 300 kg"
+    "weightGoalMax": "Goal weight cannot exceed 300 kg",
+    "currentPasswordRequired": "Current password is required",
+    "newPasswordRequired": "New password is required",
+    "passwordsMustMatch": "Passwords must match",
+    "passwordMin": "Password must be at least 6 characters"
   }
 }
