@@ -7,6 +7,7 @@ on:
       - master
     paths:
       - "src/lib/queriesOptions/**"
+      - "src/lib/validationShemas/**"
       - "src/i18n/locales/**"
       - "src/types/Types.ts"
       - "src/app/[lng]/constants/MacrosHelper.ts"
@@ -41,6 +42,13 @@ jobs:
           mkdir -p rn/src/app/lib/queriesOptions
           cp -r nextjs/src/lib/queriesOptions/. rn/src/app/lib/queriesOptions/
 
+      # ── Validation schemas ───────────────────────────────────────────────────
+      - name: Sync validation schemas
+        run: |
+          rm -rf rn/src/app/lib/validationShemas
+          mkdir -p rn/src/app/lib/validationShemas
+          cp -r nextjs/src/lib/validationShemas/. rn/src/app/lib/validationShemas/
+
       # ── Types ─────────────────────────────────────────────────────────────────
       - name: Sync types
         run: |
@@ -72,6 +80,7 @@ jobs:
             **Changed directories:**
             - `src/i18n/locales` → `src/i18n/locales`
             - `src/lib/queriesOptions` → `src/app/lib/queriesOptions`
+            - `src/lib/validationShemas` → `src/app/lib/validationShemas`
             - `src/types/Types.ts` → `src/types/Types.ts`
             - `src/app/[lng]/constants/*Helper.ts` → `src/utils/*Helper.ts`
 
