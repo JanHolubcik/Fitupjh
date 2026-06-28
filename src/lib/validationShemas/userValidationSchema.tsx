@@ -4,8 +4,7 @@ export const updateUserSchema = z.object({
   weight: z.coerce
     .number()
     .min(50, "validation.weightMin")
-    .max(300, "validation.weightMax")
-    .optional(),
+    .max(300, "validation.weightMax"),
   weightGoal: z.coerce
     .number()
     .min(50, "validation.weightGoalMin")
@@ -14,20 +13,15 @@ export const updateUserSchema = z.object({
   height: z.coerce
     .number()
     .min(50, "validation.heightMin")
-    .max(300, "validation.heightMax")
-    .optional(),
-  activityLevel: z
-    .enum([
-      "sedentary",
-      "sedatory",
-      "lightlyActive",
-      "mediumActive",
-      "highlyActive",
-    ])
-    .optional(),
-  goal: z
-    .enum(["loseWeight", "lose weight", "maintainWeight", "gainWeight"])
-    .optional(),
+    .max(300, "validation.heightMax"),
+  activityLevel: z.enum([
+    "sedentary",
+    "sedatory",
+    "lightlyActive",
+    "mediumActive",
+    "highlyActive",
+  ]),
+  goal: z.enum(["loseWeight", "lose weight", "maintainWeight", "gainWeight"]),
   manualOverride: z.boolean().optional(),
   targetCalories: z.coerce.number().min(0).optional(),
   targetProtein: z.coerce.number().min(0).optional(),

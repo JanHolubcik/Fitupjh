@@ -37,18 +37,15 @@ export const BiometricAndGoals = ({ user }: { user: User }) => {
       goal: values.goal,
     });
 
-    await showToast.promise(
-      updatePromise,
-      {
-        pending: t("toast.biometricPending"),
-        success: t("toast.biometricSuccess"),
-        error: {
-          render({ data }: { data?: { message?: string } }) {
-            return data?.message ? t(data.message) : t("toast.error");
-          },
+    await showToast.promise(updatePromise, {
+      pending: t("toast.biometricPending"),
+      success: t("toast.biometricSuccess"),
+      error: {
+        render({ data }: { data?: { message?: string } }) {
+          return data?.message ? t(data.message) : t("toast.error");
         },
       },
-    );
+    });
     router.refresh();
   };
   return (
@@ -62,11 +59,11 @@ export const BiometricAndGoals = ({ user }: { user: User }) => {
 
       <Formik
         initialValues={{
-          weight: user?.weight || "",
-          weightGoal: user?.weightGoal || "",
-          height: user?.height || "",
-          activityLevel: user?.activityLevel || "sedentary",
-          goal: user?.goal || "loseWeight",
+          weight: user.weight ?? "",
+          weightGoal: user.weightGoal ?? "",
+          height: user.height ?? "",
+          activityLevel: user.activityLevel || "sedentary",
+          goal: user.goal || "loseWeight",
         }}
         validate={(values) => {
           const errors: Record<string, string> = {};
@@ -84,7 +81,14 @@ export const BiometricAndGoals = ({ user }: { user: User }) => {
           setSubmitting(false);
         }}
       >
-        {({ values, handleChange, handleBlur, isSubmitting, errors, touched }) => (
+        {({
+          values,
+          handleChange,
+          handleBlur,
+          isSubmitting,
+          errors,
+          touched,
+        }) => (
           <Form>
             <CardBody className="px-6 py-6 flex flex-col gap-5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -136,18 +140,14 @@ export const BiometricAndGoals = ({ user }: { user: User }) => {
                   variant="faded"
                   isDisabled={isSubmitting}
                 >
-                  <SelectItem key="sedentary">
-                    {t("sedentary")}
-                  </SelectItem>
+                  <SelectItem key="sedentary">{t("sedentary")}</SelectItem>
                   <SelectItem key="lightlyActive">
                     {t("lightlyActive")}
                   </SelectItem>
                   <SelectItem key="mediumActive">
                     {t("moderatelyActive")}
                   </SelectItem>
-                  <SelectItem key="highlyActive">
-                    {t("veryActive")}
-                  </SelectItem>
+                  <SelectItem key="highlyActive">{t("veryActive")}</SelectItem>
                 </Select>
                 <Select
                   size="sm"
@@ -158,15 +158,11 @@ export const BiometricAndGoals = ({ user }: { user: User }) => {
                   variant="faded"
                   isDisabled={isSubmitting}
                 >
-                  <SelectItem key="loseWeight">
-                    {t("loseFat")}
-                  </SelectItem>
+                  <SelectItem key="loseWeight">{t("loseFat")}</SelectItem>
                   <SelectItem key="maintainWeight">
                     {t("maintainWeight")}
                   </SelectItem>
-                  <SelectItem key="gainWeight">
-                    {t("buildMuscle")}
-                  </SelectItem>
+                  <SelectItem key="gainWeight">{t("buildMuscle")}</SelectItem>
                 </Select>
               </div>
               <div className="flex sm:justify-end">
