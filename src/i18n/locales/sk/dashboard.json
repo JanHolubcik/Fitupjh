@@ -256,5 +256,13 @@
     "activitySuccess": "Aktivita bola zaznamenaná!",
     "activityError": "Pri zaznamenávaní aktivity nastala chyba.",
     "activityRemoved": "Aktivita bola odstránená!"
+  },
+  "error": {
+    "failedToLoad": "Nepodarilo sa načítať údaje",
+    "failedToLoadDesc": "Skontrolujte svoje pripojenie na internet a skúste to znova.",
+    "failedToLoadFood": "Nepodarilo sa načítať záznamy jedla.",
+    "failedToLoadActivity": "Nepodarilo sa načítať záznamy aktivít.",
+    "failedToLoadAll": "Nepodarilo sa načítať záznamy jedla a aktivít.",
+    "tryAgain": "Skúsiť znova"
   }
 }

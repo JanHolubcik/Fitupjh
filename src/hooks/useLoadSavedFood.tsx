@@ -17,11 +17,19 @@ type props = {
 const useLoadSavedFood = ({ dateTo, dateFrom }: props) => {
   const dispatch = useDispatch();
 
-  const { data: savedFoodData, isFetching: isFetchingFood } = useQuery(
-    LastMonthFoodOptions(dateFrom, dateTo),
-  );
-  const { data: savedActivityData, isFetching: isFetchingActivity } =
-    useQuery(LastMonthSavedActivities(dateFrom, dateTo));
+  const {
+    data: savedFoodData,
+    isFetching: isFetchingFood,
+    isError: isErrorFood,
+    refetch: refetchFood,
+  } = useQuery(LastMonthFoodOptions(dateFrom, dateTo));
+
+  const {
+    data: savedActivityData,
+    isFetching: isFetchingActivity,
+    isError: isErrorActivity,
+    refetch: refetchActivity,
+  } = useQuery(LastMonthSavedActivities(dateFrom, dateTo));
 
   useEffect(() => {
     if (savedActivityData) {
@@ -36,8 +44,19 @@ const useLoadSavedFood = ({ dateTo, dateFrom }: props) => {
   }, [savedFoodData, dispatch]);
 
   const isFetching = isFetchingFood || isFetchingActivity;
+  const isError = isErrorFood || isErrorActivity;
 
-  return { isFetching };
+  const refetch = async () => {
+    await Promise.all([refetchFood(), refetchActivity()]);
+  };
+
+  return {
+    isFetching,
+    isError,
+    isErrorFood,
+    isErrorActivity,
+    refetch,
+  };
 };
 
 export default useLoadSavedFood;

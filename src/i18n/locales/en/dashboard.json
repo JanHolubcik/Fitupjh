@@ -257,5 +257,13 @@
     "activitySuccess": "Activity was logged!",
     "activityError": "Error while logging activity.",
     "activityRemoved": "Activity was removed!"
+  },
+  "error": {
+    "failedToLoad": "Failed to load data",
+    "failedToLoadDesc": "Please check your internet connection and try again.",
+    "failedToLoadFood": "Failed to load food log.",
+    "failedToLoadActivity": "Failed to load activity log.",
+    "failedToLoadAll": "Failed to load food and activity logs.",
+    "tryAgain": "Try Again"
   }
 }

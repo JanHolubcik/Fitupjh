@@ -1,22 +1,17 @@
 import { AIFoodAnalysis } from "@/types/Types";
-import { ApiResponse } from "@/lib/api-response";
+import { safeFetch } from "./safeFetch";
 
-export const FoodImageAIOptions = (localization:string) => ({
-  mutationFn: async (imageBase64: string): Promise<AIFoodAnalysis> => {
-    const response = await fetch("/api/foodImageAI", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ imageBase64,localization }),
-    });
-
-    const result = (await response.json().catch(() => ({}))) as ApiResponse<AIFoodAnalysis>;
-    if (!response.ok || !result.success) {
-      throw new Error(result.error || "Failed to analyze image");
-    }
-
-    return result.data as AIFoodAnalysis;
-  },
+export const FoodImageAIOptions = (localization: string) => ({
+  mutationFn: (imageBase64: string) =>
+    safeFetch<AIFoodAnalysis>(
+      () =>
+        fetch("/api/foodImageAI", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ imageBase64, localization }),
+        }),
+      "Failed to analyze image",
+    ),
 });
-

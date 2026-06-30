@@ -1,7 +1,8 @@
-import { LoggedActivityType, ApiResponse } from "@/types/Types";
+import { LoggedActivityType } from "@/types/Types";
+import { safeFetch } from "./safeFetch";
 
 export const SavedActivitiesOptions = () => ({
-  mutationFn: async ({
+  mutationFn: ({
     date,
     savedActivity,
     userID,
@@ -9,24 +10,19 @@ export const SavedActivitiesOptions = () => ({
     date: string;
     savedActivity: LoggedActivityType[];
     userID: string;
-  }): Promise<string> => {
-    const response = await fetch("/api/savedActivity", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        date,
-        activities: savedActivity,
-        userID,
-      }),
-      credentials: "include",
-    });
-
-    const result = (await response.json().catch(() => ({}))) as ApiResponse<string>;
-    if (!response.ok || !result.success) {
-      throw new Error(result.error || "Failed to save activities");
-    }
-
-    return result.data as string;
-  },
+  }) =>
+    safeFetch<string>(
+      () =>
+        fetch("/api/savedActivity", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            date,
+            activities: savedActivity,
+            userID,
+          }),
+          credentials: "include",
+        }),
+      "Failed to save activities",
+    ),
 });
-
