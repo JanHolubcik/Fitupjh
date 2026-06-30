@@ -54,6 +54,16 @@ Here is a showcase video of application:
 
 ---
 
+## Resilience & Conditional Rendering
+
+To ensure a seamless user experience during transient network issues or server failures:
+
+- **Resilient Data Fetching**: API queries are wrapped with error and rate-limit detection to gracefully catch network offline states and HTTP 429/500 errors.
+- **Conditional Layout Rendering**: Instead of blocking or crashing the entire dashboard when a request fails, the application continues to render any successfully loaded sections.
+- **Local Retries**: Failed widgets are replaced locally with an error card containing a localized explanation and a **"Try Again"** button to retry the specific failed query.
+
+---
+
 ## Tech Stack
 
 - **Framework**: Next.js 16 (App Router), React 19, TypeScript
