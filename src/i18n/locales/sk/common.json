@@ -1,1 +1,16 @@
-{"searchPlaceholder": "Search food..."}
+{
+  "searchPlaceholder": "Hľadať jedlo...",
+  "notFound": {
+    "title": "404",
+    "subtitle": "Stratili ste sa?",
+    "description": "Stránka, ktorú hľadáte, neexistuje alebo bola presunutá na inú adresu.",
+    "button": "Späť na hlavnú stránku",
+    "dashboardButton": "Prejsť na domovskú stránku"
+  },
+  "serverError": {
+    "title": "500",
+    "subtitle": "Chyba servera",
+    "description": "Na našej strane sa vyskytla chyba. Skúste to prosím neskôr znova alebo sa vráťte na domovskú stránku.",
+    "button": "Prejsť na domovskú stránku"
+  }
+}

@@ -1,1 +1,16 @@
-{"searchPlaceholder": "Search food..."}
+{
+  "searchPlaceholder": "Search food...",
+  "notFound": {
+    "title": "404",
+    "subtitle": "Lost your way?",
+    "description": "The page you are looking for doesn't exist or has been moved to another route.",
+    "button": "Back to Home",
+    "dashboardButton": "Go to home page"
+  },
+  "serverError": {
+    "title": "500",
+    "subtitle": "Server Error",
+    "description": "Something went wrong on our end. Please try again later or return to the home page.",
+    "button": "Go to home page"
+  }
+}
