@@ -39,6 +39,24 @@ Here is a showcase video of application:
 - **Interactive Onboarding Tour**: Powered by `driver.js` to guide new users step-by-step through the application dashboard.
 - **Internationalization (i18n)**: Fully supports dynamic locale routing (`[lng]`) for **English** and **Slovak** (`sk`).
 - **Secure Authentication**: Implemented via **Better-Auth** supporting email/password and social OAuth providers (Google, GitHub, Discord).
+- **Monorepo-Style Code Sharing (Expo Sync)**: Shares locales, validation schemas, query options, types, and helper constants between the web project and the [Fitup Expo App](https://github.com/JanHolubcik/fitup-native) using an automated synchronization workflow.
+
+---
+
+## Mobile App Sync & Shared Codebase
+
+To maintain consistency and reduce code duplication across the web and mobile platforms, the project implements an automated file synchronization pipeline using GitHub Actions ([sync-shared.yml](file:///.github/workflows/sync-shared.yml)).
+
+Whenever changes are pushed to `master` in this repository within specific directories, the workflow automatically:
+
+1. Checks out the target React Native repository ([fitup-native](https://github.com/JanHolubcik/fitup-native)).
+2. Synchronizes shared resources:
+   - **Locales** (`src/i18n/locales` → `src/i18n/locales`)
+   - **Query Options** (`src/lib/queriesOptions` → `src/app/lib/queriesOptions`)
+   - **Validation Schemas** (`src/lib/validationShemas` → `src/app/lib/validationShemas`)
+   - **Types** (`src/types/Types.ts` → `src/types/Types.ts`)
+   - **Helpers** (`MacrosHelper.ts`, `FunctionsHelper.ts` → `utils/`)
+3. Automatically commits the synced changes and opens a Pull Request inside the Expo application repository for review and merging.
 
 ---
 
@@ -154,7 +172,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Testing & Type Checking
 
-The project uses **TypeScript** for static type-safety and **Vitest** along with **React Testing Library** and **happy-dom** for fast, isolated unit and integration testing. 
+The project uses **TypeScript** for static type-safety and **Vitest** along with **React Testing Library** and **happy-dom** for fast, isolated unit and integration testing.
 
 These validation checks run automatically in the GitHub Actions CI/CD pipeline on every push or pull request to any branch.
 
