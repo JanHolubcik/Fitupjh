@@ -72,6 +72,37 @@ export const calculateRecommendedMacros = (
   };
 };
 
+export const adjustMacrosWithBurnedCalories = (
+  baseline: macros,
+  burnedCalories: number,
+): macros => {
+  if (burnedCalories === 0 || baseline.calories === 0) return baseline;
+
+  const baselineProteinKcal = baseline.protein * 4;
+  const baselineCarbsKcal = baseline.carbohydrates * 4;
+  const baselineFatKcal = baseline.fat * 9;
+  const totalMacroKcal =
+    baselineProteinKcal + baselineCarbsKcal + baselineFatKcal;
+
+  if (totalMacroKcal === 0) return baseline; // Safety fallback
+
+  const proteinRatio = baselineProteinKcal / totalMacroKcal;
+  const carbsRatio = baselineCarbsKcal / totalMacroKcal;
+  const fatRatio = baselineFatKcal / totalMacroKcal;
+
+  return {
+    ...baseline,
+    calories: Number((baseline.calories + burnedCalories).toFixed(2)),
+    protein: Number(
+      (baseline.protein + (burnedCalories * proteinRatio) / 4).toFixed(2),
+    ),
+    carbohydrates: Number(
+      (baseline.carbohydrates + (burnedCalories * carbsRatio) / 4).toFixed(2),
+    ),
+    fat: Number((baseline.fat + (burnedCalories * fatRatio) / 9).toFixed(2)),
+  };
+};
+
 export const useDebounce = <T>(
   value: T,
   delay: number,
