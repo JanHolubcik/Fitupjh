@@ -113,6 +113,9 @@ GEMINI_API_KEY=your_gemini_api_key_here
 UPSTASH_REDIS_REST_URL=your_upstash_redis_rest_url_here
 UPSTASH_REDIS_REST_TOKEN=your_upstash_redis_rest_token_here
 
+# Vercel Blob Storage (Image uploads)
+BLOB_READ_WRITE_TOKEN=your_blob_read_write_token_here
+
 # Social Authentication Providers (Optional)
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
@@ -149,23 +152,38 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ---
 
-## Testing
+## Testing & Type Checking
 
-The project uses **Vitest** along with **React Testing Library** and **happy-dom** for fast, isolated unit and integration testing.
+The project uses **TypeScript** for static type-safety and **Vitest** along with **React Testing Library** and **happy-dom** for fast, isolated unit and integration testing. 
+
+These validation checks run automatically in the GitHub Actions CI/CD pipeline on every push or pull request to any branch.
+
+### Run TypeScript Type Check
+
+To verify type correctness across the codebase:
+
+```bash
+npm run typecheck
+```
 
 ### Run Tests Once
+
 To execute the test suite once:
+
 ```bash
 npm run test
 ```
 
 ### Run Tests in Watch Mode
+
 To run tests in interactive watch mode (re-runs tests automatically when files change):
+
 ```bash
 npx vitest
 ```
 
 ### What is Tested?
+
 - **Validation Schemas**: Checks Zod schemas for food creation, saving food, user registration, and user biometric updates (testing bounds, formats, and required/optional/defaulted fields).
 - **API Routes**: Tests protected API routes (`POST /api/food`, `POST /api/saveFood`, `POST /api/savedActivity`, `POST /api/foodImageAI`, and `POST /api/generateResponseAI`) by mocking database connections, the Gemini AI SDK, and authentication wrappers to verify input parsing, payload constraints (such as image size and magic byte file signature verification), validation errors (including negative numbers and nulls), and correct response payloads/status codes.
 - **Routing Middleware**: Tests your routing proxy middleware (`proxy.ts` matching paths using regexes) to verify that unauthenticated users are redirected from protected routes, authenticated users are redirected away from auth pages, and incomplete onboarding triggers the proper redirect to `/onboarding`.
