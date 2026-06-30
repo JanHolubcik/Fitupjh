@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { POST } from "./route";
+import { POST, GET } from "./route";
 import { NextRequest, NextResponse } from "next/server";
-import { addNewFood } from "@/lib/mongo/food-db";
+import { addNewFood, getFood } from "@/lib/mongo/food-db";
 import type { Session, User } from "better-auth";
 
 // Mock withAuth to bypass auth and rate limiting
@@ -205,5 +205,63 @@ describe("POST /api/food", () => {
     expect(body.success).toBe(false);
     expect(body.error).toContain("received undefined");
     expect(body.error).toContain("received NaN");
+  });
+});
+
+describe("GET /api/food", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("should return 200 and foods on success with default query parameters", async () => {
+    const mockFoods = [{ id: 1, name: "Apple", calories_per_100g: 52 }];
+    vi.mocked(getFood).mockResolvedValue({ food: mockFoods as never });
+
+    const req = new NextRequest("http://localhost/api/food");
+    const response = await GET(req);
+
+    expect(response.status).toBe(200);
+    const body = (await response.json()) as { success: true; data: typeof mockFoods };
+    expect(body).toEqual({ success: true, data: mockFoods });
+    expect(getFood).toHaveBeenCalledWith("", "en");
+  });
+
+  it("should return 200 and search results when custom query parameters are provided", async () => {
+    const mockFoods = [{ id: 2, name: "Jablko", calories_per_100g: 52 }];
+    vi.mocked(getFood).mockResolvedValue({ food: mockFoods as never });
+
+    const req = new NextRequest("http://localhost/api/food?searchTerm=Apple&currentLocale=sk");
+    const response = await GET(req);
+
+    expect(response.status).toBe(200);
+    const body = (await response.json()) as { success: true; data: typeof mockFoods };
+    expect(body).toEqual({ success: true, data: mockFoods });
+    expect(getFood).toHaveBeenCalledWith("Apple", "sk");
+  });
+
+  it("should safely handle and pass special regex characters to the database helper", async () => {
+    vi.mocked(getFood).mockResolvedValue({ food: [] });
+
+    // Query containing all regex special characters
+    const specialCharsPattern = ".*+?^${}()|[]\\";
+    const req = new NextRequest(`http://localhost/api/food?searchTerm=${encodeURIComponent(specialCharsPattern)}`);
+    const response = await GET(req);
+
+    expect(response.status).toBe(200);
+    expect(getFood).toHaveBeenCalledWith(specialCharsPattern, "en");
+  });
+
+  it("should return 500 when database search fails", async () => {
+    vi.mocked(getFood).mockRejectedValue(new Error("Database connection timed out"));
+
+    const req = new NextRequest("http://localhost/api/food?searchTerm=Apple");
+    const response = await GET(req);
+
+    expect(response.status).toBe(500);
+    const body = (await response.json()) as { success: false; error: string };
+    expect(body).toEqual({
+      success: false,
+      error: "There was an error while sending data to db",
+    });
   });
 });
