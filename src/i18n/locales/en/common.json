@@ -12,5 +12,16 @@
     "subtitle": "Server Error",
     "description": "Something went wrong on our end. Please try again later or return to the home page.",
     "button": "Go to home page"
+  },
+  "metadata": {
+    "title": "Fitup - Calorie & Activity Tracker",
+    "description": "Log meals, scan barcodes, track physical activities, and get personalized calorie and macro insights powered by Gemini AI.",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "onboarding": "Onboarding",
+    "login": "Login",
+    "signup": "Sign Up",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use"
   }
 }

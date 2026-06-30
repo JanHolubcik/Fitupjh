@@ -12,5 +12,16 @@
     "subtitle": "Chyba servera",
     "description": "Na našej strane sa vyskytla chyba. Skúste to prosím neskôr znova alebo sa vráťte na domovskú stránku.",
     "button": "Prejsť na domovskú stránku"
+  },
+  "metadata": {
+    "title": "Fitup - Sledovanie kalórií a aktivity",
+    "description": "Zapisujte si jedlá, skenujte čiarové kódy, sledujte fyzické aktivity a získajte prispôsobené prehľady kalórií a makroživín poháňané umelou inteligenciou Gemini.",
+    "dashboard": "Nástenka",
+    "profile": "Profil",
+    "onboarding": "Uvítanie",
+    "login": "Prihlásenie",
+    "signup": "Registrácia",
+    "privacy": "Zásady ochrany osobných údajov",
+    "terms": "Podmienky používania"
   }
 }

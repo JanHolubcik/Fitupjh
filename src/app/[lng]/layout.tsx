@@ -16,12 +16,72 @@ import NavbarComponent from "@/components/Navbar/NavbarComponent";
 import Providers from "./providers";
 import Script from "next/script";
 import i18nConfig from "@/i18n.config";
+import enCommon from "@/i18n/locales/en/common.json";
+import skCommon from "@/i18n/locales/sk/common.json";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "Fitup",
-  description: "Calculate your calories",
+type GenerateMetadataProps = {
+  params: Promise<{ lng: string }>;
+};
+
+export const generateMetadata = async ({
+  params,
+}: GenerateMetadataProps): Promise<Metadata> => {
+  const { lng } = await params;
+  const common = lng === "sk" ? skCommon : enCommon;
+
+  const baseUrl = process.env.BETTER_AUTH_URL || "https://fitupjh.vercel.app";
+
+  return {
+    metadataBase: new URL(baseUrl),
+    title: {
+      default: common.metadata.title,
+      template: "%s | Fitup",
+    },
+    description: common.metadata.description,
+    keywords: [
+      "calorie tracker",
+      "fitness tracker",
+      "macro tracker",
+      "gemini ai",
+      "calorie counter",
+      "activity tracker",
+      "nutrition analysis",
+      "barcode scanner",
+      "sledovanie kalorii",
+      "pocitadlo kalorii",
+      "kaloricke tabulky",
+    ],
+    authors: [{ name: "Jan Holubcik" }],
+    creator: "Jan Holubcik",
+    openGraph: {
+      type: "website",
+      locale: lng === "sk" ? "sk_SK" : "en_US",
+      url: `${baseUrl}/${lng}`,
+      siteName: "Fitup",
+      title: common.metadata.title,
+      description: common.metadata.description,
+      images: [
+        {
+          url: "/greeting_owl.png",
+          width: 1200,
+          height: 630,
+          alt: "Fitup Calorie Tracker",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: common.metadata.title,
+      description: common.metadata.description,
+      images: ["/greeting_owl.png"],
+    },
+    icons: {
+      icon: "/favicon.ico",
+      apple: "/icon.png",
+    },
+  };
 };
 
 initServerI18next(i18nConfig);

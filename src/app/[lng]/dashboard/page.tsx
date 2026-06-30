@@ -1,6 +1,23 @@
 import { getQueryClient } from "@/get-query-client";
+import type { Metadata } from "next";
+import enCommon from "@/i18n/locales/en/common.json";
+import skCommon from "@/i18n/locales/sk/common.json";
 
 import { headers } from "next/headers";
+
+type GenerateMetadataProps = {
+  params: Promise<{ lng: string }>;
+};
+
+export const generateMetadata = async ({
+  params,
+}: GenerateMetadataProps): Promise<Metadata> => {
+  const { lng } = await params;
+  const common = lng === "sk" ? skCommon : enCommon;
+  return {
+    title: common.metadata.dashboard,
+  };
+};
 
 import DashboardContent from "./DashboardContent/DashboardContent";
 import { auth } from "@/lib/auth";
