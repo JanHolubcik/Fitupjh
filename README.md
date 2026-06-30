@@ -136,3 +136,26 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the application running.
+
+---
+
+## Testing
+
+The project uses **Vitest** along with **React Testing Library** and **happy-dom** for fast, isolated unit and integration testing.
+
+### Run Tests Once
+To execute the test suite once:
+```bash
+npm run test
+```
+
+### Run Tests in Watch Mode
+To run tests in interactive watch mode (re-runs tests automatically when files change):
+```bash
+npx vitest
+```
+
+### What is Tested?
+- **Validation Schemas**: Checks Zod schemas for food creation, saving food, user registration, and user biometric updates (testing bounds, formats, and required/optional/defaulted fields).
+- **API Routes**: Tests protected API routes (`POST /api/food`, `POST /api/saveFood`, and `POST /api/savedActivity`) by mocking database connections and authentication wrappers to verify input parsing, validation errors (including negative numbers and nulls), and correct response payloads/status codes.
+- **Client-Side Components**: Tests frontend pages and components (`Login`, `Signup`, `BiometricAndGoals`, and `ChangePassword`) in a simulated DOM environment (`happy-dom`) to verify form rendering, loading states, validation error displays, checkbox guards, and correct interaction with the `better-auth` client.
