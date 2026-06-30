@@ -6,15 +6,9 @@ import {
 } from "@/lib/mongo/activity-db";
 import { isValid, parse } from "date-fns";
 import { withAuth } from "../functions";
-import { LoggedActivityType } from "@/features/DashboardSlice/DashboardSlice";
 import { ApiSuccess, ApiError } from "@/lib/api-response";
 import { logger } from "@/lib/logger";
-
-type SaveActivityRequest = {
-  date: string; // "yyyy-MM-dd"
-  activities: LoggedActivityType[];
-  userID: string;
-};
+import { SaveActivitySchema } from "@/lib/validationShemas/saveActivityValidationSchema";
 
 export async function GET(req: NextRequest) {
   return withAuth(req, async (req, authData) => {
@@ -48,22 +42,15 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   return withAuth(req, async (req, authData) => {
     try {
-      const { date, activities } =
-        (await req.json()) as Omit<SaveActivityRequest, "userID">;
+      const rawData = await req.json();
+      const result = SaveActivitySchema.safeParse(rawData);
+
+      if (!result.success) {
+        return ApiError(result.error, 400);
+      }
+
+      const { date, activities } = result.data;
       const userID = authData.user.id;
-
-      if (!date) {
-        return ApiError("Missing or invalid date", 400);
-      }
-
-      if (!activities || !Array.isArray(activities)) {
-        return ApiError("Missing or invalid activities array", 400);
-      }
-
-      const parsedDate = parse(date, "yyyy-MM-dd", new Date());
-      if (!isValid(parsedDate)) {
-        return ApiError("Invalid date format", 400);
-      }
 
       await saveActivitiesInDay(date, activities, userID);
       return ApiSuccess("Successfully saved to db", 201);
