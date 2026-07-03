@@ -36,7 +36,7 @@ describe("FoodSchema Validation", () => {
     expect(result.success).toBe(false);
     if (!result.success) {
       const issue = result.error.issues.find((i) => i.path.includes("name"));
-      expect(issue?.message).toBe("Food name must be at least 2 characters");
+      expect(issue?.message).toBe("validation.nameMinLength");
     }
   });
 
@@ -53,7 +53,7 @@ describe("FoodSchema Validation", () => {
       const issue = result.error.issues.find((i) =>
         i.path.includes("calories_per_100g"),
       );
-      expect(issue?.message).toBe("Calories must be greater than 0");
+      expect(issue?.message).toBe("validation.caloriesGtZero");
     }
   });
 
@@ -73,7 +73,7 @@ describe("FoodSchema Validation", () => {
     expect(result.success).toBe(false);
     if (!result.success) {
       const issue = result.error.issues.find(
-        (i) => i.message === "At least one nutrient must be greater than zero",
+        (i) => i.message === "validation.macroAtLeastOne",
       );
       expect(issue).toBeDefined();
     }

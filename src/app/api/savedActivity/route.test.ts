@@ -123,8 +123,8 @@ describe("POST /api/savedActivity", () => {
     expect(response.status).toBe(400);
     const body = (await response.json()) as { success: false; error: string };
     expect(body.success).toBe(false);
-    expect(body.error).toContain("Duration must be at least 0");
-    expect(body.error).toContain("Calories burned must be at least 0");
+    expect(body.error).toContain("validation.durationMin");
+    expect(body.error).toContain("validation.caloriesBurnedMin");
     expect(saveActivitiesInDay).not.toHaveBeenCalled();
   });
 
@@ -187,7 +187,7 @@ describe("POST /api/savedActivity", () => {
     expect(response.status).toBe(400);
     const body = (await response.json()) as { success: false; error: string };
     expect(body.success).toBe(false);
-    expect(body.error).toContain("Invalid date format");
+    expect(body.error).toContain("validation.dateInvalid");
     expect(saveActivitiesInDay).not.toHaveBeenCalled();
   });
 });

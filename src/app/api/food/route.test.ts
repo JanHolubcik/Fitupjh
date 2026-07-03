@@ -96,7 +96,7 @@ describe("POST /api/food", () => {
     expect(response.status).toBe(400);
     const body = (await response.json()) as { success: false; error: string };
     expect(body.success).toBe(false);
-    expect(body.error).toContain("Food name must be at least 2 characters");
+    expect(body.error).toContain("validation.nameMinLength");
     expect(addNewFood).not.toHaveBeenCalled();
   });
 
@@ -116,7 +116,7 @@ describe("POST /api/food", () => {
     expect(body.success).toBe(false);
 
     // Check that both calories and protein triggered validation errors
-    expect(body.error).toContain("Calories must be greater than 0");
+    expect(body.error).toContain("validation.caloriesGtZero");
     expect(body.error).toContain("Too small: expected number to be >=0");
     expect(addNewFood).not.toHaveBeenCalled();
   });

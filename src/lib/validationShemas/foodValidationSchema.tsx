@@ -2,10 +2,10 @@ import { z } from "zod";
 
 export const FoodSchema = z
   .object({
-    name: z.string().min(2, "Food name must be at least 2 characters"),
+    name: z.string().min(2, "validation.nameMinLength"),
     calories_per_100g: z.coerce
       .number()
-      .gt(0, "Calories must be greater than 0"),
+      .gt(0, "validation.caloriesGtZero"),
     fat: z.coerce.number().min(0).default(0),
     protein: z.coerce.number().min(0).default(0),
     sugar: z.coerce.number().min(0).default(0),
@@ -29,7 +29,7 @@ export const FoodSchema = z
       return macros.some((val) => val > 0);
     },
     {
-      message: "At least one nutrient must be greater than zero",
+      message: "validation.macroAtLeastOne",
       path: ["protein"],
     },
   );

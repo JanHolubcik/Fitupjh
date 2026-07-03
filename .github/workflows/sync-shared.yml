@@ -64,6 +64,13 @@ jobs:
           cp nextjs/src/app/[lng]/constants/MacrosHelper.ts rn/src/utils/MacrosHelper.ts
           cp nextjs/src/app/[lng]/constants/FunctionsHelper.ts rn/src/utils/FunctionsHelper.ts
 
+      # ── Remove test files ─────────────────────────────────────────────────────
+      - name: Remove test files from synced directories
+        run: |
+          find rn/src/app/lib/validationShemas -type d -name "testSchemas" -exec rm -rf {} +
+          find rn/src/app/lib/validationShemas -type f -name "*.test.*" -delete
+          find rn/src/app/lib/queriesOptions -type f -name "*.test.*" -delete
+
       # ── Open a PR in the RN repo ──────────────────────────────────────────────
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6

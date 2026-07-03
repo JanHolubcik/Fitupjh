@@ -265,5 +265,23 @@
     "failedToLoadActivity": "Failed to load activity log.",
     "failedToLoadAll": "Failed to load food and activity logs.",
     "tryAgain": "Try Again"
+  },
+  "validation": {
+    "nameRequired": "Name is required",
+    "nameMinLength": "Food name must be at least 2 characters",
+    "amountRequired": "Amount is required",
+    "caloriesMin": "Calories must be at least 0",
+    "caloriesGtZero": "Calories must be greater than 0",
+    "fatMin": "Fat must be at least 0",
+    "proteinMin": "Protein must be at least 0",
+    "sugarMin": "Sugar must be at least 0",
+    "carbohydratesMin": "Carbohydrates must be at least 0",
+    "fiberMin": "Fiber must be at least 0",
+    "saltMin": "Salt must be at least 0",
+    "dateInvalid": "Invalid date format",
+    "macroAtLeastOne": "At least one nutrient must be greater than zero",
+    "activityRequired": "Activity name is required",
+    "durationMin": "Duration must be at least 0",
+    "caloriesBurnedMin": "Calories burned must be at least 0"
   }
 }

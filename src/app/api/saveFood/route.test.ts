@@ -165,8 +165,8 @@ describe("POST /api/saveFood", () => {
     expect(response.status).toBe(400);
     const body = (await response.json()) as { success: false; error: string };
     expect(body.success).toBe(false);
-    expect(body.error).toContain("Calories must be at least 0");
-    expect(body.error).toContain("Fat must be at least 0");
+    expect(body.error).toContain("validation.caloriesMin");
+    expect(body.error).toContain("validation.fatMin");
     expect(saveFoodInDay).not.toHaveBeenCalled();
   });
 
@@ -253,7 +253,7 @@ describe("POST /api/saveFood", () => {
     expect(response.status).toBe(400);
     const body = (await response.json()) as { success: false; error: string };
     expect(body.success).toBe(false);
-    expect(body.error).toContain("Invalid date format");
+    expect(body.error).toContain("validation.dateInvalid");
     expect(saveFoodInDay).not.toHaveBeenCalled();
   });
 });

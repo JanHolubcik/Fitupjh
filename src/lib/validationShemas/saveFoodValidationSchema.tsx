@@ -2,16 +2,16 @@ import { z } from "zod";
 
 export const FoodItemSchema = z.object({
   id: z.number(),
-  name: z.string().min(1, "Name is required"),
+  name: z.string().min(1, "validation.nameRequired"),
   originalName: z.string().optional(),
-  calories: z.number().min(0, "Calories must be at least 0"),
-  amount: z.string().min(1, "Amount is required"),
-  fat: z.number().min(0, "Fat must be at least 0"),
-  protein: z.number().min(0, "Protein must be at least 0"),
-  sugar: z.number().min(0, "Sugar must be at least 0"),
-  carbohydrates: z.number().min(0, "Carbohydrates must be at least 0"),
-  fiber: z.number().min(0, "Fiber must be at least 0"),
-  salt: z.number().min(0, "Salt must be at least 0"),
+  calories: z.number().min(0, "validation.caloriesMin"),
+  amount: z.string().min(1, "validation.amountRequired"),
+  fat: z.number().min(0, "validation.fatMin"),
+  protein: z.number().min(0, "validation.proteinMin"),
+  sugar: z.number().min(0, "validation.sugarMin"),
+  carbohydrates: z.number().min(0, "validation.carbohydratesMin"),
+  fiber: z.number().min(0, "validation.fiberMin"),
+  salt: z.number().min(0, "validation.saltMin"),
   imgUrl: z.string().optional(),
 });
 
@@ -21,7 +21,7 @@ export const SaveFoodSchema = z.object({
       const dateParsed = Date.parse(val);
       return !isNaN(dateParsed);
     },
-    { message: "Invalid date format" }
+    { message: "validation.dateInvalid" }
   ),
   savedFood: z.object({
     breakfast: z.array(FoodItemSchema),

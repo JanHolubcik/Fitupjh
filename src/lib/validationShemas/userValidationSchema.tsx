@@ -32,8 +32,14 @@ export const updateUserSchema = z.object({
 
 export const onboardingSchema = z.object({
   goal: z.enum(["loseWeight", "maintainWeight", "gainWeight"]),
-  weight: z.coerce.number().min(50).max(300),
-  height: z.coerce.number().min(50).max(300),
+  weight: z.coerce
+    .number()
+    .min(50, "validation.weightMin")
+    .max(300, "validation.weightMax"),
+  height: z.coerce
+    .number()
+    .min(50, "validation.heightMin")
+    .max(300, "validation.heightMax"),
   activityLevel: z.enum([
     "sedentary",
     "lightlyActive",
