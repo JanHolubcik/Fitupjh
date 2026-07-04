@@ -6,6 +6,7 @@ import { updateUserSchema } from "./validationShemas/userValidationSchema";
 
 export const auth = betterAuth({
   plugins: [expo()],
+  trustedOrigins: ["heroui-native-app://"],
   database: mongodbAdapter(client.db(), {
     client,
   }),
