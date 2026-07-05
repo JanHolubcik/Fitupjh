@@ -12,5 +12,9 @@
   "signInWithGitHub": "Pokračovať cez GitHub",
   "signInWithDiscord": "Pokračovať cez Discord",
   "orText": "alebo",
-  "byContinuing": "Pokračovaním vyjadrujete súhlas s našimi "
+  "byContinuing": "Pokračovaním vyjadrujete súhlas s našimi ",
+  "termsOfUseLinkText": "Podmienkami používania",
+  "andText": " a ",
+  "privacyPolicyLinkText": "Zásadami ochrany osobných údajov",
+  "agreePeriod": "."
 }

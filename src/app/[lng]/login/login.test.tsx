@@ -55,6 +55,11 @@ describe("Login Component", () => {
     expect(screen.getByLabelText("emailLabel")).toBeInTheDocument();
     expect(screen.getByLabelText("passwordLabel")).toBeInTheDocument();
     expect(screen.getByText("signInButton")).toBeInTheDocument();
+    expect(screen.getByText("byContinuing")).toBeInTheDocument();
+    expect(screen.getByText("termsOfUseLinkText")).toBeInTheDocument();
+    expect(screen.getByText("andText")).toBeInTheDocument();
+    expect(screen.getByText("privacyPolicyLinkText")).toBeInTheDocument();
+    expect(screen.getByText("agreePeriod")).toBeInTheDocument();
   });
 
   it("should successfully sign in and redirect to dashboard", async () => {

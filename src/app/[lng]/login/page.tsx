@@ -135,6 +135,25 @@ export default function Login() {
             </div>
           </form>
           <SignOAuth />
+          <div className="text-center text-xs font-normal text-zinc-500 dark:text-zinc-400 mt-4 select-none">
+            <span>{t("byContinuing")}</span>
+            <Link
+              as={NextLink}
+              href={`/${lng}/terms-of-use`}
+              className="text-xs font-semibold text-primary hover:underline cursor-pointer inline-block"
+            >
+              {t("termsOfUseLinkText")}
+            </Link>
+            <span>{t("andText")}</span>
+            <Link
+              as={NextLink}
+              href={`/${lng}/privacy-policy`}
+              className="text-xs font-semibold text-primary hover:underline cursor-pointer inline-block"
+            >
+              {t("privacyPolicyLinkText")}
+            </Link>
+            <span>{t("agreePeriod")}</span>
+          </div>
         </CardBody>
       </CardUniversal>
     </main>
