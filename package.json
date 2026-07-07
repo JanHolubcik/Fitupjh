@@ -16,7 +16,6 @@
     "@google/genai": "^2.8.0",
     "@heroicons/react": "^2.2.0",
     "@heroui/react": "^2.8.10",
-    "@reduxjs/toolkit": "^2.11.2",
     "@shivantra/react-web-camera": "^1.2.0",
     "@tanstack/react-query": "^5.90.6",
     "@typegoose/typegoose": "^12.3.0",
@@ -45,7 +44,6 @@
     "react-i18next": "^17.0.8",
     "react-icons": "^5.0.1",
     "react-markdown": "^10.1.0",
-    "react-redux": "^9.2.0",
     "react-toastify": "^11.1.0",
     "reflect-metadata": "^0.2.2"
   },

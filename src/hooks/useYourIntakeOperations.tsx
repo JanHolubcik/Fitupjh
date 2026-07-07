@@ -1,38 +1,37 @@
 "use client";
 import { useCallback } from "react";
-import { format } from "date-fns";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/store/store";
-import { useMutation } from "@tanstack/react-query";
+import { format, subDays } from "date-fns";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { showToast } from "@/utils/toast";
 import { useT } from "next-i18next/client";
 
-import {
-  addFoodForDate,
-  removeFromFood,
-  setCurrentDate,
-  selectSavedFoodByDate,
-  EditFood,
-} from "@/features/DashboardSlice/DashboardSlice";
+import { useCurrentDate } from "@/hooks/useDashboardState";
+import { LastMonthFoodOptions } from "@/lib/queriesOptions/LastMonthFoodOptions";
 import { SaveFoodOptions } from "@/lib/queriesOptions/SaveFoodOptions";
-import { Food, TimeOfDay } from "@/types/Types";
+import { Food, FoodType, TimeOfDay } from "@/types/Types";
 import { authClient } from "@/lib/auth-client";
+
+const emptyDayFallback: FoodType = {
+  breakfast: [],
+  lunch: [],
+  dinner: [],
+};
 
 const useYourIntakeOperations = () => {
   const { data } = authClient.useSession();
-  const dispatch = useDispatch<AppDispatch>();
+  const queryClient = useQueryClient();
   const { t } = useT("dashboard");
 
   const saveFoodMutation = useMutation(SaveFoodOptions());
 
-  const currentDate = useSelector(
-    (state: RootState) => state.savedFood.currentDate,
-  );
+  const [currentDate, setCurrentDateState] = useCurrentDate();
   const dateString = format(currentDate, "yyyy-MM-dd");
 
-  const savedFood = useSelector((state: RootState) =>
-    selectSavedFoodByDate(state, dateString),
-  );
+  const dateTo = format(new Date(), "yyyy-MM-dd");
+  const dateFrom = format(subDays(new Date(), 30), "yyyy-MM-dd");
+
+  const { data: savedFoodMonth = {} } = useQuery(LastMonthFoodOptions(dateFrom, dateTo));
+  const savedFood = savedFoodMonth[dateString] ?? emptyDayFallback;
 
   const saveFood = useCallback(
     async (foodToSave?: typeof savedFood, isLastItem: boolean = false) => {
@@ -85,9 +84,18 @@ const useYourIntakeOperations = () => {
         [timeOfDay]: [...savedFood[timeOfDay], newFoodItem],
       };
 
-      dispatch(
-        addFoodForDate({ date: dateString, timeOfDay, food: newFoodItem }),
-      );
+      const queryKey = LastMonthFoodOptions(dateFrom, dateTo).queryKey;
+      queryClient.setQueryData(queryKey, (oldData: Record<string, FoodType> | undefined) => {
+        const data = oldData ? { ...oldData } : {};
+        if (!data[dateString]) {
+          data[dateString] = { breakfast: [], lunch: [], dinner: [] };
+        }
+        data[dateString] = {
+          ...data[dateString],
+          [timeOfDay]: [...data[dateString][timeOfDay], newFoodItem],
+        };
+        return data;
+      });
 
       const res = saveFood(saveFoodObject);
 
@@ -100,15 +108,24 @@ const useYourIntakeOperations = () => {
         },
       );
     },
-    [savedFood, dateString, dispatch, saveFood, t],
+    [savedFood, dateString, dateFrom, dateTo, queryClient, saveFood, t],
   );
 
   const removeFromSavedFood = useCallback(
     async (id: number, timeOfDay: TimeOfDay) => {
-      // Update Redux
-      dispatch(removeFromFood({ date: dateString, timeOfDay, id }));
+      const queryKey = LastMonthFoodOptions(dateFrom, dateTo).queryKey;
+      queryClient.setQueryData(queryKey, (oldData: Record<string, FoodType> | undefined) => {
+        const data = oldData ? { ...oldData } : {};
+        if (!data[dateString]) {
+          data[dateString] = { breakfast: [], lunch: [], dinner: [] };
+        }
+        data[dateString] = {
+          ...data[dateString],
+          [timeOfDay]: data[dateString][timeOfDay].filter((f) => f.id !== id),
+        };
+        return data;
+      });
 
-      // Update Backend
       const updatedFood = {
         ...savedFood,
         [timeOfDay]: savedFood[timeOfDay].filter((f) => f.id !== id),
@@ -130,7 +147,7 @@ const useYourIntakeOperations = () => {
         },
       );
     },
-    [dispatch, dateString, savedFood, saveFood, t],
+    [dateString, dateFrom, dateTo, queryClient, savedFood, saveFood, t],
   );
 
   const updateFood = useCallback(
@@ -150,14 +167,20 @@ const useYourIntakeOperations = () => {
         salt: Number(foodItem.salt * ratio),
       };
 
-      dispatch(
-        EditFood({
-          date: dateString,
-          timeOfDay,
-          id: foodItem.id,
-          updatedFood: updatedFoodItem,
-        }),
-      );
+      const queryKey = LastMonthFoodOptions(dateFrom, dateTo).queryKey;
+      queryClient.setQueryData(queryKey, (oldData: Record<string, FoodType> | undefined) => {
+        const data = oldData ? { ...oldData } : {};
+        if (!data[dateString]) {
+          data[dateString] = { breakfast: [], lunch: [], dinner: [] };
+        }
+        data[dateString] = {
+          ...data[dateString],
+          [timeOfDay]: data[dateString][timeOfDay].map((f) =>
+            f.id === foodItem.id ? updatedFoodItem : f,
+          ),
+        };
+        return data;
+      });
 
       const updatedTimeOfDayArray = savedFood[timeOfDay].map((f) =>
         f.id === foodItem.id ? updatedFoodItem : f,
@@ -179,14 +202,14 @@ const useYourIntakeOperations = () => {
         },
       );
     },
-    [dispatch, dateString, savedFood, saveFood, t],
+    [dateString, dateFrom, dateTo, queryClient, savedFood, saveFood, t],
   );
 
   const setNewDateAndGetFood = useCallback(
     (date: Date) => {
-      dispatch(setCurrentDate(format(date, "yyyy-MM-dd")));
+      setCurrentDateState(format(date, "yyyy-MM-dd"));
     },
-    [dispatch],
+    [setCurrentDateState],
   );
 
   return {
@@ -200,3 +223,4 @@ const useYourIntakeOperations = () => {
 };
 
 export default useYourIntakeOperations;
+

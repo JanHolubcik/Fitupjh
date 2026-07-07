@@ -1,7 +1,6 @@
 import { getTimeOfDay } from "@/app/[lng]/constants/FunctionsHelper";
-import { setNewFoodBarCode } from "@/features/DashboardSlice/DashboardSlice";
+import { useNewFoodBarCode } from "@/hooks/useDashboardState";
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
-import { RootState } from "@/store/store";
 import { Food } from "@/types/Types";
 import {
   Modal,
@@ -14,7 +13,6 @@ import {
 } from "@heroui/react";
 
 import React, { useState, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useT } from "next-i18next/client";
 import { Formik, Form } from "formik";
 import { useModalBackButton } from "@/hooks/useModalBackButton";
@@ -33,10 +31,7 @@ type props = {
 const ModalCreateFood = (props: props) => {
   useModalBackButton(!!props.isOpen, props.onOpenChange);
   const { addToFoodObject } = useYourIntakeOperations();
-  const dispatch = useDispatch();
-  const newFoodBarCode = useSelector(
-    (state: RootState) => state.savedFood.newFoodBarCode,
-  );
+  const [newFoodBarCode, setNewFoodBarCode] = useNewFoodBarCode();
 
   const { t } = useT("dashboard");
   const addFoodMutation = useMutation(AddFoodOptions());
@@ -144,7 +139,7 @@ const ModalCreateFood = (props: props) => {
                   imgUrl: newDbFood.imgUrl,
                 };
 
-                dispatch(setNewFoodBarCode(""));
+                setNewFoodBarCode("");
                 addToFoodObject(parsedFoodData, getTimeOfDay());
                 showToast.success(t("modalCreateFood.toastSuccess"));
 

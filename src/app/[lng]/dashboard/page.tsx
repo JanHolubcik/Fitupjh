@@ -34,8 +34,7 @@ import { ActivitiesOptions } from "@/lib/queriesOptions/ActivitiesOptions";
 import { ActivityClass } from "@/types/Types";
 
 import { LastMonthSavedActivities } from "@/lib/queriesOptions/LastMonthSavedActivitiesOptions";
-import { LoggedActivityType } from "@/features/DashboardSlice/DashboardSlice";
-import { FoodType } from "@/types/Types";
+import { LoggedActivityType, FoodType } from "@/types/Types";
 
 const getMidnightISO = (date: Date) => {
   const d = new Date(date);

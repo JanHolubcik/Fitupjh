@@ -1,37 +1,30 @@
-import { useDispatch, useSelector } from "react-redux";
-import { format } from "date-fns";
+import { format, subDays } from "date-fns";
 import { showToast } from "@/utils/toast";
-import { useMutation } from "@tanstack/react-query"; // Adjust if you use TRPC instead
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useT } from "next-i18next/client";
 
-import { RootState, AppDispatch } from "@/store/store";
-
-import { authClient } from "@/lib/auth-client";
-import {
-  selectSavedActivitiesByDate,
-  LoggedActivityType,
-  addActivityForDate,
-  removeActivity,
-  editActivity,
-} from "@/features/DashboardSlice/DashboardSlice";
-
+import { useCurrentDate } from "@/hooks/useDashboardState";
+import { LastMonthSavedActivities } from "@/lib/queriesOptions/LastMonthSavedActivitiesOptions";
 import { SavedActivitiesOptions } from "@/lib/queriesOptions/SavedActivitiesOptions";
+import { authClient } from "@/lib/auth-client";
+import { LoggedActivityType } from "@/types/Types";
 import { useCallback } from "react";
 
 const useActivityOperations = () => {
   const { data } = authClient.useSession();
-  const dispatch = useDispatch<AppDispatch>();
+  const queryClient = useQueryClient();
   const { t } = useT("dashboard");
 
   const saveActivityMutation = useMutation(SavedActivitiesOptions());
 
-  const currentDate = useSelector(
-    (state: RootState) => state.savedFood.currentDate,
-  );
+  const [currentDate] = useCurrentDate();
+  const dateString = format(currentDate, "yyyy-MM-dd");
 
-  const savedActivities = useSelector((state: RootState) =>
-    selectSavedActivitiesByDate(state, format(currentDate, "yyyy-MM-dd")),
-  );
+  const dateTo = format(new Date(), "yyyy-MM-dd");
+  const dateFrom = format(subDays(new Date(), 30), "yyyy-MM-dd");
+
+  const { data: savedActivityMonth = {} } = useQuery(LastMonthSavedActivities(dateFrom, dateTo));
+  const savedActivities = savedActivityMonth[dateString] ?? [];
 
   const saveActivitiesToDB = async (
     activitiesToSave?: LoggedActivityType[],
@@ -45,7 +38,7 @@ const useActivityOperations = () => {
 
     try {
       await saveActivityMutation.mutateAsync({
-        date: format(currentDate, "yyyy-MM-dd"),
+        date: dateString,
         savedActivity: activities,
         userID: data.user.id,
       });
@@ -60,7 +53,6 @@ const useActivityOperations = () => {
     durationMinutes: number;
     caloriesBurned: number;
   }) => {
-    const date = format(currentDate, "yyyy-MM-dd");
     const uniqueId = Date.now();
 
     const newActivityRecord: LoggedActivityType = {
@@ -70,12 +62,15 @@ const useActivityOperations = () => {
       caloriesBurned: payload.caloriesBurned,
     };
 
-    dispatch(
-      addActivityForDate({
-        date,
-        activity: newActivityRecord,
-      }),
-    );
+    const queryKey = LastMonthSavedActivities(dateFrom, dateTo).queryKey;
+    queryClient.setQueryData(queryKey, (oldData: Record<string, LoggedActivityType[]> | undefined) => {
+      const data = oldData ? { ...oldData } : {};
+      if (!data[dateString]) {
+        data[dateString] = [];
+      }
+      data[dateString] = [...data[dateString], newActivityRecord];
+      return data;
+    });
 
     const updatedActivities = [...savedActivities, newActivityRecord];
 
@@ -93,17 +88,23 @@ const useActivityOperations = () => {
 
   const updateActivity = useCallback(
     async (updatedActivity: LoggedActivityType) => {
-      dispatch(
-        editActivity({
-          date: format(currentDate, "yyyy-MM-dd"),
-          id: updatedActivity.id,
-          updatedActivity: updatedActivity,
-        }),
+      const queryKey = LastMonthSavedActivities(dateFrom, dateTo).queryKey;
+      queryClient.setQueryData(queryKey, (oldData: Record<string, LoggedActivityType[]> | undefined) => {
+        const data = oldData ? { ...oldData } : {};
+        if (!data[dateString]) {
+          data[dateString] = [];
+        }
+        data[dateString] = data[dateString].map((act) =>
+          act.id === updatedActivity.id ? updatedActivity : act,
+        );
+        return data;
+      });
+
+      const updatedActivities = savedActivities.map((act) =>
+        act.id === updatedActivity.id ? updatedActivity : act,
       );
 
-      const fullUpdatedObject = [...savedActivities, updatedActivity];
-
-      const res = saveActivitiesToDB(fullUpdatedObject);
+      const res = saveActivitiesToDB(updatedActivities);
 
       showToast.promise(
         res,
@@ -114,16 +115,19 @@ const useActivityOperations = () => {
         },
       );
     },
-    [dispatch, currentDate, t],
+    [dateString, dateFrom, dateTo, queryClient, savedActivities, saveActivitiesToDB, t],
   );
 
   const removeFromSavedActivity = async (id: string | number) => {
-    dispatch(
-      removeActivity({
-        date: format(currentDate, "yyyy-MM-dd"),
-        id,
-      }),
-    );
+    const queryKey = LastMonthSavedActivities(dateFrom, dateTo).queryKey;
+    queryClient.setQueryData(queryKey, (oldData: Record<string, LoggedActivityType[]> | undefined) => {
+      const data = oldData ? { ...oldData } : {};
+      if (!data[dateString]) {
+        data[dateString] = [];
+      }
+      data[dateString] = data[dateString].filter((act) => act.id !== id);
+      return data;
+    });
 
     const updatedActivities = savedActivities.filter((a) => a.id !== id);
     const isLastItem = updatedActivities.length === 0;
@@ -149,4 +153,5 @@ const useActivityOperations = () => {
 };
 
 export default useActivityOperations;
+
 

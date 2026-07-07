@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import connectDB from "./connect-db";
 import { Activity } from "./models/Activity";
 import { SavedActivity } from "./models/SavedActivity";
-import { LoggedActivityType } from "@/features/DashboardSlice/DashboardSlice";
+import { LoggedActivityType } from "@/types/Types";
 import { addDays, format, parse } from "date-fns";
 
 /**

@@ -36,9 +36,9 @@ import { Chart as ReactChart } from "react-chartjs-2";
 
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import Markdown from "react-markdown";
-import { useMutation } from "@tanstack/react-query";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { format, subDays } from "date-fns";
+import { LastMonthFoodOptions } from "@/lib/queriesOptions/LastMonthFoodOptions";
 import { GenerativeAIOptions } from "@/lib/queriesOptions/GenerativeAIOptions";
 import useChartsHooks from "../../hooks/useChartHooks";
 import { capitalizeFirstLetter } from "../../app/[lng]/constants/FunctionsHelper";
@@ -173,14 +173,15 @@ const ChartProgress = ({
     selectedMacro,
   });
 
-  const reduxSavedFood = useSelector(
-    (state: RootState) => state.savedFood.month,
-  );
+  const dateTo = format(new Date(), "yyyy-MM-dd");
+  const dateFrom = format(subDays(new Date(), 30), "yyyy-MM-dd");
+  const { data: savedFood = {} } = useQuery(LastMonthFoodOptions(dateFrom, dateTo));
+
   const {
     mutateAsync,
     data: dataResAI,
     isPending,
-  } = useMutation(GenerativeAIOptions(reduxSavedFood));
+  } = useMutation(GenerativeAIOptions(savedFood));
 
   return (
     <div className="flex flex-col gap-3 shadow-md bg-transparent backdrop-blur-md self-center">

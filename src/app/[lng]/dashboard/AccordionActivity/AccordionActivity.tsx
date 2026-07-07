@@ -13,7 +13,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { ActivitiesOptions } from "@/lib/queriesOptions/ActivitiesOptions";
 import useActivityOperations from "@/hooks/useActivityOperations";
 import { usePathname } from "next/navigation";
-import { LoggedActivityType } from "@/features/DashboardSlice/DashboardSlice";
+import { LoggedActivityType } from "@/types/Types";
 
 import ActivityRecordModal, {
   ActivityRecord,

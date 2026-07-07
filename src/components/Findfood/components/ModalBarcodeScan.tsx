@@ -16,8 +16,7 @@ import { IScannerError, prepareZXingModule } from "@yudiel/react-qr-scanner";
 import BarcodeScanner from "./BarcodeScanner";
 import useScanProduct from "./useScanProduct";
 import { FoodClass } from "@/lib/mongo/models/Food";
-import { useDispatch } from "react-redux";
-import { setNewFoodBarCode } from "@/features/DashboardSlice/DashboardSlice";
+import { useNewFoodBarCode } from "@/hooks/useDashboardState";
 import { getTimeOfDay } from "@/app/[lng]/constants/FunctionsHelper";
 import { useT } from "next-i18next/client";
 import ModalCreateFood from "./ModalCreateFood";
@@ -58,7 +57,7 @@ const onError = (
 };
 
 const ModalBarcodeScan = (props: props) => {
-  const dispatch = useDispatch();
+  const [, setNewFoodBarCode] = useNewFoodBarCode();
   const [selectedFood, setSelectedFood] = useState<Food>();
   const [isErrorScan, setISErrorScan] = useState("");
   const { t } = useT("dashboard");
@@ -100,7 +99,7 @@ const ModalBarcodeScan = (props: props) => {
     const rawValue = detectedCodes[0]?.rawValue;
     if (!rawValue) return;
 
-    dispatch(setNewFoodBarCode(rawValue));
+    setNewFoodBarCode(rawValue);
 
     await scanProduct(rawValue);
   };

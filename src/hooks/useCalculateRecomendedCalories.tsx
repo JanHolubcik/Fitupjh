@@ -2,7 +2,7 @@ import {
   calculateActivities,
   calculateCaloriesSum,
 } from "@/app/[lng]/constants/FunctionsHelper";
-import { LoggedActivityType } from "@/features/DashboardSlice/DashboardSlice";
+import { LoggedActivityType } from "@/types/Types";
 import { authClient } from "@/lib/auth-client";
 
 import {

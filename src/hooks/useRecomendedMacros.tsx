@@ -5,10 +5,11 @@ import { calculateRecommendedMacros } from "../app/[lng]/constants/FunctionsHelp
 import { SavedFoodClass } from "@/lib/mongo/models/SavedFood";
 import { Food, FoodType, SavedFoodMonth } from "@/types/Types";
 
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
 import { authClient } from "@/lib/auth-client";
-import { format, parseISO } from "date-fns";
+import { format, parseISO, subDays } from "date-fns";
+import { useQuery } from "@tanstack/react-query";
+import { LastMonthFoodOptions } from "@/lib/queriesOptions/LastMonthFoodOptions";
+
 const calculateAverage = (array: number[]) => {
   if (array.length === 0) return 0;
 
@@ -35,9 +36,12 @@ function transformReduxToApi(month: SavedFoodMonth): ClientSavedFood[] {
 const useMacros = () => {
   const { data } = authClient.useSession();
 
-  const reduxSavedFood = useSelector((state: RootState) => state.savedFood);
+  const dateTo = format(new Date(), "yyyy-MM-dd");
+  const dateFrom = format(subDays(new Date(), 30), "yyyy-MM-dd");
 
-  const savedFood = transformReduxToApi(reduxSavedFood.month);
+  const { data: savedFoodMonth = {} } = useQuery(LastMonthFoodOptions(dateFrom, dateTo));
+
+  const savedFood = transformReduxToApi(savedFoodMonth);
 
   const isArray = Array.isArray(savedFood);
   const isEmpty = !isArray || savedFood.length === 0;

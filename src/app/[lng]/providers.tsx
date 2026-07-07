@@ -8,7 +8,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import { getQueryClient } from "@/get-query-client";
-import StoreProvider from "@/StoreProvider";
 
 import { ToastContainer } from "react-toastify";
 import React from "react";
@@ -39,14 +38,12 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <HeroUIProvider navigate={(path, options) => router.push(path, options)}>
       <NextThemesProvider attribute="class" defaultTheme="dark">
-        <StoreProvider>
-          <QueryClientProvider client={queryClient}>
-            <SpeedInsights />
+        <QueryClientProvider client={queryClient}>
+          <SpeedInsights />
 
-            {children}
-            <AppToastContainer />
-          </QueryClientProvider>
-        </StoreProvider>
+          {children}
+          <AppToastContainer />
+        </QueryClientProvider>
       </NextThemesProvider>
     </HeroUIProvider>
   );
