@@ -2,7 +2,6 @@ import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "@better-auth/mongo-adapter";
 import { expo } from "@better-auth/expo";
 import client from "./mongo/mongodb";
-import { updateUserSchema } from "./validationShemas/userValidationSchema";
 
 export const auth = betterAuth({
   plugins: [expo()],
@@ -10,19 +9,6 @@ export const auth = betterAuth({
   database: mongodbAdapter(client.db(), {
     client,
   }),
-  databaseHooks: {
-    user: {
-      update: {
-        before: async (data) => {
-          const result = updateUserSchema.safeParse(data);
-          if (!result.success) {
-            throw new Error(result.error.issues[0].message);
-          }
-          return { data };
-        },
-      },
-    },
-  },
   user: {
     changeEmail: {
       enabled: true,
