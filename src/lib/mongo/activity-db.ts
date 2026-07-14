@@ -117,3 +117,97 @@ export async function checkForSavedActivitiesMonth(
   return activityMonth;
 }
 
+export async function addNewActivity(data: {
+  name: string;
+  metValue: number;
+  category?: string;
+  icon?: string;
+}) {
+  await connectDB();
+
+  const escapedName = data.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const existingRecord = await Activity.findOne({
+    name: { $regex: new RegExp(`^${escapedName}$`, "i") },
+  });
+
+  if (existingRecord) {
+    return { success: false, error: "This activity already exists." };
+  }
+
+  const insertedNew = await Activity.create({
+    name: data.name,
+    metValue: data.metValue,
+    category: data.category || "General",
+    icon: data.icon,
+  });
+
+  return {
+    success: true,
+    data: JSON.parse(JSON.stringify(insertedNew)),
+  };
+}
+
+export async function getActivitiesPaginated(
+  search?: string,
+  page: number = 1,
+  limit: number = 6
+): Promise<{ activities: any[]; total: number }> {
+  await connectDB();
+
+  const query: Record<string, any> = {};
+
+  if (search) {
+    query.name = { $regex: search, $options: "i" };
+  }
+
+  const total = await Activity.countDocuments(query);
+  const skip = (page - 1) * limit;
+
+  const activities = await Activity.find(query)
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit)
+    .lean()
+    .exec();
+
+  return {
+    activities: JSON.parse(JSON.stringify(activities)),
+    total,
+  };
+}
+
+export async function updateActivity(
+  activityId: string,
+  data: { name: string; metValue: number; category?: string; icon?: string }
+): Promise<boolean> {
+  await connectDB();
+
+  if (data.name) {
+    const escapedName = data.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const existing = await Activity.findOne({
+      name: { $regex: new RegExp(`^${escapedName}$`, "i") },
+      _id: { $ne: new mongoose.Types.ObjectId(activityId) },
+    }).lean();
+    if (existing) {
+      throw new Error("name_conflict");
+    }
+  }
+
+  const result = await Activity.updateOne(
+    { _id: new mongoose.Types.ObjectId(activityId) },
+    { $set: data }
+  );
+
+  return result.modifiedCount > 0 || result.matchedCount > 0;
+}
+
+export async function deleteActivity(activityId: string): Promise<boolean> {
+  await connectDB();
+
+  const result = await Activity.deleteOne({
+    _id: new mongoose.Types.ObjectId(activityId),
+  });
+
+  return result.deletedCount > 0;
+}
+

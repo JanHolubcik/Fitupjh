@@ -7,6 +7,17 @@
   "roleFilterUser": "Používatelia",
   "roleFilterAdmin": "Administrátori",
   "noUsersFound": "Žiadni používatelia nevyhovujú kritériám vyhľadávania.",
+  "tabs": {
+    "users": "Používatelia",
+    "foods": "Katalóg jedál",
+    "activities": "Katalóg aktivít"
+  },
+  "searchFoodPlaceholder": "Hľadať jedlo podľa názvu alebo čiarového kódu...",
+  "createFoodBtn": "Pridať jedlo",
+  "searchActivityPlaceholder": "Hľadať aktivitu podľa názvu...",
+  "createActivityBtn": "Pridať aktivitu",
+  "noFoodsFound": "Nenašli sa žiadne jedlá.",
+  "noActivitiesFound": "Nenašli sa žiadne aktivity.",
   "table": {
     "name": "Meno",
     "email": "E-mail",
@@ -27,17 +38,68 @@
     "emailRequired": "E-mail je povinný",
     "emailInvalid": "Neplatný formát e-mailovej adresy"
   },
+  "foodModal": {
+    "createTitle": "Pridať jedlo",
+    "editTitle": "Upraviť jedlo",
+    "nameLabel": "Názov jedla",
+    "caloriesLabel": "Kalórie (na 100g)",
+    "proteinLabel": "Bielkoviny (g)",
+    "carbsLabel": "Sacharidy (g)",
+    "fatLabel": "Tuky (g)",
+    "sugarLabel": "Cukry (g)",
+    "fiberLabel": "Vláknina (g)",
+    "saltLabel": "Soľ (g)",
+    "barcodeLabel": "Čiarový / QR kód",
+    "weightLabel": "Hmotnosť produktu (g)",
+    "imgUrlLabel": "URL obrázka",
+    "save": "Uložiť",
+    "cancel": "Zrušiť"
+  },
+  "activityModal": {
+    "createTitle": "Pridať aktivitu",
+    "editTitle": "Upraviť aktivitu",
+    "nameLabel": "Názov aktivity",
+    "metValueLabel": "Hodnota MET",
+    "categoryLabel": "Kategória",
+    "iconLabel": "Názov ikony",
+    "save": "Uložiť",
+    "cancel": "Zrušiť"
+  },
   "deleteModal": {
     "title": "Vymazať používateľa",
     "confirmText": "Naozaj chcete natrvalo vymazať používateľa {{name}}? Vymaže sa aj celá jeho história makier a záznamy o aktivitách. Túto akciu nie je možné vrátiť späť.",
     "confirmBtn": "Natrvalo vymazať",
     "cancelBtn": "Zrušiť"
   },
+  "deleteFoodModal": {
+    "title": "Vymazať jedlo",
+    "confirmText": "Naozaj chcete natrvalo vymazať jedlo {{name}} z katalógu? Táto zmena neovplyvní existujúce záznamy používateľov.",
+    "confirmBtn": "Vymazať",
+    "cancelBtn": "Zrušiť"
+  },
+  "deleteActivityModal": {
+    "title": "Vymazať aktivitu",
+    "confirmText": "Naozaj chcete natrvalo vymazať aktivitu {{name}} z katalógu? Táto zmena neovplyvní existujúce záznamy používateľov.",
+    "confirmBtn": "Vymazať",
+    "cancelBtn": "Zrušiť"
+  },
   "toasts": {
-    "fetchError": "Nepodarilo sa načítať zoznam používateľov.",
+    "fetchError": "Nepodarilo sa načítať zoznam.",
     "updateSuccess": "Údaje o používateľovi boli úspešne upravené.",
     "updateError": "Nepodarilo sa upraviť používateľa.",
     "deleteSuccess": "Používateľ bol úspešne vymazaný.",
-    "deleteError": "Nepodarilo sa vymazať používateľa."
+    "deleteError": "Nepodarilo sa vymazať používateľa.",
+    "foodCreateSuccess": "Jedlo bolo úspešne pridané.",
+    "foodCreateError": "Nepodarilo sa pridať jedlo.",
+    "foodUpdateSuccess": "Jedlo bolo úspešne upravené.",
+    "foodUpdateError": "Nepodarilo sa upraviť jedlo.",
+    "foodDeleteSuccess": "Jedlo bolo úspešne vymazané.",
+    "foodDeleteError": "Nepodarilo sa vymazať jedlo.",
+    "activityCreateSuccess": "Aktivita bola úspešne pridaná.",
+    "activityCreateError": "Nepodarilo sa pridať aktivitu.",
+    "activityUpdateSuccess": "Aktivita bola úspešne upravené.",
+    "activityUpdateError": "Nepodarilo sa upraviť aktivitu.",
+    "activityDeleteSuccess": "Aktivita bola úspešne vymazaná.",
+    "activityDeleteError": "Nepodarilo sa vymazať aktivitu."
   }
 }

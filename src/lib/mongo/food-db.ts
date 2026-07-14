@@ -248,3 +248,83 @@ export async function checkForSavedFoodMonth(
   return foodMonth;
 }
 
+export async function getFoodsPaginated(
+  search?: string,
+  page: number = 1,
+  limit: number = 6
+): Promise<{ foods: any[]; total: number }> {
+  await connectDB();
+
+  const query: Record<string, any> = {};
+
+  if (search) {
+    query.$or = [
+      { name: { $regex: search, $options: "i" } },
+      { QRcode: { $regex: search, $options: "i" } },
+    ];
+  }
+
+  const total = await Food.countDocuments(query);
+  const skip = (page - 1) * limit;
+
+  const foods = await Food.find(query)
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit)
+    .lean()
+    .exec();
+
+  return {
+    foods: JSON.parse(JSON.stringify(foods)),
+    total,
+  };
+}
+
+export async function updateFood(
+  foodId: string,
+  data: Partial<FoodInput>
+): Promise<boolean> {
+  await connectDB();
+
+  if (data.name) {
+    const escapedName = data.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const existing = await Food.findOne({
+      name: { $regex: new RegExp(`^${escapedName}$`, "i") },
+      _id: { $ne: new mongoose.Types.ObjectId(foodId) },
+    }).lean();
+    if (existing) {
+      throw new Error("name_conflict");
+    }
+  }
+
+  const updateFields: Record<string, any> = {};
+  if (data.name !== undefined) updateFields.name = data.name;
+  if (data.protein !== undefined) updateFields.protein = data.protein;
+  if (data.sugar !== undefined) updateFields.sugar = data.sugar;
+  if (data.fat !== undefined) updateFields.fat = data.fat;
+  if (data.carbohydrates !== undefined) updateFields.carbohydrates = data.carbohydrates;
+  if (data.salt !== undefined) updateFields.salt = data.salt;
+  if (data.calories_per_100g !== undefined) updateFields.calories_per_100g = data.calories_per_100g;
+  if (data.fiber !== undefined) updateFields.fiber = data.fiber;
+  if (data.barcode !== undefined) updateFields.QRcode = data.barcode;
+  if (data.imgUrl !== undefined) updateFields.imgUrl = data.imgUrl;
+  if (data.ProductWeight !== undefined) updateFields.ProductWeight = data.ProductWeight;
+
+  const result = await Food.updateOne(
+    { _id: new mongoose.Types.ObjectId(foodId) },
+    { $set: updateFields }
+  );
+
+  return result.modifiedCount > 0 || result.matchedCount > 0;
+}
+
+export async function deleteFood(foodId: string): Promise<boolean> {
+  await connectDB();
+
+  const result = await Food.deleteOne({
+    _id: new mongoose.Types.ObjectId(foodId),
+  });
+
+  return result.deletedCount > 0;
+}
+

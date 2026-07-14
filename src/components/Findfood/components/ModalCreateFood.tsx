@@ -1,7 +1,7 @@
 import { getTimeOfDay } from "@/app/[lng]/constants/FunctionsHelper";
 import { useNewFoodBarCode } from "@/hooks/useDashboardState";
 import useYourIntakeOperations from "@/hooks/useYourIntakeOperations";
-import { Food } from "@/types/Types";
+import { Food, FoodClass } from "@/types/Types";
 import {
   Modal,
   ModalContent,
@@ -26,6 +26,8 @@ type props = {
   onOpenChange: () => void;
   isOpen: boolean | undefined;
   onCloseAll?: () => void;
+  foodToEdit?: FoodClass | null;
+  isAdminMode?: boolean;
 };
 
 const ModalCreateFood = (props: props) => {
@@ -39,6 +41,13 @@ const ModalCreateFood = (props: props) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  React.useEffect(() => {
+    if (props.isOpen) {
+      setPreviewUrl(props.foodToEdit?.imgUrl || null);
+      setSelectedFile(null);
+    }
+  }, [props.isOpen, props.foodToEdit]);
 
   const inputClassNames = {
     inputWrapper:
@@ -67,15 +76,15 @@ const ModalCreateFood = (props: props) => {
           <Formik
             enableReinitialize
             initialValues={{
-              barcode: newFoodBarCode ?? "",
-              name: "",
-              calories_per_100g: "",
-              protein: "",
-              sugar: "",
-              fiber: "",
-              fat: "",
-              carbohydrates: "",
-              salt: "",
+              barcode: props.foodToEdit?.QRcode || newFoodBarCode || "",
+              name: props.foodToEdit?.name || "",
+              calories_per_100g: props.foodToEdit?.calories_per_100g !== undefined ? String(props.foodToEdit.calories_per_100g) : "",
+              protein: props.foodToEdit?.protein !== undefined ? String(props.foodToEdit.protein) : "",
+              sugar: props.foodToEdit?.sugar !== undefined ? String(props.foodToEdit.sugar) : "",
+              fiber: props.foodToEdit?.fiber !== undefined ? String(props.foodToEdit.fiber) : "",
+              fat: props.foodToEdit?.fat !== undefined ? String(props.foodToEdit.fat) : "",
+              carbohydrates: props.foodToEdit?.carbohydrates !== undefined ? String(props.foodToEdit.carbohydrates) : "",
+              salt: props.foodToEdit?.salt !== undefined ? String(props.foodToEdit.salt) : "",
             }}
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               let uploadedImgUrl = "";
@@ -105,6 +114,55 @@ const ModalCreateFood = (props: props) => {
                 } catch (error) {
                   console.error("Upload failed", error);
                 }
+              }
+
+              if (props.isAdminMode) {
+                try {
+                  const body: any = {
+                    name: values.name,
+                    calories_per_100g: Math.max(1, Number(values.calories_per_100g) || 0),
+                    protein: Math.max(0, Number(values.protein) || 0),
+                    sugar: Math.max(0, Number(values.sugar) || 0),
+                    fiber: Math.max(0, Number(values.fiber) || 0),
+                    fat: Math.max(0, Number(values.fat) || 0),
+                    carbohydrates: Math.max(0, Number(values.carbohydrates) || 0),
+                    salt: Math.max(0, Number(values.salt) || 0),
+                    barcode: values.barcode || undefined,
+                    imgUrl: uploadedImgUrl || props.foodToEdit?.imgUrl || undefined,
+                  };
+
+                  const isEdit = !!props.foodToEdit;
+                  const method = isEdit ? "PATCH" : "POST";
+                  if (isEdit && props.foodToEdit) {
+                    body.id = props.foodToEdit._id;
+                  }
+
+                  const response = await fetch("/api/admin/food", {
+                    method,
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(body),
+                  });
+
+                  if (!response.ok) throw new Error();
+
+                  showToast.success(
+                    isEdit ? "Food updated successfully" : "Food created successfully"
+                  );
+
+                  resetForm();
+                  setSelectedFile(null);
+                  setPreviewUrl(null);
+                  props.onOpenChange();
+                  if (props.onCloseAll) {
+                    props.onCloseAll();
+                  }
+                } catch (err: any) {
+                  console.error("Failed admin food catalog operation", err);
+                  showToast.error("Failed to save food catalog changes");
+                } finally {
+                  setSubmitting(false);
+                }
+                return;
               }
 
               try {
@@ -164,10 +222,14 @@ const ModalCreateFood = (props: props) => {
               <Form className="flex flex-col w-full h-full">
                 <ModalHeader className="flex flex-col gap-1 font-semibold">
                   <h3 className="text-sm font-bold capitalize text-zinc-900 dark:text-zinc-200">
-                    {t("modalCreateFood.title")}
+                    {props.foodToEdit
+                      ? "Edit Food"
+                      : t("modalCreateFood.title")}
                   </h3>
                   <p className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
-                    {t("modalCreateFood.subtitle")}
+                    {props.foodToEdit
+                      ? "Update the nutritional details of the catalog item."
+                      : t("modalCreateFood.subtitle")}
                   </p>
                 </ModalHeader>
 

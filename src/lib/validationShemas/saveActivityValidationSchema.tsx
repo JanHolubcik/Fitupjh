@@ -14,3 +14,12 @@ export const SaveActivitySchema = z.object({
 
 export type SaveActivityInput = z.infer<typeof SaveActivitySchema>;
 export type LoggedActivityInput = z.infer<typeof LoggedActivitySchema>;
+
+export const ActivityCatalogSchema = z.object({
+  name: z.string().min(2, "validation.nameMinLength"),
+  metValue: z.coerce.number().gt(0, "validation.metValueGtZero"),
+  category: z.string().optional(),
+  icon: z.string().optional(),
+});
+
+export type ActivityCatalogInput = z.infer<typeof ActivityCatalogSchema>;

@@ -7,6 +7,17 @@
   "roleFilterUser": "Users",
   "roleFilterAdmin": "Admins",
   "noUsersFound": "No users match your search criteria.",
+  "tabs": {
+    "users": "Users",
+    "foods": "Food Catalog",
+    "activities": "Activity Catalog"
+  },
+  "searchFoodPlaceholder": "Search food by name or barcode...",
+  "createFoodBtn": "Add Food",
+  "searchActivityPlaceholder": "Search activity by name...",
+  "createActivityBtn": "Add Activity",
+  "noFoodsFound": "No foods found.",
+  "noActivitiesFound": "No activities found.",
   "table": {
     "name": "Name",
     "email": "Email",
@@ -27,17 +38,68 @@
     "emailRequired": "Email is required",
     "emailInvalid": "Invalid email address format"
   },
+  "foodModal": {
+    "createTitle": "Add Food Item",
+    "editTitle": "Edit Food Item",
+    "nameLabel": "Food Name",
+    "caloriesLabel": "Calories (per 100g)",
+    "proteinLabel": "Protein (g)",
+    "carbsLabel": "Carbohydrates (g)",
+    "fatLabel": "Fat (g)",
+    "sugarLabel": "Sugar (g)",
+    "fiberLabel": "Fiber (g)",
+    "saltLabel": "Salt (g)",
+    "barcodeLabel": "Barcode / QR Code",
+    "weightLabel": "Product Weight (g)",
+    "imgUrlLabel": "Image URL",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "activityModal": {
+    "createTitle": "Add Activity",
+    "editTitle": "Edit Activity",
+    "nameLabel": "Activity Name",
+    "metValueLabel": "MET Value",
+    "categoryLabel": "Category",
+    "iconLabel": "Icon Name",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
   "deleteModal": {
     "title": "Delete User",
     "confirmText": "Are you sure you want to permanently delete user {{name}}? All their macro history and activity records will be deleted as well. This action cannot be undone.",
     "confirmBtn": "Permanently Delete",
     "cancelBtn": "Cancel"
   },
+  "deleteFoodModal": {
+    "title": "Delete Food Item",
+    "confirmText": "Are you sure you want to permanently delete {{name}} from the catalog? This will not affect existing logs of users.",
+    "confirmBtn": "Delete",
+    "cancelBtn": "Cancel"
+  },
+  "deleteActivityModal": {
+    "title": "Delete Activity",
+    "confirmText": "Are you sure you want to permanently delete {{name}} from the catalog? This will not affect existing logs of users.",
+    "confirmBtn": "Delete",
+    "cancelBtn": "Cancel"
+  },
   "toasts": {
-    "fetchError": "Failed to load users list.",
+    "fetchError": "Failed to load list.",
     "updateSuccess": "User details successfully updated.",
     "updateError": "Failed to update user.",
     "deleteSuccess": "User successfully deleted.",
-    "deleteError": "Failed to delete user."
+    "deleteError": "Failed to delete user.",
+    "foodCreateSuccess": "Food successfully created.",
+    "foodCreateError": "Failed to create food.",
+    "foodUpdateSuccess": "Food successfully updated.",
+    "foodUpdateError": "Failed to update food.",
+    "foodDeleteSuccess": "Food successfully deleted.",
+    "foodDeleteError": "Failed to delete food.",
+    "activityCreateSuccess": "Activity successfully created.",
+    "activityCreateError": "Failed to create activity.",
+    "activityUpdateSuccess": "Activity successfully updated.",
+    "activityUpdateError": "Failed to update activity.",
+    "activityDeleteSuccess": "Activity successfully deleted.",
+    "activityDeleteError": "Failed to delete activity."
   }
 }
