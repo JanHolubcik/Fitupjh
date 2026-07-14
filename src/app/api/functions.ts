@@ -51,3 +51,25 @@ export const withAuth = async (
     return ApiError("Unauthorized", 401);
   }
 };
+
+export const withAdminAuth = async (
+  req: NextRequest,
+  handler: (
+    req: NextRequest,
+    authData: { user: User; session: Session },
+  ) => Promise<NextResponse>,
+  limit: number = 60,
+) => {
+  return withAuth(
+    req,
+    async (innerReq, authData) => {
+      const userWithRole = authData.user as typeof authData.user & { role?: string };
+      if (userWithRole.role !== "admin") {
+        return ApiError("Forbidden - Admin access required", 403);
+      }
+      return handler(innerReq, authData);
+    },
+    limit,
+  );
+};
+

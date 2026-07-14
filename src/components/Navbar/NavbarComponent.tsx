@@ -30,6 +30,7 @@ import {
   FaPlus,
   FaSearch,
   FaCameraRetro,
+  FaUserShield,
 } from "react-icons/fa";
 import ModalFindFood from "../Findfood/components/ModalFindFood";
 import { authClient } from "@/lib/auth-client";
@@ -101,6 +102,19 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
             >
               <p>{data.user?.name}</p>
             </DropdownItem>
+
+            {data.user?.role === "admin" ? (
+              <DropdownItem
+                key="admin"
+                as={NextLink}
+                href={`/${lng}/admin`}
+                className="font-semibold text-primary"
+              >
+                {t("admin")}
+              </DropdownItem>
+            ) : (
+              <DropdownItem key="admin-placeholder" className="hidden" />
+            )}
 
             <DropdownItem
               key="logout"
@@ -291,6 +305,23 @@ const NavbarComponent = ({ data }: { data: AuthSessionData }) => {
                 {t("profile")}
               </span>
             </Link>
+
+            {data.user?.role === "admin" && (
+              <Link
+                as={NextLink}
+                href={`/${lng}/admin`}
+                className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
+                  pathname === `/${lng}/admin`
+                    ? "text-primary"
+                    : "text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-zinc-200"
+                }`}
+              >
+                <FaUserShield className="text-lg" />
+                <span className="text-[10px] font-medium tracking-wide">
+                  {t("admin")}
+                </span>
+              </Link>
+            )}
 
             <Link
               className="flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors cursor-pointer text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-500"

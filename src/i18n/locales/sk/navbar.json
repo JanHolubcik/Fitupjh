@@ -7,5 +7,6 @@
   "logout": "Odhlásenie",
   "close": "Zavrieť",
   "findFood": "Vyhľadaj jedlo",
-  "photoOrScan": "Odfoť alebo naskenuj"
+  "photoOrScan": "Odfoť alebo naskenuj",
+  "admin": "Administrácia"
 }

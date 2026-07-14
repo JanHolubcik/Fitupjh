@@ -1,0 +1,43 @@
+{
+  "title": "Administračný portál",
+  "subtitle": "Správa používateľov, úprava rolí, mien a e-mailových adries.",
+  "searchPlaceholder": "Hľadať používateľov podľa mena alebo e-mailu...",
+  "roleFilterLabel": "Filtrovať podľa roly",
+  "roleFilterAll": "Všetky roly",
+  "roleFilterUser": "Používatelia",
+  "roleFilterAdmin": "Administrátori",
+  "noUsersFound": "Žiadni používatelia nevyhovujú kritériám vyhľadávania.",
+  "table": {
+    "name": "Meno",
+    "email": "E-mail",
+    "role": "Rola",
+    "createdAt": "Dátum registrácie",
+    "actions": "Akcie",
+    "edit": "Upraviť",
+    "delete": "Vymazať"
+  },
+  "editModal": {
+    "title": "Upraviť údaje používateľa",
+    "save": "Uložiť zmeny",
+    "cancel": "Zrušiť",
+    "nameLabel": "Celé meno",
+    "emailLabel": "E-mailová adresa",
+    "roleLabel": "Rola používateľa",
+    "nameRequired": "Meno je povinné",
+    "emailRequired": "E-mail je povinný",
+    "emailInvalid": "Neplatný formát e-mailovej adresy"
+  },
+  "deleteModal": {
+    "title": "Vymazať používateľa",
+    "confirmText": "Naozaj chcete natrvalo vymazať používateľa {{name}}? Vymaže sa aj celá jeho história makier a záznamy o aktivitách. Túto akciu nie je možné vrátiť späť.",
+    "confirmBtn": "Natrvalo vymazať",
+    "cancelBtn": "Zrušiť"
+  },
+  "toasts": {
+    "fetchError": "Nepodarilo sa načítať zoznam používateľov.",
+    "updateSuccess": "Údaje o používateľovi boli úspešne upravené.",
+    "updateError": "Nepodarilo sa upraviť používateľa.",
+    "deleteSuccess": "Používateľ bol úspešne vymazaný.",
+    "deleteError": "Nepodarilo sa vymazať používateľa."
+  }
+}

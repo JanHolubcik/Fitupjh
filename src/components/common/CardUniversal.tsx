@@ -24,4 +24,3 @@ const CardUniversal = ({
 };
 
 export default CardUniversal;
-

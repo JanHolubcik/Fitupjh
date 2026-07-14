@@ -34,6 +34,8 @@ jobs:
         run: |
           rm -rf rn/src/i18n/locales
           cp -r nextjs/src/i18n/locales rn/src/i18n/locales
+          rm -f rn/src/i18n/locales/en/admin.json
+          rm -f rn/src/i18n/locales/sk/admin.json
 
       # ── Query options ─────────────────────────────────────────────────────────
       - name: Sync queriesOptions

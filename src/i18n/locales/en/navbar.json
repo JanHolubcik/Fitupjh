@@ -7,5 +7,6 @@
   "logout": "Logout",
   "close": "Close",
   "findFood": "Find food",
-  "photoOrScan": "Photo or scan"
+  "photoOrScan": "Photo or scan",
+  "admin": "Admin"
 }

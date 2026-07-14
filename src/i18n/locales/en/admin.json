@@ -1,0 +1,43 @@
+{
+  "title": "Admin Portal",
+  "subtitle": "Manage users, update their roles, names, and email addresses.",
+  "searchPlaceholder": "Search users by name or email...",
+  "roleFilterLabel": "Filter by Role",
+  "roleFilterAll": "All Roles",
+  "roleFilterUser": "Users",
+  "roleFilterAdmin": "Admins",
+  "noUsersFound": "No users match your search criteria.",
+  "table": {
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "createdAt": "Joined At",
+    "actions": "Actions",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "editModal": {
+    "title": "Edit User Details",
+    "save": "Save Changes",
+    "cancel": "Cancel",
+    "nameLabel": "Full Name",
+    "emailLabel": "Email Address",
+    "roleLabel": "User Role",
+    "nameRequired": "Name is required",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Invalid email address format"
+  },
+  "deleteModal": {
+    "title": "Delete User",
+    "confirmText": "Are you sure you want to permanently delete user {{name}}? All their macro history and activity records will be deleted as well. This action cannot be undone.",
+    "confirmBtn": "Permanently Delete",
+    "cancelBtn": "Cancel"
+  },
+  "toasts": {
+    "fetchError": "Failed to load users list.",
+    "updateSuccess": "User details successfully updated.",
+    "updateError": "Failed to update user.",
+    "deleteSuccess": "User successfully deleted.",
+    "deleteError": "Failed to delete user."
+  }
+}

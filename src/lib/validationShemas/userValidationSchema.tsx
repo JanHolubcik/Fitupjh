@@ -47,3 +47,11 @@ export const onboardingSchema = z.object({
     "highlyActive",
   ]),
 });
+
+export const adminUpdateUserSchema = z.object({
+  userId: z.string().min(1, "User ID is required"),
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Invalid email address"),
+  role: z.enum(["user", "admin"]),
+});
+
