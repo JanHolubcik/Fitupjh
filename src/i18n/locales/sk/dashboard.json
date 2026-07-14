@@ -283,5 +283,14 @@
     "activityRequired": "Názov aktivity je povinný",
     "durationMin": "Trvanie musí byť aspoň 0",
     "caloriesBurnedMin": "Spálené kalórie musia byť aspoň 0"
+  },
+  "aiFoodScan": {
+    "notFood": "Na tomto obrázku nebolo rozpoznané žiadne jedlo. Skúste to znova.",
+    "failed": "Počas analýzy obrázka sa vyskytla chyba. Skúste to znova.",
+    "takePhoto": "Odfotiť",
+    "chooseGallery": "Vybrať z galérie",
+    "title": "AI detekcia jedla",
+    "subtitle": "Odfoťte alebo vyberte jedlo z galérie a nechajte AI automaticky rozpoznať jedlo a jeho makrá.",
+    "analyzing": "Analyzuje sa pomocou Gemini..."
   }
 }

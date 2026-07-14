@@ -34,7 +34,9 @@ export const AdminTestContent = ({ lng }: AdminTestContentProps) => {
 
     setLoading(true);
     try {
-      const response = await fetch(`/api/aitextsearchmacros?query=${encodeURIComponent(query)}`);
+      const response = await fetch(
+        `/api/aiTextSearchMacros?query=${encodeURIComponent(query)}`,
+      );
       if (!response.ok) {
         throw new Error("Failed to analyze food");
       }
@@ -60,9 +62,7 @@ export const AdminTestContent = ({ lng }: AdminTestContentProps) => {
             <h1 className="text-2xl sm:text-3xl font-black text-primary">
               {t("adminTest.title")}
             </h1>
-            <p className="text-sm text-default-500">
-              {t("adminTest.welcome")}
-            </p>
+            <p className="text-sm text-default-500">{t("adminTest.welcome")}</p>
           </div>
         </div>
 
@@ -74,7 +74,8 @@ export const AdminTestContent = ({ lng }: AdminTestContentProps) => {
             AI Text Search Macros Simulator
           </h3>
           <p className="text-xs text-default-500">
-            Type food items (e.g. "mashed potatoes and chicken" or "apple") below to test the AI portion estimation and macro calculations.
+            Type food items (e.g. "mashed potatoes and chicken" or "apple")
+            below to test the AI portion estimation and macro calculations.
           </p>
         </div>
 
@@ -93,7 +94,11 @@ export const AdminTestContent = ({ lng }: AdminTestContentProps) => {
             className="font-bold w-full"
             isDisabled={loading || !query.trim()}
           >
-            {loading ? <Spinner size="sm" color="current" /> : "Analyze with Gemini"}
+            {loading ? (
+              <Spinner size="sm" color="current" />
+            ) : (
+              "Analyze with Gemini"
+            )}
           </Button>
         </form>
 
@@ -119,26 +124,47 @@ export const AdminTestContent = ({ lng }: AdminTestContentProps) => {
                       </span>
                     </div>
                     <p className="text-xs text-default-500">
-                      Total Energy: <strong className="text-foreground">{food.calories} kcal</strong>
+                      Total Energy:{" "}
+                      <strong className="text-foreground">
+                        {food.calories} kcal
+                      </strong>
                     </p>
                     <div className="grid grid-cols-3 gap-2 mt-1 text-[11px] text-default-400 bg-default-50/50 dark:bg-white/[0.01] p-2 rounded-lg border border-default-100">
                       <div>
-                        <span className="font-semibold text-foreground">Protein:</span> {food.protein}g
+                        <span className="font-semibold text-foreground">
+                          Protein:
+                        </span>{" "}
+                        {food.protein}g
                       </div>
                       <div>
-                        <span className="font-semibold text-foreground">Carbs:</span> {food.carbohydrates}g
+                        <span className="font-semibold text-foreground">
+                          Carbs:
+                        </span>{" "}
+                        {food.carbohydrates}g
                       </div>
                       <div>
-                        <span className="font-semibold text-foreground">Fat:</span> {food.fat}g
+                        <span className="font-semibold text-foreground">
+                          Fat:
+                        </span>{" "}
+                        {food.fat}g
                       </div>
                       <div>
-                        <span className="font-semibold text-foreground">Fiber:</span> {food.fiber}g
+                        <span className="font-semibold text-foreground">
+                          Fiber:
+                        </span>{" "}
+                        {food.fiber}g
                       </div>
                       <div>
-                        <span className="font-semibold text-foreground">Sugar:</span> {food.sugar}g
+                        <span className="font-semibold text-foreground">
+                          Sugar:
+                        </span>{" "}
+                        {food.sugar}g
                       </div>
                       <div>
-                        <span className="font-semibold text-foreground">Salt:</span> {food.salt}g
+                        <span className="font-semibold text-foreground">
+                          Salt:
+                        </span>{" "}
+                        {food.salt}g
                       </div>
                     </div>
                   </CardBody>
