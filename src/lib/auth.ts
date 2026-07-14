@@ -17,6 +17,7 @@ export const auth = betterAuth({
       enabled: true,
     },
     additionalFields: {
+      role: { type: "string", required: true, defaultValue: "user" },
       goal: { type: "string", required: false, defaultValue: "maintainWeight" },
       weight: { type: "number", required: false },
       weightGoal: { type: "number", required: false },

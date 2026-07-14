@@ -23,5 +23,9 @@
     "signup": "Registrácia",
     "privacy": "Zásady ochrany osobných údajov",
     "terms": "Podmienky používania"
+  },
+  "adminTest": {
+    "title": "Admin Test Page",
+    "welcome": "Welcome to the Admin Test Page! Access granted."
   }
 }

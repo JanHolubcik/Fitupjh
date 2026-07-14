@@ -23,5 +23,9 @@
     "signup": "Sign Up",
     "privacy": "Privacy Policy",
     "terms": "Terms of Use"
+  },
+  "adminTest": {
+    "title": "Admin Test Page",
+    "welcome": "Welcome to the Admin Test Page! Access granted."
   }
 }

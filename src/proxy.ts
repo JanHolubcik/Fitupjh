@@ -8,11 +8,18 @@ const i18nProxy = createProxy(i18nConfig);
 
 const notLoggedInProtectedRoutes = ["/dashboard", "/profile"];
 const LoggedInProtectedRoutes = ["/login", "/signup"];
+const adminProtectedRoutes = ["/admin-test"];
 
-export async function proxy(req: NextRequest) {
+export const proxy = async (req: NextRequest) => {
   const { pathname } = req.nextUrl;
 
   const isNotLoggedInProtected = notLoggedInProtectedRoutes.some(
+    (route) =>
+      pathname.startsWith(route) ||
+      pathname.match(new RegExp(`^/[^/]+${route}`)),
+  );
+
+  const isAdminProtected = adminProtectedRoutes.some(
     (route) =>
       pathname.startsWith(route) ||
       pathname.match(new RegExp(`^/[^/]+${route}`)),
@@ -27,7 +34,12 @@ export async function proxy(req: NextRequest) {
   const isRootPath =
     pathname === "/" || /^\/[a-zA-Z]{2}(-[a-zA-Z]{2})?(\/)?$/.test(pathname);
 
-  if (!isNotLoggedInProtected && !isLoggedInProtectedRoutes && !isRootPath) {
+  if (
+    !isNotLoggedInProtected &&
+    !isAdminProtected &&
+    !isLoggedInProtectedRoutes &&
+    !isRootPath
+  ) {
     return i18nProxy(req);
   }
 
@@ -37,10 +49,15 @@ export async function proxy(req: NextRequest) {
 
   const isAuthenticated = !!session?.user;
 
-  if (isNotLoggedInProtected && !isAuthenticated) {
+  if ((isNotLoggedInProtected || isAdminProtected) && !isAuthenticated) {
     const signInUrl = new URL("/login", req.url);
     signInUrl.searchParams.set("callbackUrl", req.url);
     return NextResponse.redirect(signInUrl);
+  }
+
+  if (isAdminProtected && isAuthenticated && session?.user?.role !== "admin") {
+    const dashboardUrl = new URL("/dashboard", req.url);
+    return NextResponse.redirect(dashboardUrl);
   }
 
   if (isLoggedInProtectedRoutes && isAuthenticated) {
@@ -61,7 +78,7 @@ export async function proxy(req: NextRequest) {
   }
 
   return i18nProxy(req);
-}
+};
 
 export const config = {
   matcher: [

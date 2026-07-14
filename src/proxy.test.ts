@@ -115,4 +115,40 @@ describe("Proxy Route Middleware (regex routes)", () => {
     const text = await response.text();
     expect(text).toBe("i18n-proxied");
   });
+
+  it("should redirect unauthenticated users from admin protected routes (e.g., /admin-test) to /login", async () => {
+    mocks.mockGetSession.mockResolvedValue(null);
+
+    const req = createRequest("http://localhost/admin-test");
+    const response = await proxy(req);
+
+    expect(response.status).toBe(307);
+    expect(response.headers.get("Location")).toContain("/login");
+  });
+
+  it("should redirect authenticated non-admin users from admin protected routes (e.g., /admin-test) to /dashboard", async () => {
+    mocks.mockGetSession.mockResolvedValue({
+      user: { id: "user-123", weight: 80, height: 180, role: "user" },
+    });
+
+    const req = createRequest("http://localhost/admin-test");
+    const response = await proxy(req);
+
+    expect(response.status).toBe(307);
+    expect(response.headers.get("Location")).toContain("/dashboard");
+  });
+
+  it("should allow authenticated admin users to access admin protected routes (e.g., /admin-test)", async () => {
+    mocks.mockGetSession.mockResolvedValue({
+      user: { id: "admin-123", weight: 80, height: 180, role: "admin" },
+    });
+    mocks.mockI18nProxy.mockResolvedValue(new NextResponse("i18n-proxied"));
+
+    const req = createRequest("http://localhost/admin-test");
+    const response = await proxy(req);
+
+    expect(mocks.mockI18nProxy).toHaveBeenCalledWith(req);
+    const text = await response.text();
+    expect(text).toBe("i18n-proxied");
+  });
 });
