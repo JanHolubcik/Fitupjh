@@ -31,8 +31,9 @@ vi.mock("../functions", () => ({
 vi.mock("@google/genai", () => ({
   GoogleGenAI: class {
     models = {
-      generateContent: (args: Record<string, string | number | boolean | object>) =>
-        mocks.mockGenerateContent(args),
+      generateContent: (
+        args: Record<string, string | number | boolean | object>,
+      ) => mocks.mockGenerateContent(args),
     };
   },
 }));
@@ -84,7 +85,10 @@ describe("POST /api/foodImageAI", () => {
   it("should return 400 when file magic bytes are invalid (not an image)", async () => {
     // Plain text encoded as base64 (no image signature)
     const invalidImageBase64 = "data:image/png;base64,SGVsbG8gd29ybGQ="; // "Hello world"
-    const req = createRequest({ imageBase64: invalidImageBase64, localization: "en" });
+    const req = createRequest({
+      imageBase64: invalidImageBase64,
+      localization: "en",
+    });
     const response = await POST(req);
 
     expect(response.status).toBe(400);
@@ -109,11 +113,17 @@ describe("POST /api/foodImageAI", () => {
       text: JSON.stringify(mockResponse),
     });
 
-    const req = createRequest({ imageBase64: validImageBase64, localization: "sk" });
+    const req = createRequest({
+      imageBase64: validImageBase64,
+      localization: "sk",
+    });
     const response = await POST(req);
 
     expect(response.status).toBe(200);
-    const body = (await response.json()) as { success: true; data: typeof mockResponse };
+    const body = (await response.json()) as {
+      success: true;
+      data: typeof mockResponse;
+    };
     expect(body).toEqual({ success: true, data: mockResponse });
     expect(mocks.mockGenerateContent).toHaveBeenCalled();
   });
@@ -128,18 +138,29 @@ describe("POST /api/foodImageAI", () => {
       text: JSON.stringify(mockResponse),
     });
 
-    const req = createRequest({ imageBase64: validImageBase64, localization: "sk" });
+    const req = createRequest({
+      imageBase64: validImageBase64,
+      localization: "sk",
+    });
     const response = await POST(req);
 
     expect(response.status).toBe(400);
     const body = (await response.json()) as { success: false; error: string };
-    expect(body).toEqual({ success: false, error: "Tento obrázok neobsahuje jedlo." });
+    expect(body).toEqual({
+      success: false,
+      error: "Tento obrázok neobsahuje jedlo.",
+    });
   });
 
   it("should return 500 when Gemini API fails", async () => {
-    mocks.mockGenerateContent.mockRejectedValue(new Error("Gemini quota exceeded"));
+    mocks.mockGenerateContent.mockRejectedValue(
+      new Error("Gemini quota exceeded"),
+    );
 
-    const req = createRequest({ imageBase64: validImageBase64, localization: "en" });
+    const req = createRequest({
+      imageBase64: validImageBase64,
+      localization: "en",
+    });
     const response = await POST(req);
 
     expect(response.status).toBe(500);
