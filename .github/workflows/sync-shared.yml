@@ -40,16 +40,16 @@ jobs:
       # ── Query options ─────────────────────────────────────────────────────────
       - name: Sync queriesOptions
         run: |
-          rm -rf rn/src/app/lib/queriesOptions
-          mkdir -p rn/src/app/lib/queriesOptions
-          cp -r nextjs/src/lib/queriesOptions/. rn/src/app/lib/queriesOptions/
+          rm -rf rn/src/lib/queriesOptions
+          mkdir -p rn/src/lib/queriesOptions
+          cp -r nextjs/src/lib/queriesOptions/. rn/src/lib/queriesOptions/
 
       # ── Validation schemas ───────────────────────────────────────────────────
       - name: Sync validation schemas
         run: |
-          rm -rf rn/src/app/lib/validationShemas
-          mkdir -p rn/src/app/lib/validationShemas
-          cp -r nextjs/src/lib/validationShemas/. rn/src/app/lib/validationShemas/
+          rm -rf rn/src/lib/validationShemas
+          mkdir -p rn/src/lib/validationShemas
+          cp -r nextjs/src/lib/validationShemas/. rn/src/lib/validationShemas/
 
       # ── Types ─────────────────────────────────────────────────────────────────
       - name: Sync types
