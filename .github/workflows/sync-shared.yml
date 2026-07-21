@@ -69,9 +69,9 @@ jobs:
       # ── Remove test files ─────────────────────────────────────────────────────
       - name: Remove test files from synced directories
         run: |
-          find rn/src/app/lib/validationShemas -type d -name "testSchemas" -exec rm -rf {} +
-          find rn/src/app/lib/validationShemas -type f -name "*.test.*" -delete
-          find rn/src/app/lib/queriesOptions -type f -name "*.test.*" -delete
+          find rn/src/lib/validationShemas -type d -name "testSchemas" -exec rm -rf {} +
+          find rn/src/lib/validationShemas -type f -name "*.test.*" -delete
+          find rn/src/lib/queriesOptions -type f -name "*.test.*" -delete
 
       # ── Open a PR in the RN repo ──────────────────────────────────────────────
       - name: Create Pull Request
@@ -88,8 +88,8 @@ jobs:
 
             **Changed directories:**
             - `src/i18n/locales` → `src/i18n/locales`
-            - `src/lib/queriesOptions` → `src/app/lib/queriesOptions`
-            - `src/lib/validationShemas` → `src/app/lib/validationShemas`
+            - `src/lib/queriesOptions` → `src/lib/queriesOptions`
+            - `src/lib/validationShemas` → `src/lib/validationShemas`
             - `src/types/Types.ts` → `src/types/Types.ts`
             - `src/app/[lng]/constants/*Helper.ts` → `src/utils/*Helper.ts`
 
