@@ -56,7 +56,7 @@ export default function Login() {
         setSubmitting(false);
         return;
       }
-
+      router.refresh();
       return router.push(`/${lng}/dashboard`);
     },
   });

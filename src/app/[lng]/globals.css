@@ -97,12 +97,40 @@
 }
 
 
-.dark .driver-popover-footer .driver-popover-prev-btn,
-.dark .driver-popover-footer .driver-popover-close-btn {
+/* Driver.js Close Cross Button Styling */
+.driver-popover-close-btn {
+  color: #71717a !important; /* zinc-500 */
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  width: 28px !important;
+  height: 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 9999px !important;
+  transition: all 0.2s ease !important;
+}
+
+.driver-popover-close-btn:hover {
+  color: #000000 !important;
+  background-color: #e4e4e7 !important; /* zinc-200 */
+}
+
+.dark .driver-popover-footer .driver-popover-prev-btn {
   color: #d4d4d8 !important; /* zinc-300 */
   background-color: #27272a !important; /* zinc-800 */
   border: none !important;
 }
+
+.dark .driver-popover-close-btn {
+  color: #a1a1aa !important; /* zinc-400 */
+}
+
+.dark .driver-popover-close-btn:hover {
+  color: #ffffff !important;
+  background-color: #27272a !important; /* zinc-800 */
+}
+
 
 /* --- CUSTOM TOASTIFY STYLES --- */
 .Toastify__toast-container--bottom-left {

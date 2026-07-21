@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import NextLink from "next/link";
 import {
   Button,
@@ -33,6 +33,8 @@ export default function Signup() {
   const params = useParams();
   const lng = params?.lng || "en";
   const { t } = useT("signup");
+
+  const router = useRouter();
 
   const formik = useFormik({
     initialValues: {
@@ -68,33 +70,24 @@ export default function Signup() {
       try {
         //await signupMutation.mutateAsync(values);
 
-        const { data, error } = await authClient.signUp.email(
-          {
-            email: values.userEmail, // user email address
-            password: values.password, // user password -> min 8 characters by default
-            name: values.username, // user display name
-            image: "", // User image URL (optional)
-            callbackURL: "/dashboard", // A URL to redirect to after the user verifies their email (optional)
-            weight: Number(values.weight),
-            height: Number(values.height),
-            termsAccepted: values.termsAccepted,
-          },
-          {
-            onRequest: (ctx) => {
-              //show loading
-            },
-            onSuccess: (ctx) => {
-              //redirect to the dashboard or sign in page
-            },
-            onError: (ctx) => {},
-          },
-        );
+        const { data, error } = await authClient.signUp.email({
+          email: values.userEmail,
+          password: values.password,
+          name: values.username,
+          image: "",
+          callbackURL: "/dashboard",
+          weight: Number(values.weight),
+          height: Number(values.height),
+          termsAccepted: values.termsAccepted,
+        });
 
         if (error) {
           setStatus(error.message || t("errors.serverError"));
           setSubmitting(false);
           return;
         }
+        router.refresh();
+        router.push(`/${lng}/dashboard`);
       } catch (err) {
         setStatus(t("errors.serverError"));
         setSubmitting(false);

@@ -14,7 +14,7 @@ const CardUniversal = ({
     <Card
       className={
         className +
-        " bg-neutral-100 dark:bg-content1 shadow-xl dark:shadow-lg border-2 dark:border-gray-800"
+        " bg-neutral-100 dark:bg-content1 shadow-xl dark:shadow-lg border-2 border-zinc-200 dark:border-gray-800"
       }
       {...props}
     >
