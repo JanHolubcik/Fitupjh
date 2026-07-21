@@ -38,6 +38,7 @@ vi.mock("@google/genai", () => ({
 describe("GET /api/aitextsearchmacros", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    process.env.GEMINI_API_KEY = "test-api-key";
   });
 
   const createRequest = (query: string = "") => {

@@ -44,16 +44,51 @@ export const GET = async (req: NextRequest) => {
               type: "OBJECT",
               properties: {
                 name: { type: "STRING", description: "Standardized food name" },
-                weight: { type: "NUMBER", description: "Weight of the portion in grams" },
-                calories: { type: "NUMBER", description: "Total calories for the portion weight in kcal" },
-                fat: { type: "NUMBER", description: "Total fat for the portion weight in grams" },
-                protein: { type: "NUMBER", description: "Total protein for the portion weight in grams" },
-                carbohydrates: { type: "NUMBER", description: "Total carbohydrates for the portion weight in grams" },
-                fiber: { type: "NUMBER", description: "Total fiber for the portion weight in grams" },
-                sugar: { type: "NUMBER", description: "Total sugar for the portion weight in grams" },
-                salt: { type: "NUMBER", description: "Total salt for the portion weight in grams" },
+                weight: {
+                  type: "NUMBER",
+                  description: "Weight of the portion in grams",
+                },
+                calories: {
+                  type: "NUMBER",
+                  description: "Total calories for the portion weight in kcal",
+                },
+                fat: {
+                  type: "NUMBER",
+                  description: "Total fat for the portion weight in grams",
+                },
+                protein: {
+                  type: "NUMBER",
+                  description: "Total protein for the portion weight in grams",
+                },
+                carbohydrates: {
+                  type: "NUMBER",
+                  description:
+                    "Total carbohydrates for the portion weight in grams",
+                },
+                fiber: {
+                  type: "NUMBER",
+                  description: "Total fiber for the portion weight in grams",
+                },
+                sugar: {
+                  type: "NUMBER",
+                  description: "Total sugar for the portion weight in grams",
+                },
+                salt: {
+                  type: "NUMBER",
+                  description: "Total salt for the portion weight in grams",
+                },
               },
-              required: ["name", "weight", "calories", "fat", "protein", "carbohydrates", "fiber", "sugar", "salt"],
+              required: [
+                "name",
+                "weight",
+                "calories",
+                "fat",
+                "protein",
+                "carbohydrates",
+                "fiber",
+                "sugar",
+                "salt",
+              ],
             },
           },
         },

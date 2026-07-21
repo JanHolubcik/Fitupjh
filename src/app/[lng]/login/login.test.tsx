@@ -7,6 +7,7 @@ import Login from "./page";
 const { mocks } = vi.hoisted(() => ({
   mocks: {
     mockPush: vi.fn(),
+    mockRefresh: vi.fn(),
     mockSignInEmail: vi.fn(),
   },
 }));
@@ -14,6 +15,7 @@ const { mocks } = vi.hoisted(() => ({
 vi.mock("next/navigation", () => ({
   useRouter: () => ({
     push: mocks.mockPush,
+    refresh: mocks.mockRefresh,
   }),
   useParams: () => ({
     lng: "en",
