@@ -33,6 +33,12 @@
     "title": "Váš počiatočný bod",
     "weightLabel": "Aktuálna váha (kg)",
     "heightLabel": "Výška (cm)",
+    "yearOfBirthLabel": "Rok narodenia",
+    "genderLabel": "Pohlavie",
+    "gender": {
+      "male": "Muž",
+      "female": "Žena"
+    },
     "activityLevel": "Úroveň dennej aktivity",
     "activity": {
       "sedentary": "Sedavá (Kancelárska práca, málo cvičenia)",
@@ -48,6 +54,8 @@
     "activityLevelLabel": "Úroveň aktivity",
     "weightLabel": "Váha",
     "heightLabel": "Výška",
+    "yearOfBirthLabel": "Rok narodenia",
+    "genderLabel": "Pohlavie",
     "notSet": "Nenastavené",
     "kg": "kg",
     "cm": "cm",
@@ -61,6 +69,10 @@
       "lightlyActive": "Zľahka aktívna",
       "mediumActive": "Stredne aktívna",
       "highlyActive": "Veľmi aktívna"
+    },
+    "genders": {
+      "male": "Muž",
+      "female": "Žena"
     }
   },
   "buttons": {
@@ -78,6 +90,9 @@
     "weightMax": "Hmotnosť nemôže presiahnuť 300 kg",
     "heightRequired": "Výška je povinná",
     "heightMin": "Výška musí byť aspoň 50 cm",
-    "heightMax": "Výška nemôže presiahnuť 300 cm"
+    "heightMax": "Výška nemôže presiahnuť 300 cm",
+    "yearOfBirthRequired": "Rok narodenia je povinný",
+    "yearOfBirthMin": "Rok narodenia musí byť aspoň 1900",
+    "yearOfBirthMax": "Rok narodenia nemôže byť v budúcnosti"
   }
 }

@@ -90,6 +90,46 @@ describe("useCalculateRecommendedCalories", () => {
     expect(result.current.caloriesSum).toBe(0);
   });
 
+  it("should calculate fewer recommended calories for a female user", () => {
+    mocks.mockUseSession.mockReturnValue({
+      data: {
+        user: {
+          weight: 80,
+          height: 180,
+          yearOfBirth: 1995,
+          gender: "male",
+          activityLevel: "lightlyActive",
+          goal: "maintainWeight",
+        },
+      },
+    });
+
+    const { result: maleResult } = renderHook(() =>
+      useCalculateRecommendedCalories(null, [])
+    );
+
+    mocks.mockUseSession.mockReturnValue({
+      data: {
+        user: {
+          weight: 80,
+          height: 180,
+          yearOfBirth: 1995,
+          gender: "female",
+          activityLevel: "lightlyActive",
+          goal: "maintainWeight",
+        },
+      },
+    });
+
+    const { result: femaleResult } = renderHook(() =>
+      useCalculateRecommendedCalories(null, [])
+    );
+
+    expect(femaleResult.current.recommendedCaloriesValue).toBeLessThan(
+      maleResult.current.recommendedCaloriesValue
+    );
+  });
+
   it("should calculate net calories (consumed minus burned) correctly", () => {
     mocks.mockUseSession.mockReturnValue({
       data: {

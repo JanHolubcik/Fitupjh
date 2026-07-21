@@ -26,14 +26,19 @@ const useCalculateRecommendedCalories = (
     "maintainWeight") as keyof typeof GOAL_MULTIPLIERS;
   const recommendedCaloriesValue = useMemo(() => {
     if (user?.weight && user.height) {
-      const bmr = 10 * user.weight + 6.25 * user.height - 5 * 25 + 5;
+      const age = user.yearOfBirth
+        ? new Date().getFullYear() - user.yearOfBirth
+        : 25;
+      const genderModifier = user.gender === "female" ? -161 : 5;
+      const bmr =
+        10 * user.weight + 6.25 * user.height - 5 * age + genderModifier;
       const multiplier = ACTIVITY_MULTIPLIERS[activityKey] || 1.2;
       const tdee = bmr * multiplier;
       return Math.round(tdee * GOAL_MULTIPLIERS[goalKey]);
     } else {
       return 0;
     }
-  }, [user?.height, user?.weight]);
+  }, [user?.height, user?.weight, user?.yearOfBirth, user?.gender, activityKey, goalKey]);
 
   const caloriesSum = useMemo(() => {
     if (!savedFood) return 0;

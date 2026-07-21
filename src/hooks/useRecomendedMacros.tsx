@@ -3,7 +3,13 @@
 import { calculateRecommendedMacros } from "../app/[lng]/constants/FunctionsHelper";
 
 import { SavedFoodClass } from "@/lib/mongo/models/SavedFood";
-import { Food, FoodType, SavedFoodMonth } from "@/types/Types";
+import {
+  ACTIVITY_MULTIPLIERS,
+  GOAL_MULTIPLIERS,
+  Food,
+  FoodType,
+  SavedFoodMonth,
+} from "@/types/Types";
 
 import { authClient } from "@/lib/auth-client";
 import { format, parseISO, subDays } from "date-fns";
@@ -79,10 +85,19 @@ const useMacros = () => {
     : sortedFood.map((item) => format(parseISO(item.day), "d.M"));
 
 
+  const activityKey = (data?.user?.activityLevel ||
+    "lightlyActive") as keyof typeof ACTIVITY_MULTIPLIERS;
+  const goalKey = (data?.user?.goal ||
+    "maintainWeight") as keyof typeof GOAL_MULTIPLIERS;
+
   const RecommendedMacros = data?.user
     ? calculateRecommendedMacros(
         data?.user?.weight ? data?.user?.weight : 0,
         data?.user?.height ? data?.user?.height : 0,
+        ACTIVITY_MULTIPLIERS[activityKey],
+        GOAL_MULTIPLIERS[goalKey],
+        data?.user?.yearOfBirth ?? undefined,
+        data?.user?.gender ?? undefined,
       )
     : {
         calories: 0,

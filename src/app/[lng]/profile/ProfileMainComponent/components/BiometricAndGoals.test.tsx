@@ -29,6 +29,8 @@ vi.mock("@/lib/auth-client", () => ({
       weight?: number;
       weightGoal?: number;
       height?: number;
+      yearOfBirth?: number;
+      gender?: string;
       activityLevel?: string;
       goal?: string;
     }) => mocks.mockUpdateUser(values),
@@ -51,6 +53,8 @@ type MockUser = {
   weight?: number;
   weightGoal?: number;
   height?: number;
+  yearOfBirth?: number;
+  gender?: string;
   activityLevel?: string;
   goal?: string;
 };
@@ -66,6 +70,8 @@ describe("BiometricAndGoals Component", () => {
     weight: 80,
     weightGoal: 75,
     height: 180,
+    yearOfBirth: 1995,
+    gender: "male",
     activityLevel: "lightlyActive",
     goal: "loseWeight",
   };
@@ -83,10 +89,12 @@ describe("BiometricAndGoals Component", () => {
     const weightInput = screen.getByLabelText("currentWeight") as HTMLInputElement;
     const goalWeightInput = screen.getByLabelText("goalWeight") as HTMLInputElement;
     const heightInput = screen.getByLabelText("height") as HTMLInputElement;
+    const yearOfBirthInput = screen.getByLabelText("yearOfBirth") as HTMLInputElement;
 
     expect(weightInput.value).toBe("80");
     expect(goalWeightInput.value).toBe("75");
     expect(heightInput.value).toBe("180");
+    expect(yearOfBirthInput.value).toBe("1995");
     expect(screen.getByText("updateBiometrics")).toBeInTheDocument();
   });
 
@@ -98,7 +106,7 @@ describe("BiometricAndGoals Component", () => {
 
     const { container } = render(<BiometricAndGoals user={mockUser as never} />);
 
-    // Update weights and height
+    // Update weights, height, yearOfBirth
     fireEvent.change(screen.getByLabelText("currentWeight"), {
       target: { value: "85" },
     });
@@ -107,6 +115,9 @@ describe("BiometricAndGoals Component", () => {
     });
     fireEvent.change(screen.getByLabelText("height"), {
       target: { value: "182" },
+    });
+    fireEvent.change(screen.getByLabelText("yearOfBirth"), {
+      target: { value: "1990" },
     });
 
     const form = container.querySelector("form");
@@ -120,6 +131,8 @@ describe("BiometricAndGoals Component", () => {
         weight: 85,
         weightGoal: 80,
         height: 182,
+        yearOfBirth: 1990,
+        gender: "male",
         activityLevel: "lightlyActive",
         goal: "loseWeight",
       });

@@ -120,12 +120,14 @@ export const GOAL_MULTIPLIERS: Record<string, number> = {
 
 export type activityLevel =
   | "sedatory"
+  | "sedentary"
   | "lightlyActive"
   | "mediumActive"
   | "highlyActive";
 
 export const ACTIVITY_MULTIPLIERS: Record<activityLevel, number> = {
   sedatory: 1.2,
+  sedentary: 1.2,
   lightlyActive: 1.375,
   mediumActive: 1.55,
   highlyActive: 1.725,

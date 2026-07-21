@@ -10,6 +10,8 @@ import {
   Link,
   Spinner,
   Checkbox,
+  Select,
+  SelectItem,
 } from "@heroui/react";
 
 import { signupSchema } from "@/lib/validationShemas/signupValidationSchema";
@@ -43,6 +45,8 @@ export default function Signup() {
       password: "",
       height: "",
       weight: "",
+      yearOfBirth: "",
+      gender: "male",
       termsAccepted: false,
     },
 
@@ -78,6 +82,8 @@ export default function Signup() {
           callbackURL: "/dashboard",
           weight: Number(values.weight),
           height: Number(values.height),
+          yearOfBirth: Number(values.yearOfBirth),
+          gender: values.gender,
           termsAccepted: values.termsAccepted,
         });
 
@@ -176,6 +182,39 @@ export default function Signup() {
                 errorMessage={formik.touched.weight && formik.errors.weight}
                 isDisabled={formik.isSubmitting}
               />
+            </div>
+
+            <div className="flex flex-row gap-4">
+              <Input
+                name="yearOfBirth"
+                label={t("yearOfBirthLabel")}
+                classNames={customInputStyles}
+                type="number"
+                min={1900}
+                max={new Date().getFullYear()}
+                value={formik.values.yearOfBirth}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                isInvalid={formik.touched.yearOfBirth && !!formik.errors.yearOfBirth}
+                errorMessage={formik.touched.yearOfBirth && formik.errors.yearOfBirth}
+                isDisabled={formik.isSubmitting}
+              />
+
+              <Select
+                name="gender"
+                label={t("genderLabel")}
+                selectedKeys={[formik.values.gender]}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                variant="faded"
+                isDisabled={formik.isSubmitting}
+                isInvalid={formik.touched.gender && !!formik.errors.gender}
+                errorMessage={formik.touched.gender && formik.errors.gender}
+                className="w-full"
+              >
+                <SelectItem key="male">{t("genderMale")}</SelectItem>
+                <SelectItem key="female">{t("genderFemale")}</SelectItem>
+              </Select>
             </div>
 
             <div className="block sm:hidden">

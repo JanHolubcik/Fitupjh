@@ -45,6 +45,21 @@ describe("FunctionsHelper", () => {
       // Active but losing weight might have different calorie target
       expect(sedentaryMaintain.calories).not.toBe(activeLose.calories);
     });
+
+    it("should calculate lower calories for female compared to male", () => {
+      const maleMacros = calculateRecommendedMacros(70, 175, 1.2, 1, 1995, "male");
+      const femaleMacros = calculateRecommendedMacros(70, 175, 1.2, 1, 1995, "female");
+
+      // Females have -161 offset vs male +5 offset in Mifflin-St Jeor
+      expect(femaleMacros.calories).toBeLessThan(maleMacros.calories);
+    });
+
+    it("should calculate lower calories for older age (earlier year of birth)", () => {
+      const youngerMacros = calculateRecommendedMacros(70, 175, 1.2, 1, 2000, "male");
+      const olderMacros = calculateRecommendedMacros(70, 175, 1.2, 1, 1970, "male");
+
+      expect(olderMacros.calories).toBeLessThan(youngerMacros.calories);
+    });
   });
 
   describe("adjustMacrosWithBurnedCalories", () => {

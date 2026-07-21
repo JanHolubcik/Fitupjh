@@ -100,6 +100,8 @@ export default function OnboardingPage() {
             goal: "loseWeight",
             weight: "",
             height: "",
+            yearOfBirth: "",
+            gender: "male",
             activityLevel: "lightlyActive",
           }}
           validate={(values) => {
@@ -110,6 +112,9 @@ export default function OnboardingPage() {
             }
             if (!values.height && values.height !== "0") {
               errors.height = t("validation.heightRequired");
+            }
+            if (!values.yearOfBirth && values.yearOfBirth !== "0") {
+              errors.yearOfBirth = t("validation.yearOfBirthRequired");
             }
 
             const result = onboardingSchema.safeParse(values);
@@ -132,6 +137,14 @@ export default function OnboardingPage() {
                   } else {
                     errors.height = t("validation.heightRequired");
                   }
+                } else if (field === "yearOfBirth" && !errors.yearOfBirth) {
+                  if (issue.code === z.ZodIssueCode.too_small) {
+                    errors.yearOfBirth = t("validation.yearOfBirthMin");
+                  } else if (issue.code === z.ZodIssueCode.too_big) {
+                    errors.yearOfBirth = t("validation.yearOfBirthMax");
+                  } else {
+                    errors.yearOfBirth = t("validation.yearOfBirthRequired");
+                  }
                 }
               }
             }
@@ -142,6 +155,8 @@ export default function OnboardingPage() {
               goal: values.goal,
               weight: Number(values.weight),
               height: Number(values.height),
+              yearOfBirth: Number(values.yearOfBirth),
+              gender: values.gender,
               activityLevel: values.activityLevel,
             });
 
@@ -178,6 +193,11 @@ export default function OnboardingPage() {
               lightlyActive: t("review.activities.lightlyActive"),
               mediumActive: t("review.activities.mediumActive"),
               highlyActive: t("review.activities.highlyActive"),
+            };
+
+            const genderLabels: Record<string, string> = {
+              male: t("review.genders.male"),
+              female: t("review.genders.female"),
             };
 
             return (
@@ -329,7 +349,7 @@ export default function OnboardingPage() {
                           {t("details.title")}
                         </h2>
 
-                        <div className="flex gap-4 w-full">
+                        <div className="grid grid-cols-2 gap-4 w-full">
                           <Input
                             name="weight"
                             label={t("details.weightLabel")}
@@ -354,6 +374,32 @@ export default function OnboardingPage() {
                             required
                             className="flex-1"
                           />
+                          <Input
+                            name="yearOfBirth"
+                            label={t("details.yearOfBirthLabel")}
+                            type="number"
+                            min={1900}
+                            max={new Date().getFullYear()}
+                            value={String(values.yearOfBirth)}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            isInvalid={!!errors.yearOfBirth && touched.yearOfBirth}
+                            errorMessage={errors.yearOfBirth}
+                            required
+                            className="flex-1"
+                          />
+                          <Select
+                            name="gender"
+                            label={t("details.genderLabel")}
+                            selectedKeys={[values.gender]}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            variant="faded"
+                            className="flex-1"
+                          >
+                            <SelectItem key="male">{t("details.gender.male")}</SelectItem>
+                            <SelectItem key="female">{t("details.gender.female")}</SelectItem>
+                          </Select>
                         </div>
 
                         <Select
@@ -438,6 +484,26 @@ export default function OnboardingPage() {
                                 : t("review.notSet")}
                             </span>
                           </div>
+
+                          <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 flex flex-col items-center">
+                            <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-1">
+                              {t("review.yearOfBirthLabel")}
+                            </span>
+                            <span className="font-bold text-zinc-900 dark:text-white">
+                              {values.yearOfBirth
+                                ? values.yearOfBirth
+                                : t("review.notSet")}
+                            </span>
+                          </div>
+
+                          <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 flex flex-col items-center">
+                            <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-1">
+                              {t("review.genderLabel")}
+                            </span>
+                            <span className="font-bold text-zinc-900 dark:text-white">
+                              {genderLabels[values.gender] || t("review.notSet")}
+                            </span>
+                          </div>
                         </div>
                       </motion.div>
                     )}
@@ -461,6 +527,7 @@ export default function OnboardingPage() {
                         if (step === 2) {
                           setFieldTouched("weight", true);
                           setFieldTouched("height", true);
+                          setFieldTouched("yearOfBirth", true);
 
                           const hasWeightError =
                             !values.weight ||
@@ -472,8 +539,14 @@ export default function OnboardingPage() {
                             isNaN(Number(values.height)) ||
                             Number(values.height) < 50 ||
                             Number(values.height) > 300;
+                          const currentYear = new Date().getFullYear();
+                          const hasYearOfBirthError =
+                            !values.yearOfBirth ||
+                            isNaN(Number(values.yearOfBirth)) ||
+                            Number(values.yearOfBirth) < 1900 ||
+                            Number(values.yearOfBirth) > currentYear;
 
-                          if (hasWeightError || hasHeightError) {
+                          if (hasWeightError || hasHeightError || hasYearOfBirthError) {
                             return;
                           }
                         }

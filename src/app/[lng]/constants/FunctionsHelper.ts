@@ -52,9 +52,13 @@ export const calculateRecommendedMacros = (
   height: number = 60,
   coeficientLifestyle: number = 1.2,
   coeficientGoal: number = 1,
+  yearOfBirth?: number,
+  gender?: string,
 ): macros => {
+  const age = yearOfBirth ? new Date().getFullYear() - yearOfBirth : 25;
+  const genderModifier = gender === "female" ? -161 : 5;
   const caloriesBeforeGoal =
-    (10 * weight + 6.25 * height - 5 * 25 + 5) * coeficientLifestyle; // BMR × sedentary activity
+    (10 * weight + 6.25 * height - 5 * age + genderModifier) * coeficientLifestyle; // BMR × activity
   const calories = Math.round(caloriesBeforeGoal * coeficientGoal);
   const macros = {
     calories: Math.round(calories),

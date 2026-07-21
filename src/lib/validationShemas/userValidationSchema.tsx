@@ -14,6 +14,12 @@ export const updateUserSchema = z.object({
     .number()
     .min(50, "validation.heightMin")
     .max(300, "validation.heightMax"),
+  yearOfBirth: z.coerce
+    .number()
+    .min(1900, "validation.yearOfBirthMin")
+    .max(new Date().getFullYear(), "validation.yearOfBirthMax")
+    .optional(),
+  gender: z.enum(["male", "female"]).optional(),
   activityLevel: z.enum([
     "sedentary",
     "sedatory",
@@ -40,6 +46,11 @@ export const onboardingSchema = z.object({
     .number()
     .min(50, "validation.heightMin")
     .max(300, "validation.heightMax"),
+  yearOfBirth: z.coerce
+    .number()
+    .min(1900, "validation.yearOfBirthMin")
+    .max(new Date().getFullYear(), "validation.yearOfBirthMax"),
+  gender: z.enum(["male", "female"]),
   activityLevel: z.enum([
     "sedentary",
     "lightlyActive",

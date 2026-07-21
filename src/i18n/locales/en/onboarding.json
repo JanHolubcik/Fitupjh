@@ -33,6 +33,12 @@
     "title": "Your starting point",
     "weightLabel": "Current Weight (kg)",
     "heightLabel": "Height (cm)",
+    "yearOfBirthLabel": "Year of Birth",
+    "genderLabel": "Gender",
+    "gender": {
+      "male": "Male",
+      "female": "Female"
+    },
     "activityLevel": "Daily Activity Level",
     "activity": {
       "sedentary": "Sedentary (Office job, little exercise)",
@@ -48,6 +54,8 @@
     "activityLevelLabel": "Activity Level",
     "weightLabel": "Weight",
     "heightLabel": "Height",
+    "yearOfBirthLabel": "Year of Birth",
+    "genderLabel": "Gender",
     "notSet": "Not set",
     "kg": "kg",
     "cm": "cm",
@@ -61,6 +69,10 @@
       "lightlyActive": "Lightly Active",
       "mediumActive": "Moderately Active",
       "highlyActive": "Highly Active"
+    },
+    "genders": {
+      "male": "Male",
+      "female": "Female"
     }
   },
   "buttons": {
@@ -78,6 +90,9 @@
     "weightMax": "Weight cannot exceed 300 kg",
     "heightRequired": "Height is required",
     "heightMin": "Height must be at least 50 cm",
-    "heightMax": "Height cannot exceed 300 cm"
+    "heightMax": "Height cannot exceed 300 cm",
+    "yearOfBirthRequired": "Year of birth is required",
+    "yearOfBirthMin": "Year of birth must be at least 1900",
+    "yearOfBirthMax": "Year of birth cannot be in the future"
   }
 }

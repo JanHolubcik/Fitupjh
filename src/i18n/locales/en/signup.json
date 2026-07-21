@@ -8,6 +8,10 @@
   "passwordLabel": "Password",
   "heightLabel": "Height (cm)",
   "weightLabel": "Weight (kg)",
+  "yearOfBirthLabel": "Year of Birth",
+  "genderLabel": "Gender",
+  "genderMale": "Male",
+  "genderFemale": "Female",
   "creatingAccount": "Creating account...",
   "signUpButton": "Sign Up",
   "hasAccountText": "Already have an account? ",
@@ -32,6 +36,10 @@
     "heightMin": "Minimum height is 50",
     "heightMax": "Maximum height is 250",
     "weightMin": "Minimum weight is 20",
-    "weightMax": "Maximum weight is 400"
+    "weightMax": "Maximum weight is 400",
+    "yearOfBirthMin": "Year of birth must be 1900 or later",
+    "yearOfBirthMax": "Year of birth cannot be in the future",
+    "yearOfBirthRequired": "Year of birth is required",
+    "genderRequired": "Gender is required"
   }
 }

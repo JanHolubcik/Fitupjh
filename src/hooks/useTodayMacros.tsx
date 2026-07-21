@@ -39,6 +39,8 @@ const useTodayMacros = () => {
           user.height ? user.height : 0,
           ACTIVITY_MULTIPLIERS[activityKey],
           GOAL_MULTIPLIERS[goalKey],
+          user.yearOfBirth ?? undefined,
+          user.gender ?? undefined,
         )
       : {
           calories: 0,
@@ -51,7 +53,7 @@ const useTodayMacros = () => {
         };
 
     return adjustMacrosWithBurnedCalories(baseline, burnedCalories);
-  }, [user?.weight, user?.height, activityKey, goalKey, burnedCalories]);
+  }, [user?.weight, user?.height, user?.yearOfBirth, user?.gender, activityKey, goalKey, burnedCalories]);
 
   const calculatedMacros = useMemo(() => {
     if (savedFood) {

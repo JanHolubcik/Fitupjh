@@ -58,6 +58,8 @@ describe("Signup Component", () => {
     expect(screen.getByLabelText("passwordLabel")).toBeInTheDocument();
     expect(screen.getByLabelText("heightLabel")).toBeInTheDocument();
     expect(screen.getByLabelText("weightLabel")).toBeInTheDocument();
+    expect(screen.getByLabelText("yearOfBirthLabel")).toBeInTheDocument();
+    expect(screen.getAllByText("genderLabel")[0]).toBeInTheDocument();
     expect(screen.getByText("agreeText")).toBeInTheDocument();
     expect(screen.getByText("signUpButton")).toBeInTheDocument();
   });
@@ -80,7 +82,7 @@ describe("Signup Component", () => {
   it("should show validation errors when fields are invalid", async () => {
     render(<Signup />);
 
-    // Enter short username, invalid email, short password, out-of-bound height & weight
+    // Enter short username, invalid email, short password, out-of-bound height, weight & yearOfBirth
     fireEvent.change(screen.getByLabelText("usernameLabel"), {
       target: { value: "jo" }, // too short
     });
@@ -96,6 +98,9 @@ describe("Signup Component", () => {
     fireEvent.change(screen.getByLabelText("weightLabel"), {
       target: { value: "10" }, // too low
     });
+    fireEvent.change(screen.getByLabelText("yearOfBirthLabel"), {
+      target: { value: "1800" }, // too low
+    });
 
     // Trigger blur to run validation
     fireEvent.blur(screen.getByLabelText("usernameLabel"));
@@ -103,6 +108,7 @@ describe("Signup Component", () => {
     fireEvent.blur(screen.getByLabelText("passwordLabel"));
     fireEvent.blur(screen.getByLabelText("heightLabel"));
     fireEvent.blur(screen.getByLabelText("weightLabel"));
+    fireEvent.blur(screen.getByLabelText("yearOfBirthLabel"));
 
     await waitFor(() => {
       expect(screen.getByText("validation.usernameMin")).toBeInTheDocument();
@@ -110,6 +116,7 @@ describe("Signup Component", () => {
       expect(screen.getByText("validation.passwordMin")).toBeInTheDocument();
       expect(screen.getByText("validation.heightMin")).toBeInTheDocument();
       expect(screen.getByText("validation.weightMin")).toBeInTheDocument();
+      expect(screen.getByText("validation.yearOfBirthMin")).toBeInTheDocument();
     });
   });
 
@@ -137,6 +144,9 @@ describe("Signup Component", () => {
     fireEvent.change(screen.getByLabelText("weightLabel"), {
       target: { value: "75" },
     });
+    fireEvent.change(screen.getByLabelText("yearOfBirthLabel"), {
+      target: { value: "1995" },
+    });
 
     // Accept terms
     fireEvent.click(screen.getByRole("checkbox"));
@@ -157,6 +167,8 @@ describe("Signup Component", () => {
         callbackURL: "/dashboard",
         height: 180,
         weight: 75,
+        yearOfBirth: 1995,
+        gender: "male",
         termsAccepted: true,
       });
       expect(mocks.mockRefresh).toHaveBeenCalled();
@@ -187,6 +199,9 @@ describe("Signup Component", () => {
     });
     fireEvent.change(screen.getByLabelText("weightLabel"), {
       target: { value: "75" },
+    });
+    fireEvent.change(screen.getByLabelText("yearOfBirthLabel"), {
+      target: { value: "1995" },
     });
 
     // Accept terms

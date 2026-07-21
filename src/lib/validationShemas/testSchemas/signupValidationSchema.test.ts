@@ -9,6 +9,8 @@ describe("signupSchema Validation", () => {
       password: "password123",
       height: 180,
       weight: 75,
+      yearOfBirth: 1995,
+      gender: "male",
     };
 
     const result = signupSchema.safeParse(validPayload);
@@ -22,6 +24,8 @@ describe("signupSchema Validation", () => {
       password: "password123",
       height: 180,
       weight: 75,
+      yearOfBirth: 1995,
+      gender: "male",
     };
 
     const result = signupSchema.safeParse(invalidPayload);
@@ -39,6 +43,8 @@ describe("signupSchema Validation", () => {
       password: "password123",
       height: 180,
       weight: 75,
+      yearOfBirth: 1995,
+      gender: "male",
     };
 
     const result = signupSchema.safeParse(invalidPayload);
@@ -56,6 +62,8 @@ describe("signupSchema Validation", () => {
       password: "12345",
       height: 180,
       weight: 75,
+      yearOfBirth: 1995,
+      gender: "male",
     };
 
     const result = signupSchema.safeParse(invalidPayload);
@@ -73,6 +81,8 @@ describe("signupSchema Validation", () => {
       password: "password123",
       height: 49,
       weight: 75,
+      yearOfBirth: 1995,
+      gender: "male",
     };
 
     const invalidPayloadHigh = {
@@ -81,6 +91,8 @@ describe("signupSchema Validation", () => {
       password: "password123",
       height: 251,
       weight: 75,
+      yearOfBirth: 1995,
+      gender: "male",
     };
 
     const resultLow = signupSchema.safeParse(invalidPayloadLow);
@@ -97,6 +109,8 @@ describe("signupSchema Validation", () => {
       password: "password123",
       height: 180,
       weight: 19,
+      yearOfBirth: 1995,
+      gender: "male",
     };
 
     const invalidPayloadHigh = {
@@ -105,6 +119,36 @@ describe("signupSchema Validation", () => {
       password: "password123",
       height: 180,
       weight: 401,
+      yearOfBirth: 1995,
+      gender: "male",
+    };
+
+    const resultLow = signupSchema.safeParse(invalidPayloadLow);
+    const resultHigh = signupSchema.safeParse(invalidPayloadHigh);
+
+    expect(resultLow.success).toBe(false);
+    expect(resultHigh.success).toBe(false);
+  });
+
+  it("should fail validation when yearOfBirth is out of bounds", () => {
+    const invalidPayloadLow = {
+      username: "john_doe",
+      userEmail: "john@example.com",
+      password: "password123",
+      height: 180,
+      weight: 75,
+      yearOfBirth: 1899,
+      gender: "male",
+    };
+
+    const invalidPayloadHigh = {
+      username: "john_doe",
+      userEmail: "john@example.com",
+      password: "password123",
+      height: 180,
+      weight: 75,
+      yearOfBirth: 3000,
+      gender: "male",
     };
 
     const resultLow = signupSchema.safeParse(invalidPayloadLow);

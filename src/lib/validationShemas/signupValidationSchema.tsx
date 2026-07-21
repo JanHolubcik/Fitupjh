@@ -11,4 +11,9 @@ export const signupSchema = z.object({
     .number()
     .min(20, "validation.weightMin")
     .max(400, "validation.weightMax"),
+  yearOfBirth: z.coerce
+    .number()
+    .min(1900, "validation.yearOfBirthMin")
+    .max(new Date().getFullYear(), "validation.yearOfBirthMax"),
+  gender: z.enum(["male", "female"]),
 });

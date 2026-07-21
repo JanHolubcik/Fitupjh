@@ -27,6 +27,8 @@ export const auth = betterAuth({
         required: false,
         defaultValue: "lightlyActive",
       },
+      yearOfBirth: { type: "number", required: false },
+      gender: { type: "string", required: false, defaultValue: "male" },
       targetCalories: { type: "number", required: false },
       targetProtein: { type: "number", required: false },
       targetCarbs: { type: "number", required: false },

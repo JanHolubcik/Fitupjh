@@ -26,13 +26,17 @@ export const BiometricAndGoals = ({ user }: { user: User }) => {
     weight: number | string;
     weightGoal: number | string;
     height: number | string;
+    yearOfBirth?: number | string;
+    gender?: string;
     activityLevel: string;
     goal: string;
   }) => {
     const updatePromise = authClient.updateUser({
       weight: Number(values.weight),
-      weightGoal: Number(values.weightGoal),
+      weightGoal: values.weightGoal ? Number(values.weightGoal) : undefined,
       height: Number(values.height),
+      yearOfBirth: values.yearOfBirth ? Number(values.yearOfBirth) : undefined,
+      gender: values.gender,
       activityLevel: values.activityLevel,
       goal: values.goal,
     });
@@ -62,6 +66,8 @@ export const BiometricAndGoals = ({ user }: { user: User }) => {
           weight: user.weight ?? "",
           weightGoal: user.weightGoal ?? "",
           height: user.height ?? "",
+          yearOfBirth: user.yearOfBirth ?? "",
+          gender: user.gender || "male",
           activityLevel: user.activityLevel || "sedentary",
           goal: user.goal || "loseWeight",
         }}
@@ -131,6 +137,33 @@ export const BiometricAndGoals = ({ user }: { user: User }) => {
                   isInvalid={touched.height && !!errors.height}
                   errorMessage={touched.height && errors.height}
                 />
+                <Input
+                  size="sm"
+                  name="yearOfBirth"
+                  label={t("yearOfBirth")}
+                  type="number"
+                  min={1900}
+                  max={new Date().getFullYear()}
+                  value={String(values.yearOfBirth)}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  variant="faded"
+                  isDisabled={isSubmitting}
+                  isInvalid={touched.yearOfBirth && !!errors.yearOfBirth}
+                  errorMessage={touched.yearOfBirth && errors.yearOfBirth}
+                />
+                <Select
+                  size="sm"
+                  name="gender"
+                  label={t("gender")}
+                  selectedKeys={[values.gender]}
+                  onChange={handleChange}
+                  variant="faded"
+                  isDisabled={isSubmitting}
+                >
+                  <SelectItem key="male">{t("genderMale")}</SelectItem>
+                  <SelectItem key="female">{t("genderFemale")}</SelectItem>
+                </Select>
                 <Select
                   size="sm"
                   name="activityLevel"

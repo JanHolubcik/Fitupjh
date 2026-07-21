@@ -8,6 +8,10 @@
   "passwordLabel": "Heslo",
   "heightLabel": "Výška (cm)",
   "weightLabel": "Hmotnosť (kg)",
+  "yearOfBirthLabel": "Rok narodenia",
+  "genderLabel": "Pohlavie",
+  "genderMale": "Muž",
+  "genderFemale": "Žena",
   "creatingAccount": "Vytvára sa účet...",
   "signUpButton": "Zaregistrovať sa",
   "hasAccountText": "Už máte účet? ",
@@ -32,6 +36,10 @@
     "heightMin": "Minimálna výška je 50",
     "heightMax": "Maximálna výška je 250",
     "weightMin": "Minimálna hmotnosť je 20",
-    "weightMax": "Maximálna hmotnosť je 400"
+    "weightMax": "Maximálna hmotnosť je 400",
+    "yearOfBirthMin": "Rok narodenia musí byť 1900 alebo neskôr",
+    "yearOfBirthMax": "Rok narodenia nemôže byť v budúcnosti",
+    "yearOfBirthRequired": "Rok narodenia je povinný",
+    "genderRequired": "Pohlavie je povinné"
   }
 }
