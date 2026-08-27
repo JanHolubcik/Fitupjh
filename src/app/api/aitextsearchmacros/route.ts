@@ -18,7 +18,7 @@ export const GET = async (req: NextRequest) => {
       return ApiSuccess([], 200);
     }
 
-    if (!GEMINI_API_KEY) {
+    if (!process.env.GEMINI_API_KEY) {
       logger.error("GEMINI_API_KEY environment variable is not defined");
       return ApiError("Gemini API key is not configured", 500);
     }
