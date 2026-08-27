@@ -30,6 +30,17 @@ describe("FunctionsHelper", () => {
       expect(result.sugar).toBeDefined();
     });
 
+    it("should calculate macros where the sum of macro calories is approximately equal to total calories", () => {
+      const result = calculateRecommendedMacros(80, 180, 1.2, 1, 1990, "male");
+      const proteinCalories = result.protein * 4;
+      const carbCalories = result.carbohydrates * 4;
+      const fatCalories = result.fat * 9;
+      const sumCalories = proteinCalories + carbCalories + fatCalories;
+
+      // The difference should be very small, due to rounding (e.g. within 10 calories)
+      expect(Math.abs(sumCalories - result.calories)).toBeLessThanOrEqual(10);
+    });
+
     it("should calculate different macros for different weights and heights", () => {
       const result1 = calculateRecommendedMacros(60, 160, 1.2, 1);
       const result2 = calculateRecommendedMacros(90, 190, 1.2, 1);

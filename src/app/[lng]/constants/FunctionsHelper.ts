@@ -58,21 +58,22 @@ export const calculateRecommendedMacros = (
   const age = yearOfBirth ? new Date().getFullYear() - yearOfBirth : 25;
   const genderModifier = gender === "female" ? -161 : 5;
   const caloriesBeforeGoal =
-    (10 * weight + 6.25 * height - 5 * age + genderModifier) * coeficientLifestyle; // BMR × activity
+    (10 * weight + 6.25 * height - 5 * age + genderModifier) *
+    coeficientLifestyle; // BMR × activity
   const calories = Math.round(caloriesBeforeGoal * coeficientGoal);
   const macros = {
     calories: Math.round(calories),
-    fat: calories * 0.2,
+    fat: calories * 0.3,
     protein: Math.round(1.2 * weight),
-    fiber: 38,
+    fiber: gender === "female" ? 25 : 38,
     salt: 2.3,
   };
 
   return {
     ...macros,
-    carbohydrates: Math.round((calories - macros.protein + macros.fat) / 4),
+    carbohydrates: Math.round((calories * 0.5) / 4),
     fat: Math.round(macros.fat / 9),
-    sugar: Math.round((calories * 0.1) / 4),
+    sugar: gender === "female" ? 25 : 36,
   };
 };
 
