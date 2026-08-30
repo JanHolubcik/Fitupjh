@@ -22,12 +22,13 @@ export const getUsers = async (
   const db = client.db();
   const collection = db.collection("user");
 
-  const query: Record<string, any> = {};
+  const query: Record<string, string | object> = {};
 
   if (search) {
+    const escapedSearch = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     query.$or = [
-      { name: { $regex: search, $options: "i" } },
-      { email: { $regex: search, $options: "i" } },
+      { name: { $regex: escapedSearch, $options: "i" } },
+      { email: { $regex: escapedSearch, $options: "i" } },
     ];
   }
 

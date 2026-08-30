@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import connectDB from "./connect-db";
-import { Activity } from "./models/Activity";
+import { Activity, ActivityClass } from "./models/Activity";
 import { SavedActivity } from "./models/SavedActivity";
 import { LoggedActivityType } from "@/types/Types";
 import { addDays, format, parse } from "date-fns";
@@ -151,13 +151,14 @@ export async function getActivitiesPaginated(
   search?: string,
   page: number = 1,
   limit: number = 6
-): Promise<{ activities: any[]; total: number }> {
+): Promise<{ activities: ActivityClass[]; total: number }> {
   await connectDB();
 
-  const query: Record<string, any> = {};
+  const query: mongoose.FilterQuery<ActivityClass> = {};
 
   if (search) {
-    query.name = { $regex: search, $options: "i" };
+    const escapedSearch = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    query.name = { $regex: escapedSearch, $options: "i" };
   }
 
   const total = await Activity.countDocuments(query);
@@ -171,7 +172,7 @@ export async function getActivitiesPaginated(
     .exec();
 
   return {
-    activities: JSON.parse(JSON.stringify(activities)),
+    activities: JSON.parse(JSON.stringify(activities)) as ActivityClass[],
     total,
   };
 }

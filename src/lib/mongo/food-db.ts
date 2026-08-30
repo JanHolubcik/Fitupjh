@@ -252,15 +252,16 @@ export async function getFoodsPaginated(
   search?: string,
   page: number = 1,
   limit: number = 6
-): Promise<{ foods: any[]; total: number }> {
+): Promise<{ foods: FoodClass[]; total: number }> {
   await connectDB();
 
-  const query: Record<string, any> = {};
+  const query: mongoose.FilterQuery<FoodClass> = {};
 
   if (search) {
+    const escapedSearch = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     query.$or = [
-      { name: { $regex: search, $options: "i" } },
-      { QRcode: { $regex: search, $options: "i" } },
+      { name: { $regex: escapedSearch, $options: "i" } },
+      { QRcode: { $regex: escapedSearch, $options: "i" } },
     ];
   }
 
@@ -275,7 +276,7 @@ export async function getFoodsPaginated(
     .exec();
 
   return {
-    foods: JSON.parse(JSON.stringify(foods)),
+    foods: JSON.parse(JSON.stringify(foods)) as FoodClass[],
     total,
   };
 }
