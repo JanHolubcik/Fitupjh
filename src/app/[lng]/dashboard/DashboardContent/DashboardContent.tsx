@@ -116,9 +116,9 @@ const DashboardContent = ({ dateTo, dateFrom }: props) => {
       ) : (
         <AccordionActivity />
       )}
-      {isErrorActivity && isErrorFood ? (
+      {isErrorActivity && isErrorFood && isErrorWater ? (
         <CardError
-          title={t("error.failedToLoadActivity")}
+          title={t("error.failedToLoadAll")}
           description={t("error.failedToLoadDesc")}
           icon={<FaExclamationTriangle />}
           refetch={refetch}

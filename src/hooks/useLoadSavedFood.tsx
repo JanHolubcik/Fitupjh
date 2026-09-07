@@ -32,7 +32,11 @@ const useLoadSavedFood = ({ dateTo, dateFrom }: props) => {
   const isError = isErrorFood || isErrorActivity || isErrorWater;
 
   const refetch = async () => {
-    await Promise.all([refetchFood(), refetchActivity(), refetchWater()]);
+    const promises = [];
+    if (isErrorFood) promises.push(refetchFood());
+    if (isErrorActivity) promises.push(refetchActivity());
+    if (isErrorWater) promises.push(refetchWater());
+    await Promise.all(promises);
   };
 
   return {
@@ -42,8 +46,10 @@ const useLoadSavedFood = ({ dateTo, dateFrom }: props) => {
     isErrorActivity,
     isErrorWater,
     refetch,
+    refetchFood,
+    refetchActivity,
+    refetchWater,
   };
 };
 
 export default useLoadSavedFood;
-
