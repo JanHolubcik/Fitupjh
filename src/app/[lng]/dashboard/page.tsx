@@ -30,10 +30,12 @@ import {
   checkForSavedActivitiesMonth,
   getActivity,
 } from "@/lib/mongo/activity-db";
+import { checkForSavedWaterMonth } from "@/lib/mongo/water-db";
 import { ActivitiesOptions } from "@/lib/queriesOptions/ActivitiesOptions";
-import { ActivityClass } from "@/types/Types";
+import { ActivityClass, WaterEntryType } from "@/types/Types";
 
 import { LastMonthSavedActivities } from "@/lib/queriesOptions/LastMonthSavedActivitiesOptions";
+import { LastMonthWaterOptions } from "@/lib/queriesOptions/LastMonthWaterOptions";
 import { LoggedActivityType, FoodType } from "@/types/Types";
 
 const getMidnightISO = (date: Date) => {
@@ -84,6 +86,17 @@ export default async function Dashboard() {
       queryClient.setQueryData(
         LastMonthSavedActivities(dateFrom, dateTo).queryKey,
         plainSavedActivities as Record<string, LoggedActivityType[]>,
+      );
+
+      const water = await checkForSavedWaterMonth(
+        dateFrom,
+        dateTo,
+        session.user.id,
+      );
+      const plainWater = JSON.parse(JSON.stringify(water));
+      queryClient.setQueryData(
+        LastMonthWaterOptions(dateFrom, dateTo).queryKey,
+        plainWater as Record<string, WaterEntryType[]>,
       );
     } catch (error) {
       console.error("Failed to prefetch user data", error);

@@ -77,6 +77,47 @@ export const calculateRecommendedMacros = (
   };
 };
 
+export const calculateRecommendedWater = (
+  yearOfBirth?: number,
+  gender?: string,
+  weight?: number,
+): number => {
+  const currentYear = new Date().getFullYear();
+  const age = yearOfBirth
+    ? yearOfBirth > 1900
+      ? currentYear - yearOfBirth
+      : yearOfBirth
+    : 25;
+
+  const isFemale = gender === "female";
+  const isMale = gender === "male";
+
+  // Under 19 (Teens)
+  if (age < 19) {
+    if (isFemale) return 2000;
+    if (isMale) return 2500;
+    return 2200;
+  }
+
+  // Adults (19+)
+  if (weight && weight > 0) {
+    if (isFemale) {
+      const calculated = Math.round(weight * 32);
+      return Math.min(Math.max(calculated, 1800), 3000);
+    }
+    if (isMale) {
+      const calculated = Math.round(weight * 35);
+      return Math.min(Math.max(calculated, 2000), 3500);
+    }
+    const calculated = Math.round(weight * 33);
+    return Math.min(Math.max(calculated, 1900), 3300);
+  }
+
+  if (isFemale) return 2000;
+  if (isMale) return 2500;
+  return 2250;
+};
+
 export const adjustMacrosWithBurnedCalories = (
   baseline: macros,
   burnedCalories: number,

@@ -45,7 +45,6 @@ export type LoggedActivityType = {
   caloriesBurned: number;
 };
 
-
 export type ApiResponse<T = never> = {
   success: boolean;
   data?: T;
@@ -65,7 +64,6 @@ export type FoodInput = {
   imgUrl?: string;
   ProductWeight?: number;
 };
-
 
 export type ReturnTypeFood =
   | (FoodClass & { originalName?: string })[]
@@ -156,4 +154,18 @@ export type AIFoodAnalysis = {
   ProductWeight?: number;
   imgUrl?: string;
 };
+export type WaterEntryType = {
+  id: string | number;
+  amount: number;
+};
 
+export type SavedWaterMonth = Record<string, WaterEntryType[]>;
+
+export type SavedWaterClass = {
+  _id?: string;
+  day: string;
+  entries: WaterEntryType[];
+  user_id?: string;
+  createdAt?: string;
+  updatedAt?: string;
+};

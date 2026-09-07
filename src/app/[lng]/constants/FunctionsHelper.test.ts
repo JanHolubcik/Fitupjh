@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   calculateRecommendedMacros,
+  calculateRecommendedWater,
   adjustMacrosWithBurnedCalories,
   calculateCaloriesSum,
   calculateActivities,
@@ -234,6 +235,58 @@ describe("FunctionsHelper", () => {
     it("should return dinner between 16:00 and 23:59", () => {
       vi.setSystemTime(new Date("2026-06-30T20:00:00"));
       expect(getTimeOfDay()).toBe("dinner");
+    });
+  });
+
+  describe("calculateRecommendedWater", () => {
+    it("should return default recommended water when no arguments are passed", () => {
+      const water = calculateRecommendedWater();
+      expect(water).toBe(2250);
+    });
+
+    it("should calculate for adult male without weight", () => {
+      const water = calculateRecommendedWater(1995, "male");
+      expect(water).toBe(2500);
+    });
+
+    it("should calculate for adult female without weight", () => {
+      const water = calculateRecommendedWater(1995, "female");
+      expect(water).toBe(2000);
+    });
+
+    it("should adjust adult male water by weight", () => {
+      // 80 kg * 35 = 2800 ml
+      const water = calculateRecommendedWater(1995, "male", 80);
+      expect(water).toBe(2800);
+    });
+
+    it("should adjust adult female water by weight", () => {
+      // 60 kg * 32 = 1920 ml
+      const water = calculateRecommendedWater(1995, "female", 60);
+      expect(water).toBe(1920);
+    });
+
+    it("should clamp values within safe bounds for extreme weights", () => {
+      const veryHeavyMale = calculateRecommendedWater(1990, "male", 150);
+      expect(veryHeavyMale).toBe(3500);
+
+      const veryLightFemale = calculateRecommendedWater(1990, "female", 40);
+      expect(veryLightFemale).toBe(1800);
+    });
+
+    it("should differentiate teenager water intake based on gender", () => {
+      // Age 16 (year 2010 when year is 2026)
+      const teenBoy = calculateRecommendedWater(2010, "male");
+      const teenGirl = calculateRecommendedWater(2010, "female");
+      expect(teenBoy).toBe(2500);
+      expect(teenGirl).toBe(2000);
+    });
+
+    it("should handle direct age instead of year of birth", () => {
+      const waterAdultMale = calculateRecommendedWater(25, "male");
+      expect(waterAdultMale).toBe(2500);
+      const waterAdultFemale = calculateRecommendedWater(25, "female");
+      expect(waterAdultFemale).toBe(2000);
     });
   });
 });

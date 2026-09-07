@@ -104,4 +104,3 @@ const AccordionTimeFrame = () => {
 };
 
 export default AccordionTimeFrame;
-

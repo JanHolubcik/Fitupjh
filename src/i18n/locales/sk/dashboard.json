@@ -256,13 +256,17 @@
     "updated": "Jedlo bolo aktualizované!",
     "activitySuccess": "Aktivita bola zaznamenaná!",
     "activityError": "Pri zaznamenávaní aktivity nastala chyba.",
-    "activityRemoved": "Aktivita bola odstránená!"
+    "activityRemoved": "Aktivita bola odstránená!",
+    "waterSuccess": "Príjem vody bol zaznamenaný!",
+    "waterRemoved": "Záznam vody bol odstránený!",
+    "waterError": "Pri aktualizácii príjmu vody nastala chyba."
   },
   "error": {
     "failedToLoad": "Nepodarilo sa načítať údaje",
     "failedToLoadDesc": "Skontrolujte svoje pripojenie na internet a skúste to znova.",
     "failedToLoadFood": "Nepodarilo sa načítať záznamy jedla.",
     "failedToLoadActivity": "Nepodarilo sa načítať záznamy aktivít.",
+    "failedToLoadWater": "Nepodarilo sa načítať záznamy o vode.",
     "failedToLoadAll": "Nepodarilo sa načítať záznamy jedla a aktivít.",
     "tryAgain": "Skúsiť znova"
   },
@@ -282,7 +286,9 @@
     "macroAtLeastOne": "Aspoň jedna živina musí byť väčšia ako nula",
     "activityRequired": "Názov aktivity je povinný",
     "durationMin": "Trvanie musí byť aspoň 0",
-    "caloriesBurnedMin": "Spálené kalórie musia byť aspoň 0"
+    "caloriesBurnedMin": "Spálené kalórie musia byť aspoň 0",
+    "waterAmountGtZero": "Množstvo vody musí byť väčšie ako 0",
+    "timestampRequired": "Časová značka je povinná"
   },
   "aiFoodScan": {
     "notFood": "Na tomto obrázku nebolo rozpoznané žiadne jedlo. Skúste to znova.",
@@ -292,5 +298,34 @@
     "title": "AI detekcia jedla",
     "subtitle": "Odfoťte alebo vyberte jedlo z galérie a nechajte AI automaticky rozpoznať jedlo a jeho makrá.",
     "analyzing": "Analyzuje sa pomocou Gemini..."
+  },
+  "waterTracker": {
+    "title": "Príjem vody",
+    "subtitle": "Sledujte svoju dennú hydratáciu",
+    "todayGoal": "Denný cieľ",
+    "drank": "Vypité",
+    "remaining": "Zostáva {{amount}} ml",
+    "goalReached": "Denný cieľ hydratácie dosiahnutý!",
+    "overGoal": "{{amount}} ml nad denný cieľ",
+    "cup": "Pohár",
+    "cupNotice": "1 pohár = 250 ml",
+    "bottle": "Fľaša",
+    "bottleSize": "500 ml",
+    "largeBottle": "Veľká fľaša",
+    "largeBottleSize": "1 000 ml",
+    "custom": "Vlastné",
+    "customAmount": "Vlastné množstvo",
+    "customPlaceholder": "napr. 300",
+    "add": "Pridať",
+    "addWater": "Pridať vodu",
+    "quickAdd": "Rýchle pridanie",
+    "recommendationNotice": "Odporúčané pre: {{gender}}, {{age}} r.: {{amount}} ml/deň",
+    "genderMale": "muž",
+    "genderFemale": "žena",
+    "todayEntries": "Dnešné záznamy",
+    "noEntries": "Dnes zatiaľ nie je zaznamenaná žiadna voda.",
+    "remove": "Odstrániť",
+    "clearAll": "Resetovať dnes",
+    "ml": "ml"
   }
 }

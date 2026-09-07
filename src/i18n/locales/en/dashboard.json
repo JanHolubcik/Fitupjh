@@ -257,13 +257,17 @@
     "updated": "Food was updated!",
     "activitySuccess": "Activity was logged!",
     "activityError": "Error while logging activity.",
-    "activityRemoved": "Activity was removed!"
+    "activityRemoved": "Activity was removed!",
+    "waterSuccess": "Water intake recorded!",
+    "waterRemoved": "Water entry removed!",
+    "waterError": "Error while updating water intake."
   },
   "error": {
     "failedToLoad": "Failed to load data",
     "failedToLoadDesc": "Please check your internet connection and try again.",
     "failedToLoadFood": "Failed to load food log.",
     "failedToLoadActivity": "Failed to load activity log.",
+    "failedToLoadWater": "Failed to load water intake.",
     "failedToLoadAll": "Failed to load food and activity logs.",
     "tryAgain": "Try Again"
   },
@@ -283,7 +287,9 @@
     "macroAtLeastOne": "At least one nutrient must be greater than zero",
     "activityRequired": "Activity name is required",
     "durationMin": "Duration must be at least 0",
-    "caloriesBurnedMin": "Calories burned must be at least 0"
+    "caloriesBurnedMin": "Calories burned must be at least 0",
+    "waterAmountGtZero": "Water amount must be greater than 0",
+    "timestampRequired": "Timestamp is required"
   },
   "aiFoodScan": {
     "notFood": "No food was recognized in this image. Please try again.",
@@ -293,5 +299,34 @@
     "title": "AI Food Detection",
     "subtitle": "Take a photo or choose from library to let AI recognize the food and its macros automatically.",
     "analyzing": "Analyzing with Gemini..."
+  },
+  "waterTracker": {
+    "title": "Water Intake",
+    "subtitle": "Track your daily hydration",
+    "todayGoal": "Daily Goal",
+    "drank": "Drank",
+    "remaining": "{{amount}} ml remaining",
+    "goalReached": "Daily hydration goal reached!",
+    "overGoal": "{{amount}} ml over daily goal",
+    "cup": "Cup",
+    "cupNotice": "1 cup = 250 ml",
+    "bottle": "Bottle",
+    "bottleSize": "500 ml",
+    "largeBottle": "Large Bottle",
+    "largeBottleSize": "1,000 ml",
+    "custom": "Custom",
+    "customAmount": "Custom amount",
+    "customPlaceholder": "e.g. 300",
+    "add": "Add",
+    "addWater": "Add Water",
+    "quickAdd": "Quick Add",
+    "recommendationNotice": "Recommended for {{gender}}, {{age}} yrs: {{amount}} ml/day",
+    "genderMale": "male",
+    "genderFemale": "female",
+    "todayEntries": "Today's logs",
+    "noEntries": "No water logged today yet.",
+    "remove": "Remove",
+    "clearAll": "Reset today",
+    "ml": "ml"
   }
 }

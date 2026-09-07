@@ -13,6 +13,7 @@ import {
   CalorieCardSkeleton,
   TodayMacrosSkeleton,
   AccordionTimeFrameSkeleton,
+  WaterTrackerSkeleton,
   MyGraphSkeleton,
 } from "./components/Skeletons";
 
@@ -22,6 +23,7 @@ import { useT } from "next-i18next/client";
 import MyGraph from "@/components/ChartProgress/GraphProgressComponent";
 import useGuide from "@/hooks/useGuide";
 import AccordionActivity from "../AccordionActivity/AccordionActivity";
+import WaterTracker from "./components/WaterTracker/WaterTracker";
 import { useEffect, useState } from "react";
 import { CardError } from "@/components/common";
 import { FaExclamationTriangle } from "react-icons/fa";
@@ -35,11 +37,17 @@ const DashboardContent = ({ dateTo, dateFrom }: props) => {
   const { t } = useT("dashboard");
   const [mounted, setMounted] = useState(false);
   const { data: session, isPending } = authClient.useSession();
-  const { isFetching, isError, isErrorFood, isErrorActivity, refetch } =
-    useLoadSavedFood({
-      dateTo,
-      dateFrom,
-    });
+  const {
+    isFetching,
+    isError,
+    isErrorFood,
+    isErrorActivity,
+    isErrorWater,
+    refetch,
+  } = useLoadSavedFood({
+    dateTo,
+    dateFrom,
+  });
 
   useEffect(() => {
     setMounted(true);
@@ -61,6 +69,7 @@ const DashboardContent = ({ dateTo, dateFrom }: props) => {
           <TodayMacrosSkeleton />
         </div>
         <AccordionTimeFrameSkeleton />
+        <WaterTrackerSkeleton />
         <MyGraphSkeleton />
       </div>
     );
@@ -82,7 +91,18 @@ const DashboardContent = ({ dateTo, dateFrom }: props) => {
             <CalorieCard />
             <TodayMacros />
           </div>
+
           <AccordionTimeFrame />
+          {isErrorWater ? (
+            <CardError
+              title={t("error.failedToLoadWater")}
+              description={t("error.failedToLoadDesc")}
+              icon={<FaExclamationTriangle />}
+              refetch={refetch}
+            />
+          ) : (
+            <WaterTracker />
+          )}
         </>
       )}
 

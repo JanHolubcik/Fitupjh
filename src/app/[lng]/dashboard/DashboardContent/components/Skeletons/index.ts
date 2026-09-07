@@ -4,3 +4,4 @@ export { TodayMacrosSkeleton } from "./TodayMacrosSkeleton";
 export { AccordionTimeFrameSkeleton } from "./AccordionTimeFrameSkeleton";
 export { MyGraphSkeleton } from "./MyGraphSkeleton";
 export { AddFoodSkeleton } from "./AddFoodSkeleton";
+export { WaterTrackerSkeleton } from "./WaterTrackerSkeleton";
