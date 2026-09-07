@@ -305,7 +305,7 @@ const WaterTracker = () => {
                             color="danger"
                             onPress={() => removeWater(entry.id)}
                             aria-label={t("waterTracker.remove")}
-                            className="w-6 h-6 bg-danger-100 dark:bg-danger-900/30 text-danger sm:bg-transparent sm:text-default-400 sm:hover:text-danger"
+                            className="w-6 h-6 "
                           >
                             <FaTrash size={10} />
                           </Button>
