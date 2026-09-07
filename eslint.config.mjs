@@ -30,6 +30,26 @@ export default [
   },
 
   {
+    files: ["cypress/**/*.ts", "cypress/**/*.js"],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+        cy: "readonly",
+        Cypress: "readonly",
+        describe: "readonly",
+        it: "readonly",
+        before: "readonly",
+        after: "readonly",
+        beforeEach: "readonly",
+        afterEach: "readonly",
+        expect: "readonly",
+        assert: "readonly",
+      },
+    },
+  },
+
+  {
     plugins: {
       "@next/next": nextPlugin,
     },

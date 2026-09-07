@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint . --config eslint.config.mjs",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "dependencies": {
     "@better-auth/expo": "^1.6.20",
@@ -57,6 +59,7 @@
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
     "baseline-browser-mapping": "^2.9.12",
+    "cypress": "^16.0.0",
     "eslint": "^9.9.0",
     "eslint-config-next": "16.1.1",
     "eslint-plugin-unused-imports": "^4.4.1",

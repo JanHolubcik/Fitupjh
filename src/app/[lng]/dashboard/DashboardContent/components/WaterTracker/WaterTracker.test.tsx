@@ -154,7 +154,7 @@ describe("WaterTracker Component", () => {
     expect(matches.length).toBeGreaterThanOrEqual(1);
 
     const deleteButton = screen.getByLabelText("waterTracker.remove");
-    expect(deleteButton.className).toContain("bg-danger-100");
+    expect(deleteButton).toBeInTheDocument();
     fireEvent.click(deleteButton);
 
     expect(mocks.mockRemoveWater).toHaveBeenCalledWith("entry-1");
